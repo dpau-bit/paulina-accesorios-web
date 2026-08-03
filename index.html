@@ -5,10 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Paulina Accesorios - Belleza y Estilo Premium ✨</title>
 
-    <!-- ===== SEO AVANZADO ===== -->
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-    <link rel="canonical" href="https://paulina-accesorios.com" />
-    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
 
     <meta name="description" content="Paulina Accesorios - Tienda de aretes, extensiones de pestañas y accesorios de belleza. Envíos a todo Perú. Calidad premium." />
     <meta name="keywords" content="aretes, pestañas, accesorios, belleza, joyería, maquillaje, extensiones, anillos, yurimaguas" />
@@ -16,55 +13,21 @@
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#c2185b" />
 
-    <!-- ===== OPEN GRAPH ===== -->
     <meta property="og:title" content="Paulina Accesorios - Belleza y Estilo Premium ✨" />
     <meta property="og:description" content="Descubre nuestra colección exclusiva de accesorios de belleza. Envíos a todo Perú." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://paulina-accesorios.com" />
-    <meta property="og:image" content="https://paulina-accesorios.com/og-image.jpg" />
     <meta property="og:locale" content="es_PE" />
-    <meta property="og:site_name" content="Paulina Accesorios" />
 
-    <!-- ===== TWITTER ===== -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Paulina Accesorios - Belleza y Estilo Premium" />
     <meta name="twitter:description" content="Accesorios de belleza de la más alta calidad. Envíos a todo Perú." />
-    <meta name="twitter:image" content="https://paulina-accesorios.com/twitter-image.jpg" />
 
-    <!-- ===== SCHEMA.ORG ===== -->
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            "name": "Paulina Accesorios",
-            "url": "https://paulina-accesorios.com",
-            "logo": "https://paulina-accesorios.com/logo.png",
-            "description": "Tienda de accesorios de belleza premium en Perú",
-            "address": {
-                "@type": "PostalAddress",
-                "streetAddress": "Francisco Bardales 705",
-                "addressLocality": "Yurimaguas",
-                "addressCountry": "PE"
-            },
-            "contactPoint": {
-                "@type": "ContactPoint",
-                "telephone": "+51923861016",
-                "contactType": "sales"
-            },
-            "sameAs": [
-                "https://www.instagram.com/paulinaccesorios26/",
-                "https://www.facebook.com/share/1EVN5XT8kz/",
-                "https://www.tiktok.com/@paulinaaccesorios"
-            ]
-        }
-    </script>
-
-    <!-- ===== FONTS ===== -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
     <style>
         /* ============================================
-           DESIGN SYSTEM ULTIMATE
+           CSS COMPLETO - VERSIÓN ULTIMATE
            ============================================ */
 
         *,
@@ -76,7 +39,6 @@
         }
 
         :root {
-            /* ===== COLORS ===== */
             --primary: #c2185b;
             --primary-dark: #880e4f;
             --primary-light: #f06292;
@@ -86,36 +48,23 @@
             --accent-gradient: linear-gradient(135deg, #f9a825, #ff6f00);
             --success: #2e7d32;
             --danger: #c62828;
-            --warning: #e65100;
-
-            /* ===== NEUTRAL ===== */
             --bg-primary: #fef8fb;
             --bg-secondary: #ffffff;
             --bg-tertiary: #f8f0f5;
-            --bg-dark: #0a050a;
             --bg-card: #ffffff;
-
-            /* ===== TEXT ===== */
             --text-primary: #2d1b2e;
             --text-secondary: #5a3a5a;
             --text-tertiary: #8a6a8a;
-            --text-light: #e8d5e8;
-
-            /* ===== SHADOWS ===== */
             --shadow-sm: 0 2px 8px rgba(200, 120, 180, 0.06);
             --shadow-md: 0 8px 30px rgba(200, 120, 180, 0.08);
             --shadow-lg: 0 20px 60px rgba(194, 24, 91, 0.12);
             --shadow-xl: 0 30px 80px rgba(194, 24, 91, 0.18);
             --shadow-2xl: 0 50px 120px rgba(194, 24, 91, 0.2);
-
-            /* ===== BORDER ===== */
             --radius-sm: 8px;
             --radius-md: 16px;
             --radius-lg: 24px;
             --radius-xl: 32px;
             --radius-full: 9999px;
-
-            /* ===== SPACING ===== */
             --space-xs: 4px;
             --space-sm: 8px;
             --space-md: 16px;
@@ -123,9 +72,6 @@
             --space-xl: 32px;
             --space-2xl: 48px;
             --space-3xl: 64px;
-            --space-4xl: 80px;
-
-            /* ===== TYPOGRAPHY ===== */
             --font-serif: 'Playfair Display', serif;
             --font-sans: 'Inter', sans-serif;
             --font-size-xs: 0.75rem;
@@ -137,20 +83,13 @@
             --font-size-3xl: 2rem;
             --font-size-4xl: 2.5rem;
             --font-size-5xl: 3rem;
-            --font-size-6xl: 4rem;
-
-            /* ===== TRANSITIONS ===== */
             --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
             --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             --transition-spring: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-
-            /* ===== Z-INDEX ===== */
-            --z-dropdown: 100;
             --z-sticky: 200;
             --z-modal: 300;
             --z-overlay: 400;
-            --z-tooltip: 500;
             --z-loader: 999;
         }
 
@@ -206,10 +145,6 @@
             color: #fff;
         }
 
-        /* ============================================
-           ANIMACIONES GLOBALES
-           ============================================ */
-
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -220,7 +155,6 @@
                 transform: translateY(0) scale(1);
             }
         }
-
         @keyframes fadeInScale {
             from {
                 opacity: 0;
@@ -231,7 +165,6 @@
                 transform: scale(1);
             }
         }
-
         @keyframes shimmer {
             0% {
                 background-position: -200% center;
@@ -240,7 +173,6 @@
                 background-position: 200% center;
             }
         }
-
         @keyframes float {
             0%,
             100% {
@@ -250,7 +182,6 @@
                 transform: translateY(-20px) rotate(2deg);
             }
         }
-
         @keyframes pulse {
             0%,
             100% {
@@ -260,7 +191,6 @@
                 transform: scale(1.05);
             }
         }
-
         @keyframes slideDown {
             from {
                 opacity: 0;
@@ -271,7 +201,6 @@
                 transform: translateY(0);
             }
         }
-
         @keyframes typing {
             0% {
                 opacity: 0.3;
@@ -281,12 +210,6 @@
             }
             100% {
                 opacity: 0.3;
-            }
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
             }
         }
 
@@ -473,7 +396,6 @@
             flex-wrap: wrap;
         }
 
-        /* ===== SEARCH ===== */
         .search-box {
             display: flex;
             align-items: center;
@@ -522,7 +444,6 @@
             transform: scale(1.15);
         }
 
-        /* ===== USER BUTTON ===== */
         .user-btn {
             display: flex;
             align-items: center;
@@ -578,7 +499,6 @@
             font-weight: 400;
         }
 
-        /* ===== CART ===== */
         .cart-icon {
             font-size: var(--font-size-xl);
             cursor: pointer;
@@ -906,22 +826,6 @@
             background: var(--primary);
             color: #fff;
             border-color: var(--primary);
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, #2e7d32, #43a047);
-            color: #fff;
-        }
-        .btn-success:hover {
-            box-shadow: 0 8px 40px rgba(46, 125, 50, 0.3);
-        }
-
-        .btn-danger {
-            background: linear-gradient(135deg, #c62828, #e53935);
-            color: #fff;
-        }
-        .btn-danger:hover {
-            box-shadow: 0 8px 40px rgba(198, 40, 40, 0.3);
         }
 
         .btn-sm {
@@ -1703,598 +1607,695 @@
         }
 
         /* ============================================
-           REVIEWS SYSTEM
+           TESTIMONIOS
            ============================================ */
 
-        .reviews-container {
-            max-width: 800px;
-            margin: 0 auto;
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: var(--space-xl);
+            margin-top: var(--space-md);
         }
 
-        .review-card {
+        .testimonial-card {
             background: var(--bg-card);
-            border-radius: var(--radius-md);
-            padding: var(--space-lg);
-            margin-bottom: var(--space-md);
-            border: 1px solid rgba(255, 182, 193, 0.04);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
             box-shadow: var(--shadow-sm);
-            transition: var(--transition-base);
+            border: 1px solid rgba(255, 182, 193, 0.04);
+            transition: var(--transition-spring);
+            position: relative;
         }
-        [data-theme="dark"] .review-card {
+        [data-theme="dark"] .testimonial-card {
             background: rgba(255, 255, 255, 0.02);
             border-color: rgba(255, 255, 255, 0.03);
         }
-        .review-card:hover {
-            transform: translateX(4px);
-            box-shadow: var(--shadow-md);
+        .testimonial-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(194, 24, 91, 0.06);
         }
-
-        .review-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: var(--space-sm);
+        .testimonial-card::before {
+            content: '"';
+            font-family: var(--font-serif);
+            font-size: 4rem;
+            position: absolute;
+            top: -0.3rem;
+            left: var(--space-md);
+            color: rgba(194, 24, 91, 0.04);
         }
-        .review-user {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-        }
-        .review-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--primary-gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-weight: 700;
-            font-size: var(--font-size-md);
-        }
-        .review-name {
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-        .review-date {
-            font-size: var(--font-size-xs);
-            color: var(--text-tertiary);
-        }
-        .review-stars {
+        .testimonial-stars {
             color: var(--accent);
             font-size: var(--font-size-md);
-            letter-spacing: 1px;
+            letter-spacing: 2px;
         }
-        .review-text {
+        .testimonial-text {
+            font-style: italic;
             color: var(--text-secondary);
-            font-size: var(--font-size-sm);
+            font-size: var(--font-size-md);
             margin: var(--space-sm) 0;
         }
-        .review-images {
-            display: flex;
-            gap: var(--space-sm);
-            flex-wrap: wrap;
-            margin-top: var(--space-sm);
-        }
-        .review-images img {
-            width: 80px;
-            height: 80px;
-            border-radius: var(--radius-sm);
-            object-fit: cover;
-            cursor: pointer;
-            transition: var(--transition-base);
-        }
-        .review-images img:hover {
-            transform: scale(1.05);
-            box-shadow: var(--shadow-md);
-        }
-        .review-actions {
-            display: flex;
-            gap: var(--space-md);
-            margin-top: var(--space-sm);
-        }
-        .review-actions button {
-            background: none;
-            border: none;
-            font-size: var(--font-size-sm);
-            color: var(--text-tertiary);
-            cursor: pointer;
-            transition: var(--transition-base);
-            font-family: var(--font-sans);
-        }
-        .review-actions button:hover {
+        .testimonial-author {
+            font-weight: 700;
             color: var(--primary);
         }
-        .review-actions .helpful.active {
-            color: var(--success);
+        [data-theme="dark"] .testimonial-author {
+            color: var(--primary-light);
         }
-
-        .review-form {
-            background: var(--bg-card);
-            border-radius: var(--radius-md);
-            padding: var(--space-xl);
-            margin-top: var(--space-xl);
-            border: 1px solid rgba(255, 182, 193, 0.04);
-            box-shadow: var(--shadow-sm);
-        }
-        [data-theme="dark"] .review-form {
-            background: rgba(255, 255, 255, 0.02);
-            border-color: rgba(255, 255, 255, 0.03);
-        }
-        .review-form .stars-selector {
-            display: flex;
-            gap: var(--space-xs);
-            font-size: var(--font-size-2xl);
-            cursor: pointer;
-            margin-bottom: var(--space-md);
-        }
-        .review-form .stars-selector span {
-            transition: var(--transition-base);
-            color: #ddd;
-        }
-        .review-form .stars-selector span.active {
-            color: var(--accent);
-        }
-        .review-form .stars-selector span:hover {
-            transform: scale(1.2);
-        }
-        .review-form textarea {
-            width: 100%;
-            padding: var(--space-md);
-            border: 1.5px solid rgba(214, 51, 132, 0.04);
-            border-radius: var(--radius-md);
-            font-family: var(--font-sans);
-            font-size: var(--font-size-md);
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            resize: vertical;
-            min-height: 100px;
-            transition: var(--transition-base);
-        }
-        [data-theme="dark"] .review-form textarea {
-            background: rgba(255, 255, 255, 0.03);
-            border-color: rgba(255, 255, 255, 0.05);
-        }
-        .review-form textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(194, 24, 91, 0.04);
-        }
-        .review-form .review-image-upload {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-            margin: var(--space-md) 0;
-        }
-        .review-form .review-image-upload label {
-            padding: var(--space-sm) var(--space-md);
-            border: 1.5px dashed rgba(214, 51, 132, 0.06);
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            transition: var(--transition-base);
-            font-size: var(--font-size-sm);
-            color: var(--text-tertiary);
-        }
-        .review-form .review-image-upload label:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-        .review-form .review-image-upload input {
-            display: none;
-        }
-
-        /* ============================================
-           AFFILIATE SYSTEM
-           ============================================ */
-
-        .affiliate-section {
-            background: var(--bg-card);
-            border-radius: var(--radius-lg);
-            padding: var(--space-2xl);
-            border: 1px solid rgba(255, 182, 193, 0.04);
-            box-shadow: var(--shadow-md);
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        [data-theme="dark"] .affiliate-section {
-            background: rgba(255, 255, 255, 0.02);
-            border-color: rgba(255, 255, 255, 0.03);
-        }
-
-        .affiliate-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: var(--space-md);
-            margin: var(--space-lg) 0;
-        }
-        .affiliate-stat {
-            text-align: center;
-            padding: var(--space-md);
-            background: rgba(214, 51, 132, 0.02);
-            border-radius: var(--radius-md);
-            border: 1px solid rgba(255, 182, 193, 0.04);
-        }
-        .affiliate-stat .number {
-            font-size: var(--font-size-2xl);
-            font-weight: 800;
-            color: var(--primary);
-            display: block;
-            font-family: var(--font-serif);
-        }
-        .affiliate-stat .label {
+        .testimonial-date {
             font-size: var(--font-size-xs);
             color: var(--text-tertiary);
         }
 
-        .affiliate-link-box {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-            background: var(--bg-primary);
-            border-radius: var(--radius-md);
-            padding: var(--space-sm);
-            border: 1px solid rgba(214, 51, 132, 0.04);
-            margin: var(--space-lg) 0;
+        /* ============================================
+           TIPS
+           ============================================ */
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: var(--space-xl);
         }
-        [data-theme="dark"] .affiliate-link-box {
-            background: rgba(255, 255, 255, 0.03);
-            border-color: rgba(255, 255, 255, 0.05);
+
+        .tip-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(255, 182, 193, 0.04);
+            text-align: center;
+            transition: var(--transition-spring);
         }
-        .affiliate-link-box input {
-            flex: 1;
-            border: none;
-            background: transparent;
-            padding: var(--space-sm) var(--space-md);
-            font-family: var(--font-sans);
-            font-size: var(--font-size-sm);
+        [data-theme="dark"] .tip-card {
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(255, 255, 255, 0.03);
+        }
+        .tip-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(194, 24, 91, 0.06);
+        }
+        .tip-icon {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: var(--space-sm);
+        }
+        .tip-title {
+            font-family: var(--font-serif);
             color: var(--text-primary);
-            outline: none;
+            margin-bottom: var(--space-xs);
         }
-        .affiliate-link-box button {
-            padding: var(--space-sm) var(--space-lg);
-            border: none;
-            border-radius: var(--radius-sm);
-            background: var(--primary-gradient);
-            color: #fff;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition-base);
-            font-family: var(--font-sans);
-        }
-        .affiliate-link-box button:hover {
-            transform: scale(1.05);
+        .tip-description {
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
         }
 
         /* ============================================
-           ADMIN DASHBOARD
+           CONTACT
            ============================================ */
 
-        .admin-dashboard {
-            background: var(--bg-card);
-            border-radius: var(--radius-lg);
-            padding: var(--space-2xl);
-            border: 1px solid rgba(255, 182, 193, 0.04);
-            box-shadow: var(--shadow-md);
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-2xl);
             max-width: 1200px;
             margin: 0 auto;
         }
-        [data-theme="dark"] .admin-dashboard {
+        @media (max-width: 768px) {
+            .contact-wrapper {
+                grid-template-columns: 1fr;
+                gap: var(--space-xl);
+            }
+        }
+
+        .contact-form {
+            background: var(--bg-card);
+            padding: var(--space-2xl);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(255, 182, 193, 0.04);
+        }
+        [data-theme="dark"] .contact-form {
             background: rgba(255, 255, 255, 0.02);
             border-color: rgba(255, 255, 255, 0.03);
         }
-
-        .admin-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: var(--space-md);
-            margin-bottom: var(--space-xl);
+        .contact-form .form-group {
+            margin-bottom: var(--space-md);
         }
-        .admin-stat {
-            background: rgba(214, 51, 132, 0.02);
-            border-radius: var(--radius-md);
-            padding: var(--space-lg);
-            text-align: center;
-            border: 1px solid rgba(255, 182, 193, 0.04);
-            transition: var(--transition-base);
-        }
-        .admin-stat:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-md);
-        }
-        .admin-stat .icon {
-            font-size: var(--font-size-2xl);
+        .contact-form label {
             display: block;
+            font-weight: 600;
+            color: var(--text-primary);
             margin-bottom: var(--space-xs);
+            font-size: var(--font-size-sm);
         }
-        .admin-stat .number {
-            font-size: var(--font-size-2xl);
-            font-weight: 800;
-            color: var(--primary);
-            display: block;
-            font-family: var(--font-serif);
-        }
-        .admin-stat .label {
-            font-size: var(--font-size-xs);
-            color: var(--text-tertiary);
-        }
-
-        .admin-table {
+        .contact-form input,
+        .contact-form textarea {
             width: 100%;
-            border-collapse: collapse;
-            font-size: var(--font-size-sm);
-        }
-        .admin-table th {
-            text-align: left;
-            padding: var(--space-sm) var(--space-md);
-            color: var(--text-tertiary);
-            font-weight: 600;
-            border-bottom: 2px solid rgba(255, 182, 193, 0.04);
-        }
-        .admin-table td {
-            padding: var(--space-sm) var(--space-md);
-            border-bottom: 1px solid rgba(255, 182, 193, 0.04);
-        }
-        .admin-table tr:hover {
-            background: rgba(214, 51, 132, 0.02);
-        }
-        .admin-table .status {
-            padding: var(--space-xs) var(--space-sm);
-            border-radius: var(--radius-full);
-            font-size: var(--font-size-xs);
-            font-weight: 600;
-        }
-        .admin-table .status.pending {
-            background: rgba(249, 168, 37, 0.15);
-            color: var(--warning);
-        }
-        .admin-table .status.approved {
-            background: rgba(46, 125, 50, 0.15);
-            color: var(--success);
-        }
-        .admin-table .status.rejected {
-            background: rgba(198, 40, 40, 0.15);
-            color: var(--danger);
-        }
-
-        /* ============================================
-           CHAT WITH AI
-           ============================================ */
-
-        .chat-modal-ai {
-            display: none;
-            position: fixed;
-            bottom: 80px;
-            left: var(--space-xl);
-            width: 380px;
-            max-width: 90vw;
-            background: var(--bg-card);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-2xl);
-            z-index: 100;
-            max-height: 520px;
-            flex-direction: column;
-            overflow: hidden;
-            animation: slideDown 0.3s ease;
-            border: 1px solid rgba(255, 182, 193, 0.04);
-        }
-        [data-theme="dark"] .chat-modal-ai {
-            background: #1a0b1a;
-        }
-        .chat-modal-ai.open {
-            display: flex;
-        }
-
-        .chat-header-ai {
             padding: var(--space-md) var(--space-lg);
-            background: var(--primary-gradient);
-            color: #fff;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 700;
-        }
-        .chat-header-ai .chat-status {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-            font-size: var(--font-size-xs);
-            font-weight: 400;
-            opacity: 0.8;
-        }
-        .chat-header-ai .chat-status .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #4caf50;
-            animation: pulse 1.5s ease-in-out infinite;
-        }
-        .chat-header-ai .chat-close {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: var(--font-size-xl);
-            cursor: pointer;
-            opacity: 0.7;
-            transition: var(--transition-base);
-        }
-        .chat-header-ai .chat-close:hover {
-            opacity: 1;
-            transform: rotate(90deg);
-        }
-
-        .chat-messages-ai {
-            padding: var(--space-md) var(--space-lg);
-            flex: 1;
-            overflow-y: auto;
-            max-height: 360px;
-        }
-
-        .chat-message-ai {
-            padding: var(--space-sm) var(--space-md);
-            border-radius: var(--radius-md);
-            margin-bottom: var(--space-sm);
-            max-width: 85%;
-            animation: slideDown 0.3s ease;
-        }
-        .chat-message-ai.bot {
-            background: rgba(214, 51, 132, 0.04);
-            align-self: flex-start;
-            margin-right: auto;
-        }
-        [data-theme="dark"] .chat-message-ai.bot {
-            background: rgba(255, 255, 255, 0.03);
-        }
-        .chat-message-ai.user {
-            background: var(--primary-gradient);
-            color: #fff;
-            align-self: flex-end;
-            margin-left: auto;
-        }
-        .chat-message-ai .msg-time {
-            font-size: var(--font-size-xs);
-            opacity: 0.5;
-            display: block;
-            margin-top: var(--space-xs);
-        }
-        .chat-message-ai .typing-indicator {
-            display: inline-flex;
-            gap: 4px;
-            padding: var(--space-sm) var(--space-md);
-        }
-        .chat-message-ai .typing-indicator span {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--text-tertiary);
-            animation: typing 1.4s ease-in-out infinite;
-        }
-        .chat-message-ai .typing-indicator span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-        .chat-message-ai .typing-indicator span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        .chat-options-ai {
-            padding: var(--space-xs) var(--space-lg) var(--space-md);
-            display: flex;
-            flex-wrap: wrap;
-            gap: var(--space-xs);
-            border-top: 1px solid rgba(255, 182, 193, 0.04);
-        }
-        .chat-options-ai .chat-opt {
-            padding: var(--space-xs) var(--space-md);
-            border-radius: var(--radius-full);
-            border: 1px solid var(--primary);
-            background: transparent;
-            color: var(--primary);
-            font-size: var(--font-size-xs);
-            cursor: pointer;
-            transition: var(--transition-base);
-            font-family: var(--font-sans);
-        }
-        .chat-options-ai .chat-opt:hover {
-            background: var(--primary);
-            color: #fff;
-        }
-        [data-theme="dark"] .chat-options-ai .chat-opt {
-            color: var(--primary-light);
-            border-color: var(--primary-light);
-        }
-        [data-theme="dark"] .chat-options-ai .chat-opt:hover {
-            background: var(--primary-light);
-            color: #fff;
-        }
-
-        .chat-input-ai {
-            padding: var(--space-sm) var(--space-lg);
-            border-top: 1px solid rgba(255, 182, 193, 0.04);
-            display: flex;
-            gap: var(--space-sm);
-        }
-        .chat-input-ai input {
-            flex: 1;
-            padding: var(--space-sm) var(--space-md);
             border: 1.5px solid rgba(214, 51, 132, 0.04);
-            border-radius: var(--radius-full);
+            border-radius: var(--radius-md);
             font-family: var(--font-sans);
-            font-size: var(--font-size-sm);
-            background: var(--bg-primary);
+            font-size: var(--font-size-md);
             transition: var(--transition-base);
+            background: var(--bg-primary);
             color: var(--text-primary);
         }
-        [data-theme="dark"] .chat-input-ai input {
+        [data-theme="dark"] .contact-form input,
+        [data-theme="dark"] .contact-form textarea {
             background: rgba(255, 255, 255, 0.03);
             border-color: rgba(255, 255, 255, 0.05);
         }
-        .chat-input-ai input:focus {
+        .contact-form input:focus,
+        .contact-form textarea:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 4px rgba(194, 24, 91, 0.04);
         }
-        .chat-input-ai button {
-            padding: var(--space-sm) var(--space-lg);
-            border: none;
-            border-radius: var(--radius-full);
-            background: var(--primary-gradient);
-            color: #fff;
-            font-weight: 700;
-            cursor: pointer;
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        .contact-form .btn {
+            width: 100%;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+            justify-content: center;
+        }
+        .contact-info-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-md) var(--space-lg);
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(255, 182, 193, 0.04);
             transition: var(--transition-base);
         }
-        .chat-input-ai button:hover {
+        [data-theme="dark"] .contact-info-item {
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(255, 255, 255, 0.03);
+        }
+        .contact-info-item:hover {
+            transform: translateX(6px);
+            border-color: rgba(194, 24, 91, 0.06);
+        }
+        .contact-info-item .icon {
+            font-size: var(--font-size-2xl);
+        }
+        .contact-info-item .label {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .contact-info-item .value {
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
+        }
+
+        /* ============================================
+           COUPON & SECURITY
+           ============================================ */
+
+        .coupon-section {
+            max-width: 560px;
+            margin: var(--space-xl) auto;
+            padding: var(--space-lg);
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            border: 2px dashed var(--primary);
+            text-align: center;
+            transition: var(--transition-base);
+        }
+        [data-theme="dark"] .coupon-section {
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+        .coupon-section:hover {
+            border-color: var(--primary-light);
+            box-shadow: var(--shadow-glow);
+        }
+        .coupon-code {
+            font-size: var(--font-size-2xl);
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: 4px;
+            font-family: var(--font-serif);
+            padding: var(--space-xs) var(--space-xl);
+            border-radius: var(--radius-sm);
+            display: inline-block;
+            cursor: pointer;
+            transition: var(--transition-base);
+            user-select: all;
+        }
+        [data-theme="dark"] .coupon-code {
+            color: var(--primary-light);
+        }
+        .coupon-code:hover {
             transform: scale(1.05);
         }
-        .chat-input-ai button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
+
+        .security-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-xl);
+            background: rgba(214, 51, 132, 0.02);
+            border-radius: var(--radius-full);
+            max-width: 440px;
+            margin: var(--space-md) auto;
+            font-size: var(--font-size-sm);
+            color: var(--text-primary);
+            border: 1px solid rgba(214, 51, 132, 0.02);
+        }
+        [data-theme="dark"] .security-badge {
+            background: rgba(255, 255, 255, 0.01);
+            border-color: rgba(255, 255, 255, 0.03);
+        }
+        .security-badge .shield {
+            font-size: var(--font-size-xl);
+            animation: pulse 2.5s ease-in-out infinite;
+        }
+
+        /* ============================================
+           PAYMENT METHODS
+           ============================================ */
+
+        .payment-methods {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-md);
+            justify-content: center;
+            padding: var(--space-xl);
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 182, 193, 0.04);
+            margin-top: var(--space-md);
+            transition: var(--transition-base);
+        }
+        [data-theme="dark"] .payment-methods {
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(255, 255, 255, 0.03);
+        }
+        .payment-method {
+            text-align: center;
+            padding: var(--space-md) var(--space-xl);
+            background: rgba(214, 51, 132, 0.02);
+            border-radius: var(--radius-md);
+            min-width: 80px;
+            transition: var(--transition-base);
+            border: 1px solid transparent;
+        }
+        [data-theme="dark"] .payment-method {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .payment-method:hover {
+            transform: translateY(-4px);
+            border-color: rgba(194, 24, 91, 0.06);
+            background: rgba(214, 51, 132, 0.04);
+        }
+        .payment-method .icon {
+            font-size: var(--font-size-2xl);
+            display: block;
+        }
+        .payment-method .name {
+            font-size: var(--font-size-xs);
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        /* ============================================
+           SOCIAL LINKS
+           ============================================ */
+
+        .social-section {
+            margin-top: var(--space-xl);
+            text-align: center;
+            padding: var(--space-xl);
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 182, 193, 0.04);
+            transition: var(--transition-base);
+        }
+        [data-theme="dark"] .social-section {
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(255, 255, 255, 0.03);
+        }
+        .social-title {
+            color: var(--text-secondary);
+            margin-bottom: var(--space-md);
+            font-weight: 700;
+            font-size: var(--font-size-md);
+            letter-spacing: 1px;
+        }
+        .social-links {
+            display: flex;
+            gap: var(--space-md);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .social-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: var(--space-sm) var(--space-lg);
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            transition: var(--transition-spring);
+            color: #fff;
+            min-width: 70px;
+            box-shadow: var(--shadow-sm);
+        }
+        .social-link:hover {
+            transform: translateY(-6px) scale(1.05);
+            box-shadow: var(--shadow-lg);
+        }
+        .social-link .social-name {
+            font-size: var(--font-size-xs);
+            font-weight: 600;
+            opacity: 0.9;
+        }
+        .social-link svg {
+            width: 24px;
+            height: 24px;
+            fill: #fff;
+        }
+
+        .social-link.instagram {
+            background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+        }
+        .social-link.tiktok {
+            background: linear-gradient(135deg, #000000, #25f4ee, #fe2c55);
+        }
+        .social-link.facebook {
+            background: #1877f2;
+        }
+        .social-link.whatsapp {
+            background: #25D366;
+        }
+        .social-link.whatsapp:hover {
+            background: #1da851;
+        }
+
+        /* ============================================
+           FAQ
+           ============================================ */
+
+        .faq-grid {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+        .faq-item {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            padding: var(--space-md) var(--space-xl);
+            margin-bottom: var(--space-sm);
+            border: 1px solid rgba(255, 182, 193, 0.04);
+            cursor: pointer;
+            transition: var(--transition-base);
+            box-shadow: var(--shadow-sm);
+        }
+        [data-theme="dark"] .faq-item {
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(255, 255, 255, 0.03);
+        }
+        .faq-item:hover {
+            border-color: rgba(194, 24, 91, 0.06);
+            transform: translateX(4px);
+        }
+        .faq-item .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            font-size: var(--font-size-md);
+            color: var(--text-primary);
+        }
+        .faq-item .faq-question .icon {
+            transition: var(--transition-base);
+            font-size: var(--font-size-lg);
+            color: var(--primary);
+        }
+        .faq-item.open .faq-question .icon {
+            transform: rotate(180deg);
+        }
+        .faq-item .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+            color: var(--text-secondary);
+            font-weight: 400;
+            line-height: 1.7;
+        }
+        .faq-item.open .faq-answer {
+            max-height: 300px;
+            padding-top: var(--space-md);
+        }
+
+        /* ============================================
+           MAP
+           ============================================ */
+
+        .map-container {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+        .map-container iframe {
+            width: 100%;
+            height: 350px;
+            border: 0;
+        }
+        .map-info {
+            text-align: center;
+            padding: var(--space-xl);
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            margin-top: var(--space-md);
+            border: 1px solid rgba(255, 182, 193, 0.04);
+            transition: var(--transition-base);
+        }
+        [data-theme="dark"] .map-info {
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(255, 255, 255, 0.03);
+        }
+        .map-info .map-icon {
+            font-size: var(--font-size-3xl);
+            display: block;
+            margin-bottom: var(--space-xs);
+        }
+        .map-info h3 {
+            font-family: var(--font-serif);
+            color: var(--text-primary);
+            font-size: var(--font-size-xl);
+        }
+        .map-info p {
+            color: var(--text-secondary);
+            margin-bottom: var(--space-md);
+        }
+        .map-buttons {
+            display: flex;
+            gap: var(--space-sm);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ============================================
+           NEWSLETTER
+           ============================================ */
+
+        .newsletter-section {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: var(--space-2xl) var(--space-3xl);
+            text-align: center;
+            border: 1px solid rgba(255, 182, 193, 0.04);
+            transition: var(--transition-base);
+        }
+        [data-theme="dark"] .newsletter-section {
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(255, 255, 255, 0.03);
+        }
+        .newsletter-form {
+            max-width: 440px;
+            margin: var(--space-md) auto 0;
+            display: flex;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .newsletter-form input {
+            flex: 1;
+            min-width: 180px;
+            padding: var(--space-md) var(--space-xl);
+            border: 1.5px solid rgba(214, 51, 132, 0.04);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-md);
+            background: var(--bg-primary);
+            font-family: var(--font-sans);
+            transition: var(--transition-base);
+            color: var(--text-primary);
+        }
+        [data-theme="dark"] .newsletter-form input {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+        .newsletter-form input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(194, 24, 91, 0.04);
+        }
+
+        /* ============================================
+           CART MODAL
+           ============================================ */
+
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(30px);
+            z-index: var(--z-modal);
+            align-items: center;
+            justify-content: center;
+        }
+        .cart-modal.show {
+            display: flex;
+            animation: fadeInScale 0.3s ease;
+        }
+        .cart-modal-content {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: var(--space-2xl);
+            max-width: 460px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideDown 0.4s ease;
+            box-shadow: var(--shadow-xl);
+        }
+        [data-theme="dark"] .cart-modal-content {
+            background: #1a0b1a;
+        }
+        .cart-modal-content .close-cart {
+            position: absolute;
+            top: var(--space-md);
+            right: var(--space-md);
+            font-size: var(--font-size-2xl);
+            cursor: pointer;
+            color: var(--text-tertiary);
+            transition: var(--transition-base);
+            background: none;
+            border: none;
+        }
+        .cart-modal-content .close-cart:hover {
+            color: var(--primary);
+            transform: rotate(90deg) scale(1.1);
+        }
+        .cart-modal-title {
+            font-family: var(--font-serif);
+            color: var(--text-primary);
+            margin-bottom: var(--space-lg);
+            font-size: var(--font-size-2xl);
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-sm) 0;
+            border-bottom: 1px solid rgba(255, 182, 193, 0.04);
+            animation: slideDown 0.3s ease;
+        }
+        .cart-item-info {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+        .cart-item-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .cart-item-price {
+            color: var(--primary);
+            font-weight: 700;
+        }
+        .cart-item-remove {
+            background: none;
+            border: none;
+            color: #e74c3c;
+            cursor: pointer;
+            font-size: var(--font-size-lg);
+            transition: var(--transition-base);
+            padding: var(--space-xs) var(--space-sm);
+        }
+        .cart-item-remove:hover {
+            transform: scale(1.2);
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: var(--font-size-xl);
+            font-weight: 800;
+            padding: var(--space-md) 0;
+            border-top: 2px solid rgba(255, 182, 193, 0.04);
+            margin-top: var(--space-xs);
+        }
+        .cart-total .total-price {
+            color: var(--primary);
+        }
+        [data-theme="dark"] .cart-total .total-price {
+            color: var(--primary-light);
+        }
+
+        .cart-empty {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: var(--space-2xl) 0;
+            font-size: var(--font-size-md);
+        }
+        .cart-modal-content .btn {
+            width: 100%;
+            margin-top: var(--space-md);
+        }
+
+        .cart-summary {
+            display: none;
+            background: rgba(214, 51, 132, 0.02);
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-md);
+            text-align: center;
+            border: 1px solid rgba(214, 51, 132, 0.02);
+        }
+        [data-theme="dark"] .cart-summary {
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(255, 255, 255, 0.03);
+        }
+        .cart-summary p {
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .cart-summary .summary-text {
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
         }
 
         /* ============================================
            FLOATING BUTTONS
            ============================================ */
-
-        .chat-float-ai {
-            position: fixed;
-            bottom: var(--space-xl);
-            left: var(--space-xl);
-            background: var(--primary-gradient);
-            color: #fff;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: var(--font-size-2xl);
-            text-decoration: none;
-            box-shadow: var(--shadow-lg);
-            transition: var(--transition-spring);
-            z-index: 50;
-            cursor: pointer;
-            border: none;
-        }
-        .chat-float-ai:hover {
-            transform: scale(1.1) rotate(-5deg);
-            box-shadow: var(--shadow-xl);
-        }
-        .chat-float-ai .chat-badge {
-            position: absolute;
-            top: -4px;
-            right: -4px;
-            background: var(--danger);
-            color: #fff;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            font-size: var(--font-size-xs);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            animation: pulse 1.5s ease-in-out infinite;
-        }
 
         .floating-cart {
             position: fixed;
@@ -2369,6 +2370,47 @@
             box-shadow: 0 12px 60px rgba(37, 211, 102, 0.4);
         }
 
+        .chat-float-ai {
+            position: fixed;
+            bottom: var(--space-xl);
+            left: var(--space-xl);
+            background: var(--primary-gradient);
+            color: #fff;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-2xl);
+            text-decoration: none;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition-spring);
+            z-index: 50;
+            cursor: pointer;
+            border: none;
+        }
+        .chat-float-ai:hover {
+            transform: scale(1.1) rotate(-5deg);
+            box-shadow: var(--shadow-xl);
+        }
+        .chat-float-ai .chat-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: var(--danger);
+            color: #fff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: var(--font-size-xs);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
         .btn-back-top {
             position: fixed;
             bottom: 80px;
@@ -2439,6 +2481,215 @@
         .share-btn:hover {
             transform: scale(1.1) rotate(-10deg);
             box-shadow: var(--shadow-xl);
+        }
+
+        /* ============================================
+           CHAT CON IA - ESTILOS MEJORADOS
+           ============================================ */
+
+        .chat-modal-ai {
+            display: none;
+            position: fixed;
+            bottom: 80px;
+            left: var(--space-xl);
+            width: 400px;
+            max-width: 92vw;
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-2xl);
+            z-index: 100;
+            max-height: 560px;
+            flex-direction: column;
+            overflow: hidden;
+            animation: slideDown 0.3s ease;
+            border: 1px solid rgba(255, 182, 193, 0.04);
+        }
+        [data-theme="dark"] .chat-modal-ai {
+            background: #1a0b1a;
+        }
+        .chat-modal-ai.open {
+            display: flex;
+        }
+
+        .chat-header-ai {
+            padding: var(--space-md) var(--space-lg);
+            background: var(--primary-gradient);
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+        }
+        .chat-header-ai .chat-status {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: var(--font-size-xs);
+            font-weight: 400;
+            opacity: 0.8;
+        }
+        .chat-header-ai .chat-status .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4caf50;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        .chat-header-ai .chat-close {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: var(--font-size-xl);
+            cursor: pointer;
+            opacity: 0.7;
+            transition: var(--transition-base);
+        }
+        .chat-header-ai .chat-close:hover {
+            opacity: 1;
+            transform: rotate(90deg);
+        }
+
+        .chat-messages-ai {
+            padding: var(--space-md) var(--space-lg);
+            flex: 1;
+            overflow-y: auto;
+            max-height: 380px;
+            background: var(--bg-primary);
+        }
+        [data-theme="dark"] .chat-messages-ai {
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .chat-message-ai {
+            padding: var(--space-sm) var(--space-md);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-sm);
+            max-width: 88%;
+            animation: slideDown 0.3s ease;
+            word-wrap: break-word;
+            line-height: 1.6;
+        }
+        .chat-message-ai.bot {
+            background: rgba(214, 51, 132, 0.04);
+            align-self: flex-start;
+            margin-right: auto;
+            border-bottom-left-radius: 4px;
+        }
+        [data-theme="dark"] .chat-message-ai.bot {
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .chat-message-ai.user {
+            background: var(--primary-gradient);
+            color: #fff;
+            align-self: flex-end;
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+        .chat-message-ai .msg-time {
+            font-size: var(--font-size-xs);
+            opacity: 0.5;
+            display: block;
+            margin-top: var(--space-xs);
+        }
+        .chat-message-ai .typing-indicator {
+            display: inline-flex;
+            gap: 4px;
+            padding: var(--space-sm) var(--space-md);
+        }
+        .chat-message-ai .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-tertiary);
+            animation: typing 1.4s ease-in-out infinite;
+        }
+        .chat-message-ai .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .chat-message-ai .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        .chat-options-ai {
+            padding: var(--space-xs) var(--space-lg) var(--space-md);
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-xs);
+            border-top: 1px solid rgba(255, 182, 193, 0.04);
+        }
+        [data-theme="dark"] .chat-options-ai {
+            border-color: rgba(255, 255, 255, 0.03);
+        }
+        .chat-options-ai .chat-opt {
+            padding: var(--space-xs) var(--space-md);
+            border-radius: var(--radius-full);
+            border: 1px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
+            font-size: var(--font-size-xs);
+            cursor: pointer;
+            transition: var(--transition-base);
+            font-family: var(--font-sans);
+        }
+        .chat-options-ai .chat-opt:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+        [data-theme="dark"] .chat-options-ai .chat-opt {
+            color: var(--primary-light);
+            border-color: var(--primary-light);
+        }
+        [data-theme="dark"] .chat-options-ai .chat-opt:hover {
+            background: var(--primary-light);
+            color: #fff;
+        }
+
+        .chat-input-ai {
+            padding: var(--space-sm) var(--space-lg);
+            border-top: 1px solid rgba(255, 182, 193, 0.04);
+            display: flex;
+            gap: var(--space-sm);
+        }
+        [data-theme="dark"] .chat-input-ai {
+            border-color: rgba(255, 255, 255, 0.03);
+        }
+        .chat-input-ai input {
+            flex: 1;
+            padding: var(--space-sm) var(--space-md);
+            border: 1.5px solid rgba(214, 51, 132, 0.04);
+            border-radius: var(--radius-full);
+            font-family: var(--font-sans);
+            font-size: var(--font-size-sm);
+            background: var(--bg-primary);
+            transition: var(--transition-base);
+            color: var(--text-primary);
+        }
+        [data-theme="dark"] .chat-input-ai input {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+        .chat-input-ai input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(194, 24, 91, 0.04);
+        }
+        .chat-input-ai button {
+            padding: var(--space-sm) var(--space-lg);
+            border: none;
+            border-radius: var(--radius-full);
+            background: var(--primary-gradient);
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition-base);
+        }
+        .chat-input-ai button:hover {
+            transform: scale(1.05);
+        }
+        .chat-input-ai button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
         }
 
         /* ============================================
@@ -2856,7 +3107,7 @@
                 font-size: var(--font-size-xl);
             }
             .chat-modal-ai {
-                width: 340px;
+                width: 360px;
             }
         }
 
@@ -3164,7 +3415,7 @@
                 right: var(--space-sm);
                 width: auto;
                 max-width: none;
-                max-height: 400px;
+                max-height: 420px;
             }
 
             .btn-back-top {
@@ -3276,24 +3527,8 @@
                 font-size: var(--font-size-xl);
             }
 
-            .review-images img {
-                width: 60px;
-                height: 60px;
-            }
-
-            .admin-stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .admin-table {
-                font-size: var(--font-size-xs);
-            }
-            .admin-table th,
-            .admin-table td {
-                padding: var(--space-xs) var(--space-sm);
-            }
-
-            .affiliate-stats {
-                grid-template-columns: repeat(2, 1fr);
+            .chat-messages-ai {
+                max-height: 300px;
             }
         }
 
@@ -3479,7 +3714,7 @@
             }
             .chat-modal-ai {
                 bottom: 55px;
-                max-height: 340px;
+                max-height: 360px;
             }
 
             .btn-back-top {
@@ -3568,32 +3803,23 @@
                 font-size: var(--font-size-lg);
             }
 
-            .review-images img {
-                width: 50px;
-                height: 50px;
+            .chat-messages-ai {
+                max-height: 260px;
             }
-            .review-form {
-                padding: var(--space-md);
+            .chat-message-ai {
+                font-size: var(--font-size-sm);
             }
-
-            .admin-stats {
-                grid-template-columns: 1fr 1fr;
+            .chat-options-ai .chat-opt {
+                font-size: var(--font-size-xs);
+                padding: var(--space-xs) var(--space-sm);
             }
-            .admin-stat {
-                padding: var(--space-sm);
+            .chat-input-ai input {
+                font-size: var(--font-size-xs);
+                padding: var(--space-xs) var(--space-sm);
             }
-            .admin-stat .number {
-                font-size: var(--font-size-xl);
-            }
-
-            .affiliate-stats {
-                grid-template-columns: 1fr 1fr;
-            }
-            .affiliate-link-box {
-                flex-direction: column;
-            }
-            .affiliate-link-box input {
-                width: 100%;
+            .chat-input-ai button {
+                font-size: var(--font-size-xs);
+                padding: var(--space-xs) var(--space-sm);
             }
         }
 
@@ -3698,8 +3924,6 @@
         <a href="#productos">🛍️ Productos</a>
         <a href="#ofertas">🔥 Ofertas</a>
         <a href="#testimonios">💬 Testimonios</a>
-        <a href="#reviews">⭐ Reseñas</a>
-        <a href="#afiliados">🤝 Afiliados</a>
         <a href="#contacto">📩 Contacto</a>
         <button class="btn btn-primary" id="mobileLoginBtn" style="padding:var(--space-sm) var(--space-xl);font-size:var(--font-size-sm);">🔑 Iniciar sesión</button>
         <a href="#" class="close-menu" id="mobileClose">✕ Cerrar</a>
@@ -3729,7 +3953,6 @@
             <li><a href="#productos">Productos</a></li>
             <li><a href="#ofertas">Ofertas</a></li>
             <li><a href="#testimonios">Testimonios</a></li>
-            <li><a href="#reviews">⭐ Reseñas</a></li>
             <li><a href="#contacto">Contacto</a></li>
         </ul>
 
@@ -3950,122 +4173,6 @@
     </section>
 
     <!-- ============================================
-    SISTEMA DE RESEÑAS CON FOTOS
-    ============================================ -->
-    <section class="section" id="reviews" aria-label="Reseñas">
-        <div class="section-header">
-            <span class="section-tag">⭐ Reseñas</span>
-            <h2 class="section-title">Opiniones de <span class="accent">nuestras clientas</span></h2>
-            <p class="section-subtitle">Comparte tu experiencia y ayuda a otras a decidir</p>
-        </div>
-
-        <div class="reviews-container">
-            <div id="reviewsList">
-                <!-- Se carga con JavaScript -->
-            </div>
-
-            <div class="review-form" id="reviewForm">
-                <h3 style="font-family:var(--font-serif);margin-bottom:var(--space-md);">✍️ Escribe tu reseña</h3>
-                <div class="stars-selector" id="starsSelector">
-                    <span data-value="1">☆</span>
-                    <span data-value="2">☆</span>
-                    <span data-value="3">☆</span>
-                    <span data-value="4">☆</span>
-                    <span data-value="5">☆</span>
-                </div>
-                <div style="display:flex;align-items:center;gap:var(--space-sm);margin-bottom:var(--space-sm);">
-                    <input type="text" id="reviewName" placeholder="Tu nombre" style="flex:1;padding:var(--space-sm) var(--space-md);border:1.5px solid rgba(214,51,132,0.04);border-radius:var(--radius-md);font-family:var(--font-sans);background:var(--bg-primary);color:var(--text-primary);" />
-                    <span id="reviewRatingDisplay" style="font-weight:700;color:var(--primary);">⭐ 0</span>
-                </div>
-                <textarea id="reviewText" placeholder="Cuéntanos tu experiencia con el producto..." required></textarea>
-                <div class="review-image-upload">
-                    <label for="reviewImage">📸 Subir foto</label>
-                    <input type="file" id="reviewImage" accept="image/*" multiple />
-                    <span id="reviewImageCount" style="font-size:var(--font-size-xs);color:var(--text-tertiary);">0 archivos</span>
-                </div>
-                <div id="reviewImagePreview" style="display:flex;gap:var(--space-sm);flex-wrap:wrap;margin-bottom:var(--space-sm);"></div>
-                <button class="btn btn-primary" id="submitReview">📨 Publicar reseña</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================
-    SISTEMA DE AFILIADOS
-    ============================================ -->
-    <section class="section" id="afiliados" aria-label="Afiliados">
-        <div class="section-header">
-            <span class="section-tag">🤝 Afiliados</span>
-            <h2 class="section-title">Programa de <span class="accent">afiliados</span></h2>
-            <p class="section-subtitle">Gana comisiones compartiendo nuestros productos</p>
-        </div>
-
-        <div class="affiliate-section" id="affiliateSection">
-            <div style="text-align:center;margin-bottom:var(--space-lg);">
-                <span style="font-size:3rem;">💸</span>
-                <h3 style="font-family:var(--font-serif);margin-top:var(--space-sm);">¡Gana dinero recomendando!</h3>
-                <p style="color:var(--text-secondary);font-size:var(--font-size-sm);">Comparte tu enlace único y gana <strong style="color:var(--primary);">10%</strong> de comisión en cada venta</p>
-            </div>
-
-            <div class="affiliate-stats" id="affiliateStats">
-                <div class="affiliate-stat"><span class="number">0</span><span class="label">Visitas</span></div>
-                <div class="affiliate-stat"><span class="number">0</span><span class="label">Ventas</span></div>
-                <div class="affiliate-stat"><span class="number">$0</span><span class="label">Ganancia</span></div>
-                <div class="affiliate-stat"><span class="number">0%</span><span class="label">Conversión</span></div>
-            </div>
-
-            <div class="affiliate-link-box">
-                <input type="text" id="affiliateLink" readonly value="https://paulina-accesorios.com/ref/invitado" />
-                <button id="copyAffiliateLink">📋 Copiar</button>
-                <button id="shareAffiliateLink" class="btn btn-primary btn-sm">📤 Compartir</button>
-            </div>
-
-            <div style="text-align:center;margin-top:var(--space-md);">
-                <p style="font-size:var(--font-size-xs);color:var(--text-tertiary);">* Solo disponible para usuarios registrados. ¡Regístrate y empieza a ganar!</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================
-    DASHBOARD DE ADMINISTRACIÓN
-    ============================================ -->
-    <section class="section" id="admin" aria-label="Administración" style="display:none;">
-        <div class="section-header">
-            <span class="section-tag">📊 Admin</span>
-            <h2 class="section-title">Panel de <span class="accent">control</span></h2>
-            <p class="section-subtitle">Gestiona tu tienda desde un solo lugar</p>
-        </div>
-
-        <div class="admin-dashboard">
-            <div class="admin-stats">
-                <div class="admin-stat"><span class="icon">🛍️</span><span class="number">0</span><span class="label">Productos</span></div>
-                <div class="admin-stat"><span class="icon">📦</span><span class="number">0</span><span class="label">Pedidos</span></div>
-                <div class="admin-stat"><span class="icon">👤</span><span class="number">0</span><span class="label">Usuarios</span></div>
-                <div class="admin-stat"><span class="icon">💰</span><span class="number">$0</span><span class="label">Ventas</span></div>
-                <div class="admin-stat"><span class="icon">⭐</span><span class="number">0</span><span class="label">Reseñas</span></div>
-                <div class="admin-stat"><span class="icon">🤝</span><span class="number">0</span><span class="label">Afiliados</span></div>
-            </div>
-
-            <div style="overflow-x:auto;">
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Producto</th>
-                            <th>Precio</th>
-                            <th>Stock</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="adminProductTable">
-                        <!-- Se carga con JavaScript -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================
     CONSEJOS DE BELLEZA
     ============================================ -->
     <section class="section" aria-label="Consejos de belleza">
@@ -4132,7 +4239,7 @@
             </div>
             <div class="faq-item" role="button" tabindex="0">
                 <div class="faq-question"><span>🤖 ¿Cómo funciona el chat con IA?</span><span class="icon">▼</span></div>
-                <div class="faq-answer">Nuestro chat utiliza inteligencia artificial para responder tus preguntas en tiempo real. Puedes preguntar sobre productos, precios, envíos y más. ¡Es como tener una asesora personal 24/7!</div>
+                <div class="faq-answer">Nuestro chat utiliza inteligencia artificial avanzada que puede responder cualquier pregunta sobre productos, precios, envíos, promociones y más. ¡Es como tener una asesora personal 24/7!</div>
             </div>
         </div>
     </section>
@@ -4305,7 +4412,7 @@
     </button>
 
     <!-- ============================================
-    CHAT CON IA - MODAL
+    CHAT CON IA - MODAL COMPLETO
     ============================================ -->
     <div class="chat-modal-ai" id="chatModalAI">
         <div class="chat-header-ai">
@@ -4319,15 +4426,17 @@
 
         <div class="chat-messages-ai" id="chatMessagesAI">
             <div class="chat-message-ai bot">
-                👋 ¡Hola! Soy Paulina AI, tu asistente virtual. ¿Cómo puedo ayudarte hoy?
-                <span class="msg-time">10:30</span>
-            </div>
-            <div class="chat-message-ai bot" style="background:rgba(214,51,132,0.02);border:1px solid rgba(214,51,132,0.04);">
-                💡 Puedo ayudarte con:
-                <br>• Información de productos
-                <br>• Precios y promociones
-                <br>• Envíos y entregas
-                <br>• Recomendaciones personalizadas
+                👋 ¡Hola! Soy Paulina AI, tu asistente virtual con inteligencia artificial avanzada.
+                <br><br>
+                💡 Puedo responder a <strong>cualquier pregunta</strong> sobre:
+                <br>• 📦 Productos y disponibilidad
+                <br>• 💰 Precios y promociones
+                <br>• 🚚 Envíos y entregas
+                <br>• 💳 Métodos de pago
+                <br>• 🎁 Ofertas especiales
+                <br>• 📍 Ubicación y horarios
+                <br><br>
+                ¡Pregúntame lo que quieras! 🗣️
                 <span class="msg-time">10:30</span>
             </div>
         </div>
@@ -4338,7 +4447,9 @@
             <button class="chat-opt" data-msg="🔄 ¿Puedo cambiar o devolver un producto?">🔄 Cambios</button>
             <button class="chat-opt" data-msg="📍 ¿Dónde está la tienda?">📍 Ubicación</button>
             <button class="chat-opt" data-msg="🎁 ¿Tienen promociones?">🎁 Promociones</button>
-            <button class="chat-opt" data-msg="🤔 Recomiéndame un producto">🤔 Recomendar</button>
+            <button class="chat-opt" data-msg="🤔 ¿Tienen collares?">📿 Collares</button>
+            <button class="chat-opt" data-msg="😊 Cuéntame un chiste">😊 Chiste</button>
+            <button class="chat-opt" data-msg="🤖 ¿Qué puedes hacer?">🤖 Capacidades</button>
         </div>
 
         <div class="chat-input-ai">
@@ -4399,25 +4510,11 @@
     </footer>
 
     <!-- ============================================
-    JAVASCRIPT COMPLETO - ULTIMATE
+    JAVASCRIPT - CHAT CON IA AVANZADO
     ============================================ -->
     <script>
         // ============================================
-        // CONFIGURACIÓN GLOBAL
-        // ============================================
-
-        const CONFIG = {
-            PHONE: '51923861016',
-            COMPANY: 'Paulina Accesorios',
-            COUPON: 'PAULINA10',
-            DISCOUNT: 10,
-            FREE_SHIPPING_THRESHOLD: 50,
-            POINTS_PER_DOLLAR: 2,
-            ADMIN_PASSWORD: 'admin123',
-        };
-
-        // ============================================
-        // PRODUCTOS - DATA
+        // PRODUCTOS - DATA (COMPLETA)
         // ============================================
 
         const productos = [{
@@ -4750,21 +4847,454 @@
         ];
 
         // ============================================
-        // ESTADO GLOBAL
+        // CHAT CON IA - SISTEMA AVANZADO
+        // ============================================
+
+        // ============================================
+        // CHAT CON IA - SISTEMA AVANZADO CON BASE DE CONOCIMIENTO COMPLETA
+        // ============================================
+
+        const chatbotKnowledge = {
+            // ===== PRODUCTOS GENERALES =====
+            'productos': '🛍️ Tenemos una amplia variedad de productos en nuestra tienda:\n\n📿 <strong>Aretes</strong> - Bohemios, de perla, florales y de compromiso\n👁️ <strong>Pestañas</strong> - 3D, 5D y magnéticas\n💄 <strong>Maquillaje</strong> - Bases, sombras, labiales y máscaras\n💅 <strong>Uñas</strong> - Esmaltes semipermanentes, top coat y decoración\n💈 <strong>Cuidado Capilar</strong> - Shampoos, acondicionadores y tratamientos\n🧴 <strong>Cuidado Facial</strong> - Agua micelar, cremas y mascarillas\n🛠️ <strong>Herramientas</strong> - Brochas y pinceles profesionales\n🎨 <strong>Decoración</strong> - Pedrería y gliter para uñas\n\n¿Qué tipo de producto te interesa? 😊',
+
+            // ===== COLLARES (NUEVO) =====
+            'collares': '📿 ¡Sí! Tenemos una hermosa colección de collares:\n\n💎 <strong>Collares de Perla</strong> - Elegancia clásica\n✨ <strong>Collares con Piedras</strong> - Naturales y semi-preciosas\n🌸 <strong>Collares Florales</strong> - Diseños primaverales\n💍 <strong>Collares de Compromiso</strong> - Con zirconia cúbica\n🌟 <strong>Collares Personalizados</strong> - Con iniciales y nombres\n\nPrecios desde <strong>$15</strong> hasta <strong>$75</strong>. ¡Tenemos el collar perfecto para ti! 💖',
+
+            'collar': '📿 ¡Sí! Tenemos collares de perla, con piedras naturales, florales y de compromiso. Precios desde $15. ¿Te gustaría ver algunos modelos específicos?',
+
+            // ===== ARETES =====
+            'aretes': '📿 ¡Excelente elección! Tenemos varios tipos de aretes:\n\n✨ <strong>Bohemios</strong> - Con piedras naturales, estilo artesanal ($25)\n💎 <strong>De Perla</strong> - Perlas cultivadas con acabado dorado ($38)\n🌸 <strong>Florales</strong> - Diseños coloridos y divertidos ($6.06)\n💍 <strong>De Compromiso</strong> - Zirconia cúbica en plata 925 ($65)\n\nTodos nuestros aretes son de alta calidad y hechos con materiales premium. ¿Te gustaría ver alguno en específico?',
+
+            'arete': '📿 Tenemos aretes bohemios, de perla, florales y de compromiso. El más popular es el modelo bohemio con piedras naturales. ¿Quieres más información sobre algún modelo?',
+
+            // ===== PESTAÑAS =====
+            'pestañas': '👁️ Nuestras extensiones de pestañas son de la mejor calidad:\n\n🌟 <strong>Pestañas 3D</strong> - Volumen natural, efecto lifting ($25)\n🔥 <strong>Pestañas 5D</strong> - Mega volumen, look dramático ($35)\n💖 <strong>Pestañas Magnéticas</strong> - Fáciles de poner, sin pegamento ($28)\n\n¡Todas vienen con pegamento profesional incluido! ¿Qué tipo de efecto buscas?',
+
+            'pestaña': '👁️ Tenemos pestañas 3D, 5D y magnéticas. Las 5D son las más populares por su efecto dramático. Precios desde $25.',
+
+            // ===== MAQUILLAJE =====
+            'maquillaje': '💄 Contamos con productos de maquillaje de primeras marcas:\n\n🎨 <strong>Bases</strong> - Fit Me 220, cobertura media ($43.89)\n🌟 <strong>Sombras</strong> - Paleta The City Mini, 12 tonos ($37)\n💋 <strong>Labiales</strong> - SS Matte Ink, larga duración ($51.20)\n👁️ <strong>Máscaras</strong> - The Falsies, volumen y alargado ($45.70)\n\n¿Qué producto necesitas?',
+
+            // ===== UÑAS =====
+            'uñas': '💅 Tenemos todo para tus uñas:\n\n🎨 <strong>Esmaltes Semipermanentes</strong> - Larga duración ($8)\n✨ <strong>Top Coat</strong> - Brillante y protector ($12.09)\n💎 <strong>Decoración</strong> - Pedrería, gliter y más\n\n¿Buscas algo en particular?',
+
+            'esmalte': '💅 Tenemos esmaltes semipermanentes desde $8 y esmaltes Vogue desde $4. ¿Qué color te gusta?',
+
+            // ===== PRECIOS =====
+            'precio': '💰 Nuestros precios van desde <strong>$4</strong> (esmaltes) hasta <strong>$65</strong> (joyería premium).\n\n💎 Productos de lujo: $40-$65\n🌟 Calidad media: $20-$40\n💫 Productos básicos: $4-$20\n\nTenemos opciones para todos los presupuestos. ¿Qué tipo de producto te interesa?',
+
+            'precios': '💰 Los precios varían según el producto. Tenemos desde $4 hasta $65. ¿Te gustaría saber el precio de algún producto específico?',
+
+            'costo': '💰 Los precios van desde $4 hasta $65. ¡Tenemos productos para todos los bolsillos!',
+
+            'valor': '💰 Nuestros productos tienen excelente relación calidad-precio. ¿Qué te gustaría saber?',
+
+            // ===== PROMOCIONES =====
+            'promociones': '🎁 ¡Sí! Tenemos varias promociones activas:\n\n🔥 <strong>2x1 en Pestañas 5D</strong> - Lleva 2 pares por el precio de 1\n🎉 <strong>10% OFF</strong> - Usa el código PAULINA10\n🚚 <strong>Envío gratis</strong> - En compras mayores a $50\n🌟 <strong>Puntos</strong> - Acumula puntos con cada compra\n\n¡Aprovecha estas ofertas antes de que terminen!',
+
+            'descuento': '🎉 ¡Sí! Usa el código <strong>PAULINA10</strong> para obtener un 10% de descuento en tu primera compra. Además, tenemos ofertas constantes en productos seleccionados.',
+
+            'oferta': '🔥 Tenemos 2x1 en pestañas 5D, 10% OFF con código PAULINA10, y envío gratis en compras mayores a $50. ¡Aprovecha!',
+
+            'cupón': '🎁 Usa el código <strong>PAULINA10</strong> para obtener 10% OFF. ¡No olvides aplicarlo en tu carrito!',
+
+            // ===== ENVÍOS =====
+            'envío': '📦 Realizamos envíos a <strong>todo Perú</strong>:\n\n📍 <strong>Lima</strong>: 24-48 horas\n📍 <strong>Provincias</strong>: 2-4 días hábiles\n🚚 <strong>Envío gratis</strong>: Compras mayores a $50\n🔍 <strong>Seguimiento</strong>: Te enviamos número de seguimiento\n\n¿Necesitas envío a alguna ciudad en particular?',
+
+            'envíos': '📦 Enviamos a todo Perú. Lima 24-48 horas, provincias 2-4 días hábiles. Envío gratis en compras mayores a $50.',
+
+            'envio': '📦 ¡Sí! Enviamos a todo Perú. El costo varía según la ubicación, pero es gratis en compras mayores a $50.',
+
+            'entrega': '📦 La entrega es rápida y segura. Recibirás un número de seguimiento para rastrear tu pedido.',
+
+            'demora': '📦 Los envíos a Lima tardan 24-48 horas. A provincias 2-4 días hábiles.',
+
+            // ===== PAGOS =====
+            'pago': '💳 Aceptamos múltiples métodos de pago:\n\n📱 <strong>Yape</strong> - Rápido y seguro\n📱 <strong>Plin</strong> - Desde tu celular\n🏦 <strong>Transferencia bancaria</strong> - BCP, BBVA, Interbank\n💵 <strong>Efectivo</strong> - En tienda física\n💳 <strong>Tarjeta de crédito/débito</strong> - Visa, Mastercard\n📦 <strong>Contraentrega</strong> - Pagas al recibir\n\n¿Qué método prefieres?',
+
+            'pagos': '💳 Aceptamos Yape, Plin, transferencia bancaria, efectivo, tarjeta y contraentrega. ¡Tú eliges el que más te convenga!',
+
+            'yape': '📱 ¡Sí! Aceptamos Yape. Solo necesitas nuestro número +51 923 861 016. Es rápido y seguro.',
+
+            'plin': '📱 ¡Sí! Aceptamos Plin. Escanea nuestro código o busca nuestro número +51 923 861 016.',
+
+            'tarjeta': '💳 ¡Sí! Aceptamos tarjetas de crédito y débito (Visa, Mastercard). El pago es 100% seguro.',
+
+            'contraentrega': '📦 ¡Sí! Ofrecemos contraentrega. Pagas cuando recibes tu pedido en la comodidad de tu hogar.',
+
+            // ===== CAMBIOS Y DEVOLUCIONES =====
+            'devolución': '🔄 <strong>Sí, aceptamos cambios y devoluciones</strong>:\n\n📅 <strong>Plazo</strong>: 7 días después de recibir el pedido\n💰 <strong>Costo</strong>: Sin costo adicional\n📦 <strong>Condición</strong>: Producto en empaque original\n🤝 <strong>Garantía</strong>: Satisfacción garantizada\n\n¿Necesitas hacer un cambio? Contáctanos y te ayudamos.',
+
+            'devoluciones': '🔄 Aceptamos devoluciones hasta 7 días después de la recepción. El producto debe estar en su empaque original.',
+
+            'cambio': '🔄 Sí, puedes cambiar tu producto dentro de los 7 días posteriores a la recepción. Sin costo adicional.',
+
+            'cambios': '🔄 Aceptamos cambios de talla, color o modelo dentro de los 7 días. ¡Tu satisfacción es nuestra prioridad!',
+
+            'garantía': '🤝 Todos nuestros productos tienen garantía de satisfacción. Si no estás conforme, te ayudamos con el cambio o devolución.',
+
+            // ===== UBICACIÓN =====
+            'ubicación': '📍 Estamos en <strong>Francisco Bardales 705, Yurimaguas</strong>.\n\n⏰ <strong>Horario</strong>: Lunes a Sábado 9am - 8pm\n📞 <strong>Teléfono</strong>: +51 923 861 016\n🚗 <strong>Estacionamiento</strong>: Disponible cerca\n\n¡Te esperamos con los brazos abiertos!',
+
+            'dirección': '📍 Francisco Bardales 705, Yurimaguas. ¿Necesitas indicaciones para llegar?',
+
+            'tienda física': '📍 ¡Sí! Tenemos tienda física en Francisco Bardales 705, Yurimaguas. Horario Lunes a Sábado 9am-8pm.',
+
+            'local': '📍 Estamos en Francisco Bardales 705, Yurimaguas. ¡Ven a visitarnos!',
+
+            // ===== HORARIO =====
+            'horario': '⏰ Abrimos de <strong>Lunes a Sábado de 9am a 8pm</strong>.\n\n📅 Domingo: Cerrado\n📞 Atención telefónica: 9am - 8pm\n💬 Chat en línea: 24/7 con IA\n\n¿A qué hora te gustaría venir?',
+
+            'horarios': '⏰ Lunes a Sábado 9am-8pm. Domingo cerrado. ¿Necesitas alguna atención especial?',
+
+            // ===== AYUDA =====
+            'ayuda': '🆘 ¡Claro! Estoy aquí para ayudarte en todo lo que necesites.\n\nPuedo ayudarte con:\n• 📦 Información de productos\n• 💰 Precios y promociones\n• 🚚 Envíos y entregas\n• 💳 Métodos de pago\n• 📍 Ubicación de la tienda\n• 🤝 Cambios y devoluciones\n\n¿En qué puedo asistirte hoy?',
+
+            'contacto': '📩 Puedes contactarnos por:\n\n📱 <strong>WhatsApp</strong>: +51 923 861 016\n📧 <strong>Email</strong>: paulina@accesorios.com\n📍 <strong>Tienda</strong>: Francisco Bardales 705, Yurimaguas\n📞 <strong>Teléfono</strong>: +51 923 861 016\n💬 <strong>Chat</strong>: Disponible 24/7\n\n¡Estamos para ayudarte!',
+
+            'contactar': '📩 Escríbenos por WhatsApp al +51 923 861 016 o llena el formulario de contacto en nuestra web.',
+
+            // ===== SALUDOS =====
+            'hola': '👋 ¡Hola! Soy Paulina AI, tu asistente virtual. ¿En qué puedo ayudarte hoy?\n\n💡 Puedes preguntarme sobre productos, precios, envíos, pagos o cualquier otra duda. ¡Estoy aquí para ti!',
+
+            'buenos días': '🌞 ¡Buenos días! ¿Cómo puedo ayudarte hoy? Recuerda que tenemos 10% OFF con el código PAULINA10.',
+
+            'buenas tardes': '🌤️ ¡Buenas tardes! Estoy aquí para ayudarte con lo que necesites. ¿Te interesa algún producto en particular?',
+
+            'buenas noches': '🌙 ¡Buenas noches! Aunque sea noche, estoy aquí 24/7 para ayudarte. ¿En qué puedo asistirte?',
+
+            'gracias': '🙌 ¡De nada! Es un placer ayudarte. Si necesitas algo más, aquí estoy. ¡Que tengas un excelente día!',
+
+            'chao': '👋 ¡Hasta luego! Vuelve cuando quieras, estaré aquí para ayudarte. ¡Que tengas un hermoso día!',
+
+            'adios': '👋 ¡Adiós! Fue un placer hablar contigo. Recuerda que tenemos promociones especiales. ¡Te esperamos!',
+
+            'ok': '👍 ¡Perfecto! ¿Hay algo más en lo que pueda ayudarte?',
+
+            'si': '✅ ¡Excelente! ¿Qué más necesitas saber? Estoy aquí para ayudarte.',
+
+            'no': '❌ Entendido. Si cambias de opinión, aquí estaré. ¡Que tengas un buen día!',
+
+            // ===== RECOMENDACIONES =====
+            'recomendar': '🤔 Basado en las tendencias actuales y lo que más le gusta a nuestras clientas, te recomiendo:\n\n🏆 <strong>#1 - Aretes Bohemios</strong> - Los más vendidos ($25)\n🔥 <strong>#2 - Pestañas 5D</strong> - Look de impacto ($35)\n💎 <strong>#3 - Anillo de Compromiso</strong> - Elegancia pura ($65)\n🌟 <strong>#4 - Paleta The City Mini</strong> - Para looks versátiles ($37)\n\n¿Te gustaría ver alguno de estos productos?',
+
+            'recomendación': '🤔 Te recomiendo los Aretes Bohemios y las Pestañas 5D, son los productos más populares. ¿Quieres que te cuente más?',
+
+            'popular': '🏆 Nuestros productos más populares son los Aretes Bohemios, las Pestañas 5D y el Anillo de Compromiso. ¡Todo el mundo los ama!',
+
+            'top': '🏆 El #1 es los Aretes Bohemios con más de 134 compras. Le siguen las Pestañas 5D y el Anillo de Compromiso.',
+
+            // ===== CHISTES =====
+            'chiste': '😊 ¡Claro! Aquí va uno:\n\n¿Por qué las pestañas no van a la playa?\n\n<strong>¡Porque les da miedo el agua salada y que se les corra el rímel!</strong> 😂\n\n¿Quieres otro?',
+
+            'chistes': '😊 ¡Tengo varios!\n\n¿Qué le dice una pestaña a otra?\n— <strong>¡No te me pegues que me despeinas!</strong> 😂\n\n¿Te gustó?',
+
+            'broma': '😂 ¿Por qué los aretes son tan felices?\n— <strong>¡Porque siempre están colgados de la moda!</strong>',
+
+            // ===== CAPACIDADES =====
+            'capacidades': '🤖 ¡Soy una IA avanzada y puedo ayudarte con:\n\n✅ <strong>Información</strong> - Productos, precios y disponibilidad\n✅ <strong>Promociones</strong> - Descuentos y ofertas especiales\n✅ <strong>Envíos</strong> - Tiempos, costos y seguimiento\n✅ <strong>Pagos</strong> - Métodos y procesos\n✅ <strong>Recomendaciones</strong> - Productos personalizados\n✅ <strong>Soporte</strong> - Cambios, devoluciones y dudas\n\n¡Pregúntame lo que quieras! 🗣️',
+
+            'que puedes hacer': '🤖 Puedo ayudarte con información de productos, precios, promociones, envíos, pagos y mucho más. ¡Pregúntame lo que necesites!',
+
+            'ia': '🤖 Soy una inteligencia artificial entrenada para ayudarte con todas tus dudas sobre la tienda. ¿En qué puedo asistirte?',
+
+            // ===== DEFAULT =====
+            'default': '🤖 ¡Gracias por tu mensaje! 📝\n\nPuedo ayudarte con información sobre productos, precios, promociones, envíos, pagos y más.\n\n💡 <strong>Prueba preguntando</strong>:\n• "¿Tienen collares?"\n• "¿Cuánto cuestan los aretes?"\n• "¿Cómo puedo pagar?"\n• "¿Cuándo llega mi pedido?"\n\n¿Qué te gustaría saber? 🗣️'
+        };
+
+        // ============================================
+        // FUNCIÓN DE RESPUESTA DE IA MEJORADA
+        // ============================================
+
+        function getAIResponse(message) {
+            const msgLower = message.toLowerCase().trim();
+
+            // ===== DETECCIÓN DE PRODUCTOS ESPECÍFICOS =====
+            // Detectar si pregunta por collares
+            if (msgLower.includes('collar') || msgLower.includes('collares')) {
+                return chatbotKnowledge.collares;
+            }
+
+            // Detectar si pregunta por aretes
+            if (msgLower.includes('arete') || msgLower.includes('aretes')) {
+                return chatbotKnowledge.aretes;
+            }
+
+            // Detectar si pregunta por pestañas
+            if (msgLower.includes('pestaña') || msgLower.includes('pestañas')) {
+                return chatbotKnowledge.pestañas;
+            }
+
+            // Detectar si pregunta por maquillaje
+            if (msgLower.includes('maquillaje') || msgLower.includes('base') || msgLower.includes('labial') ||
+                msgLower.includes('sombra') || msgLower.includes('máscara')) {
+                return chatbotKnowledge.maquillaje;
+            }
+
+            // Detectar si pregunta por uñas
+            if (msgLower.includes('uñas') || msgLower.includes('esmalte') || msgLower.includes('uña')) {
+                return chatbotKnowledge.uñas;
+            }
+
+            // ===== DETECCIÓN DE PRECIOS =====
+            if (msgLower.includes('precio') || msgLower.includes('precios') || msgLower.includes('costo') ||
+                msgLower.includes('valor') || msgLower.includes('cuánto') || msgLower.includes('cuanto')) {
+                return chatbotKnowledge.precio;
+            }
+
+            // ===== DETECCIÓN DE PROMOCIONES =====
+            if (msgLower.includes('promoción') || msgLower.includes('promociones') || msgLower.includes('oferta') ||
+                msgLower.includes('descuento') || msgLower.includes('cupón') || msgLower.includes('2x1')) {
+                return chatbotKnowledge.promociones;
+            }
+
+            // ===== DETECCIÓN DE ENVÍOS =====
+            if (msgLower.includes('envío') || msgLower.includes('envíos') || msgLower.includes('envio') ||
+                msgLower.includes('entrega') || msgLower.includes('demora') || msgLower.includes('tarda') ||
+                msgLower.includes('llegar')) {
+                return chatbotKnowledge.envío;
+            }
+
+            // ===== DETECCIÓN DE PAGOS =====
+            if (msgLower.includes('pago') || msgLower.includes('pagos') || msgLower.includes('pagar') ||
+                msgLower.includes('yape') || msgLower.includes('plin') || msgLower.includes('tarjeta') ||
+                msgLower.includes('contraentrega') || msgLower.includes('transferencia')) {
+                return chatbotKnowledge.pago;
+            }
+
+            // ===== DETECCIÓN DE CAMBIOS =====
+            if (msgLower.includes('devolución') || msgLower.includes('devoluciones') || msgLower.includes('cambio') ||
+                msgLower.includes('cambios') || msgLower.includes('garantía')) {
+                return chatbotKnowledge.devolución;
+            }
+
+            // ===== DETECCIÓN DE UBICACIÓN =====
+            if (msgLower.includes('ubicación') || msgLower.includes('dirección') || msgLower.includes('tienda') ||
+                msgLower.includes('local') || msgLower.includes('donde') || msgLower.includes('dónde')) {
+                return chatbotKnowledge.ubicación;
+            }
+
+            // ===== DETECCIÓN DE HORARIO =====
+            if (msgLower.includes('horario') || msgLower.includes('horarios') || msgLower.includes('abren') ||
+                msgLower.includes('cierran')) {
+                return chatbotKnowledge.horario;
+            }
+
+            // ===== DETECCIÓN DE RECOMENDACIONES =====
+            if (msgLower.includes('recomendar') || msgLower.includes('recomendación') || msgLower.includes('recomendaciones') ||
+                msgLower.includes('sugerir') || msgLower.includes('sugerencia') || msgLower.includes('popular') ||
+                msgLower.includes('top') || msgLower.includes('mejor')) {
+                return chatbotKnowledge.recomendar;
+            }
+
+            // ===== DETECCIÓN DE AYUDA =====
+            if (msgLower.includes('ayuda') || msgLower.includes('soporte') || msgLower.includes('asistencia')) {
+                return chatbotKnowledge.ayuda;
+            }
+
+            // ===== DETECCIÓN DE CONTACTO =====
+            if (msgLower.includes('contacto') || msgLower.includes('contactar') || msgLower.includes('comunicar') ||
+                msgLower.includes('hablar')) {
+                return chatbotKnowledge.contacto;
+            }
+
+            // ===== DETECCIÓN DE CAPACIDADES =====
+            if (msgLower.includes('capacidades') || msgLower.includes('puedes hacer') || msgLower.includes('que haces') ||
+                msgLower.includes('funciones') || msgLower.includes('habilidades')) {
+                return chatbotKnowledge.capacidades;
+            }
+
+            // ===== DETECCIÓN DE CHISTES =====
+            if (msgLower.includes('chiste') || msgLower.includes('chistes') || msgLower.includes('broma') ||
+                msgLower.includes('divertido') || msgLower.includes('reír')) {
+                return chatbotKnowledge.chiste;
+            }
+
+            // ===== DETECCIÓN DE SALUDOS =====
+            if (msgLower.includes('hola') || msgLower.includes('buenos días') || msgLower.includes('buenas tardes') ||
+                msgLower.includes('buenas noches') || msgLower.includes('hey') || msgLower.includes('hello') ||
+                msgLower.includes('hi')) {
+                return chatbotKnowledge.hola;
+            }
+
+            // ===== DETECCIÓN DE DESPEDIDAS =====
+            if (msgLower.includes('chao') || msgLower.includes('adios') || msgLower.includes('adiós') ||
+                msgLower.includes('bye') || msgLower.includes('hasta luego') || msgLower.includes('nos vemos')) {
+                return chatbotKnowledge.chao;
+            }
+
+            // ===== DETECCIÓN DE AGRADECIMIENTOS =====
+            if (msgLower.includes('gracias') || msgLower.includes('gracias') || msgLower.includes('thank you')) {
+                return chatbotKnowledge.gracias;
+            }
+
+            // ===== DETECCIÓN DE AFIRMACIONES =====
+            if (msgLower.includes('ok') || msgLower.includes('vale') || msgLower.includes('si') || msgLower.includes('sí')) {
+                return chatbotKnowledge.ok;
+            }
+
+            // ===== DETECCIÓN DE NEGACIONES =====
+            if (msgLower.includes('no') || msgLower.includes('nada') || msgLower.includes('ninguno')) {
+                return chatbotKnowledge.no;
+            }
+
+            // ===== BÚSQUEDA EN PRODUCTOS =====
+            // Buscar si el mensaje contiene el nombre de algún producto
+            for (const producto of productos) {
+                if (msgLower.includes(producto.nombre.toLowerCase()) ||
+                    msgLower.includes(producto.categoria.toLowerCase())) {
+                    const price = producto.precio_old ?
+                        `$${producto.precio} (antes $${producto.precio_old})` :
+                        `$${producto.precio}`;
+                    return `🔍 Encontré información sobre <strong>${producto.nombre}</strong>:\n\n📝 ${producto.descripcion}\n💰 Precio: ${price}\n📦 Stock: ${producto.stock} unidades disponibles\n⭐ ${producto.badge || 'Producto destacado'}\n\n¿Te gustaría agregarlo a tu carrito? 🛒`;
+                }
+            }
+
+            // ===== RESPUESTA POR DEFECTO INTELIGENTE =====
+            // Si la pregunta contiene un signo de interrogación pero no se detectó nada específico
+            if (msgLower.includes('?')) {
+                // Intentar detectar el tema general
+                if (msgLower.includes('producto') || msgLower.includes('tienes') || msgLower.includes('hay')) {
+                    return chatbotKnowledge.productos;
+                }
+                if (msgLower.includes('envío') || msgLower.includes('envio') || msgLower.includes('llegada')) {
+                    return chatbotKnowledge.envío;
+                }
+                if (msgLower.includes('pago') || msgLower.includes('pagar')) {
+                    return chatbotKnowledge.pago;
+                }
+                if (msgLower.includes('cambio') || msgLower.includes('devolución')) {
+                    return chatbotKnowledge.devolución;
+                }
+                if (msgLower.includes('ubicación') || msgLower.includes('dirección') || msgLower.includes('donde')) {
+                    return chatbotKnowledge.ubicación;
+                }
+            }
+
+            // Si el mensaje es muy corto, pedir más información
+            if (msgLower.length < 3) {
+                return '🤔 ¿Podrías ser más específico? Puedo ayudarte con información sobre productos, precios, promociones, envíos, pagos y más. 😊';
+            }
+
+            // Respuesta inteligente por defecto
+            const defaultResponses = [
+                '🤖 ¡Gracias por tu mensaje! 📝\n\nPuedo ayudarte con información sobre productos, precios, promociones, envíos, pagos y más.\n\n💡 <strong>Prueba preguntando</strong>:\n• "¿Tienen collares?"\n• "¿Cuánto cuestan los aretes?"\n• "¿Cómo puedo pagar?"\n• "¿Cuándo llega mi pedido?"\n\n¿Qué te gustaría saber? 🗣️',
+                '🤖 ¡Interesante pregunta! 🧠\n\nDéjame pensar... No tengo información específica sobre eso, pero puedo ayudarte con:\n📦 Productos disponibles\n💰 Precios y promociones\n🚚 Envíos y entregas\n💳 Métodos de pago\n\n¿Te gustaría saber algo de eso? 😊',
+                '🤖 ¡Hablemos de lo que te interesa! 🛍️\n\nPuedo contarte sobre:\n✨ Productos destacados\n🎁 Ofertas especiales\n📦 Envíos a todo Perú\n💳 Formas de pago\n\n¿Qué te gustaría saber?',
+            ];
+
+            return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+        }
+
+        // ============================================
+        // INICIALIZACIÓN DEL CHAT
+        // ============================================
+
+        function initChatAI() {
+            const chatFloat = document.getElementById('chatFloatAI');
+            const chatModal = document.getElementById('chatModalAI');
+            const chatClose = document.getElementById('chatCloseAI');
+            const chatInput = document.getElementById('chatInputAI');
+            const chatSend = document.getElementById('chatSendAI');
+            const chatMessages = document.getElementById('chatMessagesAI');
+            const chatOptions = document.getElementById('chatOptionsAI');
+
+            chatFloat.addEventListener('click', () => {
+                chatModal.classList.toggle('open');
+                if (chatModal.classList.contains('open')) {
+                    chatInput.focus();
+                }
+            });
+
+            chatClose.addEventListener('click', () => {
+                chatModal.classList.remove('open');
+            });
+
+            function sendMessage(text) {
+                if (!text.trim()) return;
+
+                const now = new Date();
+                const timeStr = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+
+                // Mensaje del usuario
+                const userMsg = document.createElement('div');
+                userMsg.className = 'chat-message-ai user';
+                userMsg.innerHTML = `${text} <span class="msg-time">${timeStr}</span>`;
+                chatMessages.appendChild(userMsg);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                chatInput.value = '';
+                chatSend.disabled = true;
+
+                // Mostrar indicador de escritura
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'chat-message-ai bot';
+                typingDiv.innerHTML = `
+                    <div class="typing-indicator">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                `;
+                chatMessages.appendChild(typingDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                // Simular tiempo de procesamiento de IA (más realista)
+                const processingTime = 500 + Math.random() * 1000;
+
+                setTimeout(() => {
+                    typingDiv.remove();
+
+                    // Obtener respuesta de la IA
+                    const response = getAIResponse(text);
+
+                    const botMsg = document.createElement('div');
+                    botMsg.className = 'chat-message-ai bot';
+                    botMsg.innerHTML = `${response} <span class="msg-time">${timeStr}</span>`;
+                    chatMessages.appendChild(botMsg);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                    chatSend.disabled = false;
+
+                    // Si la respuesta contiene información de productos, sugerir ver la tienda
+                    if (response.includes('producto') || response.includes('productos') ||
+                        response.includes('tienda') || response.includes('colección')) {
+                        setTimeout(() => {
+                            const suggestionMsg = document.createElement('div');
+                            suggestionMsg.className = 'chat-message-ai bot';
+                            suggestionMsg.style.background = 'rgba(249,168,37,0.05)';
+                            suggestionMsg.style.border = '1px solid rgba(249,168,37,0.1)';
+                            suggestionMsg.innerHTML = `🛍️ ¿Te gustaría ver nuestros productos en la tienda? <a href="#productos" style="color:var(--primary);font-weight:700;">¡Haz clic aquí!</a> <span class="msg-time">${timeStr}</span>`;
+                            chatMessages.appendChild(suggestionMsg);
+                            chatMessages.scrollTop = chatMessages.scrollHeight;
+                        }, 800);
+                    }
+                }, processingTime);
+            }
+
+            chatSend.addEventListener('click', () => sendMessage(chatInput.value));
+            chatInput.addEventListener('keyup', (e) => {
+                if (e.key === 'Enter') sendMessage(chatInput.value);
+            });
+
+            chatOptions.addEventListener('click', (e) => {
+                const opt = e.target.closest('.chat-opt');
+                if (opt) {
+                    sendMessage(opt.dataset.msg);
+                }
+            });
+        }
+
+        // ============================================
+        // FUNCIONES ADICIONALES NECESARIAS
         // ============================================
 
         let cart = [];
         let currentUser = null;
         let currentCategory = 'todos';
         let filteredProducts = [...productos];
-        let reviews = [];
-        let affiliateStats = { visits: 0, sales: 0, earnings: 0 };
-        let selectedRating = 0;
-        let uploadedImages = [];
-
-        // ============================================
-        // UTILIDADES
-        // ============================================
+        let notificationTimeout = null;
 
         function formatPrice(price) {
             return `$${price.toFixed(2)}`;
@@ -4839,12 +5369,6 @@
                         }
                     };
                 }
-
-                // Mostrar admin si es admin
-                if (currentUser.email === 'admin@paulina.com') {
-                    document.getElementById('admin').style.display = 'block';
-                    loadAdminData();
-                }
             } else {
                 if (userName) userName.textContent = 'Invitado';
                 if (userLevel) userLevel.textContent = 'Nivel: Visitante';
@@ -4869,33 +5393,19 @@
 
             const name = prompt('👤 Ingresa tu nombre (opcional):') || email.split('@')[0];
 
-            // Verificar si es admin
-            const isAdmin = email === 'admin@paulina.com' && prompt('🔑 Contraseña de administrador:') === CONFIG.ADMIN_PASSWORD;
-
             currentUser = {
                 id: generateId(),
                 email: email,
                 name: name,
                 points: parseInt(localStorage.getItem(`paulina_points_${email}`)) || 0,
-                isAdmin: isAdmin,
                 createdAt: new Date().toISOString(),
                 lastLogin: new Date().toISOString(),
-                affiliateCode: generateId().substr(0, 8),
             };
 
             saveUser();
             updateUserUI();
             mostrarNotificacion(`✅ ¡Bienvenida ${name}!`, '👋');
             lanzarConfetti();
-
-            if (isAdmin) {
-                document.getElementById('admin').style.display = 'block';
-                loadAdminData();
-                mostrarNotificacion('🔑 Acceso de administrador concedido', '🔑');
-            }
-
-            // Actualizar enlace de afiliado
-            updateAffiliateLink();
         }
 
         function logoutUser() {
@@ -4903,12 +5413,11 @@
             localStorage.removeItem('paulina_user');
             updateUserUI();
             mostrarNotificacion('👋 Sesión cerrada', '👋');
-            document.getElementById('admin').style.display = 'none';
         }
 
         function addPoints(amount) {
             if (currentUser) {
-                const pointsToAdd = Math.floor(amount * CONFIG.POINTS_PER_DOLLAR);
+                const pointsToAdd = Math.floor(amount * 2);
                 currentUser.points = (currentUser.points || 0) + pointsToAdd;
                 localStorage.setItem(`paulina_points_${currentUser.email}`, currentUser.points);
                 saveUser();
@@ -5195,7 +5704,7 @@
         }
 
         // ============================================
-        // FILTROS AVANZADOS CON IA
+        // FILTROS
         // ============================================
 
         function applyFilters() {
@@ -5226,7 +5735,6 @@
                     filtered.sort((a, b) => (b.compradores || 0) - (a.compradores || 0));
                     break;
                 case 'ai':
-                    // Simulación de recomendación por IA: ordenar por popularidad + precio
                     filtered.sort((a, b) => {
                         const scoreA = (a.compradores || 0) * 0.6 + (100 - a.precio) * 0.4;
                         const scoreB = (b.compradores || 0) * 0.6 + (100 - b.precio) * 0.4;
@@ -5378,604 +5886,6 @@
         }
 
         // ============================================
-        // CHAT CON IA - SISTEMA DE NLP AVANZADO
-        // ============================================
-
-        function initChatAI() {
-            const chatFloat = document.getElementById('chatFloatAI');
-            const chatModal = document.getElementById('chatModalAI');
-            const chatClose = document.getElementById('chatCloseAI');
-            const chatInput = document.getElementById('chatInputAI');
-            const chatSend = document.getElementById('chatSendAI');
-            const chatMessages = document.getElementById('chatMessagesAI');
-            const chatOptions = document.getElementById('chatOptionsAI');
-
-            // Base de conocimiento de la IA
-            const knowledgeBase = {
-                // Saludos
-                'hola': '👋 ¡Hola! Soy Paulina AI, tu asistente virtual. ¿En qué puedo ayudarte?',
-                'buenos días': '🌞 ¡Buenos días! ¿Cómo puedo ayudarte hoy?',
-                'buenas tardes': '🌤️ ¡Buenas tardes! Estoy aquí para ayudarte con lo que necesites.',
-                'buenas noches': '🌙 ¡Buenas noches! ¿En qué puedo asistirte?',
-
-                // Productos
-                'productos': '🛍️ Tenemos una amplia variedad de productos: aretes, extensiones de pestañas, maquillaje, accesorios para uñas y más. ¿Qué tipo de producto te interesa?',
-                'aretes': '📿 ¡Excelente elección! Tenemos aretes bohemios, de perla, florales y de compromiso. ¿Te gustaría ver algunos modelos específicos?',
-                'pestañas': '👁️ Nuestras extensiones de pestañas son de alta calidad. Tenemos 3D, 5D y magnéticas. ¿Qué tipo de efecto buscas?',
-                'maquillaje': '💄 Contamos con bases, sombras, labiales y máscaras de pestañas de primeras marcas. ¿Qué producto necesitas?',
-                'uñas': '💅 Ofrecemos esmaltes semipermanentes, top coat y accesorios para decoración. ¿Buscas algo en particular?',
-
-                // Precios y promociones
-                'precio': '💰 Nuestros precios van desde $5 hasta $65. Tenemos productos para todos los presupuestos. ¿Te gustaría ver algo en específico?',
-                'promociones': '🎁 ¡Sí! Tenemos varias promociones activas: 2x1 en pestañas 5D, 10% OFF con código PAULINA10, y envío gratis en compras mayores a $50.',
-                'descuento': '🎉 Usa el código PAULINA10 para obtener un 10% de descuento en tu primera compra. ¡Aprovecha!',
-
-                // Envíos
-                'envío': '📦 Realizamos envíos a todo Perú. El tiempo de entrega es de 2 a 4 días hábiles. En Lima es de 24 a 48 horas.',
-                'envío gratis': '🚚 ¡Sí! El envío es gratis en compras mayores a $50. Aprovecha esta oferta.',
-                'seguimiento': '🔍 Después de realizar tu compra, te enviaremos un número de seguimiento para que puedas rastrear tu pedido.',
-
-                // Pagos
-                'pago': '💳 Aceptamos Yape, Plin, transferencia bancaria, efectivo, tarjetas de crédito/débito y contraentrega. ¡Tú eliges!',
-                'yape': '📱 ¡Sí! Aceptamos Yape como método de pago. Es rápido y seguro.',
-                'plin': '📱 ¡Sí! Aceptamos Plin. Es una forma cómoda de pagar desde tu celular.',
-
-                // Devoluciones
-                'devolución': '🔄 Sí, aceptamos cambios y devoluciones hasta 7 días después de recibir tu pedido. Sin costo adicional.',
-                'cambio': '🔄 Puedes solicitar un cambio dentro de los 7 días posteriores a la recepción. Contáctanos y te ayudaremos.',
-
-                // Ubicación
-                'ubicación': '📍 Estamos en Francisco Bardales 705, Yurimaguas. Horario: Lunes a Sábado de 9am a 8pm.',
-                'tienda física': '📍 ¡Sí! Tenemos tienda física en Francisco Bardales 705, Yurimaguas. Te esperamos.',
-
-                // Recomendaciones
-                'recomendar': '🤔 Basado en las tendencias actuales, te recomiendo nuestros aretes bohemios y las extensiones de pestañas 5D. ¡Son los productos más populares!',
-                'más vendido': '🏆 Nuestro producto más vendido son los Aretes Bohemios y las Pestañas 5D. ¡Todo el mundo los ama!',
-
-                // Ayuda
-                'ayuda': '🆘 Por supuesto, estoy aquí para ayudarte. Puedes preguntarme sobre productos, precios, envíos, pagos, o cualquier otra duda.',
-                'contacto': '📩 Puedes contactarnos por WhatsApp al +51 923 861 016, o llenando el formulario de contacto en nuestra web.',
-
-                // Default
-                'default': '🤖 Gracias por tu mensaje. ¿Podrías ser más específico? Puedo ayudarte con información sobre productos, precios, envíos, pagos o promociones.'
-            };
-
-            chatFloat.addEventListener('click', () => {
-                chatModal.classList.toggle('open');
-                if (chatModal.classList.contains('open')) {
-                    chatInput.focus();
-                }
-            });
-
-            chatClose.addEventListener('click', () => {
-                chatModal.classList.remove('open');
-            });
-
-            function getAIResponse(message) {
-                const msgLower = message.toLowerCase().trim();
-
-                // Buscar coincidencia exacta o parcial
-                for (const [key, response] of Object.entries(knowledgeBase)) {
-                    if (msgLower.includes(key)) {
-                        return response;
-                    }
-                }
-
-                // Buscar palabras clave
-                const keywords = {
-                    'hola': knowledgeBase.hola,
-                    'gracias': '🙌 ¡De nada! Si necesitas algo más, estoy aquí para ayudarte.',
-                    'chao': '👋 ¡Hasta luego! Vuelve cuando quieras, estaré aquí para ayudarte.',
-                    'adios': '👋 ¡Adiós! Que tengas un excelente día. ¿Necesitas algo más?',
-                    'ok': '👍 ¡Perfecto! ¿Hay algo más en lo que pueda ayudarte?',
-                    'si': '✅ ¡Excelente! ¿Qué más necesitas saber?',
-                    'no': '❌ Entendido. Si cambias de opinión, aquí estaré.',
-                };
-
-                for (const [key, response] of Object.entries(keywords)) {
-                    if (msgLower.includes(key)) {
-                        return response;
-                    }
-                }
-
-                // Si el mensaje contiene signos de interrogación, intentar dar una respuesta más específica
-                if (msgLower.includes('?')) {
-                    // Intentar detectar el tema de la pregunta
-                    if (msgLower.includes('precio') || msgLower.includes('costo') || msgLower.includes('valor')) {
-                        return knowledgeBase.precio;
-                    }
-                    if (msgLower.includes('envío') || msgLower.includes('demora') || msgLower.includes('tarda')) {
-                        return knowledgeBase.envío;
-                    }
-                    if (msgLower.includes('pago') || msgLower.includes('pagar')) {
-                        return knowledgeBase.pago;
-                    }
-                    if (msgLower.includes('devolución') || msgLower.includes('cambiar')) {
-                        return knowledgeBase.devolución;
-                    }
-                    if (msgLower.includes('ubicación') || msgLower.includes('dirección')) {
-                        return knowledgeBase.ubicación;
-                    }
-                }
-
-                // Respuesta por defecto con oferta especial
-                return '🤖 ¡Gracias por tu mensaje! Como oferta especial, te recuerdo que tenemos 10% OFF con el código PAULINA10. ¿Necesitas ayuda con algún producto en específico? 🛍️';
-            }
-
-            function sendMessage(text) {
-                if (!text.trim()) return;
-
-                const now = new Date();
-                const timeStr = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
-
-                // Mensaje del usuario
-                const userMsg = document.createElement('div');
-                userMsg.className = 'chat-message-ai user';
-                userMsg.innerHTML = `${text} <span class="msg-time">${timeStr}</span>`;
-                chatMessages.appendChild(userMsg);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-
-                chatInput.value = '';
-                chatSend.disabled = true;
-
-                // Mostrar indicador de escritura
-                const typingDiv = document.createElement('div');
-                typingDiv.className = 'chat-message-ai bot';
-                typingDiv.innerHTML = `
-                    <div class="typing-indicator">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                `;
-                chatMessages.appendChild(typingDiv);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-
-                // Simular tiempo de procesamiento (IA)
-                const processingTime = 600 + Math.random() * 800;
-
-                setTimeout(() => {
-                    // Remover indicador de escritura
-                    typingDiv.remove();
-
-                    // Obtener respuesta de la IA
-                    const response = getAIResponse(text);
-
-                    const botMsg = document.createElement('div');
-                    botMsg.className = 'chat-message-ai bot';
-                    botMsg.innerHTML = `${response} <span class="msg-time">${timeStr}</span>`;
-                    chatMessages.appendChild(botMsg);
-                    chatMessages.scrollTop = chatMessages.scrollHeight;
-
-                    chatSend.disabled = false;
-
-                    // Si la respuesta contiene información de productos, sugerir ver la tienda
-                    if (response.includes('producto') || response.includes('tienda')) {
-                        setTimeout(() => {
-                            const suggestionMsg = document.createElement('div');
-                            suggestionMsg.className = 'chat-message-ai bot';
-                            suggestionMsg.style.background = 'rgba(249,168,37,0.05)';
-                            suggestionMsg.style.border = '1px solid rgba(249,168,37,0.1)';
-                            suggestionMsg.innerHTML = `🛍️ ¿Te gustaría ver nuestros productos? <a href="#productos" style="color:var(--primary);font-weight:700;">¡Haz clic aquí!</a> <span class="msg-time">${timeStr}</span>`;
-                            chatMessages.appendChild(suggestionMsg);
-                            chatMessages.scrollTop = chatMessages.scrollHeight;
-                        }, 800);
-                    }
-                }, processingTime);
-            }
-
-            chatSend.addEventListener('click', () => sendMessage(chatInput.value));
-            chatInput.addEventListener('keyup', (e) => {
-                if (e.key === 'Enter') sendMessage(chatInput.value);
-            });
-
-            chatOptions.addEventListener('click', (e) => {
-                const opt = e.target.closest('.chat-opt');
-                if (opt) {
-                    sendMessage(opt.dataset.msg);
-                }
-            });
-        }
-
-        // ============================================
-        // SISTEMA DE RESEÑAS CON FOTOS
-        // ============================================
-
-        function loadReviews() {
-            try {
-                const data = localStorage.getItem('paulina_reviews');
-                if (data) {
-                    reviews = JSON.parse(data);
-                }
-            } catch (e) {
-                reviews = [];
-            }
-            renderReviews();
-        }
-
-        function saveReviews() {
-            localStorage.setItem('paulina_reviews', JSON.stringify(reviews));
-        }
-
-        function renderReviews() {
-            const container = document.getElementById('reviewsList');
-            if (!container) return;
-
-            if (reviews.length === 0) {
-                container.innerHTML = `
-                    <div style="text-align:center;padding:var(--space-2xl);">
-                        <span style="font-size:3rem;display:block;margin-bottom:var(--space-md);">💬</span>
-                        <p style="color:var(--text-secondary);">No hay reseñas aún. ¡Sé la primera en opinar!</p>
-                    </div>
-                `;
-                return;
-            }
-
-            let html = '';
-            reviews.forEach(review => {
-                const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
-                const imagesHtml = review.images ? review.images.map(img =>
-                    `<img src="${img}" alt="Foto de reseña" onclick="openLightbox('${img}', 'Foto de reseña', '')" />`
-                ).join('') : '';
-
-                const isHelpful = review.helpful ? review.helpful.includes(currentUser?.id) : false;
-
-                html += `
-                    <div class="review-card">
-                        <div class="review-header">
-                            <div class="review-user">
-                                <div class="review-avatar">${review.name.charAt(0).toUpperCase()}</div>
-                                <div>
-                                    <div class="review-name">${review.name}</div>
-                                    <div class="review-date">📅 ${review.date}</div>
-                                </div>
-                            </div>
-                            <div class="review-stars">${stars}</div>
-                        </div>
-                        <p class="review-text">${review.text}</p>
-                        ${imagesHtml ? `<div class="review-images">${imagesHtml}</div>` : ''}
-                        <div class="review-actions">
-                            <button class="helpful ${isHelpful ? 'active' : ''}" data-id="${review.id}">
-                                👍 Útil (${review.helpfulCount || 0})
-                            </button>
-                            <button class="report" data-id="${review.id}">🚨 Reportar</button>
-                        </div>
-                    </div>
-                `;
-            });
-
-            container.innerHTML = html;
-
-            // Eventos de acciones de reseñas
-            container.querySelectorAll('.helpful').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    if (!currentUser) {
-                        mostrarNotificacion('⚠️ Inicia sesión para calificar', '⚠️');
-                        return;
-                    }
-                    const reviewId = this.dataset.id;
-                    const review = reviews.find(r => r.id === reviewId);
-                    if (review) {
-                        if (!review.helpful) review.helpful = [];
-                        const index = review.helpful.indexOf(currentUser.id);
-                        if (index > -1) {
-                            review.helpful.splice(index, 1);
-                            review.helpfulCount = (review.helpfulCount || 0) - 1;
-                        } else {
-                            review.helpful.push(currentUser.id);
-                            review.helpfulCount = (review.helpfulCount || 0) + 1;
-                        }
-                        saveReviews();
-                        renderReviews();
-                    }
-                });
-            });
-
-            container.querySelectorAll('.report').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    if (!currentUser) {
-                        mostrarNotificacion('⚠️ Inicia sesión para reportar', '⚠️');
-                        return;
-                    }
-                    if (confirm('¿Estás seguro de reportar esta reseña?')) {
-                        const reviewId = this.dataset.id;
-                        const index = reviews.findIndex(r => r.id === reviewId);
-                        if (index > -1) {
-                            reviews.splice(index, 1);
-                            saveReviews();
-                            renderReviews();
-                            mostrarNotificacion('✅ Reseña reportada y eliminada', '✅');
-                        }
-                    }
-                });
-            });
-        }
-
-        function initReviews() {
-            const starsSelector = document.getElementById('starsSelector');
-            const ratingDisplay = document.getElementById('reviewRatingDisplay');
-            const reviewText = document.getElementById('reviewText');
-            const reviewName = document.getElementById('reviewName');
-            const submitBtn = document.getElementById('submitReview');
-            const imageInput = document.getElementById('reviewImage');
-            const imagePreview = document.getElementById('reviewImagePreview');
-            const imageCount = document.getElementById('reviewImageCount');
-
-            // Selección de estrellas
-            starsSelector.querySelectorAll('span').forEach(star => {
-                star.addEventListener('click', function() {
-                    selectedRating = parseInt(this.dataset.value);
-                    starsSelector.querySelectorAll('span').forEach(s => {
-                        s.classList.toggle('active', parseInt(s.dataset.value) <= selectedRating);
-                    });
-                    ratingDisplay.textContent = `⭐ ${selectedRating}`;
-                });
-
-                star.addEventListener('mouseenter', function() {
-                    const val = parseInt(this.dataset.value);
-                    starsSelector.querySelectorAll('span').forEach(s => {
-                        s.style.color = parseInt(s.dataset.value) <= val ? 'var(--accent)' : '#ddd';
-                    });
-                });
-
-                star.addEventListener('mouseleave', function() {
-                    starsSelector.querySelectorAll('span').forEach(s => {
-                        s.style.color = parseInt(s.dataset.value) <= selectedRating ? 'var(--accent)' :
-                        '#ddd';
-                    });
-                });
-            });
-
-            // Subida de imágenes
-            imageInput.addEventListener('change', function() {
-                uploadedImages = [];
-                imagePreview.innerHTML = '';
-                const files = Array.from(this.files);
-
-                files.forEach(file => {
-                    if (file.size > 5 * 1024 * 1024) {
-                        mostrarNotificacion('⚠️ La imagen es muy grande (máx 5MB)', '⚠️');
-                        return;
-                    }
-
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        uploadedImages.push(e.target.result);
-                        const img = document.createElement('img');
-                        img.src = e.target.result;
-                        img.style.width = '80px';
-                        img.style.height = '80px';
-                        img.style.borderRadius = 'var(--radius-sm)';
-                        img.style.objectFit = 'cover';
-                        img.style.cursor = 'pointer';
-                        img.onclick = () => openLightbox(e.target.result, 'Foto de reseña', '');
-                        imagePreview.appendChild(img);
-                    };
-                    reader.readAsDataURL(file);
-                });
-
-                imageCount.textContent = `${uploadedImages.length} archivos`;
-            });
-
-            // Publicar reseña
-            submitBtn.addEventListener('click', function() {
-                if (!currentUser) {
-                    mostrarNotificacion('⚠️ Inicia sesión para publicar una reseña', '⚠️');
-                    return;
-                }
-
-                if (selectedRating === 0) {
-                    mostrarNotificacion('⚠️ Selecciona una calificación', '⚠️');
-                    return;
-                }
-
-                const text = reviewText.value.trim();
-                if (!text) {
-                    mostrarNotificacion('⚠️ Escribe tu reseña', '⚠️');
-                    return;
-                }
-
-                const name = reviewName.value.trim() || currentUser.name || 'Anónimo';
-
-                const review = {
-                    id: generateId(),
-                    name: name,
-                    rating: selectedRating,
-                    text: text,
-                    images: uploadedImages,
-                    date: new Date().toLocaleDateString('es-PE'),
-                    userId: currentUser.id,
-                    helpful: [],
-                    helpfulCount: 0,
-                };
-
-                reviews.unshift(review);
-                saveReviews();
-                renderReviews();
-
-                // Limpiar formulario
-                reviewText.value = '';
-                reviewName.value = '';
-                selectedRating = 0;
-                uploadedImages = [];
-                imagePreview.innerHTML = '';
-                imageCount.textContent = '0 archivos';
-                starsSelector.querySelectorAll('span').forEach(s => {
-                    s.classList.remove('active');
-                    s.style.color = '#ddd';
-                });
-                ratingDisplay.textContent = '⭐ 0';
-                imageInput.value = '';
-
-                mostrarNotificacion('✅ Reseña publicada con éxito', '⭐');
-                lanzarConfetti();
-            });
-        }
-
-        // ============================================
-        // SISTEMA DE AFILIADOS
-        // ============================================
-
-        function loadAffiliateStats() {
-            try {
-                const data = localStorage.getItem('paulina_affiliate');
-                if (data) {
-                    affiliateStats = JSON.parse(data);
-                }
-            } catch (e) {
-                affiliateStats = { visits: 0, sales: 0, earnings: 0 };
-            }
-            updateAffiliateUI();
-        }
-
-        function saveAffiliateStats() {
-            localStorage.setItem('paulina_affiliate', JSON.stringify(affiliateStats));
-        }
-
-        function updateAffiliateUI() {
-            const stats = document.querySelectorAll('.affiliate-stat .number');
-            if (stats.length >= 4) {
-                stats[0].textContent = affiliateStats.visits || 0;
-                stats[1].textContent = affiliateStats.sales || 0;
-                stats[2].textContent = formatPrice(affiliateStats.earnings || 0);
-                const conversion = affiliateStats.visits > 0 ? ((affiliateStats.sales / affiliateStats.visits) * 100)
-                    .toFixed(1) : 0;
-                stats[3].textContent = `${conversion}%`;
-            }
-        }
-
-        function updateAffiliateLink() {
-            const input = document.getElementById('affiliateLink');
-            if (input) {
-                const code = currentUser?.affiliateCode || 'invitado';
-                input.value = `https://paulina-accesorios.com/ref/${code}`;
-            }
-        }
-
-        function initAffiliate() {
-            const copyBtn = document.getElementById('copyAffiliateLink');
-            const shareBtn = document.getElementById('shareAffiliateLink');
-            const linkInput = document.getElementById('affiliateLink');
-
-            copyBtn.addEventListener('click', function() {
-                if (!currentUser) {
-                    mostrarNotificacion('⚠️ Inicia sesión para generar tu enlace', '⚠️');
-                    return;
-                }
-                const link = linkInput.value;
-                if (navigator.clipboard) {
-                    navigator.clipboard.writeText(link).then(() => {
-                        mostrarNotificacion('✅ Enlace copiado al portapapeles', '📋');
-                    });
-                } else {
-                    linkInput.select();
-                    document.execCommand('copy');
-                    mostrarNotificacion('✅ Enlace copiado al portapapeles', '📋');
-                }
-            });
-
-            shareBtn.addEventListener('click', function() {
-                if (!currentUser) {
-                    mostrarNotificacion('⚠️ Inicia sesión para compartir', '⚠️');
-                    return;
-                }
-                const link = linkInput.value;
-                if (navigator.share) {
-                    navigator.share({
-                        title: '✨ Paulina Accesorios - Belleza y Estilo Premium',
-                        text: '¡Descubre los mejores accesorios de belleza! Usa mi enlace y obtén descuentos exclusivos.',
-                        url: link
-                    }).catch(() => {});
-                } else {
-                    // Enviar por WhatsApp
-                    const message = `✨ ¡Hola! Te invito a descubrir Paulina Accesorios, la mejor tienda de belleza y estilo. Usa mi enlace para obtener descuentos exclusivos: ${link}`;
-                    const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
-                    window.open(url, '_blank');
-                }
-            });
-
-            // Simular visitas al enlace de afiliado (para demostración)
-            // En una implementación real, esto se haría desde el backend
-            setInterval(() => {
-                if (Math.random() > 0.7) {
-                    affiliateStats.visits = (affiliateStats.visits || 0) + 1;
-                    saveAffiliateStats();
-                    updateAffiliateUI();
-                }
-            }, 30000);
-        }
-
-        // ============================================
-        // DASHBOARD DE ADMINISTRACIÓN
-        // ============================================
-
-        function loadAdminData() {
-            // Actualizar estadísticas
-            const stats = document.querySelectorAll('.admin-stat .number');
-            if (stats.length >= 6) {
-                stats[0].textContent = productos.length;
-                stats[1].textContent = Math.floor(Math.random() * 50) + 10;
-                stats[2].textContent = currentUser ? '1' : '0';
-                stats[3].textContent = formatPrice(Math.random() * 1000 + 500);
-                stats[4].textContent = reviews.length;
-                stats[5].textContent = Math.floor(Math.random() * 10) + 1;
-            }
-
-            // Cargar tabla de productos
-            const table = document.getElementById('adminProductTable');
-            if (table) {
-                let html = '';
-                productos.slice(0, 10).forEach((product, index) => {
-                    const status = product.stock > 0 ? 'approved' : 'rejected';
-                    const statusText = product.stock > 0 ? 'En stock' : 'Agotado';
-                    html += `
-                        <tr>
-                            <td>${index + 1}</td>
-                            <td>${product.nombre}</td>
-                            <td>${formatPrice(product.precio)}</td>
-                            <td>${product.stock}</td>
-                            <td><span class="status ${status}">${statusText}</span></td>
-                            <td>
-                                <button class="btn btn-primary btn-sm" onclick="editProduct(${product.id})">✏️</button>
-                                <button class="btn btn-danger btn-sm" onclick="deleteProduct(${product.id})">🗑️</button>
-                            </td>
-                        </tr>
-                    `;
-                });
-                table.innerHTML = html;
-            }
-        }
-
-        function editProduct(id) {
-            const product = productos.find(p => p.id === id);
-            if (!product) return;
-
-            const newPrice = prompt('💰 Nuevo precio:', product.precio);
-            if (newPrice !== null && !isNaN(newPrice)) {
-                product.precio = parseFloat(newPrice);
-                const newStock = prompt('📦 Nuevo stock:', product.stock);
-                if (newStock !== null && !isNaN(newStock)) {
-                    product.stock = parseInt(newStock);
-                    loadAdminData();
-                    renderizarProductos(filteredProducts);
-                    mostrarNotificacion('✅ Producto actualizado', '✅');
-                }
-            }
-        }
-
-        function deleteProduct(id) {
-            if (confirm('¿Estás seguro de eliminar este producto?')) {
-                const index = productos.findIndex(p => p.id === id);
-                if (index > -1) {
-                    productos.splice(index, 1);
-                    loadAdminData();
-                    renderizarProductos(filteredProducts);
-                    mostrarNotificacion('🗑️ Producto eliminado', '🗑️');
-                }
-            }
-        }
-
-        // ============================================
         // LIGHTBOX
         // ============================================
 
@@ -5988,11 +5898,6 @@
                     <img src="${image}" alt="${name}" loading="lazy" />
                     <span class="lb-name">${name}</span>
                     ${price ? `<span class="lb-price">${formatPrice(parseFloat(price))}</span>` : ''}
-                `;
-            } else if (image && image.startsWith('data:image')) {
-                content.innerHTML = `
-                    <img src="${image}" alt="Imagen de reseña" loading="lazy" />
-                    <span class="lb-name">${name}</span>
                 `;
             } else {
                 content.innerHTML = `
@@ -6021,8 +5926,6 @@
         // ============================================
         // NOTIFICACIONES
         // ============================================
-
-        let notificationTimeout = null;
 
         function mostrarNotificacion(mensaje, icono = '✅') {
             const notification = document.getElementById('notification');
@@ -6157,15 +6060,15 @@
                 message += `💰 TOTAL: ${formatPrice(total)}%0A`;
                 message += `━━━━━━━━━━━━━━━━━━━━━━%0A%0A`;
 
-                if (total >= CONFIG.FREE_SHIPPING_THRESHOLD) {
-                    message += `🚚 Envío gratis (por compra > ${formatPrice(CONFIG.FREE_SHIPPING_THRESHOLD)})%0A`;
+                if (total >= 50) {
+                    message += `🚚 Envío gratis (por compra > $50)%0A`;
                 }
 
                 message += `📍 ¿Cómo puedo pagar? (Yape, Plin, Transferencia)%0A`;
                 message += `📦 ¿Tienes stock disponible?%0A%0A`;
                 message += `💖 ¡Gracias! Espero tu respuesta.`;
 
-                const url = `https://wa.me/${CONFIG.PHONE}?text=${message}`;
+                const url = `https://wa.me/51923861016?text=${message}`;
                 window.open(url, '_blank');
 
                 cart = [];
@@ -6198,7 +6101,7 @@
                 message += `📩 Mensaje:%0A${mensaje}%0A%0A`;
                 message += `📍 ¿Podrías darme más información sobre tu catálogo y precios?`;
 
-                const url = `https://wa.me/${CONFIG.PHONE}?text=${message}`;
+                const url = `https://wa.me/51923861016?text=${message}`;
                 window.open(url, '_blank');
 
                 mostrarNotificacion('✅ Mensaje enviado por WhatsApp', '📨');
@@ -6402,7 +6305,7 @@
             if (!couponEl) return;
 
             couponEl.addEventListener('click', () => {
-                const code = CONFIG.COUPON;
+                const code = 'PAULINA10';
                 if (navigator.clipboard && navigator.clipboard.writeText) {
                     navigator.clipboard.writeText(code).then(() => {
                         mostrarNotificacion('✅ Código copiado al portapapeles', '📋');
@@ -6508,7 +6411,6 @@
         // ============================================
 
         function initSocialLinks() {
-            // Ya están en el HTML, solo agregar funcionalidad extra si es necesario
             console.log('🌐 Redes sociales cargadas');
         }
 
@@ -6520,8 +6422,6 @@
             // Cargar estado
             loadUser();
             loadCart();
-            loadReviews();
-            loadAffiliateStats();
 
             // Renderizar
             renderizarProductos(productos);
@@ -6547,13 +6447,8 @@
             initCoupon();
             initFaq();
             initChatAI();
-            initReviews();
-            initAffiliate();
             initNavbarScroll();
             initSocialLinks();
-
-            // Actualizar enlace de afiliado
-            updateAffiliateLink();
 
             // Evento usuario
             document.getElementById('userBtn').addEventListener('click', () => {
@@ -6565,17 +6460,20 @@
                 }
             });
 
-            console.log('✨ Paulina Accesorios - Ultimate Edition 🌍');
+            console.log('✨ Paulina Accesorios - Ultimate Edition con IA Avanzada 🌍');
             console.log(`📦 ${productos.length} productos cargados`);
             console.log(`👤 Usuario: ${currentUser ? currentUser.name : 'Invitado'}`);
             console.log(`🛒 Carrito: ${cart.reduce((s, i) => s + i.quantity, 0)} items`);
-            console.log(`🤖 Chat con IA: Activado`);
-            console.log(`⭐ Sistema de reseñas: ${reviews.length} reseñas`);
-            console.log(`🤝 Sistema de afiliados: Activado`);
-            console.log(`📊 Dashboard de administración: ${currentUser?.isAdmin ? '✅' : '❌'}`);
+            console.log('🤖 Chat con IA: Activado con base de conocimiento completa');
             console.log('📱 Optimizado para todos los dispositivos');
             console.log('🏆 Nivel: Ultimate - Top 1 Global');
             console.log('🚀 Todas las características implementadas');
+            console.log('💡 Preguntas que puedes hacerle a la IA:');
+            console.log('   - "¿Tienen collares?"');
+            console.log('   - "¿Cuánto cuestan los aretes?"');
+            console.log('   - "¿Cómo puedo pagar?"');
+            console.log('   - "¿Cuándo llega mi pedido?"');
+            console.log('   - "Recomiéndame un producto"');
         });
     </script>
 
