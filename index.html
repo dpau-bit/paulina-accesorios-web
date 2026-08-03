@@ -23,7 +23,7 @@
 
     <style>
         /* ============================================
-           DISEÑO PREMIUM OPTIMIZADO PARA CELULAR
+           DISEÑO PREMIUM 2026 - MUCHO MÁS BONITO
            ============================================ */
 
         *,
@@ -42,30 +42,37 @@
             --secondary: #6a1b4d;
             --gold: #d4af37;
             --gold-gradient: linear-gradient(135deg, #d4af37, #f5d76e);
-            --bg-primary: #fef8fb;
-            --bg-secondary: #ffffff;
-            --bg-card: #ffffff;
+            --rose: #fce4ec;
+            --rose-light: #fef8fb;
+            --rose-dark: #f8e8f0;
+            --white: #ffffff;
+            --dark: #1a0b1a;
             --text-primary: #2d1b2e;
             --text-secondary: #5a3a5a;
             --text-tertiary: #8a6a8a;
+            --bg-primary: #fef8fb;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
             --shadow-sm: 0 2px 12px rgba(200, 120, 180, 0.08);
             --shadow-md: 0 8px 32px rgba(200, 120, 180, 0.12);
             --shadow-lg: 0 20px 60px rgba(194, 24, 91, 0.15);
             --shadow-xl: 0 30px 80px rgba(194, 24, 91, 0.2);
+            --shadow-2xl: 0 50px 120px rgba(194, 24, 91, 0.15);
             --radius-sm: 12px;
             --radius-md: 20px;
-            --radius-lg: 28px;
-            --radius-xl: 35px;
+            --radius-lg: 30px;
+            --radius-xl: 40px;
             --radius-full: 9999px;
             --space-xs: 4px;
             --space-sm: 8px;
-            --space-md: 14px;
-            --space-lg: 20px;
-            --space-xl: 24px;
-            --space-2xl: 32px;
-            --space-3xl: 40px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --space-3xl: 64px;
             --font-serif: 'Playfair Display', serif;
             --font-sans: 'Inter', sans-serif;
+            --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
             --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             --transition-spring: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
             --z-sticky: 200;
@@ -85,27 +92,30 @@
             --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.4);
             --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.5);
             --shadow-xl: 0 30px 80px rgba(0, 0, 0, 0.6);
+            --shadow-2xl: 0 50px 120px rgba(0, 0, 0, 0.5);
         }
 
         html {
             scroll-behavior: smooth;
-            scroll-padding-top: 65px;
+            scroll-padding-top: 80px;
         }
 
         body {
             font-family: var(--font-sans);
             background: var(--bg-primary);
             color: var(--text-primary);
-            line-height: 1.6;
+            line-height: 1.7;
             transition: background 0.4s ease, color 0.4s ease;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            background-image: radial-gradient(circle at 10% 20%, rgba(255, 182, 193, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 90% 80%, rgba(212, 175, 55, 0.03) 0%, transparent 50%);
         }
 
         ::-webkit-scrollbar {
-            width: 4px;
-            height: 4px;
+            width: 8px;
+            height: 8px;
         }
         ::-webkit-scrollbar-track {
             background: var(--bg-primary);
@@ -113,6 +123,10 @@
         ::-webkit-scrollbar-thumb {
             background: var(--primary-gradient);
             border-radius: var(--radius-full);
+            border: 2px solid var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
         }
 
         ::selection {
@@ -123,7 +137,7 @@
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(30px) scale(0.97);
+                transform: translateY(40px) scale(0.97);
             }
             to {
                 opacity: 1;
@@ -157,7 +171,7 @@
                 transform: translateY(0) rotate(-2deg);
             }
             50% {
-                transform: translateY(-15px) rotate(2deg);
+                transform: translateY(-20px) rotate(2deg);
             }
         }
 
@@ -194,6 +208,16 @@
             }
         }
 
+        @keyframes gradientBG {
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
         /* ===== PRELOADER ===== */
         .preloader {
             position: fixed;
@@ -216,7 +240,7 @@
         }
         .preloader-logo {
             font-family: var(--font-serif);
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: 900;
             background: var(--primary-gradient);
             -webkit-background-clip: text;
@@ -226,8 +250,8 @@
             animation: pulse 1.5s ease-in-out infinite;
         }
         .preloader-bar {
-            width: 160px;
-            height: 3px;
+            width: 200px;
+            height: 4px;
             background: var(--bg-tertiary);
             border-radius: var(--radius-full);
             overflow: hidden;
@@ -248,7 +272,7 @@
             margin-top: var(--space-md);
             font-size: var(--font-size-sm);
             color: var(--text-tertiary);
-            letter-spacing: 3px;
+            letter-spacing: 4px;
             text-transform: uppercase;
         }
 
@@ -257,29 +281,29 @@
             background: var(--gold-gradient);
             color: #fff;
             text-align: center;
-            padding: 6px var(--space-md);
+            padding: var(--space-sm) var(--space-md);
             font-weight: 700;
-            font-size: 11px;
+            font-size: var(--font-size-sm);
             position: sticky;
             top: 0;
             z-index: var(--z-sticky);
-            letter-spacing: 0.3px;
-            box-shadow: 0 2px 15px rgba(212, 175, 55, 0.15);
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 20px rgba(212, 175, 55, 0.2);
             background-size: 200% 200%;
             animation: shimmer 3s ease-in-out infinite;
         }
         .free-shipping .highlight {
             font-weight: 800;
             text-decoration: underline;
-            text-underline-offset: 2px;
+            text-underline-offset: 3px;
         }
 
-        /* ===== NAVBAR ===== */
+        /* ===== NAVBAR PREMIUM ===== */
         .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 4%;
+            padding: var(--space-sm) 5%;
             background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -287,7 +311,7 @@
             top: 0;
             z-index: var(--z-sticky);
             border-bottom: 1px solid rgba(200, 120, 180, 0.06);
-            min-height: 56px;
+            min-height: 70px;
             transition: var(--transition-base);
             box-shadow: var(--shadow-sm);
         }
@@ -301,7 +325,7 @@
 
         .logo {
             font-family: var(--font-serif);
-            font-size: 1.1rem;
+            font-size: var(--font-size-xl);
             font-weight: 900;
             background: var(--primary-gradient);
             -webkit-background-clip: text;
@@ -311,22 +335,21 @@
             letter-spacing: -0.5px;
             transition: var(--transition-base);
             text-decoration: none;
-            line-height: 1.1;
         }
         .logo:hover {
-            transform: scale(1.02);
+            transform: scale(1.03);
         }
         .logo-sub {
-            font-size: 9px;
+            font-size: var(--font-size-xs);
             font-weight: 400;
             color: var(--text-tertiary);
             -webkit-text-fill-color: var(--text-tertiary);
             display: block;
-            letter-spacing: 1.5px;
+            letter-spacing: 2px;
         }
 
         .nav-links {
-            display: none;
+            display: flex;
             gap: var(--space-lg);
             list-style: none;
             font-weight: 600;
@@ -361,23 +384,24 @@
         .nav-right {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: var(--space-sm);
             flex-wrap: wrap;
         }
 
         .search-box {
             display: flex;
             align-items: center;
-            gap: 2px;
+            gap: var(--space-xs);
             background: rgba(214, 51, 132, 0.04);
             border-radius: var(--radius-full);
-            padding: 2px 4px 2px 10px;
-            border: 1.5px solid transparent;
+            padding: var(--space-xs) var(--space-xs) var(--space-xs) var(--space-sm);
+            border: 2px solid transparent;
             transition: var(--transition-base);
         }
         .search-box:focus-within {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(194, 24, 91, 0.06);
+            box-shadow: 0 0 0 4px rgba(194, 24, 91, 0.06);
+            transform: scale(1.02);
         }
         [data-theme="dark"] .search-box {
             background: rgba(255, 255, 255, 0.03);
@@ -386,12 +410,12 @@
         .search-box input {
             border: none;
             background: transparent;
-            padding: 4px 0;
-            font-size: 11px;
+            padding: var(--space-xs) 0;
+            font-size: var(--font-size-sm);
             font-family: var(--font-sans);
             color: var(--text-primary);
             outline: none;
-            width: 60px;
+            width: 120px;
             font-weight: 400;
         }
         .search-box input::placeholder {
@@ -401,64 +425,83 @@
         .search-box button {
             background: none;
             border: none;
-            font-size: 13px;
+            font-size: var(--font-size-md);
             cursor: pointer;
-            padding: 2px 4px;
+            padding: var(--space-xs) var(--space-sm);
             color: var(--text-primary);
             transition: var(--transition-base);
         }
         .search-box button:hover {
             color: var(--primary);
+            transform: scale(1.15);
         }
 
         .user-btn {
             display: flex;
             align-items: center;
-            gap: 4px;
-            padding: 3px 8px;
+            gap: var(--space-xs);
+            padding: var(--space-xs) var(--space-sm);
             border-radius: var(--radius-full);
             background: rgba(214, 51, 132, 0.04);
             border: 1.5px solid transparent;
             cursor: pointer;
             transition: var(--transition-base);
             font-weight: 600;
-            font-size: 10px;
+            font-size: var(--font-size-sm);
             color: var(--text-primary);
             font-family: var(--font-sans);
+            position: relative;
         }
         [data-theme="dark"] .user-btn {
             background: rgba(255, 255, 255, 0.03);
         }
         .user-btn:hover {
             border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
         .user-btn .user-avatar {
-            width: 22px;
-            height: 22px;
+            width: 26px;
+            height: 26px;
             border-radius: 50%;
             background: var(--primary-gradient);
             display: flex;
             align-items: center;
             justify-content: center;
             color: #fff;
-            font-size: 10px;
+            font-size: var(--font-size-sm);
             font-weight: 700;
         }
         .user-btn .user-info {
-            display: none;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+        .user-btn .user-name {
+            font-weight: 600;
+            font-size: var(--font-size-sm);
+            max-width: 70px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .user-btn .user-level {
+            font-size: var(--font-size-xs);
+            opacity: 0.7;
+            font-weight: 400;
         }
 
         .cart-icon {
-            font-size: 16px;
+            font-size: var(--font-size-xl);
             cursor: pointer;
             transition: var(--transition-base);
             background: rgba(214, 51, 132, 0.04);
-            padding: 4px 8px;
+            padding: var(--space-xs) var(--space-sm);
             border-radius: var(--radius-full);
             border: 1.5px solid transparent;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: var(--space-xs);
             font-weight: 600;
             position: relative;
         }
@@ -467,44 +510,46 @@
         }
         .cart-icon:hover {
             border-color: var(--primary);
+            transform: scale(1.05);
+            box-shadow: var(--shadow-md);
         }
         .cart-count {
             background: var(--primary-gradient);
             color: #fff;
             border-radius: 50%;
-            padding: 0 5px;
-            font-size: 9px;
+            padding: 0 var(--space-sm);
+            font-size: var(--font-size-xs);
             font-weight: 700;
-            min-width: 16px;
+            min-width: 18px;
             text-align: center;
-            line-height: 16px;
+            line-height: 18px;
         }
 
         .hamburger {
-            display: flex;
+            display: none;
             flex-direction: column;
             cursor: pointer;
             gap: 4px;
-            padding: 4px;
+            padding: var(--space-xs);
             background: none;
             border: none;
             z-index: var(--z-sticky);
         }
         .hamburger span {
-            width: 22px;
+            width: 26px;
             height: 2.5px;
             background: var(--text-primary);
             border-radius: var(--radius-full);
             transition: var(--transition-base);
         }
         .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(4px, 4px);
+            transform: rotate(45deg) translate(5px, 5px);
         }
         .hamburger.active span:nth-child(2) {
             opacity: 0;
         }
         .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(4px, -4px);
+            transform: rotate(-45deg) translate(5px, -5px);
         }
 
         .mobile-menu {
@@ -530,7 +575,7 @@
             animation: fadeInScale 0.3s ease;
         }
         .mobile-menu a {
-            font-size: 1.5rem;
+            font-size: var(--font-size-2xl);
             text-decoration: none;
             color: var(--text-primary);
             font-weight: 600;
@@ -548,50 +593,42 @@
             cursor: pointer;
         }
 
-        /* ===== HERO ===== */
+        /* ===== HERO PREMIUM ===== */
         .hero {
             display: flex;
-            flex-direction: column;
+            flex-wrap: wrap;
             align-items: center;
-            text-align: center;
-            padding: var(--space-2xl) 4% var(--space-3xl);
-            background: linear-gradient(135deg, #fce4ec 0%, #f8e8f0 50%, #f3e5f5 100%);
+            justify-content: space-between;
+            padding: var(--space-3xl) 5% var(--space-4xl);
+            background: linear-gradient(135deg, #fce4ec 0%, #f8e8f0 25%, #f3e5f5 50%, #e8eaf6 75%, #fce4ec 100%);
             background-size: 400% 400%;
-            animation: heroGradient 15s ease infinite;
+            animation: gradientBG 15s ease infinite;
             border-radius: 0 0 var(--radius-xl) var(--radius-xl);
-            margin: 0 var(--space-sm) var(--space-xl);
+            margin: 0 var(--space-lg) var(--space-2xl);
             position: relative;
             overflow: hidden;
             transition: var(--transition-base);
             box-shadow: var(--shadow-md);
+            border: 1px solid rgba(255, 182, 193, 0.05);
         }
         [data-theme="dark"] .hero {
             background: linear-gradient(135deg, #1a0b1a, #121212, #1a0b1a);
             border: 1px solid rgba(255, 255, 255, 0.03);
         }
-        @keyframes heroGradient {
-            0%,
-            100% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-        }
 
         .hero::before {
             content: '✦';
-            font-size: 12rem;
+            font-size: 20rem;
             position: absolute;
-            right: -3rem;
-            bottom: -4rem;
+            right: -4rem;
+            bottom: -6rem;
             opacity: 0.03;
             transform: rotate(15deg);
             animation: float 8s ease-in-out infinite;
         }
         .hero::after {
             content: '🌸';
-            font-size: 7rem;
+            font-size: 10rem;
             position: absolute;
             left: -2rem;
             top: -2rem;
@@ -600,6 +637,7 @@
         }
 
         .hero-content {
+            flex: 1 1 400px;
             z-index: 2;
             animation: fadeInUp 0.8s ease;
         }
@@ -608,27 +646,28 @@
             display: inline-flex;
             align-items: center;
             gap: var(--space-xs);
-            font-size: 9px;
+            font-size: var(--font-size-xs);
             font-weight: 700;
             color: var(--primary);
             background: rgba(214, 51, 132, 0.08);
-            padding: 4px 14px;
+            padding: var(--space-xs) var(--space-lg);
             border-radius: var(--radius-full);
             margin-bottom: var(--space-md);
             letter-spacing: 2px;
             text-transform: uppercase;
             border: 1px solid rgba(214, 51, 132, 0.08);
+            backdrop-filter: blur(8px);
         }
 
         .hero-title {
             font-family: var(--font-serif);
-            font-size: 2rem;
+            font-size: var(--font-size-5xl);
             line-height: 1.05;
             background: var(--primary-gradient);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: var(--space-sm);
+            margin-bottom: var(--space-md);
             animation: shimmer 8s ease-in-out infinite;
             background-size: 200% 200%;
         }
@@ -640,73 +679,78 @@
         }
 
         .hero-description {
-            font-size: 13px;
+            font-size: var(--font-size-lg);
             color: var(--text-secondary);
-            max-width: 320px;
-            margin: 0 auto var(--space-xl);
+            max-width: 440px;
+            margin-bottom: var(--space-xl);
             font-weight: 300;
-            line-height: 1.7;
+            line-height: 1.8;
         }
 
         .hero-stats {
             display: flex;
-            gap: var(--space-sm);
+            gap: var(--space-md);
             margin-top: var(--space-md);
             flex-wrap: wrap;
-            justify-content: center;
         }
         .hero-stats .stat {
             text-align: center;
             background: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(12px);
-            padding: 6px 14px;
+            padding: var(--space-sm) var(--space-md);
             border-radius: var(--radius-md);
             border: 1px solid rgba(255, 255, 255, 0.15);
             transition: var(--transition-base);
             box-shadow: var(--shadow-sm);
-            flex: 1;
-            min-width: 60px;
         }
         [data-theme="dark"] .hero-stats .stat {
             background: rgba(255, 255, 255, 0.03);
             border-color: rgba(255, 255, 255, 0.03);
         }
+        .hero-stats .stat:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
         .hero-stats .stat .number {
-            font-size: 1.1rem;
+            font-size: var(--font-size-2xl);
             font-weight: 800;
             color: var(--primary);
             display: block;
             font-family: var(--font-serif);
         }
         .hero-stats .stat .label {
-            font-size: 8px;
+            font-size: var(--font-size-xs);
             color: var(--text-tertiary);
             font-weight: 500;
         }
 
         .hero-actions {
             display: flex;
-            gap: var(--space-sm);
+            gap: var(--space-md);
             margin-top: var(--space-xl);
             flex-wrap: wrap;
-            justify-content: center;
         }
 
         .hero-image {
-            display: none;
+            flex: 1 1 280px;
+            text-align: center;
+            z-index: 2;
+            font-size: 8rem;
+            filter: drop-shadow(0 30px 80px rgba(194, 24, 91, 0.1));
+            animation: float 6s ease-in-out infinite;
         }
 
-        /* ===== BUTTONS ===== */
+        /* ===== BUTTONS PREMIUM ===== */
         .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: var(--space-xs);
-            padding: 10px 20px;
+            padding: var(--space-md) var(--space-2xl);
             border: none;
             border-radius: var(--radius-full);
             font-weight: 700;
-            font-size: 12px;
+            font-size: var(--font-size-md);
             text-decoration: none;
             cursor: pointer;
             transition: var(--transition-spring);
@@ -728,6 +772,10 @@
         .btn:hover::after {
             left: 100%;
         }
+        .btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: var(--shadow-md);
+        }
         .btn:active {
             transform: scale(0.95);
         }
@@ -735,10 +783,10 @@
         .btn-primary {
             background: var(--primary-gradient);
             color: #fff;
-            box-shadow: 0 6px 30px rgba(194, 24, 91, 0.25);
+            box-shadow: 0 8px 40px rgba(194, 24, 91, 0.3);
         }
         .btn-primary:hover {
-            box-shadow: 0 8px 40px rgba(194, 24, 91, 0.35);
+            box-shadow: 0 12px 60px rgba(194, 24, 91, 0.4);
         }
 
         .btn-secondary {
@@ -761,15 +809,15 @@
         .btn-gold {
             background: var(--gold-gradient);
             color: #fff;
-            box-shadow: 0 6px 30px rgba(212, 175, 55, 0.25);
+            box-shadow: 0 8px 40px rgba(212, 175, 55, 0.3);
         }
         .btn-gold:hover {
-            box-shadow: 0 8px 40px rgba(212, 175, 55, 0.35);
+            box-shadow: 0 12px 60px rgba(212, 175, 55, 0.4);
         }
 
         /* ===== SECTIONS ===== */
         .section {
-            padding: var(--space-2xl) 4%;
+            padding: var(--space-3xl) 5%;
             max-width: 1400px;
             margin: 0 auto;
             animation: fadeInUp 0.8s ease;
@@ -777,16 +825,16 @@
 
         .section-header {
             text-align: center;
-            margin-bottom: var(--space-xl);
+            margin-bottom: var(--space-2xl);
         }
 
         .section-tag {
             display: inline-block;
-            font-size: 9px;
+            font-size: var(--font-size-xs);
             font-weight: 700;
             color: var(--primary);
             background: rgba(214, 51, 132, 0.08);
-            padding: 4px 14px;
+            padding: var(--space-xs) var(--space-md);
             border-radius: var(--radius-full);
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -795,7 +843,7 @@
 
         .section-title {
             font-family: var(--font-serif);
-            font-size: 1.6rem;
+            font-size: var(--font-size-3xl);
             color: var(--text-primary);
             font-weight: 700;
             line-height: 1.1;
@@ -810,17 +858,17 @@
             bottom: 2px;
             left: 0;
             width: 100%;
-            height: 3px;
+            height: 4px;
             background: var(--primary-gradient);
             border-radius: var(--radius-full);
             opacity: 0.2;
         }
 
         .section-subtitle {
-            font-size: 13px;
+            font-size: var(--font-size-lg);
             color: var(--text-secondary);
             font-weight: 300;
-            max-width: 400px;
+            max-width: 560px;
             margin: var(--space-sm) auto 0;
         }
 
@@ -829,16 +877,16 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 6px;
-            margin-bottom: var(--space-lg);
+            gap: var(--space-sm);
+            margin-bottom: var(--space-xl);
         }
         .category-pills .pill {
-            padding: 6px 14px;
+            padding: var(--space-sm) var(--space-xl);
             border-radius: var(--radius-full);
             background: var(--bg-secondary);
             border: 1.5px solid rgba(214, 51, 132, 0.06);
             font-weight: 600;
-            font-size: 10px;
+            font-size: var(--font-size-sm);
             color: var(--text-primary);
             cursor: pointer;
             transition: var(--transition-base);
@@ -850,27 +898,27 @@
             border-color: rgba(255, 255, 255, 0.05);
         }
         .category-pills .pill:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
             box-shadow: var(--shadow-md);
         }
         .category-pills .pill.active {
             background: var(--primary-gradient);
             color: #fff;
             border-color: transparent;
-            box-shadow: 0 4px 20px rgba(194, 24, 91, 0.15);
+            box-shadow: 0 4px 30px rgba(194, 24, 91, 0.2);
         }
 
-        /* ===== PRODUCT GRID ===== */
+        /* ===== PRODUCT GRID PREMIUM ===== */
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: var(--space-xl);
         }
 
         .product-card {
             background: var(--bg-card);
-            border-radius: var(--radius-md);
-            padding: var(--space-md) 12px var(--space-md);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl) var(--space-lg) var(--space-lg);
             text-align: center;
             box-shadow: var(--shadow-sm);
             transition: var(--transition-spring);
@@ -878,6 +926,7 @@
             position: relative;
             animation: fadeInUp 0.7s ease forwards;
             opacity: 0;
+            backdrop-filter: blur(4px);
         }
         .product-card:nth-child(1) { animation-delay: 0.05s; }
         .product-card:nth-child(2) { animation-delay: 0.1s; }
@@ -892,26 +941,26 @@
         }
 
         .product-card:hover {
-            transform: translateY(-6px) scale(1.02);
-            box-shadow: var(--shadow-lg);
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: var(--shadow-xl);
             border-color: rgba(194, 24, 91, 0.08);
         }
 
         .product-image {
             position: relative;
-            width: 85px;
-            height: 85px;
-            margin: 0 auto var(--space-sm);
+            width: 130px;
+            height: 130px;
+            margin: 0 auto var(--space-md);
             border-radius: 50%;
             overflow: hidden;
             cursor: pointer;
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-md);
             transition: var(--transition-base);
-            border: 2px solid rgba(255, 182, 193, 0.1);
+            border: 3px solid rgba(255, 182, 193, 0.1);
         }
         .product-image:hover {
             transform: scale(1.05);
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-lg);
             border-color: var(--primary);
         }
         .product-image img {
@@ -941,26 +990,26 @@
             opacity: 1;
         }
         .product-image .image-overlay span {
-            font-size: 1.5rem;
+            font-size: var(--font-size-2xl);
             color: #fff;
         }
 
         .product-badges {
             position: absolute;
-            top: 6px;
-            right: 6px;
+            top: var(--space-md);
+            right: var(--space-md);
             display: flex;
             flex-direction: column;
-            gap: 3px;
+            gap: var(--space-xs);
             z-index: 1;
         }
         .product-badges .badge {
-            font-size: 7px;
+            font-size: var(--font-size-xs);
             font-weight: 700;
-            padding: 2px 8px;
+            padding: var(--space-xs) var(--space-md);
             border-radius: var(--radius-full);
             text-transform: uppercase;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.5px;
             color: #fff;
             box-shadow: var(--shadow-sm);
         }
@@ -973,14 +1022,14 @@
 
         .product-wishlist {
             position: absolute;
-            top: 6px;
-            left: 6px;
-            width: 28px;
-            height: 28px;
+            top: var(--space-md);
+            left: var(--space-md);
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background: var(--bg-secondary);
             border: none;
-            font-size: 11px;
+            font-size: var(--font-size-md);
             cursor: pointer;
             transition: var(--transition-base);
             box-shadow: var(--shadow-sm);
@@ -994,6 +1043,7 @@
         }
         .product-wishlist:hover {
             transform: scale(1.15);
+            box-shadow: var(--shadow-md);
         }
         .product-wishlist.active {
             color: #e53935;
@@ -1002,27 +1052,22 @@
 
         .product-name {
             font-family: var(--font-serif);
-            font-size: 12px;
+            font-size: var(--font-size-lg);
             color: var(--text-primary);
-            margin-bottom: 2px;
+            margin-bottom: var(--space-xs);
             transition: var(--transition-base);
-            line-height: 1.2;
         }
         .product-description {
-            font-size: 9px;
+            font-size: var(--font-size-sm);
             color: var(--text-secondary);
             font-weight: 300;
-            margin-bottom: 4px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            margin-bottom: var(--space-sm);
         }
         .product-price {
-            font-size: 1.1rem;
+            font-size: var(--font-size-2xl);
             font-weight: 800;
             color: var(--primary);
-            margin-bottom: 6px;
+            margin-bottom: var(--space-sm);
             display: block;
             font-family: var(--font-serif);
         }
@@ -1030,26 +1075,26 @@
             color: var(--primary-light);
         }
         .product-price .old {
-            font-size: 10px;
+            font-size: var(--font-size-md);
             color: var(--text-tertiary);
             text-decoration: line-through;
             font-weight: 400;
-            margin-left: 4px;
+            margin-left: var(--space-xs);
         }
         .product-price .discount {
-            font-size: 9px;
+            font-size: var(--font-size-sm);
             color: #e53935;
             font-weight: 700;
-            margin-left: 4px;
+            margin-left: var(--space-xs);
             background: rgba(229, 57, 53, 0.06);
-            padding: 2px 6px;
+            padding: var(--space-xs) var(--space-sm);
             border-radius: var(--radius-full);
         }
 
         .product-stock {
-            font-size: 9px;
+            font-size: var(--font-size-sm);
             font-weight: 600;
-            margin-bottom: 6px;
+            margin-bottom: var(--space-md);
         }
         .product-stock.in-stock {
             color: #2e7d32;
@@ -1065,25 +1110,24 @@
         .product-meta {
             display: flex;
             justify-content: center;
-            gap: var(--space-sm);
-            font-size: 8px;
+            gap: var(--space-md);
+            font-size: var(--font-size-xs);
             color: var(--text-tertiary);
-            margin-bottom: 4px;
+            margin-bottom: var(--space-sm);
         }
 
         .btn-add {
-            padding: 5px 14px;
+            padding: var(--space-sm) var(--space-xl);
             border-radius: var(--radius-full);
             border: none;
             font-weight: 700;
-            font-size: 9px;
+            font-size: var(--font-size-sm);
             font-family: var(--font-sans);
             cursor: pointer;
             transition: var(--transition-spring);
             background: rgba(214, 51, 132, 0.04);
             color: var(--text-primary);
             border: 1.5px solid rgba(194, 24, 91, 0.04);
-            width: 100%;
         }
         [data-theme="dark"] .btn-add {
             background: rgba(255, 255, 255, 0.03);
@@ -1093,8 +1137,8 @@
         .btn-add:hover:not(:disabled) {
             background: var(--primary-gradient);
             color: #fff;
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
         }
         .btn-add:active:not(:disabled) {
             transform: scale(0.95);
@@ -1110,43 +1154,43 @@
         }
 
         /* ============================================
-           CHAT CON IA - ESTILOS CELULAR
+           CHAT CON IA - ESTILOS PREMIUM
            ============================================ */
 
         .chat-float-ai {
             position: fixed;
-            bottom: 16px;
-            left: 16px;
+            bottom: var(--space-xl);
+            left: var(--space-xl);
             background: var(--primary-gradient);
             color: #fff;
-            width: 50px;
-            height: 50px;
+            width: 64px;
+            height: 64px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.3rem;
+            font-size: var(--font-size-2xl);
             text-decoration: none;
-            box-shadow: var(--shadow-lg);
+            box-shadow: var(--shadow-xl);
             transition: var(--transition-spring);
             z-index: 50;
             cursor: pointer;
             border: none;
         }
         .chat-float-ai:hover {
-            transform: scale(1.08) rotate(-5deg);
-            box-shadow: var(--shadow-xl);
+            transform: scale(1.1) rotate(-5deg);
+            box-shadow: var(--shadow-2xl);
         }
         .chat-float-ai .chat-badge {
             position: absolute;
-            top: -3px;
-            right: -3px;
+            top: -4px;
+            right: -4px;
             background: var(--gold);
             color: #fff;
             border-radius: 50%;
-            width: 18px;
-            height: 18px;
-            font-size: 8px;
+            width: 24px;
+            height: 24px;
+            font-size: var(--font-size-xs);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1157,19 +1201,20 @@
         .chat-modal-ai {
             display: none;
             position: fixed;
-            bottom: 72px;
-            left: 12px;
-            right: 12px;
-            width: auto;
+            bottom: 85px;
+            left: var(--space-xl);
+            width: 450px;
+            max-width: 92vw;
             background: var(--bg-card);
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-2xl);
             z-index: 100;
-            max-height: 460px;
+            max-height: 600px;
             flex-direction: column;
             overflow: hidden;
             animation: slideDown 0.3s ease;
             border: 1px solid rgba(255, 182, 193, 0.04);
+            backdrop-filter: blur(10px);
         }
         [data-theme="dark"] .chat-modal-ai {
             background: #1a0b1a;
@@ -1186,19 +1231,18 @@
             justify-content: space-between;
             align-items: center;
             font-weight: 700;
-            font-size: 13px;
         }
         .chat-header-ai .chat-status {
             display: flex;
             align-items: center;
             gap: var(--space-sm);
-            font-size: 9px;
+            font-size: var(--font-size-xs);
             font-weight: 400;
             opacity: 0.8;
         }
         .chat-header-ai .chat-status .dot {
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background: #4caf50;
             animation: pulse 1.5s ease-in-out infinite;
@@ -1207,7 +1251,7 @@
             background: none;
             border: none;
             color: #fff;
-            font-size: 1.2rem;
+            font-size: var(--font-size-xl);
             cursor: pointer;
             opacity: 0.7;
             transition: var(--transition-base);
@@ -1221,7 +1265,7 @@
             padding: var(--space-md) var(--space-lg);
             flex: 1;
             overflow-y: auto;
-            max-height: 300px;
+            max-height: 400px;
             background: var(--bg-primary);
         }
         [data-theme="dark"] .chat-messages-ai {
@@ -1229,14 +1273,13 @@
         }
 
         .chat-message-ai {
-            padding: 6px 12px;
+            padding: var(--space-sm) var(--space-md);
             border-radius: var(--radius-md);
-            margin-bottom: 6px;
+            margin-bottom: var(--space-sm);
             max-width: 90%;
             animation: slideDown 0.3s ease;
             word-wrap: break-word;
-            line-height: 1.5;
-            font-size: 12px;
+            line-height: 1.6;
         }
         .chat-message-ai.bot {
             background: rgba(214, 51, 132, 0.04);
@@ -1255,19 +1298,19 @@
             border-bottom-right-radius: 4px;
         }
         .chat-message-ai .msg-time {
-            font-size: 8px;
+            font-size: var(--font-size-xs);
             opacity: 0.5;
             display: block;
-            margin-top: 2px;
+            margin-top: var(--space-xs);
         }
         .chat-message-ai .typing-indicator {
             display: inline-flex;
-            gap: 3px;
-            padding: 4px 8px;
+            gap: 4px;
+            padding: var(--space-sm) var(--space-md);
         }
         .chat-message-ai .typing-indicator span {
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background: var(--text-tertiary);
             animation: typing 1.4s ease-in-out infinite;
@@ -1280,22 +1323,22 @@
         }
 
         .chat-options-ai {
-            padding: 4px var(--space-lg) var(--space-md);
+            padding: var(--space-xs) var(--space-lg) var(--space-md);
             display: flex;
             flex-wrap: wrap;
-            gap: 4px;
+            gap: var(--space-xs);
             border-top: 1px solid rgba(255, 182, 193, 0.04);
         }
         [data-theme="dark"] .chat-options-ai {
             border-color: rgba(255, 255, 255, 0.03);
         }
         .chat-options-ai .chat-opt {
-            padding: 4px 10px;
+            padding: var(--space-xs) var(--space-md);
             border-radius: var(--radius-full);
             border: 1px solid var(--primary);
             background: transparent;
             color: var(--primary);
-            font-size: 8px;
+            font-size: var(--font-size-xs);
             cursor: pointer;
             transition: var(--transition-base);
             font-family: var(--font-sans);
@@ -1314,21 +1357,21 @@
         }
 
         .chat-input-ai {
-            padding: 6px var(--space-lg);
+            padding: var(--space-sm) var(--space-lg);
             border-top: 1px solid rgba(255, 182, 193, 0.04);
             display: flex;
-            gap: 6px;
+            gap: var(--space-sm);
         }
         [data-theme="dark"] .chat-input-ai {
             border-color: rgba(255, 255, 255, 0.03);
         }
         .chat-input-ai input {
             flex: 1;
-            padding: 6px 12px;
+            padding: var(--space-sm) var(--space-md);
             border: 1.5px solid rgba(214, 51, 132, 0.04);
             border-radius: var(--radius-full);
             font-family: var(--font-sans);
-            font-size: 11px;
+            font-size: var(--font-size-sm);
             background: var(--bg-primary);
             transition: var(--transition-base);
             color: var(--text-primary);
@@ -1340,16 +1383,15 @@
         .chat-input-ai input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(194, 24, 91, 0.04);
+            box-shadow: 0 0 0 4px rgba(194, 24, 91, 0.04);
         }
         .chat-input-ai button {
-            padding: 6px 14px;
+            padding: var(--space-sm) var(--space-lg);
             border: none;
             border-radius: var(--radius-full);
             background: var(--primary-gradient);
             color: #fff;
             font-weight: 700;
-            font-size: 11px;
             cursor: pointer;
             transition: var(--transition-base);
         }
@@ -1367,49 +1409,48 @@
 
         .floating-cart {
             position: fixed;
-            bottom: 76px;
-            right: 12px;
+            bottom: 115px;
+            right: var(--space-lg);
             background: var(--bg-card);
             backdrop-filter: blur(20px);
             border-radius: var(--radius-full);
-            padding: 4px 12px;
+            padding: var(--space-sm) var(--space-lg);
             box-shadow: var(--shadow-lg);
             border: 1px solid rgba(255, 182, 193, 0.04);
             z-index: 50;
             display: none;
             align-items: center;
-            gap: 4px;
+            gap: var(--space-sm);
             cursor: pointer;
             transition: var(--transition-spring);
             font-weight: 600;
-            font-size: 10px;
+            font-size: var(--font-size-sm);
         }
         [data-theme="dark"] .floating-cart {
             background: rgba(18, 18, 18, 0.95);
             border-color: rgba(255, 255, 255, 0.03);
         }
         .floating-cart:hover {
-            transform: scale(1.06) translateY(-3px);
+            transform: scale(1.06) translateY(-4px);
             box-shadow: var(--shadow-xl);
         }
         .floating-cart .fc-icon {
-            font-size: 14px;
+            font-size: var(--font-size-xl);
         }
         .floating-cart .fc-count {
             background: var(--primary-gradient);
             color: #fff;
             border-radius: 50%;
-            padding: 0 5px;
-            font-size: 8px;
+            padding: 0 var(--space-sm);
+            font-size: var(--font-size-xs);
             font-weight: 700;
-            min-width: 16px;
+            min-width: 20px;
             text-align: center;
-            line-height: 16px;
+            line-height: 20px;
         }
         .floating-cart .fc-total {
             color: var(--primary);
             font-weight: 800;
-            font-size: 10px;
         }
         [data-theme="dark"] .floating-cart .fc-total {
             color: var(--primary-light);
@@ -1417,41 +1458,41 @@
 
         .whatsapp-float {
             position: fixed;
-            bottom: 16px;
-            right: 16px;
+            bottom: var(--space-xl);
+            right: var(--space-xl);
             background: #25D366;
             color: #fff;
-            width: 50px;
-            height: 50px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.4rem;
+            font-size: var(--font-size-2xl);
             text-decoration: none;
-            box-shadow: 0 6px 30px rgba(37, 211, 102, 0.3);
+            box-shadow: 0 8px 40px rgba(37, 211, 102, 0.3);
             transition: var(--transition-spring);
             z-index: 50;
             animation: pulse 2.5s ease-in-out infinite;
         }
         .whatsapp-float:hover {
-            transform: scale(1.08) rotate(-5deg);
-            box-shadow: 0 8px 40px rgba(37, 211, 102, 0.4);
+            transform: scale(1.1) rotate(-5deg);
+            box-shadow: 0 12px 60px rgba(37, 211, 102, 0.4);
         }
 
         .btn-back-top {
             position: fixed;
-            bottom: 136px;
-            right: 12px;
+            bottom: 80px;
+            right: var(--space-xl);
             background: var(--primary-gradient);
             color: #fff;
-            width: 36px;
-            height: 36px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             display: none;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: var(--font-size-xl);
             box-shadow: var(--shadow-lg);
             z-index: 50;
             transition: var(--transition-spring);
@@ -1459,21 +1500,21 @@
             cursor: pointer;
         }
         .btn-back-top:hover {
-            transform: translateY(-4px) scale(1.05);
+            transform: translateY(-6px) scale(1.05);
             box-shadow: var(--shadow-xl);
         }
 
         .dark-mode-toggle {
             position: fixed;
-            bottom: 178px;
-            right: 12px;
+            bottom: 148px;
+            right: var(--space-xl);
             background: var(--bg-secondary);
             color: var(--text-primary);
-            width: 36px;
-            height: 36px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             border: 1px solid rgba(255, 182, 193, 0.04);
-            font-size: 14px;
+            font-size: var(--font-size-xl);
             cursor: pointer;
             z-index: 50;
             box-shadow: var(--shadow-lg);
@@ -1483,21 +1524,21 @@
             justify-content: center;
         }
         .dark-mode-toggle:hover {
-            transform: scale(1.08) rotate(15deg);
+            transform: scale(1.1) rotate(20deg);
             box-shadow: var(--shadow-xl);
         }
 
         .share-btn {
             position: fixed;
-            bottom: 222px;
-            right: 12px;
+            bottom: 205px;
+            right: var(--space-xl);
             background: var(--bg-secondary);
             color: var(--text-primary);
-            width: 36px;
-            height: 36px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             border: 1px solid rgba(255, 182, 193, 0.04);
-            font-size: 14px;
+            font-size: var(--font-size-xl);
             cursor: pointer;
             z-index: 50;
             box-shadow: var(--shadow-lg);
@@ -1507,7 +1548,7 @@
             justify-content: center;
         }
         .share-btn:hover {
-            transform: scale(1.08) rotate(-8deg);
+            transform: scale(1.1) rotate(-10deg);
             box-shadow: var(--shadow-xl);
         }
 
@@ -1517,12 +1558,11 @@
 
         .notification {
             position: fixed;
-            top: 66px;
-            right: 12px;
-            left: 12px;
+            top: 80px;
+            right: var(--space-xl);
             background: var(--bg-card);
             backdrop-filter: blur(20px);
-            padding: 10px 16px;
+            padding: var(--space-md) var(--space-xl);
             border-radius: var(--radius-md);
             box-shadow: var(--shadow-lg);
             border-left: 4px solid var(--primary);
@@ -1530,10 +1570,10 @@
             transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
             z-index: 1000;
             font-weight: 600;
-            font-size: 11px;
+            font-size: var(--font-size-sm);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: var(--space-sm);
         }
         [data-theme="dark"] .notification {
             background: #1a0b1a;
@@ -1542,7 +1582,7 @@
             transform: translateX(0);
         }
         .notification .notif-icon {
-            font-size: 16px;
+            font-size: var(--font-size-xl);
         }
 
         /* ============================================
@@ -1552,27 +1592,27 @@
         footer {
             background: linear-gradient(135deg, #0a050a, #1a0b1a);
             color: #e8d5e8;
-            padding: var(--space-2xl) 4% var(--space-xl);
+            padding: var(--space-3xl) 5% var(--space-xl);
             border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-            margin-top: var(--space-2xl);
+            margin-top: var(--space-3xl);
             position: relative;
             overflow: hidden;
-            box-shadow: 0 -15px 50px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.1);
         }
         footer::before {
             content: '✦';
-            font-size: 8rem;
+            font-size: 12rem;
             position: absolute;
-            right: -2rem;
-            bottom: -3rem;
+            right: -3rem;
+            bottom: -4rem;
             opacity: 0.02;
             transform: rotate(20deg);
         }
 
         .footer-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: var(--space-lg);
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: var(--space-2xl);
             max-width: 1100px;
             margin: 0 auto;
             position: relative;
@@ -1581,34 +1621,35 @@
         .footer-grid h4 {
             font-family: var(--font-serif);
             color: #f8e8f0;
-            margin-bottom: 6px;
-            font-size: 13px;
+            margin-bottom: var(--space-sm);
+            font-size: var(--font-size-lg);
             font-weight: 700;
         }
         .footer-grid a {
             display: block;
             color: #c9a8c9;
             text-decoration: none;
-            font-size: 10px;
-            margin-bottom: 3px;
+            font-size: var(--font-size-sm);
+            margin-bottom: var(--space-xs);
             transition: var(--transition-base);
             font-weight: 400;
         }
         .footer-grid a:hover {
             color: var(--primary-light);
+            transform: translateX(6px);
         }
         .footer-payments {
             display: flex;
-            gap: 6px;
-            font-size: 1.2rem;
+            gap: var(--space-sm);
+            font-size: var(--font-size-2xl);
             flex-wrap: wrap;
         }
         .footer-bottom {
             text-align: center;
             border-top: 1px solid rgba(255, 255, 255, 0.03);
-            padding-top: var(--space-lg);
-            margin-top: var(--space-xl);
-            font-size: 9px;
+            padding-top: var(--space-xl);
+            margin-top: var(--space-2xl);
+            font-size: var(--font-size-sm);
             color: #9a7a9a;
             position: relative;
             z-index: 1;
@@ -1617,6 +1658,105 @@
             color: var(--primary-light);
             display: inline-block;
             animation: pulse 1.8s ease-in-out infinite;
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+
+        @media (max-width: 1024px) {
+            .hero-title { font-size: var(--font-size-4xl); }
+            .chat-modal-ai { width: 400px; }
+            .product-grid { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
+        }
+
+        @media (max-width: 768px) {
+            .navbar { padding: var(--space-sm) 3%; flex-wrap: wrap; gap: var(--space-xs); }
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .nav-right { width: 100%; justify-content: center; gap: var(--space-xs); }
+            .search-box input { width: 80px; font-size: var(--font-size-xs); }
+            .search-box { padding: var(--space-xs) var(--space-xs) var(--space-xs) var(--space-sm); }
+            .user-btn .user-name { max-width: 45px; font-size: var(--font-size-xs); }
+            .user-btn { padding: var(--space-xs) var(--space-xs); font-size: var(--font-size-xs); }
+            .user-btn .user-avatar { width: 22px; height: 22px; font-size: var(--font-size-xs); }
+            .cart-icon { font-size: var(--font-size-md); padding: var(--space-xs) var(--space-xs); }
+            .cart-count { font-size: var(--font-size-xs); min-width: 16px; line-height: 16px; }
+
+            .hero { padding: var(--space-lg) 3% var(--space-xl); border-radius: 0 0 var(--radius-lg) var(--radius-lg); margin: 0 var(--space-sm) var(--space-lg); }
+            .hero-title { font-size: var(--font-size-3xl); }
+            .hero-description { font-size: var(--font-size-md); }
+            .hero-stats { gap: var(--space-sm); }
+            .hero-stats .stat { padding: var(--space-xs) var(--space-md); }
+            .hero-stats .stat .number { font-size: var(--font-size-xl); }
+            .hero-image { font-size: 5rem; margin-top: var(--space-lg); }
+            .hero-actions .btn { padding: var(--space-sm) var(--space-xl); font-size: var(--font-size-sm); }
+
+            .chat-modal-ai { bottom: 65px; left: var(--space-sm); right: var(--space-sm); width: auto; max-width: none; max-height: 480px; }
+            .chat-float-ai { width: 50px; height: 50px; font-size: var(--font-size-xl); bottom: var(--space-md); left: var(--space-md); }
+            .whatsapp-float { width: 48px; height: 48px; font-size: var(--font-size-xl); bottom: var(--space-md); right: var(--space-md); }
+            .floating-cart { bottom: 95px; right: var(--space-sm); padding: var(--space-xs) var(--space-sm); font-size: var(--font-size-xs); }
+            .floating-cart .fc-icon { font-size: var(--font-size-md); }
+            .btn-back-top { width: 38px; height: 38px; font-size: var(--font-size-md); bottom: 65px; right: var(--space-sm); }
+            .dark-mode-toggle { width: 38px; height: 38px; font-size: var(--font-size-md); bottom: 130px; right: var(--space-sm); }
+            .share-btn { width: 38px; height: 38px; font-size: var(--font-size-md); bottom: 175px; right: var(--space-sm); }
+            .notification { right: var(--space-sm); left: var(--space-sm); padding: var(--space-sm) var(--space-md); font-size: var(--font-size-sm); top: 65px; }
+            .product-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: var(--space-md); }
+            .product-card { padding: var(--space-md); }
+            .product-image { width: 100px; height: 100px; }
+            .section { padding: var(--space-xl) 3%; }
+            .section-title { font-size: var(--font-size-2xl); }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: var(--space-md); }
+        }
+
+        @media (max-width: 480px) {
+            .logo { font-size: var(--font-size-lg); }
+            .logo-sub { font-size: var(--font-size-xs); }
+            .search-box input { width: 60px; font-size: var(--font-size-xs); }
+            .cart-icon { font-size: var(--font-size-sm); padding: var(--space-xs) var(--space-xs); }
+            .cart-count { font-size: var(--font-size-xs); min-width: 14px; line-height: 14px; }
+            .user-btn .user-name { max-width: 30px; font-size: var(--font-size-xs); }
+            .user-btn { padding: var(--space-xs) var(--space-xs); }
+            .user-btn .user-avatar { width: 18px; height: 18px; font-size: var(--font-size-xs); }
+
+            .hero-title { font-size: var(--font-size-2xl); }
+            .hero-badge { font-size: var(--font-size-xs); padding: var(--space-xs) var(--space-sm); }
+            .hero-description { font-size: var(--font-size-sm); }
+            .hero-stats .stat .number { font-size: var(--font-size-lg); }
+            .hero-stats .stat .label { font-size: var(--font-size-xs); }
+            .hero-image { font-size: 3.5rem; }
+            .hero-actions .btn { padding: var(--space-xs) var(--space-md); font-size: var(--font-size-xs); }
+
+            .chat-modal-ai { bottom: 55px; max-height: 420px; }
+            .chat-float-ai { width: 44px; height: 44px; font-size: var(--font-size-lg); bottom: var(--space-sm); left: var(--space-sm); }
+            .chat-float-ai .chat-badge { width: 18px; height: 18px; font-size: var(--font-size-xs); }
+            .whatsapp-float { width: 44px; height: 44px; font-size: var(--font-size-lg); bottom: var(--space-sm); right: var(--space-sm); }
+            .floating-cart { bottom: 75px; right: var(--space-sm); padding: var(--space-xs) var(--space-sm); font-size: var(--font-size-xs); }
+            .floating-cart .fc-icon { font-size: var(--font-size-sm); }
+            .floating-cart .fc-count { min-width: 16px; line-height: 16px; font-size: var(--font-size-xs); }
+            .btn-back-top { width: 36px; height: 36px; font-size: var(--font-size-sm); bottom: 55px; right: var(--space-sm); }
+            .dark-mode-toggle { width: 36px; height: 36px; font-size: var(--font-size-sm); bottom: 110px; right: var(--space-sm); }
+            .share-btn { width: 36px; height: 36px; font-size: var(--font-size-sm); bottom: 150px; right: var(--space-sm); }
+            .product-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--space-sm); }
+            .product-image { width: 80px; height: 80px; }
+            .product-name { font-size: var(--font-size-md); }
+            .product-price { font-size: var(--font-size-xl); }
+            .btn-add { padding: var(--space-xs) var(--space-sm); font-size: var(--font-size-xs); }
+            .chat-messages-ai { max-height: 260px; }
+            .chat-message-ai { font-size: var(--font-size-sm); }
+            .chat-options-ai .chat-opt { font-size: var(--font-size-xs); padding: var(--space-xs) var(--space-sm); }
+            .chat-input-ai input { font-size: var(--font-size-xs); padding: var(--space-xs) var(--space-sm); }
+            .chat-input-ai button { font-size: var(--font-size-xs); padding: var(--space-xs) var(--space-sm); }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: var(--space-sm); }
+            .footer-payments { font-size: var(--font-size-lg); }
+        }
+
+        @media (max-width: 360px) {
+            .hero-title { font-size: var(--font-size-xl); }
+            .hero-stats .stat .number { font-size: var(--font-size-md); }
+            .hero-stats .stat .label { font-size: var(--font-size-xs); }
+            .product-grid { grid-template-columns: 1fr 1fr; gap: var(--space-xs); }
+            .product-image { width: 70px; height: 70px; }
         }
     </style>
 </head>
@@ -1631,7 +1771,7 @@
 
     <!-- ===== FREE SHIPPING ===== -->
     <div class="free-shipping">
-        🚚 <span class="highlight">Envío gratis</span> · 🎁 <span class="highlight">10% OFF</span> PAULINA10 · 🇵🇪 Perú · 🤖 IA 24/7 · ✨ 2026
+        🚚 <span class="highlight">Envío gratis</span> en compras mayores a S/50 · 🎁 <span class="highlight">10% OFF</span> con código PAULINA10 · 🇵🇪 Envíos a todo Perú · 🤖 <span class="highlight">IA 24/7</span> ✨ <span class="highlight">2026</span>
     </div>
 
     <!-- ===== NOTIFICACIÓN ===== -->
@@ -1649,15 +1789,15 @@
 
     <div class="mobile-menu" id="mobileMenu">
         <div style="text-align:center;padding:var(--space-md);">
-            <div style="font-size:2.5rem;">👤</div>
-            <div style="font-weight:700;font-family:var(--font-serif);font-size:1.2rem;" id="mobileUserName">Invitado</div>
-            <div style="font-size:11px;opacity:0.7;" id="mobileUserLevel">Nivel: Visitante</div>
+            <div style="font-size:3rem;">👤</div>
+            <div style="font-weight:700;font-family:var(--font-serif);" id="mobileUserName">Invitado</div>
+            <div style="font-size:var(--font-size-sm);opacity:0.7;" id="mobileUserLevel">Nivel: Visitante</div>
         </div>
         <a href="#inicio">✨ Inicio</a>
         <a href="#productos">🛍️ Productos</a>
         <a href="#ofertas">🔥 Ofertas</a>
         <a href="#contacto">📩 Contacto</a>
-        <button class="btn btn-primary" id="mobileLoginBtn" style="padding:8px 20px;font-size:12px;">🔑 Iniciar sesión</button>
+        <button class="btn btn-primary" id="mobileLoginBtn" style="padding:var(--space-sm) var(--space-xl);font-size:var(--font-size-sm);">🔑 Iniciar sesión</button>
         <a href="#" class="close-menu" id="mobileClose">✕ Cerrar</a>
     </div>
 
@@ -1704,12 +1844,13 @@
         <div class="hero-content">
             <div class="hero-badge">✦ Colección 2026 ✦</div>
             <h1 class="hero-title">Belleza que <br /><span class="highlight">brilla con estilo</span></h1>
-            <p class="hero-description">Descubre nuestra colección exclusiva de aretes, extensiones de pestañas y accesorios de belleza premium.</p>
+            <p class="hero-description">Descubre nuestra colección exclusiva de aretes, extensiones de pestañas, accesorios de belleza y mucho más. Calidad premium y envíos a todo Perú.</p>
 
             <div class="hero-stats">
                 <div class="stat"><span class="number" id="visitCount">0</span><span class="label">Visitas</span></div>
                 <div class="stat"><span class="number">+500</span><span class="label">Clientas felices</span></div>
                 <div class="stat"><span class="number">⭐ 4.9</span><span class="label">Calificación</span></div>
+                <div class="stat"><span class="number">🇵🇪</span><span class="label">Envíos a todo Perú</span></div>
             </div>
 
             <div class="hero-actions">
@@ -1717,6 +1858,10 @@
                 <a href="#ofertas" class="btn btn-gold">🔥 Ofertas</a>
                 <button class="btn btn-secondary" onclick="document.getElementById('chatFloatAI').click()">🤖 Chat IA</button>
             </div>
+        </div>
+
+        <div class="hero-image">
+            <span>💎</span>
         </div>
     </section>
 
@@ -1736,6 +1881,7 @@
             <button class="pill" data-category="pestanas">👁️ Pestañas</button>
             <button class="pill" data-category="collares">📿 Collares</button>
             <button class="pill" data-category="maquillaje">💄 Maquillaje</button>
+            <button class="pill" data-category="capilar">💈 Cuidado Capilar</button>
         </div>
 
         <div class="product-grid" id="productGrid">
@@ -1753,27 +1899,27 @@
             <p class="section-subtitle">Aprovecha nuestras ofertas antes de que terminen</p>
         </div>
 
-        <div style="display:flex;flex-direction:column;gap:12px;">
-            <div style="background:var(--bg-card);border-radius:var(--radius-lg);padding:var(--space-lg);text-align:center;box-shadow:var(--shadow-md);border:1px solid rgba(255,182,193,0.04);">
-                <span style="font-size:2.5rem;">🔥</span>
-                <h3 style="font-family:var(--font-serif);margin:4px 0;font-size:1.1rem;">2x1 en Pestañas 5D</h3>
-                <p style="color:var(--text-secondary);font-size:12px;">Lleva 2 pares por el precio de 1</p>
-                <p style="font-size:1.2rem;font-weight:800;color:var(--primary);margin:4px 0;">$35</p>
-                <a href="#productos" class="btn btn-primary btn-sm" style="padding:8px 20px;font-size:11px;">Ver productos</a>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:var(--space-xl);">
+            <div style="background:var(--bg-card);border-radius:var(--radius-lg);padding:var(--space-xl);text-align:center;box-shadow:var(--shadow-md);border:1px solid rgba(255,182,193,0.04);transition:var(--transition-spring);">
+                <span style="font-size:3rem;">🔥</span>
+                <h3 style="font-family:var(--font-serif);margin:var(--space-sm) 0;">2x1 en Pestañas 5D</h3>
+                <p style="color:var(--text-secondary);">Lleva 2 pares por el precio de 1</p>
+                <p style="font-size:var(--font-size-xl);font-weight:800;color:var(--primary);margin:var(--space-sm) 0;">$35</p>
+                <a href="#productos" class="btn btn-primary btn-sm">Ver productos</a>
             </div>
-            <div style="background:var(--bg-card);border-radius:var(--radius-lg);padding:var(--space-lg);text-align:center;box-shadow:var(--shadow-md);border:1px solid rgba(255,182,193,0.04);">
-                <span style="font-size:2.5rem;">🎉</span>
-                <h3 style="font-family:var(--font-serif);margin:4px 0;font-size:1.1rem;">10% OFF</h3>
-                <p style="color:var(--text-secondary);font-size:12px;">Usa el código PAULINA10</p>
-                <p style="font-size:1.2rem;font-weight:800;color:var(--primary);margin:4px 0;">10% descuento</p>
-                <button class="btn btn-gold btn-sm" style="padding:8px 20px;font-size:11px;" onclick="navigator.clipboard.writeText('PAULINA10').then(()=>mostrarNotificacion('✅ Código copiado','📋'))">Copiar código</button>
+            <div style="background:var(--bg-card);border-radius:var(--radius-lg);padding:var(--space-xl);text-align:center;box-shadow:var(--shadow-md);border:1px solid rgba(255,182,193,0.04);transition:var(--transition-spring);">
+                <span style="font-size:3rem;">🎉</span>
+                <h3 style="font-family:var(--font-serif);margin:var(--space-sm) 0;">10% OFF</h3>
+                <p style="color:var(--text-secondary);">Usa el código PAULINA10</p>
+                <p style="font-size:var(--font-size-xl);font-weight:800;color:var(--primary);margin:var(--space-sm) 0;">10% descuento</p>
+                <button class="btn btn-gold btn-sm" onclick="navigator.clipboard.writeText('PAULINA10').then(()=>mostrarNotificacion('✅ Código copiado','📋'))">Copiar código</button>
             </div>
-            <div style="background:var(--bg-card);border-radius:var(--radius-lg);padding:var(--space-lg);text-align:center;box-shadow:var(--shadow-md);border:1px solid rgba(255,182,193,0.04);">
-                <span style="font-size:2.5rem;">🚚</span>
-                <h3 style="font-family:var(--font-serif);margin:4px 0;font-size:1.1rem;">Envío gratis</h3>
-                <p style="color:var(--text-secondary);font-size:12px;">En compras mayores a $50</p>
-                <p style="font-size:1.2rem;font-weight:800;color:var(--primary);margin:4px 0;">$0 envío</p>
-                <a href="#productos" class="btn btn-primary btn-sm" style="padding:8px 20px;font-size:11px;">Comprar ahora</a>
+            <div style="background:var(--bg-card);border-radius:var(--radius-lg);padding:var(--space-xl);text-align:center;box-shadow:var(--shadow-md);border:1px solid rgba(255,182,193,0.04);transition:var(--transition-spring);">
+                <span style="font-size:3rem;">🚚</span>
+                <h3 style="font-family:var(--font-serif);margin:var(--space-sm) 0;">Envío gratis</h3>
+                <p style="color:var(--text-secondary);">En compras mayores a $50</p>
+                <p style="font-size:var(--font-size-xl);font-weight:800;color:var(--primary);margin:var(--space-sm) 0;">$0 envío</p>
+                <a href="#productos" class="btn btn-primary btn-sm">Comprar ahora</a>
             </div>
         </div>
     </section>
@@ -1788,21 +1934,21 @@
             <p class="section-subtitle">¿Tienes dudas? Escríbenos y te respondemos en menos de 24 horas</p>
         </div>
 
-        <div style="max-width:500px;margin:0 auto;background:var(--bg-card);border-radius:var(--radius-lg);padding:var(--space-xl);box-shadow:var(--shadow-md);border:1px solid rgba(255,182,193,0.04);">
+        <div style="max-width:600px;margin:0 auto;background:var(--bg-card);border-radius:var(--radius-lg);padding:var(--space-2xl);box-shadow:var(--shadow-md);border:1px solid rgba(255,182,193,0.04);">
             <form id="contactForm">
                 <div style="margin-bottom:var(--space-md);">
-                    <label style="display:block;font-weight:600;color:var(--text-primary);margin-bottom:4px;font-size:11px;">👤 Nombre</label>
-                    <input type="text" id="contactName" placeholder="Tu nombre" required style="width:100%;padding:10px 14px;border:1.5px solid rgba(214,51,132,0.04);border-radius:var(--radius-md);font-family:var(--font-sans);font-size:12px;background:var(--bg-primary);color:var(--text-primary);transition:var(--transition-base);">
+                    <label style="display:block;font-weight:600;color:var(--text-primary);margin-bottom:var(--space-xs);font-size:var(--font-size-sm);">👤 Nombre</label>
+                    <input type="text" id="contactName" placeholder="Tu nombre" required style="width:100%;padding:var(--space-md) var(--space-lg);border:1.5px solid rgba(214,51,132,0.04);border-radius:var(--radius-md);font-family:var(--font-sans);font-size:var(--font-size-md);background:var(--bg-primary);color:var(--text-primary);transition:var(--transition-base);">
                 </div>
                 <div style="margin-bottom:var(--space-md);">
-                    <label style="display:block;font-weight:600;color:var(--text-primary);margin-bottom:4px;font-size:11px;">📧 Email</label>
-                    <input type="email" id="contactEmail" placeholder="tu@email.com" required style="width:100%;padding:10px 14px;border:1.5px solid rgba(214,51,132,0.04);border-radius:var(--radius-md);font-family:var(--font-sans);font-size:12px;background:var(--bg-primary);color:var(--text-primary);transition:var(--transition-base);">
+                    <label style="display:block;font-weight:600;color:var(--text-primary);margin-bottom:var(--space-xs);font-size:var(--font-size-sm);">📧 Email</label>
+                    <input type="email" id="contactEmail" placeholder="tu@email.com" required style="width:100%;padding:var(--space-md) var(--space-lg);border:1.5px solid rgba(214,51,132,0.04);border-radius:var(--radius-md);font-family:var(--font-sans);font-size:var(--font-size-md);background:var(--bg-primary);color:var(--text-primary);transition:var(--transition-base);">
                 </div>
                 <div style="margin-bottom:var(--space-md);">
-                    <label style="display:block;font-weight:600;color:var(--text-primary);margin-bottom:4px;font-size:11px;">💬 Mensaje</label>
-                    <textarea id="contactMessage" placeholder="Tu mensaje..." required style="width:100%;padding:10px 14px;border:1.5px solid rgba(214,51,132,0.04);border-radius:var(--radius-md);font-family:var(--font-sans);font-size:12px;background:var(--bg-primary);color:var(--text-primary);transition:var(--transition-base);min-height:100px;resize:vertical;"></textarea>
+                    <label style="display:block;font-weight:600;color:var(--text-primary);margin-bottom:var(--space-xs);font-size:var(--font-size-sm);">💬 Mensaje</label>
+                    <textarea id="contactMessage" placeholder="Tu mensaje..." required style="width:100%;padding:var(--space-md) var(--space-lg);border:1.5px solid rgba(214,51,132,0.04);border-radius:var(--radius-md);font-family:var(--font-sans);font-size:var(--font-size-md);background:var(--bg-primary);color:var(--text-primary);transition:var(--transition-base);min-height:120px;resize:vertical;"></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary" style="width:100%;padding:10px;font-size:12px;">📨 Enviar mensaje</button>
+                <button type="submit" class="btn btn-primary" style="width:100%;">📨 Enviar mensaje</button>
             </form>
         </div>
     </section>
@@ -1821,7 +1967,7 @@
                 <span>Total:</span>
                 <span class="total-price" id="cartTotal">$0.00</span>
             </div>
-            <button class="btn btn-primary" id="checkoutBtn" style="width:100%;padding:10px;font-size:12px;">✅ Finalizar compra</button>
+            <button class="btn btn-primary" id="checkoutBtn">✅ Finalizar compra</button>
         </div>
     </div>
 
@@ -1848,36 +1994,48 @@
     </button>
 
     <!-- ============================================
-    CHAT CON IA - MODAL
+    CHAT CON IA - MODAL COMPLETO
     ============================================ -->
     <div class="chat-modal-ai" id="chatModalAI">
         <div class="chat-header-ai">
             <span>🤖 Asistente IA</span>
             <span class="chat-status">
                 <span class="dot"></span>
-                Online 24/7
+                En línea 24/7
             </span>
             <button class="chat-close" id="chatCloseAI">✕</button>
         </div>
 
         <div class="chat-messages-ai" id="chatMessagesAI">
             <div class="chat-message-ai bot">
-                👋 ¡Hola! Soy <strong>Paulina AI</strong>, tu asistente virtual.<br><br>
-                💡 <strong>Respondo CUALQUIER pregunta</strong> que tengas.<br><br>
-                🗣️ <strong>¡Pregúntame lo que quieras!</strong>
+                👋 ¡Hola! Soy <strong>Paulina AI</strong>, tu asistente virtual con inteligencia artificial avanzada.<br><br>
+                💡 <strong>Puedo responder CUALQUIER PREGUNTA</strong> que tengas:<br><br>
+                • 📦 <strong>Productos</strong> - Aretes, pestañas, collares, maquillaje, shampoo, cuidado capilar y más<br>
+                • 💰 <strong>Precios</strong> - Información detallada de todos los productos<br>
+                • 🚚 <strong>Envíos</strong> - Tiempos, costos y seguimiento<br>
+                • 💳 <strong>Pagos</strong> - Yape, Plin, tarjeta, contraentrega<br>
+                • 📍 <strong>Ubicación</strong> - Dirección y horarios de la tienda<br>
+                • 🎁 <strong>Promociones</strong> - Descuentos, 2x1, cupones y ofertas<br>
+                • 🧮 <strong>Matemáticas</strong> - Cálculos, operaciones y más<br>
+                • 🌍 <strong>Cultura general</strong> - Ciencia, historia, arte, tecnología, geografía, deportes, música, cine, literatura y muchos temas más<br><br>
+                🗣️ <strong>¡Pregúntame lo que quieras, sin límites!</strong>
                 <span class="msg-time">10:30</span>
             </div>
         </div>
 
         <div class="chat-options-ai" id="chatOptionsAI">
             <button class="chat-opt" data-msg="📦 ¿Qué productos tienen?">📦 Productos</button>
-            <button class="chat-opt" data-msg="💰 ¿Cuánto cuestan?">💰 Precios</button>
+            <button class="chat-opt" data-msg="💰 ¿Cuánto cuestan los aretes?">💰 Precios</button>
             <button class="chat-opt" data-msg="🚚 ¿Cuánto tardan los envíos?">🚚 Envíos</button>
             <button class="chat-opt" data-msg="💳 ¿Cómo puedo pagar?">💳 Pagos</button>
             <button class="chat-opt" data-msg="📿 ¿Tienen collares?">📿 Collares</button>
+            <button class="chat-opt" data-msg="💈 ¿Tienen shampoo?">💈 Shampoo</button>
             <button class="chat-opt" data-msg="🎁 ¿Tienen promociones?">🎁 Promociones</button>
-            <button class="chat-opt" data-msg="😊 Cuéntame un chiste">😊 Chiste</button>
             <button class="chat-opt" data-msg="🤔 Recomiéndame un producto">🤔 Recomendar</button>
+            <button class="chat-opt" data-msg="😊 Cuéntame un chiste">😊 Chiste</button>
+            <button class="chat-opt" data-msg="🧮 ¿Cuánto es 2 + 2?">🧮 Matemáticas</button>
+            <button class="chat-opt" data-msg="🌍 ¿Qué es la inteligencia artificial?">🌍 Cultura</button>
+            <button class="chat-opt" data-msg="🧠 ¿Cómo funciona el cerebro humano?">🧠 Ciencia</button>
         </div>
 
         <div class="chat-input-ai">
@@ -1899,15 +2057,15 @@
     <footer role="contentinfo">
         <div class="footer-grid">
             <div>
-                <h4>✦ Paulina</h4>
+                <h4>✦ Paulina Accesorios</h4>
                 <a href="#">Sobre nosotros</a>
                 <a href="#">Política de cambios</a>
-                <a href="#">Términos</a>
+                <a href="#">Términos y condiciones</a>
             </div>
             <div>
                 <h4>📞 Ayuda</h4>
                 <a href="#">Preguntas frecuentes</a>
-                <a href="#">Envíos</a>
+                <a href="#">Envíos y entregas</a>
                 <a href="#">Devoluciones</a>
             </div>
             <div>
@@ -1917,24 +2075,24 @@
                 <a href="https://www.tiktok.com/@paulinaaccesorios" target="_blank">TikTok</a>
             </div>
             <div>
-                <h4>💳 Pagos</h4>
+                <h4>💳 Formas de pago</h4>
                 <div class="footer-payments">
                     <span>💳</span>
                     <span>📱</span>
                     <span>🏦</span>
                     <span>💵</span>
                 </div>
-                <div style="margin-top:4px;font-size:9px;opacity:0.5;">Yape · Plin · Transferencia</div>
+                <div style="margin-top:var(--space-xs);font-size:var(--font-size-sm);opacity:0.5;">Yape · Plin · Transferencia · Efectivo</div>
             </div>
         </div>
 
         <div class="footer-bottom">
-            &copy; 2026 Paulina Accesorios · Hecho con <span class="heart">💖</span> · 🇵🇪 Perú · 🤖 IA
+            &copy; 2026 Paulina Accesorios · Hecho con <span class="heart">💖</span> para mujeres que brillan · 🇵🇪 Perú · Todos los derechos reservados · 🤖 IA que responde TODO
         </div>
     </footer>
 
     <!-- ============================================
-    JAVASCRIPT - COMPLETO
+    JAVASCRIPT - IA QUE RESPONDE ABSOLUTAMENTE TODO
     ============================================ -->
     <script>
         // ============================================
@@ -1945,53 +2103,53 @@
                 id: 1,
                 nombre: 'Aretes Bohemios',
                 categoria: 'aretes',
-                descripcion: 'Hechos a mano con piedras naturales',
+                descripcion: 'Hechos a mano con piedras naturales semi-preciosas',
                 precio: 25.00,
                 precio_old: null,
                 badge: '⭐ Top',
                 emoji: '📿',
                 stock: 15,
                 compradores: 134,
-                imagen: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300&h=300&fit=crop&crop=center&q=80'
+                imagen: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400&h=400&fit=crop&crop=center&q=80'
             },
             {
                 id: 2,
-                nombre: 'Aretes de Perla',
+                nombre: 'Aretes de Perla Dorada',
                 categoria: 'aretes',
-                descripcion: 'Perlas naturales con acabado dorado',
+                descripcion: 'Perlas naturales cultivadas con acabado dorado 18k',
                 precio: 38.00,
                 precio_old: null,
                 badge: '✨ Especial',
                 emoji: '📿',
                 stock: 8,
                 compradores: 89,
-                imagen: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=300&h=300&fit=crop&crop=center&q=80'
+                imagen: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=400&fit=crop&crop=center&q=80'
             },
             {
                 id: 3,
                 nombre: 'Pestañas 5D Mega',
                 categoria: 'pestanas',
-                descripcion: 'Extensiones efecto volumen 5D',
+                descripcion: 'Extensiones de pestañas efecto volumen 5D',
                 precio: 35.00,
                 precio_old: 45.00,
                 badge: '🔥 2x1',
                 emoji: '👁️',
                 stock: 4,
                 compradores: 56,
-                imagen: 'https://images.unsplash.com/photo-1583182337426-8c2b5b2db6ae?w=300&h=300&fit=crop&crop=center&q=80'
+                imagen: 'https://images.unsplash.com/photo-1583182337426-8c2b5b2db6ae?w=400&h=400&fit=crop&crop=center&q=80'
             },
             {
                 id: 4,
                 nombre: 'Collar de Perla',
                 categoria: 'collares',
-                descripcion: 'Perlas naturales con acabado dorado',
+                descripcion: 'Perlas naturales cultivadas con acabado dorado 18k',
                 precio: 45.00,
                 precio_old: null,
                 badge: '💎 Premium',
                 emoji: '📿',
                 stock: 6,
                 compradores: 45,
-                imagen: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=300&h=300&fit=crop&crop=center&q=80'
+                imagen: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400&h=400&fit=crop&crop=center&q=80'
             },
             {
                 id: 5,
@@ -2004,45 +2162,105 @@
                 emoji: '📿',
                 stock: 10,
                 compradores: 34,
-                imagen: 'https://images.unsplash.com/photo-1589128777073-2395665fec4c?w=300&h=300&fit=crop&crop=center&q=80'
+                imagen: 'https://images.unsplash.com/photo-1589128777073-2395665fec4c?w=400&h=400&fit=crop&crop=center&q=80'
             },
             {
                 id: 6,
                 nombre: 'Base Fit Me 220',
                 categoria: 'maquillaje',
-                descripcion: 'Base líquida cobertura media',
+                descripcion: 'Base líquida de cobertura media, acabado natural mate',
                 precio: 43.89,
                 precio_old: null,
                 badge: '⭐ Top',
                 emoji: '💄',
                 stock: 12,
                 compradores: 45,
-                imagen: 'https://images.unsplash.com/photo-1583241803259-1fdc3d56cd49?w=300&h=300&fit=crop&crop=center&q=80'
+                imagen: 'https://images.unsplash.com/photo-1583241803259-1fdc3d56cd49?w=400&h=400&fit=crop&crop=center&q=80'
+            },
+            {
+                id: 7,
+                nombre: 'Shampoo Keratina',
+                categoria: 'capilar',
+                descripcion: 'Shampoo con keratina para reparación capilar',
+                precio: 26.66,
+                precio_old: null,
+                badge: '⭐ Top',
+                emoji: '💈',
+                stock: 15,
+                compradores: 67,
+                imagen: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop&crop=center&q=80'
+            },
+            {
+                id: 8,
+                nombre: 'Acondicionador Keratina',
+                categoria: 'capilar',
+                descripcion: 'Acondicionador con keratina para cabello dañado',
+                precio: 26.66,
+                precio_old: null,
+                badge: '💖 Favorito',
+                emoji: '💈',
+                stock: 12,
+                compradores: 54,
+                imagen: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop&crop=center&q=80'
             }
         ];
 
         // ============================================
-        // IA - RESPONDE CUALQUIER PREGUNTA
+        // IA GIGANTE - RESPONDE ABSOLUTAMENTE TODO
         // ============================================
 
         const IA_KNOWLEDGE = {
-            'productos': '🛍️ Tenemos aretes, pestañas, collares y maquillaje. ¿Qué te interesa?',
+            // ===== PRODUCTOS =====
+            'productos': '🛍️ Tenemos aretes, pestañas, collares, maquillaje, shampoo y acondicionador. ¿Qué te interesa?',
             'aretes': '📿 Aretes bohemios ($25), de perla ($38), florales ($6) y de compromiso ($65).',
             'collares': '📿 Collares de perla ($45), personalizados ($30), con piedras ($35-55) y plata 925 ($60).',
             'pestañas': '👁️ Pestañas 3D ($25), 5D ($35), magnéticas ($28). ¡2x1 en 5D!',
             'maquillaje': '💄 Base Fit Me ($43.89), Paleta ($37), Labial ($51.20), Máscara ($45.70).',
+            'shampoo': '💈 ¡Sí! Tenemos Shampoo Keratina ($26.66) y Acondicionador Keratina ($26.66). Son ideales para reparar el cabello dañado.',
+            'acondicionador': '💈 ¡Sí! Tenemos Acondicionador Keratina ($26.66) que nutre intensamente el cabello.',
+            'capilar': '💈 Tenemos Shampoo Keratina ($26.66), Acondicionador Keratina ($26.66) y Tratamiento Platinum ($48.36).',
+
+            // ===== PRECIOS =====
             'precio': '💰 Precios desde $1 hasta $65. ¿Qué producto buscas?',
+            'cuesta': '💰 Depende del producto. ¿Cuál te interesa?',
+            'precios': '💰 Tenemos productos desde $1 (Mascarilla) hasta $65 (Anillo).',
+
+            // ===== ENVÍOS =====
             'envío': '📦 Envíos a todo Perú. Lima: 24-48h, provincias: 2-4 días. Gratis > $50.',
+            'envio': '📦 Enviamos a todo Perú. ¿En qué ciudad estás?',
+
+            // ===== PAGOS =====
             'pago': '💳 Yape, Plin, transferencia, efectivo, tarjeta y contraentrega.',
+            'pagos': '💳 Aceptamos Yape, Plin, transferencia, efectivo, tarjeta y contraentrega.',
+            'yape': '📱 Aceptamos Yape al +51 923 861 016.',
+            'plin': '📱 Aceptamos Plin.',
+            'tarjeta': '💳 Aceptamos Visa y Mastercard.',
+            'contraentrega': '📦 Sí, aceptamos contraentrega. Pagas al recibir.',
+
+            // ===== UBICACIÓN =====
             'ubicación': '📍 Francisco Bardales 705, Yurimaguas. Lun-Sáb 9am-8pm.',
+            'dirección': '📍 Francisco Bardales 705, Yurimaguas.',
             'horario': '⏰ Lunes a Sábado 9am-8pm. Domingo cerrado.',
+
+            // ===== PROMOCIONES =====
             'promociones': '🎁 2x1 en Pestañas 5D, 10% OFF con PAULINA10, envío gratis > $50.',
             'descuento': '🎉 10% OFF con PAULINA10. ¡Aprovecha!',
             'cupón': '🎁 Usa PAULINA10 para 10% OFF.',
             '2x1': '🔥 2x1 en Pestañas 5D Mega por solo $35.',
-            'yape': '📱 Aceptamos Yape al +51 923 861 016.',
-            'plin': '📱 Aceptamos Plin.',
-            'tarjeta': '💳 Aceptamos Visa y Mastercard.',
+            'oferta': '🔥 2x1 en pestañas 5D, 10% OFF con PAULINA10, envío gratis > $50.',
+
+            // ===== MATEMÁTICAS =====
+            '2 + 2': '🧮 2 + 2 = 4. ¡Matemáticas básicas! 😊',
+            '2+2': '🧮 2 + 2 = 4. ¡Fácil!',
+            '3 + 3': '🧮 3 + 3 = 6.',
+            '4 + 4': '🧮 4 + 4 = 8.',
+            '5 + 5': '🧮 5 + 5 = 10.',
+            '10 + 10': '🧮 10 + 10 = 20.',
+            '100 + 100': '🧮 100 + 100 = 200.',
+            'multiplicación': '🧮 ¿Qué multiplicación quieres resolver? Dame los números.',
+            'división': '🧮 ¿Qué división quieres resolver? Dame los números.',
+
+            // ===== SALUDOS =====
             'hola': '👋 ¡Hola! Soy Paulina AI, tu asistente 24/7. ¿Cómo puedo ayudarte? ✨',
             'buenos días': '🌞 ¡Muy buenos días! ¿Cómo amaneciste?',
             'buenas tardes': '🌤️ ¡Excelentes tardes! ¿Cómo va tu día?',
@@ -2051,93 +2269,217 @@
             'quién eres': '🤖 Soy Paulina AI, tu asistente virtual. Respondo CUALQUIER pregunta.',
             'gracias': '🙌 ¡De nada! Fue un placer ayudarte. 💖',
             'chao': '👋 ¡Hasta luego! Que tengas un hermoso día. ✨',
+            'adios': '👋 ¡Adiós! Fue un placer. ¡Te esperamos pronto! 💖',
+
+            // ===== CHISTES =====
             'chiste': '😊 ¿Por qué las pestañas no van a la playa? ¡Les da miedo el agua salada! 😂',
-            'default': '🤖 ¡Hola! Puedo ayudarte con productos, precios, envíos, pagos o cultura general. ¿Qué te gustaría saber? ✨'
+            'chistes': '😊 ¿Qué le dice una pestaña a otra? — ¡No te me pegues que me despeinas! 😂',
+            'broma': '😂 ¿Por qué los aretes son tan felices? — ¡Porque siempre están colgados de la moda!',
+
+            // ===== CULTURA GENERAL =====
+            'fotosíntesis': '🌿 La fotosíntesis es el proceso donde las plantas convierten luz solar, agua y CO₂ en oxígeno y glucosa. ¡Esencial para la vida!',
+            'adn': '🧬 El ADN contiene la información genética de los seres vivos. Está compuesto por 4 bases: A, C, G y T.',
+            'big bang': '💥 El Big Bang es la teoría del origen del universo hace 13.8 mil millones de años.',
+            'evolución': '🧬 La evolución es el proceso por el cual las especies cambian a lo largo del tiempo. Darwin propuso la selección natural.',
+            'gravedad': '🌍 La gravedad es la fuerza que atrae los objetos hacia la Tierra. Fue descubierta por Isaac Newton.',
+            'relatividad': '⏳ La teoría de la relatividad fue creada por Einstein. Establece que el espacio y el tiempo son relativos.',
+
+            // ===== PERSONAJES =====
+            'einstein': '🧠 Albert Einstein fue un físico alemán, creador de la teoría de la relatividad. Ganó el Nobel en 1921.',
+            'albert einstein': '🧠 Albert Einstein fue un físico alemán, creador de la teoría de la relatividad. Su ecuación E=mc² revolucionó la física.',
+            'leonardo da vinci': '🎨 Leonardo da Vinci fue un genio del Renacimiento. Pintó la Mona Lisa y fue inventor, científico y anatomista.',
+            'cervantes': '📚 Miguel de Cervantes escribió "Don Quijote de la Mancha", la primera novela moderna.',
+            'shakespeare': '🎭 William Shakespeare fue el dramaturgo inglés más importante. Escribió Hamlet, Romeo y Julieta y Macbeth.',
+            'simón bolívar': '🇻🇪 Simón Bolívar liberó Venezuela, Colombia, Ecuador, Perú y Bolivia. Es el Libertador de América.',
+            'josé de san martín': '🇦🇷 José de San Martín liberó Argentina, Chile y Perú. Es uno de los próceres más importantes de Sudamérica.',
+            'garcía márquez': '📖 Gabriel García Márquez, "Gabo", fue premio Nobel de Literatura. Escribió "Cien años de soledad".',
+            'picasso': '🎨 Pablo Picasso fue un pintor español, fundador del cubismo. Pintó el Guernica.',
+            'frida kahlo': '🎨 Frida Kahlo fue una pintora mexicana famosa por sus autorretratos que reflejan el dolor y la identidad.',
+            'napoleón': '🏛️ Napoleón Bonaparte fue un militar y emperador francés que conquistó gran parte de Europa.',
+            'cristóbal colón': '⛵ Cristóbal Colón descubrió América en 1492, navegando desde España.',
+            'michael jackson': '🎵 Michael Jackson fue el "Rey del Pop". Revolucionó la música y la danza.',
+            'madonna': '🎵 Madonna es la "Reina del Pop". Es cantante, compositora y actriz.',
+            'messi': '⚽ Lionel Messi es uno de los mejores futbolistas de la historia. Ganó 8 Balones de Oro.',
+            'cristiano ronaldo': '⚽ Cristiano Ronaldo es uno de los mejores futbolistas. Ganó 5 Balones de Oro.',
+
+            // ===== LUGARES =====
+            'machu picchu': '🏔️ Machu Picchu está en Cusco, Perú. Es una de las 7 maravillas del mundo.',
+            'perú': '🇵🇪 Perú está en América del Sur. Tiene costa, sierra y selva. Es el hogar de Machu Picchu.',
+            'amazonas': '🌳 El río Amazonas es el más largo y caudaloso del mundo. Atraviesa Perú, Colombia y Brasil.',
+            'egipto': '🇪🇬 Egipto está en el norte de África. Es famoso por sus pirámides y el río Nilo.',
+            'méxico': '🇲🇽 México está en América del Norte. Famoso por su cultura, comida y civilizaciones como los aztecas y mayas.',
+            'colombia': '🇨🇴 Colombia está en el noroeste de Sudamérica. Su capital es Bogotá.',
+            'argentina': '🇦🇷 Argentina está en el sur de Sudamérica. Su capital es Buenos Aires.',
+            'chile': '🇨🇱 Chile está en el oeste de Sudamérica. Su capital es Santiago.',
+            'españa': '🇪🇸 España está en el suroeste de Europa. Su capital es Madrid.',
+            'francia': '🇫🇷 Francia está en Europa occidental. Famosa por la Torre Eiffel y su gastronomía.',
+
+            // ===== FECHAS =====
+            'independencia perú': '📅 La independencia de Perú fue el 28 de julio de 1821.',
+            'descubrimiento américa': '📅 El descubrimiento de América fue el 12 de octubre de 1492.',
+            'segunda guerra mundial': '📅 La Segunda Guerra Mundial ocurrió entre 1939 y 1945.',
+            'primera guerra mundial': '📅 La Primera Guerra Mundial ocurrió entre 1914 y 1918.',
+            'revolución francesa': '📅 La Revolución Francesa comenzó en 1789.',
+
+            // ===== RESPUESTA POR DEFECTO =====
+            'default': '🤖 ¡Hola! Puedo ayudarte con productos, precios, envíos, pagos, matemáticas o cultura general. ¿Qué te gustaría saber? ✨'
         };
+
+        // ============================================
+        // FUNCIÓN PRINCIPAL DE LA IA - RESPONDE TODO
+        // ============================================
 
         function getAIResponse(message) {
             const msg = message.toLowerCase().trim();
 
+            // ===== PASO 1: BUSCAR EN CONOCIMIENTO BASE =====
             for (const [key, response] of Object.entries(IA_KNOWLEDGE)) {
                 if (msg.includes(key) && key !== 'default') {
                     return response;
                 }
             }
 
-            // Personajes históricos
-            const personas = {
-                'albert einstein': '🧠 Albert Einstein fue un físico alemán, creador de la teoría de la relatividad.',
-                'einstein': '🧠 Albert Einstein fue un físico alemán, creador de la teoría de la relatividad.',
-                'leonardo da vinci': '🎨 Leonardo da Vinci pintó la Mona Lisa.',
-                'cervantes': '📚 Miguel de Cervantes escribió "Don Quijote".',
-                'shakespeare': '🎭 William Shakespeare fue el dramaturgo inglés más importante.',
-                'simón bolívar': '🇻🇪 Simón Bolívar liberó Venezuela, Colombia, Ecuador, Perú y Bolivia.',
-                'josé de san martín': '🇦🇷 José de San Martín liberó Argentina, Chile y Perú.',
-                'garcía márquez': '📖 Gabriel García Márquez escribió "Cien años de soledad".',
-                'picasso': '🎨 Pablo Picasso fue un pintor español, fundador del cubismo.',
-                'frida kahlo': '🎨 Frida Kahlo fue una pintora mexicana famosa por sus autorretratos.'
-            };
-
-            for (const [key, response] of Object.entries(personas)) {
-                if (msg.includes(key)) {
-                    return response;
+            // ===== PASO 2: DETECTAR OPERACIONES MATEMÁTICAS =====
+            // Suma
+            if (msg.includes('+')) {
+                const parts = msg.split('+');
+                if (parts.length === 2) {
+                    const num1 = parseFloat(parts[0].trim());
+                    const num2 = parseFloat(parts[1].trim());
+                    if (!isNaN(num1) && !isNaN(num2)) {
+                        return `🧮 ${num1} + ${num2} = ${num1 + num2}`;
+                    }
                 }
             }
 
-            // Conceptos
-            const conceptos = {
-                'fotosíntesis': '🌿 La fotosíntesis es el proceso donde las plantas convierten luz solar en energía.',
-                'adn': '🧬 El ADN contiene la información genética de los seres vivos.',
-                'big bang': '💥 El Big Bang es la teoría del origen del universo.',
-                'evolución': '🧬 La evolución es el proceso por el cual las especies cambian con el tiempo.'
-            };
-
-            for (const [key, response] of Object.entries(conceptos)) {
-                if (msg.includes(key)) {
-                    return response;
+            // Resta
+            if (msg.includes('-') && !msg.includes('+')) {
+                const parts = msg.split('-');
+                if (parts.length === 2) {
+                    const num1 = parseFloat(parts[0].trim());
+                    const num2 = parseFloat(parts[1].trim());
+                    if (!isNaN(num1) && !isNaN(num2)) {
+                        return `🧮 ${num1} - ${num2} = ${num1 - num2}`;
+                    }
                 }
             }
 
-            // Lugares
-            const lugares = {
-                'machu picchu': '🏔️ Machu Picchu está en Cusco, Perú. Es una maravilla del mundo.',
-                'perú': '🇵🇪 Perú está en América del Sur.',
-                'amazonas': '🌳 El río Amazonas es el más largo del mundo.',
-                'egipto': '🇪🇬 Egipto está en el norte de África.'
-            };
-
-            for (const [key, response] of Object.entries(lugares)) {
-                if (msg.includes(key)) {
-                    return response;
+            // Multiplicación
+            if (msg.includes('*') || msg.includes('x')) {
+                const separator = msg.includes('*') ? '*' : 'x';
+                const parts = msg.split(separator);
+                if (parts.length === 2) {
+                    const num1 = parseFloat(parts[0].trim());
+                    const num2 = parseFloat(parts[1].trim());
+                    if (!isNaN(num1) && !isNaN(num2)) {
+                        return `🧮 ${num1} × ${num2} = ${num1 * num2}`;
+                    }
                 }
             }
 
-            // Fechas históricas
-            if (msg.includes('independencia') && msg.includes('perú')) {
-                return '📅 La independencia de Perú fue el 28 de julio de 1821.';
-            }
-            if (msg.includes('descubrimiento') && msg.includes('américa')) {
-                return '📅 El descubrimiento de América fue el 12 de octubre de 1492.';
-            }
-            if (msg.includes('segunda guerra') && msg.includes('mundial')) {
-                return '📅 La Segunda Guerra Mundial ocurrió entre 1939 y 1945.';
+            // División
+            if (msg.includes('/')) {
+                const parts = msg.split('/');
+                if (parts.length === 2) {
+                    const num1 = parseFloat(parts[0].trim());
+                    const num2 = parseFloat(parts[1].trim());
+                    if (!isNaN(num1) && !isNaN(num2) && num2 !== 0) {
+                        return `🧮 ${num1} ÷ ${num2} = ${num1 / num2}`;
+                    }
+                    if (num2 === 0) {
+                        return '🧮 No se puede dividir por cero. ¡Eso es matemáticamente imposible! 😅';
+                    }
+                }
             }
 
-            // Buscar en productos
+            // ===== PASO 3: BUSCAR EN PRODUCTOS =====
             for (const producto of productos) {
                 if (msg.includes(producto.nombre.toLowerCase())) {
-                    return `🔍 ${producto.nombre}\n📝 ${producto.descripcion}\n💰 $${producto.precio}\n📦 Stock: ${producto.stock}\n⭐ ${producto.badge || 'Producto destacado'}`;
+                    const price = producto.precio_old ?
+                        `$${producto.precio} (antes $${producto.precio_old})` :
+                        `$${producto.precio}`;
+                    return `🔍 <strong>${producto.nombre}</strong>\n📝 ${producto.descripcion}\n💰 Precio: ${price}\n📦 Stock: ${producto.stock} unidades\n⭐ ${producto.badge || 'Producto destacado'}\n\n¿Te gustaría agregarlo a tu carrito? 🛒`;
                 }
             }
 
-            // Respuesta por defecto
-            const respuestas = [
-                '🤖 ¡Excelente pregunta! Puedo ayudarte con productos, precios, envíos, pagos o cultura general. ¿Qué te gustaría saber? ✨',
-                '🤔 ¡Buena pregunta! No tengo esa información exacta, pero puedo ayudarte con la tienda o cultura general. ¿Qué necesitas? 😊',
-                '💡 ¡Interesante! No tengo datos sobre eso, pero sé mucho sobre productos, precios y promociones. ¿Te interesa? 🛍️'
+            // ===== PASO 4: PREGUNTAS SOBRE LA TIENDA =====
+            if (msg.includes('producto') || msg.includes('productos') || msg.includes('tienen')) {
+                return IA_KNOWLEDGE.productos || '🛍️ Tenemos una gran variedad de productos. ¿Qué tipo de accesorio buscas?';
+            }
+            if (msg.includes('precio') || msg.includes('cuesta') || msg.includes('costo')) {
+                return IA_KNOWLEDGE.precio || '💰 Nuestros precios son muy competitivos. ¿Qué producto te interesa?';
+            }
+            if (msg.includes('envío') || msg.includes('envio') || msg.includes('llegar')) {
+                return IA_KNOWLEDGE.envío || '📦 Realizamos envíos a todo Perú. ¿En qué ciudad estás?';
+            }
+            if (msg.includes('pago') || msg.includes('pagar') || msg.includes('yape') || msg.includes('plin')) {
+                return IA_KNOWLEDGE.pago || '💳 Aceptamos Yape, Plin, transferencia, efectivo, tarjeta y contraentrega.';
+            }
+            if (msg.includes('ubicación') || msg.includes('dirección') || msg.includes('donde están')) {
+                return IA_KNOWLEDGE.ubicación || '📍 Estamos en Francisco Bardales 705, Yurimaguas. ¡Te esperamos!';
+            }
+            if (msg.includes('horario') || msg.includes('abren') || msg.includes('cierran')) {
+                return IA_KNOWLEDGE.horario || '⏰ Abrimos de Lunes a Sábado de 9am a 8pm. Domingo cerrado.';
+            }
+            if (msg.includes('descuento') || msg.includes('promoción') || msg.includes('oferta')) {
+                return IA_KNOWLEDGE.promociones ||
+                '🎁 10% OFF con PAULINA10, 2x1 en pestañas 5D, envío gratis > $50. ¡Aprovecha!';
+            }
+            if (msg.includes('arete') || msg.includes('aretes')) {
+                return '📿 ¡Sí! Tenemos aretes bohemios ($25), de perla ($38), florales ($6.06), de compromiso ($65), aros, colgantes y minimalistas. ¿Qué estilo te gusta?';
+            }
+            if (msg.includes('collar') || msg.includes('collares')) {
+                return '📿 ¡Sí! Tenemos collares de perla ($45), personalizados ($30), con piedras ($35-55), de plata 925 ($60), florales ($25), de compromiso ($75). ¿Cuál te interesa?';
+            }
+            if (msg.includes('pestaña') || msg.includes('pestañas')) {
+                return '👁️ Tenemos pestañas 3D ($25), 5D ($35), magnéticas ($28), de seda ($30), de colores ($18). ¡2x1 en las 5D!';
+            }
+            if (msg.includes('maquillaje')) {
+                return '💄 Base Fit Me ($43.89), Paleta City Mini ($37), Labial Matte Ink ($51.20), Máscara The Falsies ($45.70). ¿Qué necesitas?';
+            }
+            if (msg.includes('shampoo')) {
+                return '💈 ¡Sí! Tenemos Shampoo Keratina ($26.66) para reparar el cabello. ¿Quieres más información?';
+            }
+            if (msg.includes('acondicionador')) {
+                return '💈 ¡Sí! Tenemos Acondicionador Keratina ($26.66) para nutrir el cabello. ¿Te interesa?';
+            }
+            if (msg.includes('capilar')) {
+                return '💈 Tenemos Shampoo Keratina ($26.66), Acondicionador Keratina ($26.66) y Tratamiento Platinum ($48.36). ¿Qué necesitas para tu cabello?';
+            }
+
+            // ===== PASO 5: SALUDOS Y CONVERSACIÓN =====
+            if (msg.includes('hola') || msg.includes('buenos días') || msg.includes('buenas tardes') || msg.includes('buenas noches')) {
+                return '👋 ¡Hola! Soy Paulina AI, tu asistente 24/7. Puedo responder CUALQUIER pregunta. ¿Cómo puedo ayudarte hoy? ✨';
+            }
+            if (msg.includes('cómo estás') || msg.includes('como estas')) {
+                return '🤖 ¡Estoy genial! Gracias por preguntar. ¿Qué necesitas saber?';
+            }
+            if (msg.includes('gracias') || msg.includes('muchas gracias')) {
+                return '🙌 ¡De nada! Fue un placer ayudarte. 💖';
+            }
+            if (msg.includes('chao') || msg.includes('adios') || msg.includes('adiós') || msg.includes('bye')) {
+                return '👋 ¡Hasta luego! Vuelve cuando quieras. ✨';
+            }
+
+            // ===== PASO 6: CHISTES =====
+            if (msg.includes('chiste') || msg.includes('chistes')) {
+                const chistes = [
+                    '😊 ¿Por qué las pestañas no van a la playa? ¡Porque les da miedo el agua salada y que se les corra el rímel! 😂',
+                    '😂 ¿Qué le dice una pestaña a otra? — ¡No te me pegues que me despeinas! 😂',
+                    '😄 ¿Por qué los aretes son tan felices? — ¡Porque siempre están colgados de la moda!'
+                ];
+                return chistes[Math.floor(Math.random() * chistes.length)];
+            }
+
+            // ===== PASO 7: RESPUESTA POR DEFECTO - SIEMPRE RESPONDE =====
+            const respuestasGeniales = [
+                '🤖 ¡Excelente pregunta! Aunque no tengo información específica, puedo ayudarte con productos, precios, envíos, pagos y cultura general. ¿Qué te gustaría saber? ✨',
+                '🧠 ¡Qué pregunta tan interesante! ¿Te gustaría saber sobre productos, precios, envíos, pagos o cultura general? 🤔',
+                '💡 ¡Buena pregunta! Puedo ayudarte con nuestro catálogo de productos, promociones y temas de cultura general. ¡Estoy 24/7 para ti! 🛍️',
+                '🌟 ¡Me encanta tu curiosidad! Puedo recomendarte productos, contarte sobre promociones o hablar de ciencia, historia, arte y más. ¿Qué te gusta? 😊'
             ];
 
-            return respuestas[Math.floor(Math.random() * respuestas.length)];
+            return respuestasGeniales[Math.floor(Math.random() * respuestasGeniales.length)];
         }
 
         // ============================================
@@ -2186,16 +2528,21 @@
                 chatMessages.appendChild(typingDiv);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
 
+                const processingTime = 400 + Math.random() * 700;
+
                 setTimeout(() => {
                     typingDiv.remove();
+
                     const response = getAIResponse(text);
+
                     const botMsg = document.createElement('div');
                     botMsg.className = 'chat-message-ai bot';
                     botMsg.innerHTML = `${response} <span class="msg-time">${timeStr}</span>`;
                     chatMessages.appendChild(botMsg);
                     chatMessages.scrollTop = chatMessages.scrollHeight;
+
                     chatSend.disabled = false;
-                }, 400 + Math.random() * 600);
+                }, processingTime);
             }
 
             chatSend.addEventListener('click', () => sendMessage(chatInput.value));
@@ -2239,7 +2586,7 @@
             if (notificationTimeout) clearTimeout(notificationTimeout);
             notificationTimeout = setTimeout(() => {
                 notification.classList.remove('show');
-            }, 3000);
+            }, 3500);
         }
 
         function lanzarConfetti() {
@@ -2250,15 +2597,20 @@
                 newContainer.className = 'confetti-container';
                 document.body.appendChild(newContainer);
             }
-            const colors = ['#c2185b', '#d63384', '#f06292', '#f9a825', '#43a047', '#1a73e8', '#ff6f00'];
-            for (let i = 0; i < 30; i++) {
+            const colors = ['#c2185b', '#d63384', '#f06292', '#f9a825', '#43a047', '#1a73e8', '#ff6f00', '#e53935', '#9c27b0',
+                '#00bcd4'
+            ];
+            const shapes = ['confetti', 'confetti circle', 'confetti star', 'confetti heart'];
+
+            for (let i = 0; i < 40; i++) {
                 const confetti = document.createElement('div');
-                confetti.className = 'confetti';
+                const shapeClass = shapes[Math.floor(Math.random() * shapes.length)];
+                confetti.className = shapeClass;
                 confetti.style.left = Math.random() * 100 + '%';
                 confetti.style.top = '-20px';
                 confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.width = (Math.random() * 6 + 3) + 'px';
-                confetti.style.height = (Math.random() * 6 + 3) + 'px';
+                confetti.style.width = (Math.random() * 8 + 4) + 'px';
+                confetti.style.height = (Math.random() * 8 + 4) + 'px';
                 confetti.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
                 confetti.style.animationDelay = (Math.random() * 0.5) + 's';
                 document.getElementById('confettiContainer').appendChild(confetti);
@@ -2288,11 +2640,11 @@
         }
 
         function getUserLevel(points) {
-            if (points >= 1000) return { name: '💎 Diamante' };
-            if (points >= 500) return { name: '🥇 Oro' };
-            if (points >= 200) return { name: '🥈 Plata' };
-            if (points >= 50) return { name: '🥉 Bronce' };
-            return { name: '✨ Visitante' };
+            if (points >= 1000) return { name: '💎 Diamante', color: '#b8860b' };
+            if (points >= 500) return { name: '🥇 Oro', color: '#d4af37' };
+            if (points >= 200) return { name: '🥈 Plata', color: '#c0c0c0' };
+            if (points >= 50) return { name: '🥉 Bronce', color: '#cd7f32' };
+            return { name: '✨ Visitante', color: '#888' };
         }
 
         function updateUserUI() {
@@ -2308,11 +2660,11 @@
                 const level = getUserLevel(currentUser.points || 0);
 
                 if (userName) userName.textContent = displayName;
-                if (userLevel) userLevel.textContent = `${level.name} · ${currentUser.points || 0} pts`;
+                if (userLevel) userLevel.textContent = `Nivel: ${level.name} · ${currentUser.points || 0} pts`;
                 if (userAvatar) userAvatar.textContent = displayName.charAt(0).toUpperCase();
 
                 if (mobileUserName) mobileUserName.textContent = displayName;
-                if (mobileUserLevel) mobileUserLevel.textContent = `${level.name} · ${currentUser.points || 0} pts`;
+                if (mobileUserLevel) mobileUserLevel.textContent = `Nivel: ${level.name} · ${currentUser.points || 0} pts`;
 
                 if (mobileLoginBtn) {
                     mobileLoginBtn.textContent = `👤 ${displayName}`;
@@ -2351,7 +2703,8 @@
                 email: email,
                 name: name,
                 points: parseInt(localStorage.getItem(`paulina_points_${email}`)) || 0,
-                createdAt: new Date().toISOString()
+                createdAt: new Date().toISOString(),
+                lastLogin: new Date().toISOString(),
             };
 
             saveUser();
@@ -2495,7 +2848,7 @@
 
             if (products.length === 0) {
                 container.innerHTML =
-                    `<div style="grid-column:1/-1;text-align:center;padding:var(--space-2xl) var(--space-md);"><span style="font-size:3rem;display:block;margin-bottom:var(--space-md);">🔍</span><h3 style="font-family:var(--font-serif);color:var(--text-primary);font-size:1.1rem;">No encontramos productos</h3></div>`;
+                    `<div style="grid-column:1/-1;text-align:center;padding:var(--space-3xl) var(--space-md);"><span style="font-size:4rem;display:block;margin-bottom:var(--space-md);">🔍</span><h3 style="font-family:var(--font-serif);color:var(--text-primary);">No encontramos productos</h3></div>`;
                 return;
             }
 
@@ -2510,20 +2863,20 @@
                         <div class="product-badges">
                             ${product.badge ? `<span class="badge badge-sale">${product.badge}</span>` : ''}
                             ${discount ? `<span class="badge badge-discount">-${discount}%</span>` : ''}
-                            ${isLowStock ? `<span class="badge badge-hot">🔥</span>` : ''}
-                            <span class="badge badge-ai">🤖</span>
+                            ${isLowStock ? `<span class="badge badge-hot">🔥 ¡Últimas!</span>` : ''}
+                            <span class="badge badge-ai">🤖 IA</span>
                         </div>
                         <div class="product-image" onclick="mostrarNotificacion('📦 ${product.nombre}','${product.emoji}')">
-                            <img src="${product.imagen}" alt="${product.nombre}" loading="lazy" width="200" height="200" />
+                            <img src="${product.imagen}" alt="${product.nombre}" loading="lazy" width="300" height="300" />
                             <div class="image-overlay"><span>🔍</span></div>
                         </div>
                         <div class="product-meta">
-                            <span>👥 ${product.compradores || 0}</span>
+                            <span>👥 ${product.compradores || 0} compraron</span>
                         </div>
                         <h3 class="product-name">${product.nombre}</h3>
                         <p class="product-description">${product.descripcion}</p>
                         <span class="product-stock ${isLowStock ? 'low-stock' : 'in-stock'}">
-                            ${isLowStock ? `⚠️ ${product.stock}` : `✅ ${product.stock}`}
+                            ${isLowStock ? `⚠️ ¡Solo quedan ${product.stock} unidades!` : `✅ En stock (${product.stock} disponibles)`}
                         </span>
                         <span class="product-price">
                             ${formatPrice(product.precio)}
@@ -2531,7 +2884,7 @@
                             ${discount ? `<span class="discount">-${discount}%</span>` : ''}
                         </span>
                         <button class="btn-add" data-id="${product.id}" ${product.stock === 0 ? 'disabled' : ''}>
-                            ${product.stock === 0 ? '❌' : '🛒'}
+                            ${product.stock === 0 ? '❌ Agotado' : '🛒 Añadir al carrito'}
                         </button>
                     </div>
                 `;
@@ -2601,7 +2954,7 @@
                     return;
                 }
 
-                let message = '✨ Hola Paulina ✨%0A%0A';
+                let message = '✨ ¡Hola Paulina! ✨%0A%0A';
 
                 if (currentUser) {
                     message += `👤 ${currentUser.name || currentUser.email}%0A`;
@@ -2609,17 +2962,26 @@
                     message += `⭐ ${currentUser.points || 0} puntos%0A%0A`;
                 }
 
-                message += '📦 Pedido:%0A%0A';
+                message += '📦 Quiero hacer el siguiente pedido:%0A%0A';
 
                 let total = 0;
                 cart.forEach(item => {
                     const subtotal = item.price * item.quantity;
                     total += subtotal;
-                    message += `✅ ${item.name} x${item.quantity} = ${formatPrice(subtotal)}%0A`;
+                    message += `✅ ${item.name}  x  ${item.quantity}  =  ${formatPrice(subtotal)}%0A`;
                 });
 
-                message += `%0A💰 TOTAL: ${formatPrice(total)}%0A`;
-                message += `%0A📍 ¿Cómo pago? (Yape, Plin, Transferencia)%0A`;
+                message += `%0A━━━━━━━━━━━━━━━━━━━━━━%0A`;
+                message += `💰 TOTAL: ${formatPrice(total)}%0A`;
+                message += `━━━━━━━━━━━━━━━━━━━━━━%0A%0A`;
+
+                if (total >= 50) {
+                    message += `🚚 Envío gratis (por compra > $50)%0A`;
+                }
+
+                message += `📍 ¿Cómo puedo pagar? (Yape, Plin, Transferencia)%0A`;
+                message += `📦 ¿Tienes stock disponible?%0A%0A`;
+                message += `💖 ¡Gracias! Espero tu respuesta.`;
 
                 const url = `https://wa.me/51923861016?text=${message}`;
                 window.open(url, '_blank');
@@ -2651,7 +3013,8 @@
                 let message = `✨ Hola Paulina ✨%0A%0A`;
                 message += `👤 ${nombre}%0A`;
                 message += `📧 ${email}%0A%0A`;
-                message += `📩 ${mensaje}%0A`;
+                message += `📩 Mensaje:%0A${mensaje}%0A%0A`;
+                message += `📍 ¿Podrías darme más información sobre tu catálogo y precios?`;
 
                 const url = `https://wa.me/51923861016?text=${message}`;
                 window.open(url, '_blank');
@@ -2707,7 +3070,7 @@
                     }).catch(() => {});
                 } else if (navigator.clipboard) {
                     navigator.clipboard.writeText(url).then(() => {
-                        mostrarNotificacion('✅ Enlace copiado', '📤');
+                        mostrarNotificacion('✅ Enlace copiado al portapapeles', '📤');
                     }).catch(() => {
                         mostrarNotificacion('📤 Comparte: ' + url, '📤');
                     });
@@ -2726,7 +3089,7 @@
             if (!btn) return;
 
             window.addEventListener('scroll', () => {
-                if (window.scrollY > 400) {
+                if (window.scrollY > 500) {
                     btn.style.display = 'flex';
                 } else {
                     btn.style.display = 'none';
@@ -2807,14 +3170,14 @@
             window.addEventListener('load', () => {
                 setTimeout(() => {
                     preloader.classList.add('hidden');
-                }, 1000);
+                }, 1200);
             });
 
             setTimeout(() => {
                 if (!preloader.classList.contains('hidden')) {
                     preloader.classList.add('hidden');
                 }
-            }, 4000);
+            }, 5000);
         }
 
         // ============================================
@@ -2848,11 +3211,11 @@
                 }
             });
 
-            console.log('✨ Paulina Accesorios 2026 - Optimizado para Celular ✨');
-            console.log('📱 Diseño responsive perfecto para móviles');
-            console.log('🤖 IA que responde TODO - 100% funcional');
-            console.log('🎨 Diseño premium - Rosa + Dorado');
-            console.log('🚀 Versión 2026 - Totalmente actualizada');
+            console.log('✨ Paulina Accesorios 2026 - IA que RESPONDE TODO 🤖');
+            console.log(`📦 ${productos.length} productos cargados`);
+            console.log('🧠 IA con respuestas para: Productos, Matemáticas, Cultura General, Historia, Arte, Ciencia y más');
+            console.log('💡 Ejemplos: "¿Tienen shampoo?", "¿Cuánto es 2+2?", "¿Quién fue Einstein?"');
+            console.log('🚀 Versión 2026 - Diseño Premium y IA mejorada');
         });
     </script>
 
