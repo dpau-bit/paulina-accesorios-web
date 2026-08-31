@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>✨ Paulina Accesorios - Asistente IA con Ollama</title>
+    <title>Paulina Accesorios - Asistente IA con Ollama</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
     <style>
         /* ============================================
-           ESTILOS PREMIUM
+           ESTILOS PREMIUM COMPLETOS
            ============================================ */
 
         * {
@@ -128,6 +128,17 @@
             }
         }
 
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         /* ===== FREE SHIPPING ===== */
         .free-shipping {
             background: var(--gold-gradient);
@@ -165,6 +176,15 @@
             min-height: 64px;
             transition: var(--transition-base);
             box-shadow: var(--shadow-sm);
+        }
+        [data-theme="dark"] .navbar {
+            background: rgba(18, 18, 18, 0.96);
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 24px;
         }
 
         .logo {
@@ -244,6 +264,116 @@
             transform: rotate(-45deg) translate(4px, -4px);
         }
 
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: var(--gray-100);
+            border-radius: var(--radius-full);
+            padding: 4px 4px 4px 16px;
+            border: 2px solid transparent;
+            transition: var(--transition-base);
+        }
+        .search-box:focus-within {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.06);
+        }
+        .search-box input {
+            border: none;
+            background: transparent;
+            padding: 6px 0;
+            font-size: 12px;
+            font-family: var(--font-sans);
+            color: var(--gray-800);
+            outline: none;
+            width: 130px;
+            font-weight: 400;
+        }
+        .search-box input::placeholder {
+            color: var(--gray-400);
+        }
+        .search-box button {
+            background: none;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 4px 10px;
+            color: var(--gray-600);
+            transition: var(--transition-base);
+        }
+        .search-box button:hover {
+            color: var(--gold);
+        }
+
+        .user-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: var(--radius-full);
+            background: var(--gray-100);
+            border: 1.5px solid transparent;
+            cursor: pointer;
+            transition: var(--transition-base);
+            font-weight: 600;
+            font-size: 11px;
+            color: var(--gray-700);
+            font-family: var(--font-sans);
+        }
+        .user-btn:hover {
+            border-color: var(--gold);
+            background: var(--white);
+        }
+        .user-btn .user-avatar {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--gold-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .cart-icon {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: var(--radius-full);
+            background: var(--gray-100);
+            border: 1.5px solid transparent;
+            cursor: pointer;
+            transition: var(--transition-base);
+            font-weight: 600;
+            font-size: 12px;
+            color: var(--gray-700);
+            font-family: var(--font-sans);
+        }
+        .cart-icon:hover {
+            border-color: var(--gold);
+            background: var(--white);
+        }
+        .cart-count {
+            background: var(--gold-gradient);
+            color: #fff;
+            border-radius: 50%;
+            padding: 0 6px;
+            font-size: 9px;
+            font-weight: 700;
+            min-width: 18px;
+            text-align: center;
+            line-height: 18px;
+        }
+
         /* ===== HERO ===== */
         .hero {
             display: flex;
@@ -260,6 +390,9 @@
             overflow: hidden;
             box-shadow: var(--shadow-md);
         }
+        [data-theme="dark"] .hero {
+            background: linear-gradient(135deg, #1a0b1a, #121212, #1a0b1a);
+        }
         @keyframes gradientBG {
             0%,
             100% {
@@ -268,6 +401,26 @@
             50% {
                 background-position: 100% 50%;
             }
+        }
+
+        .hero::before {
+            content: '✦';
+            font-size: 18rem;
+            position: absolute;
+            right: -3rem;
+            bottom: -5rem;
+            opacity: 0.03;
+            transform: rotate(15deg);
+            animation: float 8s ease-in-out infinite;
+        }
+        .hero::after {
+            content: '💎';
+            font-size: 9rem;
+            position: absolute;
+            left: -1.5rem;
+            top: -1.5rem;
+            opacity: 0.04;
+            animation: float 10s ease-in-out infinite reverse;
         }
 
         .hero-content {
@@ -329,6 +482,10 @@
             padding: 8px 16px;
             border-radius: var(--radius-md);
             border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        [data-theme="dark"] .hero-stats .stat {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.03);
         }
         .hero-stats .stat .number {
             font-size: 1.4rem;
@@ -394,15 +551,28 @@
             transform: translateY(-2px) scale(1.02);
             box-shadow: var(--shadow-md);
         }
+        .btn:active {
+            transform: scale(0.96);
+        }
 
         .btn-primary {
             background: var(--primary-gradient);
             color: #fff;
+            box-shadow: 0 6px 30px rgba(194, 24, 91, 0.25);
         }
+        .btn-primary:hover {
+            box-shadow: 0 8px 40px rgba(194, 24, 91, 0.35);
+        }
+
         .btn-gold {
             background: var(--gold-gradient);
             color: #fff;
+            box-shadow: 0 6px 30px rgba(212, 175, 55, 0.25);
         }
+        .btn-gold:hover {
+            box-shadow: 0 8px 40px rgba(212, 175, 55, 0.35);
+        }
+
         .btn-outline-gold {
             background: transparent;
             color: var(--gold);
@@ -419,7 +589,6 @@
            CHAT CON OLLAMA - ASISTENTE COMPLETO
            ============================================ */
 
-        /* ===== BOTÓN FLOTANTE ===== */
         .chat-float-ai {
             position: fixed;
             bottom: 24px;
@@ -459,7 +628,6 @@
             animation: pulse 1.5s ease-in-out infinite;
         }
 
-        /* ===== MODAL DEL CHAT ===== */
         .chat-modal-ai {
             display: none;
             position: fixed;
@@ -483,18 +651,7 @@
         .chat-modal-ai.open {
             display: flex;
         }
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
 
-        /* ===== HEADER ===== */
         .chat-header-ai {
             padding: 14px 20px;
             background: var(--gold-gradient);
@@ -538,7 +695,6 @@
             transform: rotate(90deg);
         }
 
-        /* ===== MENSAJES ===== */
         .chat-messages-ai {
             padding: 16px 20px;
             flex: 1;
@@ -546,6 +702,10 @@
             max-height: 380px;
             background: var(--gray-50);
         }
+        [data-theme="dark"] .chat-messages-ai {
+            background: rgba(255, 255, 255, 0.01);
+        }
+
         .chat-message-ai {
             padding: 8px 14px;
             border-radius: var(--radius-md);
@@ -610,7 +770,6 @@
             }
         }
 
-        /* ===== OPCIONES RÁPIDAS ===== */
         .chat-options-ai {
             padding: 6px 20px 12px;
             display: flex;
@@ -638,7 +797,6 @@
             border-color: transparent;
         }
 
-        /* ===== INPUT ===== */
         .chat-input-ai {
             padding: 8px 20px;
             border-top: 1px solid rgba(212, 175, 55, 0.06);
@@ -685,6 +843,12 @@
            RESPONSIVE
            ============================================ */
 
+        @media (max-width: 1024px) {
+            .hero-title {
+                font-size: 2.8rem;
+            }
+        }
+
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
@@ -713,6 +877,10 @@
             }
             .hero-image {
                 display: none;
+            }
+            .search-box input {
+                width: 80px;
+                font-size: 10px;
             }
             .chat-modal-ai {
                 bottom: 72px;
@@ -761,6 +929,13 @@
                 padding: 6px 12px;
                 font-size: 9px;
             }
+            .search-box input {
+                width: 60px;
+                font-size: 9px;
+            }
+            .logo {
+                font-size: 1.1rem;
+            }
             .chat-modal-ai {
                 max-height: 380px;
             }
@@ -774,12 +949,12 @@
 
     <!-- ===== FREE SHIPPING ===== -->
     <div class="free-shipping">
-        🚚 <span class="highlight">Envío gratis</span> · 🎁 <span class="highlight">10% OFF</span> PAULINA10 · 🤖 <span class="highlight">IA 24/7</span> · ✨ 2026
+        🚚 <span class="highlight">Envío gratis</span> · 🎁 <span class="highlight">10% OFF</span> PAULINA10 · 🤖 <span class="highlight">IA con Ollama</span> · ✨ 2026
     </div>
 
     <!-- ===== NAVBAR ===== -->
     <nav class="navbar">
-        <div style="display:flex;align-items:center;gap:24px;">
+        <div class="navbar-left">
             <button class="hamburger" id="hamburger" aria-label="Menú">
                 <span></span>
                 <span></span>
@@ -797,17 +972,19 @@
             </ul>
         </div>
 
-        <div style="display:flex;align-items:center;gap:8px;">
-            <div style="display:flex;align-items:center;gap:4px;background:var(--gray-100);border-radius:var(--radius-full);padding:4px 4px 4px 16px;border:2px solid transparent;transition:var(--transition-base);">
-                <input type="text" id="searchInput" placeholder="Buscar..." style="border:none;background:transparent;padding:6px 0;font-size:12px;font-family:var(--font-sans);color:var(--gray-800);outline:none;width:130px;font-weight:400;" />
-                <button style="background:none;border:none;font-size:14px;cursor:pointer;padding:4px 10px;color:var(--gray-600);">🔍</button>
+        <div class="navbar-right">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Buscar..." />
+                <button id="searchBtn">🔍</button>
             </div>
-            <button class="user-btn" style="display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:var(--radius-full);background:var(--gray-100);border:1.5px solid transparent;cursor:pointer;transition:var(--transition-base);font-weight:600;font-size:11px;color:var(--gray-700);font-family:var(--font-sans);">
-                <span style="width:26px;height:26px;border-radius:50%;background:var(--gold-gradient);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;">👤</span>
-                <span>Invitado</span>
+
+            <button class="user-btn" id="userBtn">
+                <span class="user-avatar">👤</span>
+                <span id="userName">Invitado</span>
             </button>
-            <div style="font-size:18px;cursor:pointer;transition:var(--transition-base);background:var(--gray-100);padding:6px 12px;border-radius:var(--radius-full);border:1.5px solid transparent;display:flex;align-items:center;gap:6px;font-weight:600;position:relative;color:var(--gray-700);font-size:12px;">
-                🛍️ <span style="background:var(--gold-gradient);color:#fff;border-radius:50%;padding:0 6px;font-size:9px;font-weight:700;min-width:18px;text-align:center;line-height:18px;">0</span>
+
+            <div class="cart-icon" id="cartIcon">
+                🛍️ <span class="cart-count" id="cartCount">0</span>
             </div>
         </div>
     </nav>
@@ -838,16 +1015,14 @@
     </section>
 
     <!-- ============================================
-    CHAT CON OLLAMA - ASISTENTE PERSONAL COMPLETO
+    CHAT CON OLLAMA - BOTÓN Y MODAL
     ============================================ -->
 
-    <!-- ===== BOTÓN FLOTANTE ===== -->
     <button class="chat-float-ai" id="chatFloatAI" aria-label="Asistente IA">
         🤖
         <span class="chat-badge">IA</span>
     </button>
 
-    <!-- ===== MODAL DEL CHAT ===== -->
     <div class="chat-modal-ai" id="chatModalAI">
         <div class="chat-header-ai">
             <span>🤖 Paulina AI</span>
@@ -865,8 +1040,7 @@
                 🛍️ <strong>PRODUCTOS</strong><br>
                 • ¿Tienen shampoo?<br>
                 • ¿Qué aretes tienen?<br>
-                • ¿Cuánto cuestan los collares?<br>
-                • ¿Tienen pestañas 5D?<br><br>
+                • ¿Cuánto cuestan los collares?<br><br>
                 💰 <strong>PRECIOS Y PROMOCIONES</strong><br>
                 • ¿Cuánto cuesta la base Fit Me?<br>
                 • ¿Hay 2x1 en pestañas?<br>
@@ -934,31 +1108,32 @@
             </div>
         </div>
         <div style="text-align:center;border-top:1px solid rgba(255,255,255,0.03);padding-top:24px;margin-top:32px;font-size:10px;color:var(--gray-500);">
-            &copy; 2026 Paulina Accesorios · Hecho con 💖 · 🇵🇪 Perú · 🤖 Asistente IA con Ollama
+            &copy; 2026 Paulina Accesorios · Hecho con 💖 · 🇵🇪 Perú · 🤖 Asistente con Ollama
         </div>
     </footer>
 
     <!-- ============================================
-    JAVASCRIPT - ASISTENTE COMPLETO CON OLLAMA
+    JAVASCRIPT - ASISTENTE CON OLLAMA
     ============================================ -->
     <script>
         // ============================================
-        // CONFIGURACIÓN DE OLLAMA
+        // CONFIGURACIÓN - ELIGE TU MODELO
         // ============================================
 
-        const OLLAMA_URL = 'http://localhost:11434/api/generate';
+        // Opciones: 'gemma2:2b', 'phi3:mini', 'tinyllama:1.1b'
+        // gemma2:2b = El mejor equilibrio (rápido y bueno)
+        // phi3:mini = Muy bueno, un poco más lento
+        // tinyllama:1.1b = El más rápido
+        const MODELO = 'gemma2:2b'; // <--- CAMBIA AQUÍ SI QUIERES OTRO
 
-        // ===== MODELO: Usa gemma:2b (rápido) o llama3 (mejor) =====
-        // Para ver tus modelos: ollama list
-        // Si tienes gemma:2b, úsalo: es rápido y bueno en español
-        const MODELO = 'gemma:2b'; // Cambia a 'llama3' si lo tienes
+        const OLLAMA_URL = 'http://localhost:11434/api/generate';
 
         // ============================================
         // CONTEXTO COMPLETO DE LA TIENDA
         // ============================================
 
         const CONTEXTO = `
-        Eres Paulina AI, el asistente virtual de "Paulina Accesorios", una tienda de belleza en Perú.
+        Eres Paulina AI, la asistente virtual de "Paulina Accesorios", una tienda de belleza en Perú.
 
         🏢 INFORMACIÓN DE LA TIENDA:
         - Nombre: Paulina Accesorios
@@ -1023,11 +1198,6 @@
         📦 POLÍTICAS:
         - Cambios y devoluciones: Hasta 7 días
         - Producto en empaque original
-
-        🔒 SEGURIDAD:
-        - Compra 100% segura
-        - Datos protegidos
-        - IA integrada 24/7
 
         REGLAS DE RESPUESTA:
         1. Responde SIEMPRE en español
@@ -1120,12 +1290,14 @@
                     })
                 });
                 if (response.ok) {
-                    actualizarEstado('online', '✅ Conectado (' + MODELO + ')');
-                    console.log('✅ Ollama conectado correctamente');
-                    return true;
-                } else {
-                    throw new Error('Error de conexión');
+                    const data = await response.json();
+                    if (data.response) {
+                        actualizarEstado('online', '✅ Conectado (' + MODELO + ')');
+                        console.log('✅ Ollama conectado correctamente');
+                        return true;
+                    }
                 }
+                throw new Error('Error de conexión');
             } catch (error) {
                 console.error('❌ Error:', error);
                 actualizarEstado('offline', '❌ Offline - Inicia Ollama');
@@ -1179,7 +1351,6 @@
             chatInput.value = '';
             chatSend.disabled = true;
 
-            // Verificar conexión
             const conectado = await conectarOllama();
             if (!conectado) {
                 agregarMensaje(`❌ No puedo conectarme a Ollama.\n\nComandos para arreglarlo:\n1. ollama serve\n2. ollama pull ${MODELO}\n\nSi ya está corriendo, asegúrate de que el modelo esté descargado.`, 'bot');
@@ -1241,23 +1412,14 @@
         // ============================================
 
         async function init() {
-            console.log('🤖 Paulina AI - Asistente Personal');
+            console.log('🤖 Paulina AI - Asistente Personal con Ollama');
             console.log(`📌 Modelo: ${MODELO}`);
-            console.log('📌 URL: ' + OLLAMA_URL);
-            console.log('📌 Consejos:');
-            console.log('   - Para ver modelos: ollama list');
-            console.log('   - Para descargar: ollama pull gemma:2b');
-            console.log('   - Para iniciar: ollama serve');
+            console.log('📌 Ollama URL: ' + OLLAMA_URL);
+            console.log('📌 Modelos disponibles: gemma2:2b, phi3:mini, tinyllama:1.1b');
+            console.log('📌 Para cambiar el modelo, modifica la variable MODELO en el código');
 
             await conectarOllama();
             chatInput.focus();
-
-            // Mostrar estado en consola
-            if (MODELO === 'gemma:2b') {
-                console.log('✅ Usando Gemma 2:2B - Rápido y bueno en español');
-            } else if (MODELO === 'llama3') {
-                console.log('✅ Usando Llama 3 - Excelente calidad');
-            }
         }
 
         document.addEventListener('DOMContentLoaded', init);
