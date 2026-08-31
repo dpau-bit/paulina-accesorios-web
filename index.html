@@ -1951,8 +1951,10 @@
             }
         }
 
-        /* ===== CHAT GROQ ===== */
-        .chat-float-groq {
+        /* ============================================
+           CHAT IA HÍBRIDO (GROQ + LOCAL)
+           ============================================ */
+        .chat-float-ia {
             position: fixed;
             bottom: 24px;
             left: 24px;
@@ -1972,8 +1974,8 @@
             border: none;
             animation: pulse 2s ease-in-out infinite;
         }
-        .chat-float-groq:hover { transform: scale(1.1) rotate(-5deg); }
-        .chat-float-groq .badge {
+        .chat-float-ia:hover { transform: scale(1.1) rotate(-5deg); }
+        .chat-float-ia .badge {
             position: absolute;
             top: -3px;
             right: -3px;
@@ -1989,7 +1991,7 @@
             font-weight: 700;
             animation: pulse 1.5s infinite;
         }
-        .chat-float-groq .label {
+        .chat-float-ia .label {
             position: absolute;
             bottom: -18px;
             left: 50%;
@@ -2003,12 +2005,12 @@
             white-space: nowrap;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
-        [data-theme="dark"] .chat-float-groq .label {
+        [data-theme="dark"] .chat-float-ia .label {
             background: #1a0b1a;
             color: #f5d76e;
         }
 
-        .chat-modal-groq {
+        .chat-modal-ia {
             display: none;
             position: fixed;
             bottom: 90px;
@@ -2025,15 +2027,15 @@
             animation: slideUp 0.3s ease;
             border: 1px solid rgba(212, 175, 55, 0.1);
         }
-        [data-theme="dark"] .chat-modal-groq { background: #1a0b1a; }
-        .chat-modal-groq.open { display: flex; }
+        [data-theme="dark"] .chat-modal-ia { background: #1a0b1a; }
+        .chat-modal-ia.open { display: flex; }
 
         @keyframes slideUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .chat-header-groq {
+        .chat-header-ia {
             padding: 14px 20px;
             background: linear-gradient(135deg, #d4af37, #f5d76e);
             color: #fff;
@@ -2044,7 +2046,7 @@
             font-size: 14px;
             flex-shrink: 0;
         }
-        .chat-header-groq .status {
+        .chat-header-ia .status {
             display: flex;
             align-items: center;
             gap: 8px;
@@ -2052,15 +2054,15 @@
             font-weight: 400;
             opacity: 0.8;
         }
-        .chat-header-groq .status .dot {
+        .chat-header-ia .status .dot {
             width: 6px;
             height: 6px;
             border-radius: 50%;
             background: #4caf50;
             animation: pulse 1.5s infinite;
         }
-        .chat-header-groq .status .dot.offline { background: #ef5350; }
-        .chat-header-groq .close {
+        .chat-header-ia .status .dot.offline { background: #ef5350; }
+        .chat-header-ia .close {
             background: none;
             border: none;
             color: #fff;
@@ -2069,18 +2071,18 @@
             opacity: 0.7;
             transition: 0.2s;
         }
-        .chat-header-groq .close:hover { opacity: 1; transform: rotate(90deg); }
+        .chat-header-ia .close:hover { opacity: 1; transform: rotate(90deg); }
 
-        .chat-messages-groq {
+        .chat-messages-ia {
             padding: 16px 20px;
             flex: 1;
             overflow-y: auto;
             max-height: 380px;
             background: #faf8fa;
         }
-        [data-theme="dark"] .chat-messages-groq { background: rgba(255,255,255,0.01); }
+        [data-theme="dark"] .chat-messages-ia { background: rgba(255,255,255,0.01); }
 
-        .chat-msg-groq {
+        .chat-msg-ia {
             padding: 8px 14px;
             border-radius: 12px;
             margin-bottom: 6px;
@@ -2089,51 +2091,51 @@
             line-height: 1.5;
             font-size: 13px;
         }
-        .chat-msg-groq.bot {
+        .chat-msg-ia.bot {
             background: rgba(212, 175, 55, 0.06);
             align-self: flex-start;
             margin-right: auto;
             border-bottom-left-radius: 4px;
             color: #333;
         }
-        [data-theme="dark"] .chat-msg-groq.bot {
+        [data-theme="dark"] .chat-msg-ia.bot {
             background: rgba(255,255,255,0.05);
             color: #ddd;
         }
-        .chat-msg-groq.user {
+        .chat-msg-ia.user {
             background: linear-gradient(135deg, #d4af37, #f5d76e);
             color: #fff;
             align-self: flex-end;
             margin-left: auto;
             border-bottom-right-radius: 4px;
         }
-        .chat-msg-groq .time {
+        .chat-msg-ia .time {
             font-size: 9px;
             opacity: 0.4;
             display: block;
             margin-top: 2px;
         }
 
-        .typing-indicator-groq {
+        .typing-indicator-ia {
             display: inline-flex;
             gap: 3px;
             padding: 4px 8px;
         }
-        .typing-indicator-groq span {
+        .typing-indicator-ia span {
             width: 6px;
             height: 6px;
             border-radius: 50%;
             background: #999;
             animation: typingBounce 1.4s infinite;
         }
-        .typing-indicator-groq span:nth-child(2) { animation-delay: 0.2s; }
-        .typing-indicator-groq span:nth-child(3) { animation-delay: 0.4s; }
+        .typing-indicator-ia span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator-ia span:nth-child(3) { animation-delay: 0.4s; }
         @keyframes typingBounce {
             0%, 60%, 100% { transform: translateY(0); opacity: 0.3; }
             30% { transform: translateY(-6px); opacity: 1; }
         }
 
-        .chat-options-groq {
+        .chat-options-ia {
             padding: 6px 20px 12px;
             display: flex;
             flex-wrap: wrap;
@@ -2141,7 +2143,7 @@
             border-top: 1px solid rgba(212, 175, 55, 0.06);
             flex-shrink: 0;
         }
-        .chat-options-groq .opt {
+        .chat-options-ia .opt {
             padding: 4px 12px;
             border-radius: 20px;
             border: 1.5px solid #d4af37;
@@ -2154,28 +2156,28 @@
             white-space: nowrap;
             font-family: inherit;
         }
-        .chat-options-groq .opt:hover {
+        .chat-options-ia .opt:hover {
             background: linear-gradient(135deg, #d4af37, #f5d76e);
             color: #fff;
             border-color: transparent;
         }
-        [data-theme="dark"] .chat-options-groq .opt {
+        [data-theme="dark"] .chat-options-ia .opt {
             color: #f5d76e;
             border-color: #f5d76e;
         }
-        [data-theme="dark"] .chat-options-groq .opt:hover {
+        [data-theme="dark"] .chat-options-ia .opt:hover {
             background: linear-gradient(135deg, #d4af37, #f5d76e);
             color: #fff;
         }
 
-        .chat-input-groq {
+        .chat-input-ia {
             padding: 8px 20px;
             border-top: 1px solid rgba(212, 175, 55, 0.06);
             display: flex;
             gap: 6px;
             flex-shrink: 0;
         }
-        .chat-input-groq input {
+        .chat-input-ia input {
             flex: 1;
             padding: 8px 14px;
             border: 1.5px solid rgba(212, 175, 55, 0.1);
@@ -2187,16 +2189,16 @@
             color: #333;
             outline: none;
         }
-        .chat-input-groq input:focus {
+        .chat-input-ia input:focus {
             border-color: #d4af37;
             box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
         }
-        [data-theme="dark"] .chat-input-groq input {
+        [data-theme="dark"] .chat-input-ia input {
             background: rgba(255,255,255,0.05);
             color: #ddd;
             border-color: rgba(255,255,255,0.1);
         }
-        .chat-input-groq button {
+        .chat-input-ia button {
             padding: 8px 18px;
             border: none;
             border-radius: 25px;
@@ -2207,19 +2209,19 @@
             cursor: pointer;
             transition: 0.2s;
         }
-        .chat-input-groq button:hover { transform: scale(1.05); }
-        .chat-input-groq button:disabled { opacity: 0.5; cursor: not-allowed; }
+        .chat-input-ia button:hover { transform: scale(1.05); }
+        .chat-input-ia button:disabled { opacity: 0.5; cursor: not-allowed; }
 
         @media (max-width: 768px) {
-            .chat-float-groq { 
+            .chat-float-ia { 
                 width: 48px; 
                 height: 48px; 
                 font-size: 1.3rem; 
                 bottom: 16px; 
                 left: 16px; 
             }
-            .chat-float-groq .label { display: none; }
-            .chat-modal-groq { 
+            .chat-float-ia .label { display: none; }
+            .chat-modal-ia { 
                 bottom: 72px; 
                 left: 12px; 
                 right: 12px; 
@@ -2227,12 +2229,12 @@
                 max-width: none; 
                 max-height: 440px; 
             }
-            .chat-messages-groq { max-height: 280px; }
-            .chat-msg-groq { font-size: 12px; padding: 6px 10px; }
-            .chat-options-groq .opt { font-size: 8px; padding: 3px 8px; }
-            .chat-input-groq { padding: 6px 12px; }
-            .chat-input-groq input { font-size: 11px; padding: 6px 10px; }
-            .chat-input-groq button { font-size: 10px; padding: 6px 12px; }
+            .chat-messages-ia { max-height: 280px; }
+            .chat-msg-ia { font-size: 12px; padding: 6px 10px; }
+            .chat-options-ia .opt { font-size: 8px; padding: 3px 8px; }
+            .chat-input-ia { padding: 6px 12px; }
+            .chat-input-ia input { font-size: 11px; padding: 6px 10px; }
+            .chat-input-ia button { font-size: 10px; padding: 6px 12px; }
         }
     </style>
 </head>
@@ -2339,7 +2341,7 @@
             <div class="hero-actions">
                 <a href="#productos" class="btn btn-primary">✨ Ver colección</a>
                 <a href="#ofertas" class="btn btn-gold">🔥 Ofertas</a>
-                <button class="btn btn-outline-gold" onclick="document.getElementById('chatFloatGroq').click()">🤖 Chat IA</button>
+                <button class="btn btn-outline-gold" onclick="document.getElementById('chatFloatIA').click()">🤖 Chat IA</button>
             </div>
         </div>
 
@@ -2469,27 +2471,27 @@
     <a href="https://wa.me/51923861016" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">💬</a>
 
     <!-- ============================================
-    CHAT GROQ (ÚNICO CHAT - RESPONDE TODO)
+    CHAT IA HÍBRIDO - ÚNICO CHAT (GROQ + LOCAL)
     ============================================ -->
-    <button class="chat-float-groq" id="chatFloatGroq">
+    <button class="chat-float-ia" id="chatFloatIA">
         🤖
         <span class="badge">⭐</span>
-        <span class="label">Groq IA</span>
+        <span class="label">IA Híbrida</span>
     </button>
 
-    <div class="chat-modal-groq" id="chatModalGroq">
-        <div class="chat-header-groq">
-            <span>🤖 Paulina AI (Groq)</span>
+    <div class="chat-modal-ia" id="chatModalIA">
+        <div class="chat-header-ia">
+            <span>🤖 Paulina AI (Híbrida)</span>
             <span class="status">
-                <span class="dot" id="statusDotGroq"></span>
-                <span id="statusTextGroq">Conectando...</span>
+                <span class="dot" id="statusDotIA"></span>
+                <span id="statusTextIA">Conectando...</span>
             </span>
-            <button class="close" id="chatCloseGroq">✕</button>
+            <button class="close" id="chatCloseIA">✕</button>
         </div>
 
-        <div class="chat-messages-groq" id="chatMessagesGroq">
-            <div class="chat-msg-groq bot">
-                👋 ¡Hola! Soy <strong>Paulina AI</strong>, tu asistente con Groq.<br><br>
+        <div class="chat-messages-ia" id="chatMessagesIA">
+            <div class="chat-msg-ia bot">
+                👋 ¡Hola! Soy <strong>Paulina AI</strong>, tu asistente híbrido con Groq + IA local.<br><br>
                 💡 <strong>Puedo responder CUALQUIER PREGUNTA</strong> que tengas:<br><br>
                 • 📦 <strong>Productos</strong> - Aretes, pestañas, collares, maquillaje, shampoo y más<br>
                 • 💰 <strong>Precios</strong> - Información detallada de todos los productos<br>
@@ -2504,7 +2506,7 @@
             </div>
         </div>
 
-        <div class="chat-options-groq" id="chatOptionsGroq">
+        <div class="chat-options-ia" id="chatOptionsIA">
             <button class="opt" data-msg="📦 ¿Qué productos tienen?">📦 Productos</button>
             <button class="opt" data-msg="💰 ¿Cuánto cuestan los aretes?">💰 Precios</button>
             <button class="opt" data-msg="🚚 ¿Cuánto tardan los envíos?">🚚 Envíos</button>
@@ -2519,9 +2521,9 @@
             <button class="opt" data-msg="🧠 ¿Cómo funciona el cerebro humano?">🧠 Ciencia</button>
         </div>
 
-        <div class="chat-input-groq">
-            <input type="text" id="chatInputGroq" placeholder="Escribe tu mensaje..." />
-            <button id="chatSendGroq">Enviar</button>
+        <div class="chat-input-ia">
+            <input type="text" id="chatInputIA" placeholder="Escribe tu mensaje..." />
+            <button id="chatSendIA">Enviar</button>
         </div>
     </div>
 
@@ -2568,12 +2570,12 @@
         </div>
 
         <div class="footer-bottom">
-            &copy; 2026 Paulina Accesorios · Hecho con <span class="heart">💖</span> para mujeres que brillan · 🇵🇪 Perú · Todos los derechos reservados · 🤖 IA con Groq (ILIMITADA)
+            &copy; 2026 Paulina Accesorios · Hecho con <span class="heart">💖</span> para mujeres que brillan · 🇵🇪 Perú · Todos los derechos reservados · 🤖 IA Híbrida (Groq + Local)
         </div>
     </footer>
 
     <!-- ============================================
-    JAVASCRIPT - COMPLETO
+    JAVASCRIPT - COMPLETO CON IA HÍBRIDA
     ============================================ -->
     <script>
         // ============================================
@@ -2685,6 +2687,104 @@
                 imagen: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop&crop=center&q=80'
             }
         ];
+
+        // ============================================
+        // IA LOCAL - CONOCIMIENTO PROFUNDO DE LA TIENDA
+        // ============================================
+
+        const TIENDA_INFO = `
+        INFORMACIÓN COMPLETA DE PAULINA ACCESORIOS:
+
+        🏪 NOMBRE: Paulina Accesorios
+        📍 UBICACIÓN: Francisco Bardales 705, Yurimaguas, Perú
+        ⏰ HORARIO: Lunes a Sábado de 9:00 am a 8:00 pm. Domingos cerrado.
+        📞 CONTACTO: WhatsApp +51 923861016
+
+        📦 PRODUCTOS Y PRECIOS:
+
+        ARETES:
+        - Aretes Bohemios: $25 (piedras naturales semi-preciosas, hechos a mano)
+        - Aretes de Perla Dorada: $38 (perlas naturales, acabado 18k)
+        - Aretes Florales: $6.06 (diseño floral delicado)
+        - Aretes de Compromiso: $65 (diseño elegante para ocasiones especiales)
+        - Aretes Aros: $15-25 (varios tamaños y estilos)
+        - Aretes Colgantes: $20-35 (largos y vistosos)
+        - Aretes Minimalistas: $12-18 (diseños simples y modernos)
+
+        PESTAÑAS:
+        - Pestañas 3D: $25 (volumen natural)
+        - Pestañas 5D Mega: $35 (volumen intenso, efecto dramático) 🔥 2x1
+        - Pestañas Magnéticas: $28 (fáciles de poner, sin pegamento)
+        - Pestañas de Seda: $30 (suaves y naturales)
+        - Pestañas de Colores: $18 (variedad de colores)
+
+        COLLARES:
+        - Collar de Perla: $45 (perlas naturales, acabado 18k)
+        - Collar Personalizado: $30 (con iniciales o nombres grabados)
+        - Collar con Piedras: $35-55 (variedad de piedras semi-preciosas)
+        - Collar Plata 925: $60 (plata esterlina)
+        - Collar Floral: $25 (diseño floral delicado)
+        - Collar de Compromiso: $75 (diseño elegante y romántico)
+
+        MAQUILLAJE:
+        - Base Fit Me 220: $43.89 (cobertura media, acabado mate natural)
+        - Paleta City Mini: $37 (sombras de ojos, varios tonos)
+        - Labial Matte Ink: $51.20 (larga duración, acabado mate)
+        - Máscara The Falsies: $45.70 (efecto pestañas postizas)
+
+        CUIDADO CAPILAR:
+        - Shampoo Keratina: $26.66 (reparación capilar)
+        - Acondicionador Keratina: $26.66 (nutrición y suavidad)
+        - Tratamiento Platinum: $48.36 (tratamiento intensivo)
+
+        SERVICIOS ADICIONALES:
+        - Uñas Esculpidas: desde $30
+        - Uñas Acrílicas: desde $35
+        - Uñas en Gel: desde $40
+        - Extensiones de Pestañas: desde $50
+
+        🚚 ENVÍOS:
+        - Lima: 24-48 horas
+        - Provincias: 2-4 días hábiles
+        - Envío GRATIS en compras mayores a $50
+        - Costo de envío: $5-10 según ubicación
+
+        💳 FORMAS DE PAGO:
+        - Yape (app de pago móvil)
+        - Plin (app de pago móvil)
+        - Transferencia bancaria
+        - Efectivo (en tienda)
+        - Tarjeta de crédito/débito (en tienda)
+        - Contraentrega (pago al recibir)
+
+        🎁 PROMOCIONES ESPECIALES:
+        - 🔥 2x1 en Pestañas 5D Mega (lleva 2 pares por el precio de 1)
+        - 🎉 10% OFF con código PAULINA10 (válido en toda la tienda)
+        - 🚚 Envío gratis en compras mayores a $50
+        - 💎 Clientes frecuentes: sistema de puntos y descuentos exclusivos
+
+        🔧 GARANTÍA:
+        - 30 días de garantía en todos los productos
+        - Cambios dentro de 7 días con producto en perfecto estado
+        - Devoluciones: hasta 15 días con ticket de compra
+
+        🤝 REDES SOCIALES:
+        - Instagram: @paulinaccesorios26
+        - Facebook: Paulina Accesorios
+        - TikTok: @paulinaaccesorios
+
+        SOBRE NOSOTROS:
+        Paulina Accesorios es una tienda de belleza en Yurimaguas, Perú, que ofrece productos de alta calidad con atención personalizada. Nos especializamos en accesorios, maquillaje y cuidado capilar. Contamos con una asistente virtual IA 24/7 para atender todas tus consultas.
+
+        PREGUNTAS FRECUENTES:
+        - ¿Tienen uñas? Sí, tenemos servicio de uñas esculpidas, acrílicas y en gel.
+        - ¿Hacen envíos a todo Perú? Sí, realizamos envíos a todo el país.
+        - ¿Aceptan Yape? Sí, aceptamos Yape, Plin y otros métodos de pago.
+        - ¿Tienen garantía? Sí, 30 días de garantía en todos los productos.
+        - ¿Puedo personalizar un collar? Sí, ofrecemos collares personalizados con iniciales o nombres.
+        - ¿Tienen estacionamiento? Sí, tenemos estacionamiento gratuito para clientes.
+        - ¿Aceptan tarjetas? Sí, aceptamos tarjetas de crédito y débito en tienda.
+        `;
 
         // ============================================
         // FUNCIONES DEL SISTEMA
@@ -3308,6 +3408,298 @@
         }
 
         // ============================================
+        // IA HÍBRIDA - GROQ + LOCAL
+        // ============================================
+
+        // 🔥 TU API KEY DE GROQ
+        const GROQ_API_KEY = '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';
+        const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
+
+        // ============================================
+        // CONTEXTO COMPLETO DE LA TIENDA PARA GROQ
+        // ============================================
+
+        const CONTEXTO_GROQ = `
+        ${TIENDA_INFO}
+
+        INSTRUCCIONES PARA LA IA:
+        1. Eres Paulina AI, la asistente virtual de Paulina Accesorios.
+        2. Debes conocer ABSOLUTAMENTE TODA la información de la tienda.
+        3. Responde en español con emojis, sé amable, profesional y detallada.
+        4. No tienes límite de extensión - responde todo lo necesario para ayudar.
+        5. Si te preguntan algo que no está en la información, usa tu conocimiento general.
+        6. Siempre ofrece ayuda adicional y recomienda productos relacionados.
+        7. Si el cliente pregunta por precios, dale el precio exacto y detalles del producto.
+        8. Si pregunta por envíos, dale los tiempos exactos y condiciones.
+        9. Si pregunta por promociones, menciónalas todas con entusiasmo.
+        10. Siempre termina ofreciendo más ayuda o preguntando si necesita algo más.
+        `;
+
+        // ============================================
+        // FUNCIONES DEL CHAT HÍBRIDO
+        // ============================================
+
+        const chatFloatIA = document.getElementById('chatFloatIA');
+        const chatModalIA = document.getElementById('chatModalIA');
+        const chatCloseIA = document.getElementById('chatCloseIA');
+        const chatMessagesIA = document.getElementById('chatMessagesIA');
+        const chatInputIA = document.getElementById('chatInputIA');
+        const chatSendIA = document.getElementById('chatSendIA');
+        const chatOptionsIA = document.getElementById('chatOptionsIA');
+        const statusDotIA = document.getElementById('statusDotIA');
+        const statusTextIA = document.getElementById('statusTextIA');
+
+        function agregarMensajeIA(texto, tipo, tiempo = null) {
+            const div = document.createElement('div');
+            div.className = `chat-msg-ia ${tipo}`;
+            div.innerHTML = texto.replace(/\n/g, '<br>');
+            const timeSpan = document.createElement('span');
+            timeSpan.className = 'time';
+            timeSpan.textContent = tiempo || new Date().toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' });
+            div.appendChild(timeSpan);
+            chatMessagesIA.appendChild(div);
+            chatMessagesIA.scrollTop = chatMessagesIA.scrollHeight;
+        }
+
+        function mostrarTypingIA() {
+            const div = document.createElement('div');
+            div.className = 'chat-msg-ia bot';
+            div.id = 'typingIA';
+            div.innerHTML = `<div class="typing-indicator-ia"><span></span><span></span><span></span></div>`;
+            chatMessagesIA.appendChild(div);
+            chatMessagesIA.scrollTop = chatMessagesIA.scrollHeight;
+        }
+
+        function ocultarTypingIA() {
+            const typing = document.getElementById('typingIA');
+            if (typing) typing.remove();
+        }
+
+        function actualizarEstadoIA(estado, mensaje) {
+            statusTextIA.textContent = mensaje;
+            statusDotIA.className = 'dot';
+            if (estado === 'online') {
+                statusDotIA.classList.add('online');
+            } else if (estado === 'offline') {
+                statusDotIA.classList.add('offline');
+            }
+        }
+
+        // ============================================
+        // IA LOCAL - RESPUESTAS RÁPIDAS (BACKUP)
+        // ============================================
+
+        function getRespuestaLocal(mensaje) {
+            const msg = mensaje.toLowerCase().trim();
+
+            // Productos
+            if (msg.includes('aretes') || msg.includes('arete')) {
+                return '📿 ¡Claro que sí! Tenemos una variedad de aretes:\n\n• Aretes Bohemios: $25 (piedras naturales)\n• Aretes de Perla Dorada: $38 (perlas naturales, acabado 18k)\n• Aretes Florales: $6.06\n• Aretes de Compromiso: $65\n• Aretes Aros: $15-25\n• Aretes Colgantes: $20-35\n• Aretes Minimalistas: $12-18\n\n¿Qué estilo te gusta? 😊';
+            }
+
+            if (msg.includes('pestañas') || msg.includes('pestaña')) {
+                return '👁️ Tenemos pestañas de alta calidad:\n\n• Pestañas 3D: $25 (volumen natural)\n• Pestañas 5D Mega: $35 (volumen intenso) 🔥 ¡2x1!\n• Pestañas Magnéticas: $28 (sin pegamento)\n• Pestañas de Seda: $30 (suaves y naturales)\n• Pestañas de Colores: $18\n\n¿Cuál te llama la atención? 💖';
+            }
+
+            if (msg.includes('collares') || msg.includes('collar')) {
+                return '📿 ¡Sí! Tenemos collares hermosos:\n\n• Collar de Perla: $45 (perlas naturales)\n• Collar Personalizado: $30 (con iniciales o nombres)\n• Collar con Piedras: $35-55\n• Collar Plata 925: $60\n• Collar Floral: $25\n• Collar de Compromiso: $75\n\n¿Te gustaría personalizar alguno? ✨';
+            }
+
+            if (msg.includes('maquillaje')) {
+                return '💄 Tenemos maquillaje de calidad profesional:\n\n• Base Fit Me 220: $43.89 (cobertura media, mate)\n• Paleta City Mini: $37 (sombras de ojos)\n• Labial Matte Ink: $51.20 (larga duración)\n• Máscara The Falsies: $45.70 (efecto pestañas postizas)\n\n¿Qué producto buscas? 🎨';
+            }
+
+            if (msg.includes('shampoo') || msg.includes('champú') || msg.includes('capilar')) {
+                return '💈 Tenemos cuidado capilar de calidad:\n\n• Shampoo Keratina: $26.66 (reparación)\n• Acondicionador Keratina: $26.66 (nutrición)\n• Tratamiento Platinum: $48.36 (intensivo)\n\n¿Quieres más información de algún producto? 💆‍♀️';
+            }
+
+            if (msg.includes('uñas') || msg.includes('uña')) {
+                return '💅 ¡Claro que sí! Ofrecemos servicios de uñas:\n\n• Uñas Esculpidas: desde $30\n• Uñas Acrílicas: desde $35\n• Uñas en Gel: desde $40\n• Extensiones de Pestañas: desde $50\n\n¿Te gustaría agendar una cita? 📅';
+            }
+
+            if (msg.includes('precio') || msg.includes('cuesta') || msg.includes('costo')) {
+                return '💰 Nuestros precios son muy accesibles:\n\n• Aretes: $6.06 - $65\n• Pestañas: $18 - $35\n• Collares: $25 - $75\n• Maquillaje: $37 - $51.20\n• Shampoo/Acondicionador: $26.66\n• Uñas: desde $30\n\n¿Qué producto te interesa? 😊';
+            }
+
+            if (msg.includes('envío') || msg.includes('envio') || msg.includes('llegar')) {
+                return '🚚 Realizamos envíos a todo Perú:\n\n• Lima: 24-48 horas\n• Provincias: 2-4 días hábiles\n• Envío GRATIS en compras > $50\n• Costo: $5-10 según ubicación\n\n¿En qué ciudad estás? 📦';
+            }
+
+            if (msg.includes('pago') || msg.includes('pagar') || msg.includes('yape') || msg.includes('plin')) {
+                return '💳 Aceptamos múltiples formas de pago:\n\n• Yape ✅\n• Plin ✅\n• Transferencia bancaria ✅\n• Efectivo (en tienda) ✅\n• Tarjeta (en tienda) ✅\n• Contraentrega ✅\n\n¿Cuál prefieres? 😊';
+            }
+
+            if (msg.includes('ubicación') || msg.includes('dirección') || msg.includes('donde')) {
+                return '📍 Estamos en:\n\nFrancisco Bardales 705, Yurimaguas, Perú\n\n⏰ Horario: Lunes a Sábado 9am - 8pm\n\n¡Te esperamos! 🏪✨';
+            }
+
+            if (msg.includes('promoción') || msg.includes('promociones') || msg.includes('descuento') || msg.includes('oferta')) {
+                return '🎁 ¡TENEMOS PROMOCIONES ESPECIALES!\n\n🔥 2x1 en Pestañas 5D Mega (lleva 2 pares por el precio de 1)\n🎉 10% OFF con código PAULINA10\n🚚 Envío gratis en compras > $50\n💎 Sistema de puntos para clientes frecuentes\n\n¡Aprovecha! 🛍️✨';
+            }
+
+            if (msg.includes('garantía') || msg.includes('garantia') || msg.includes('cambios')) {
+                return '🔧 Nuestra política de garantía:\n\n• 30 días de garantía en todos los productos\n• Cambios dentro de 7 días (producto en perfecto estado)\n• Devoluciones hasta 15 días con ticket de compra\n\n¿Tienes algún problema con tu producto? 🤔';
+            }
+
+            // Saludos
+            if (msg.includes('hola') || msg.includes('buenos días') || msg.includes('buenas tardes') || msg.includes('buenas noches')) {
+                return '👋 ¡Hola! Soy Paulina AI, tu asistente 24/7. ¿Cómo puedo ayudarte hoy? Puedo informarte sobre productos, precios, envíos, promociones y mucho más. ✨';
+            }
+
+            // Chiste
+            if (msg.includes('chiste') || msg.includes('chistes')) {
+                const chistes = [
+                    '😊 ¿Por qué las pestañas no van a la playa? ¡Porque les da miedo el agua salada y que se les corra el rímel! 😂',
+                    '😂 ¿Qué le dice una pestaña a otra? — ¡No te me pegues que me despeinas! 😂',
+                    '😄 ¿Por qué los aretes son tan felices? — ¡Porque siempre están colgados de la moda! ✨'
+                ];
+                return chistes[Math.floor(Math.random() * chistes.length)];
+            }
+
+            // Matemáticas
+            if (msg.includes('+') || msg.includes('-') || msg.includes('*') || msg.includes('x') || msg.includes('/')) {
+                try {
+                    const result = Function('"use strict"; return (' + msg.replace('x', '*') + ')')();
+                    return `🧮 El resultado es: ${result}`;
+                } catch (e) {
+                    return '🧮 No pude calcular eso. ¿Puedes reformular la operación? 🤔';
+                }
+            }
+
+            // Respuesta por defecto usando la información de la tienda
+            return `✨ ¡Excelente pregunta! Soy Paulina AI y conozco todo sobre nuestra tienda.\n\n${TIENDA_INFO.split('\n').slice(0, 10).join('\n')}\n\n¿Qué te gustaría saber con más detalle? 😊`;
+        }
+
+        // ============================================
+        // ENVIAR MENSAJE A GROQ (CON FALLBACK LOCAL)
+        // ============================================
+
+        async function enviarMensajeIA(mensaje, intentos = 2) {
+            for (let i = 0; i < intentos; i++) {
+                try {
+                    const response = await fetch(GROQ_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${GROQ_API_KEY}`
+                        },
+                        body: JSON.stringify({
+                            model: 'llama-3.1-8b-instant',
+                            messages: [
+                                { role: 'system', content: CONTEXTO_GROQ },
+                                { role: 'user', content: mensaje }
+                            ],
+                            temperature: 0.7,
+                            max_tokens: 1500,
+                            top_p: 0.9
+                        })
+                    });
+
+                    if (!response.ok) {
+                        const error = await response.json();
+                        throw new Error(error.error?.message || 'Error en Groq');
+                    }
+
+                    const data = await response.json();
+                    return data.choices[0].message.content || 'No entendí tu pregunta. ¿Puedes repetirla? 😊';
+
+                } catch (error) {
+                    console.error(`❌ Error en Groq (intento ${i+1}):`, error);
+                    if (i === intentos - 1) {
+                        // Si falla Groq, usa la IA local
+                        console.log('⚠️ Usando IA local como respaldo');
+                        return getRespuestaLocal(mensaje);
+                    }
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                }
+            }
+        }
+
+        // ============================================
+        // ENVIAR MENSAJE DEL USUARIO
+        // ============================================
+
+        async function enviarMensajeHandler() {
+            const mensaje = chatInputIA.value.trim();
+            if (!mensaje) return;
+
+            agregarMensajeIA(mensaje, 'user');
+            chatInputIA.value = '';
+            chatSendIA.disabled = true;
+            actualizarEstadoIA('', '🔄 Pensando...');
+
+            mostrarTypingIA();
+            const respuesta = await enviarMensajeIA(mensaje);
+            ocultarTypingIA();
+            agregarMensajeIA(respuesta, 'bot');
+            actualizarEstadoIA('online', '✅ Online');
+
+            chatSendIA.disabled = false;
+            chatInputIA.focus();
+        }
+
+        // ============================================
+        // ABRIR/CERRAR CHAT
+        // ============================================
+
+        function toggleChatIA() {
+            chatModalIA.classList.toggle('open');
+            if (chatModalIA.classList.contains('open')) {
+                chatInputIA.focus();
+                actualizarEstadoIA('online', '✅ Online');
+            }
+        }
+
+        chatFloatIA.addEventListener('click', toggleChatIA);
+        chatCloseIA.addEventListener('click', toggleChatIA);
+
+        document.addEventListener('click', (e) => {
+            if (chatModalIA.classList.contains('open') &&
+                !chatModalIA.contains(e.target) &&
+                !chatFloatIA.contains(e.target)) {
+                chatModalIA.classList.remove('open');
+            }
+        });
+
+        // ============================================
+        // EVENTOS
+        // ============================================
+
+        chatSendIA.addEventListener('click', enviarMensajeHandler);
+        chatInputIA.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') enviarMensajeHandler();
+        });
+
+        chatOptionsIA.addEventListener('click', (e) => {
+            const opt = e.target.closest('.opt');
+            if (opt) {
+                chatInputIA.value = opt.dataset.msg;
+                enviarMensajeHandler();
+            }
+        });
+
+        // ============================================
+        // INICIALIZACIÓN
+        // ============================================
+
+        function initIA() {
+            console.log('🤖 Paulina AI - Sistema Híbrido (Groq + Local)');
+            console.log('📌 Modelo Groq: llama-3.1-8b-instant');
+            console.log('📌 API Key: ' + (GROQ_API_KEY === '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' ? '✅ Configurada' : '❌ No configurada'));
+            
+            actualizarEstadoIA('online', '✅ Listo');
+            agregarMensajeIA(
+                '🚀 <strong>¡Sistema Híbrido Activado!</strong>\n\n' +
+                '💡 Tengo dos cerebros:\n' +
+                '🧠 <strong>Groq IA</strong> - Inteligencia ilimitada (responde TODO)\n' +
+                '💾 <strong>IA Local</strong> - Respaldo rápido y confiable\n\n' +
+                '📦 <strong>Conozco TODOS los productos, precios, promociones y servicios</strong> de Paulina Accesorios.\n\n' +
+                '🗣️ <strong>¡Pregúntame lo que quieras!</strong>',
+                'bot'
+            );
+        }
+
+        // ============================================
         // INICIALIZACIÓN PRINCIPAL
         // ============================================
 
@@ -3327,6 +3719,7 @@
             initCartModal();
             initContact();
             initFilters();
+            initIA();
 
             document.getElementById('userBtn').addEventListener('click', () => {
                 if (currentUser) {
@@ -3340,188 +3733,10 @@
             console.log('✨ Paulina Accesorios 2026 - Ultra Premium ✨');
             console.log('🎨 Diseño de lujo - Farfetch/Sephora');
             console.log('📱 Totalmente responsive - PC y Celular');
-            console.log('🤖 Groq IA - ILIMITADA y GRATIS');
+            console.log('🤖 IA Híbrida - Groq + Local (Siempre responde)');
             console.log('💎 Colores dorado + rosa + gris premium');
             console.log('🚀 Versión 2026 - Diseño de lujo');
         });
-
-        // ============================================
-        // GROQ - CHAT ILIMITADO
-        // ============================================
-
-        // 🔥 TU API KEY DE GROQ (GRATIS E ILIMITADA)
-        const GROQ_API_KEY = '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';
-
-        const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
-
-        const CONTEXTO_GROQ = `
-        Eres Paulina AI, la asistente virtual de "Paulina Accesorios", una tienda de belleza en Perú.
-
-        INFORMACIÓN DE LA TIENDA:
-        - Productos: aretes ($25-65), pestañas ($25-35), collares ($30-60), shampoo ($26.66), acondicionador ($26.66), maquillaje ($37-51)
-        - Envíos: a todo Perú, Lima 24-48h, provincias 2-4 días, gratis > $50
-        - Pagos: Yape, Plin, transferencia, efectivo, tarjeta, contraentrega
-        - Ubicación: Francisco Bardales 705, Yurimaguas
-        - Horario: Lunes a Sábado 9am-8pm
-        - Promociones: 10% OFF con código PAULINA10, 2x1 en pestañas 5D
-        - Garantía: 30 días en todos los productos
-
-        Responde en español con emojis, sé amable, profesional y breve (máximo 500 párrafos).
-        Si te preguntan algo fuera de la tienda, responde con educación.
-        `;
-
-        const chatFloatGroq = document.getElementById('chatFloatGroq');
-        const chatModalGroq = document.getElementById('chatModalGroq');
-        const chatCloseGroq = document.getElementById('chatCloseGroq');
-        const chatMessagesGroq = document.getElementById('chatMessagesGroq');
-        const chatInputGroq = document.getElementById('chatInputGroq');
-        const chatSendGroq = document.getElementById('chatSendGroq');
-        const chatOptionsGroq = document.getElementById('chatOptionsGroq');
-        const statusDotGroq = document.getElementById('statusDotGroq');
-        const statusTextGroq = document.getElementById('statusTextGroq');
-
-        function agregarMensajeGroq(texto, tipo, tiempo = null) {
-            const div = document.createElement('div');
-            div.className = `chat-msg-groq ${tipo}`;
-            div.innerHTML = texto.replace(/\n/g, '<br>');
-            const timeSpan = document.createElement('span');
-            timeSpan.className = 'time';
-            timeSpan.textContent = tiempo || new Date().toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' });
-            div.appendChild(timeSpan);
-            chatMessagesGroq.appendChild(div);
-            chatMessagesGroq.scrollTop = chatMessagesGroq.scrollHeight;
-        }
-
-        function mostrarTypingGroq() {
-            const div = document.createElement('div');
-            div.className = 'chat-msg-groq bot';
-            div.id = 'typingGroq';
-            div.innerHTML = `<div class="typing-indicator-groq"><span></span><span></span><span></span></div>`;
-            chatMessagesGroq.appendChild(div);
-            chatMessagesGroq.scrollTop = chatMessagesGroq.scrollHeight;
-        }
-
-        function ocultarTypingGroq() {
-            const typing = document.getElementById('typingGroq');
-            if (typing) typing.remove();
-        }
-
-        function actualizarEstadoGroq(estado, mensaje) {
-            statusTextGroq.textContent = mensaje;
-            statusDotGroq.className = 'dot';
-            if (estado === 'online') {
-                statusDotGroq.classList.add('online');
-            } else if (estado === 'offline') {
-                statusDotGroq.classList.add('offline');
-            }
-        }
-
-        async function enviarMensajeGroq(mensaje) {
-            try {
-                const response = await fetch(GROQ_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${GROQ_API_KEY}`
-                    },
-                    body: JSON.stringify({
-                        model: 'llama-3.1-8b-instant',
-                        messages: [
-                            { role: 'system', content: CONTEXTO_GROQ },
-                            { role: 'user', content: mensaje }
-                        ],
-                        temperature: 0.7,
-                        max_tokens: 500,
-                        top_p: 0.9
-                    })
-                });
-
-                if (!response.ok) {
-                    const error = await response.json();
-                    throw new Error(error.error?.message || 'Error en Groq');
-                }
-
-                const data = await response.json();
-                return data.choices[0].message.content || 'No entendí tu pregunta. ¿Puedes repetirla? 😊';
-
-            } catch (error) {
-                console.error('❌ Error en Groq:', error);
-                return '❌ Error al conectar con Groq. Por favor, intenta de nuevo. 😅';
-            }
-        }
-
-        async function enviarMensajeGroqHandler() {
-            const mensaje = chatInputGroq.value.trim();
-            if (!mensaje) return;
-
-            agregarMensajeGroq(mensaje, 'user');
-            chatInputGroq.value = '';
-            chatSendGroq.disabled = true;
-            actualizarEstadoGroq('', '🔄 Pensando...');
-
-            mostrarTypingGroq();
-            const respuesta = await enviarMensajeGroq(mensaje);
-            ocultarTypingGroq();
-            agregarMensajeGroq(respuesta, 'bot');
-            actualizarEstadoGroq('online', '✅ Online');
-
-            chatSendGroq.disabled = false;
-            chatInputGroq.focus();
-        }
-
-        function toggleChatGroq() {
-            chatModalGroq.classList.toggle('open');
-            if (chatModalGroq.classList.contains('open')) {
-                chatInputGroq.focus();
-                actualizarEstadoGroq('online', '✅ Online');
-            }
-        }
-
-        chatFloatGroq.addEventListener('click', toggleChatGroq);
-        chatCloseGroq.addEventListener('click', toggleChatGroq);
-
-        document.addEventListener('click', (e) => {
-            if (chatModalGroq.classList.contains('open') &&
-                !chatModalGroq.contains(e.target) &&
-                !chatFloatGroq.contains(e.target)) {
-                chatModalGroq.classList.remove('open');
-            }
-        });
-
-        chatSendGroq.addEventListener('click', enviarMensajeGroqHandler);
-        chatInputGroq.addEventListener('keyup', (e) => {
-            if (e.key === 'Enter') enviarMensajeGroqHandler();
-        });
-
-        chatOptionsGroq.addEventListener('click', (e) => {
-            const opt = e.target.closest('.opt');
-            if (opt) {
-                chatInputGroq.value = opt.dataset.msg;
-                enviarMensajeGroqHandler();
-            }
-        });
-
-        function initGroq() {
-            console.log('🤖 Paulina AI con Groq (ILIMITADO)');
-            console.log('📌 Modelo: llama-3.1-8b-instant');
-            console.log('📌 API Key: ✅ Configurada');
-
-            actualizarEstadoGroq('online', '✅ Listo');
-            agregarMensajeGroq(
-                '🚀 <strong>¡Groq activado!</strong>\n\n' +
-                '💡 Ahora tengo IA ILIMITADA. Puedo responder cualquier pregunta.\n\n' +
-                '🧠 <strong>Pregúntame lo que quieras:</strong>\n' +
-                '• Productos y precios\n' +
-                '• Envíos y pagos\n' +
-                '• Matemáticas\n' +
-                '• Cultura general\n' +
-                '• Ciencia, historia, arte\n' +
-                '• ¡Y mucho más!',
-                'bot'
-            );
-        }
-
-        document.addEventListener('DOMContentLoaded', initGroq);
     </script>
 
 </body>
