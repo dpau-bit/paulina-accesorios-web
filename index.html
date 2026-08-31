@@ -9,7 +9,7 @@
 
     <style>
         /* ============================================
-           ESTILOS PREMIUM COMPLETOS
+           ESTILOS PREMIUM
            ============================================ */
 
         * {
@@ -1120,11 +1120,10 @@
         // CONFIGURACIÓN - ELIGE TU MODELO
         // ============================================
 
-        // Opciones: 'gemma2:2b', 'phi3:mini', 'tinyllama:1.1b'
-        // gemma2:2b = El mejor equilibrio (rápido y bueno)
-        // phi3:mini = Muy bueno, un poco más lento
-        // tinyllama:1.1b = El más rápido
-        const MODELO = 'gemma2:2b'; // <--- CAMBIA AQUÍ SI QUIERES OTRO
+        // 🔥 CAMBIA ESTA LÍNEA SEGÚN EL MODELO QUE QUIERAS USAR:
+        const MODELO = 'gemma2:2b';  // ← RECOMENDADO (rápido y bueno en español)
+        // const MODELO = 'phi3:mini';    // ← Muy bueno, un poco más lento
+        // const MODELO = 'tinyllama:1.1b'; // ← El más rápido
 
         const OLLAMA_URL = 'http://localhost:11434/api/generate';
 
@@ -1416,10 +1415,14 @@
             console.log(`📌 Modelo: ${MODELO}`);
             console.log('📌 Ollama URL: ' + OLLAMA_URL);
             console.log('📌 Modelos disponibles: gemma2:2b, phi3:mini, tinyllama:1.1b');
-            console.log('📌 Para cambiar el modelo, modifica la variable MODELO en el código');
 
             await conectarOllama();
             chatInput.focus();
+
+            // Mostrar mensaje de bienvenida si está conectado
+            if (statusDot.classList.contains('online')) {
+                console.log('✅ Asistente listo para usar!');
+            }
         }
 
         document.addEventListener('DOMContentLoaded', init);
