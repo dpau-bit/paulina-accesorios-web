@@ -1,18 +1,34 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="light">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Paulina Accesorios - Asistente IA con Ollama</title>
+    <title>✨ Paulina Accesorios 2026 - Belleza de Lujo</title>
+
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+
+    <meta name="description" content="Paulina Accesorios - Tienda de aretes, extensiones de pestañas y accesorios de belleza. Envíos a todo Perú. Calidad premium." />
+    <meta name="keywords" content="aretes, pestañas, accesorios, belleza, joyería, maquillaje, extensiones, anillos" />
+    <meta name="author" content="Paulina Accesorios" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#c2185b" />
+
+    <meta property="og:title" content="✨ Paulina Accesorios 2026 - Belleza de Lujo" />
+    <meta property="og:description" content="Descubre nuestra colección exclusiva de accesorios de belleza. Envíos a todo Perú." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://paulina-accesorios.com" />
+    <meta property="og:locale" content="es_PE" />
 
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
     <style>
         /* ============================================
-           ESTILOS PREMIUM
+           DISEÑO ULTRA PREMIUM 2026
            ============================================ */
 
-        * {
+        *,
+        *::before,
+        *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -21,46 +37,85 @@
         :root {
             --gold: #d4af37;
             --gold-light: #f5d76e;
+            --gold-dark: #b8952a;
             --gold-gradient: linear-gradient(135deg, #d4af37, #f5d76e, #d4af37);
-            --primary: #c2185b;
-            --primary-gradient: linear-gradient(135deg, #880e4f, #c2185b, #f06292);
+            --rose: #fce4ec;
+            --rose-dark: #f8e8f0;
+            --rose-gradient: linear-gradient(135deg, #fce4ec, #f8e8f0, #f3e5f5);
             --white: #ffffff;
+            --black: #1a0b1a;
             --gray-50: #faf8fa;
             --gray-100: #f0ecf0;
+            --gray-200: #e0d8e0;
+            --gray-300: #c8bcc8;
+            --gray-400: #a890a8;
             --gray-500: #8a6a8a;
             --gray-600: #6a4a6a;
             --gray-700: #4a2a4a;
             --gray-800: #2d1b2e;
             --gray-900: #1a0b1a;
+            --primary: #c2185b;
+            --primary-dark: #880e4f;
+            --primary-light: #f06292;
+            --primary-gradient: linear-gradient(135deg, #880e4f, #c2185b, #f06292);
+            --shadow-xs: 0 1px 3px rgba(200, 120, 180, 0.06);
             --shadow-sm: 0 2px 12px rgba(200, 120, 180, 0.08);
             --shadow-md: 0 4px 24px rgba(200, 120, 180, 0.10);
             --shadow-lg: 0 8px 48px rgba(200, 120, 180, 0.14);
             --shadow-xl: 0 16px 64px rgba(200, 120, 180, 0.18);
             --shadow-2xl: 0 30px 80px rgba(200, 120, 180, 0.20);
+            --shadow-3xl: 0 50px 120px rgba(200, 120, 180, 0.15);
+            --radius-xs: 4px;
             --radius-sm: 8px;
             --radius-md: 16px;
             --radius-lg: 24px;
             --radius-xl: 32px;
+            --radius-2xl: 40px;
             --radius-full: 9999px;
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --space-3xl: 64px;
+            --space-4xl: 80px;
             --font-serif: 'Playfair Display', serif;
             --font-sans: 'Inter', sans-serif;
-            --transition-spring: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
             --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-spring: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            --z-sticky: 200;
+            --z-modal: 300;
+            --z-overlay: 400;
+            --z-loader: 999;
         }
 
         [data-theme="dark"] {
             --white: #121212;
             --gray-50: #0a050a;
             --gray-100: #121212;
+            --gray-200: #1a0b1a;
+            --gray-300: #2d1b2e;
+            --gray-400: #4a2a4a;
             --gray-500: #6a4a6a;
             --gray-600: #8a6a8a;
             --gray-700: #a890a8;
             --gray-800: #c8bcc8;
             --gray-900: #f0ecf0;
+            --shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.3);
+            --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.4);
+            --shadow-md: 0 4px 24px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 8px 48px rgba(0, 0, 0, 0.6);
+            --shadow-xl: 0 16px 64px rgba(0, 0, 0, 0.7);
+            --shadow-2xl: 0 30px 80px rgba(0, 0, 0, 0.8);
+            --shadow-3xl: 0 50px 120px rgba(0, 0, 0, 0.7);
         }
 
         html {
             scroll-behavior: smooth;
+            scroll-padding-top: 72px;
         }
 
         body {
@@ -70,10 +125,15 @@
             line-height: 1.6;
             transition: background 0.4s ease, color 0.4s ease;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-image: radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.02) 0%, transparent 50%),
+                radial-gradient(circle at 90% 80%, rgba(212, 175, 55, 0.02) 0%, transparent 50%);
         }
 
         ::-webkit-scrollbar {
             width: 8px;
+            height: 8px;
         }
         ::-webkit-scrollbar-track {
             background: var(--gray-100);
@@ -81,11 +141,38 @@
         ::-webkit-scrollbar-thumb {
             background: var(--gold-gradient);
             border-radius: var(--radius-full);
+            border: 2px solid var(--gray-100);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gold-dark);
         }
 
         ::selection {
             background: var(--gold);
             color: #fff;
+        }
+
+        /* ===== ANIMACIONES ===== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.92);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         @keyframes shimmerGold {
@@ -97,14 +184,13 @@
             }
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0) rotate(-2deg);
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+            50% {
+                transform: translateY(-20px) rotate(2deg);
             }
         }
 
@@ -115,16 +201,6 @@
             }
             50% {
                 transform: scale(1.05);
-            }
-        }
-
-        @keyframes float {
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-20px);
             }
         }
 
@@ -139,17 +215,110 @@
             }
         }
 
+        @keyframes typing {
+            0% {
+                opacity: 0.3;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0.3;
+            }
+        }
+
+        @keyframes gradientBG {
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        @keyframes shimmerText {
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        /* ===== PRELOADER ===== */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gray-50);
+            z-index: var(--z-loader);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        .preloader.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .preloader-logo {
+            font-family: var(--font-serif);
+            font-size: 3rem;
+            font-weight: 900;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: var(--space-lg);
+            animation: pulse 1.5s ease-in-out infinite;
+            background-size: 200% 200%;
+            animation: shimmerGold 2s ease-in-out infinite;
+        }
+        .preloader-bar {
+            width: 200px;
+            height: 4px;
+            background: var(--gray-200);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            position: relative;
+        }
+        .preloader-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gold-gradient);
+            animation: shimmerGold 1.5s ease-in-out infinite;
+            border-radius: var(--radius-full);
+        }
+        .preloader-text {
+            margin-top: var(--space-md);
+            font-size: 12px;
+            color: var(--gray-500);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-weight: 300;
+        }
+
         /* ===== FREE SHIPPING ===== */
         .free-shipping {
             background: var(--gold-gradient);
             color: #fff;
             text-align: center;
-            padding: 6px 16px;
+            padding: 6px var(--space-md);
             font-weight: 700;
             font-size: 11px;
             position: sticky;
             top: 0;
-            z-index: 1001;
+            z-index: var(--z-sticky);
             letter-spacing: 0.5px;
             box-shadow: 0 2px 20px rgba(212, 175, 55, 0.15);
             background-size: 200% 200%;
@@ -161,30 +330,37 @@
             text-underline-offset: 2px;
         }
 
-        /* ===== NAVBAR ===== */
+        /* ============================================
+           NAVBAR PREMIUM
+           ============================================ */
         .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 0 4%;
             background: rgba(255, 255, 255, 0.96);
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
             position: sticky;
             top: 0;
-            z-index: 1000;
+            z-index: var(--z-sticky);
             border-bottom: 1px solid rgba(212, 175, 55, 0.06);
             min-height: 64px;
             transition: var(--transition-base);
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-xs);
         }
         [data-theme="dark"] .navbar {
             background: rgba(18, 18, 18, 0.96);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+        .navbar-scrolled {
+            box-shadow: var(--shadow-md);
         }
 
         .navbar-left {
             display: flex;
             align-items: center;
-            gap: 24px;
+            gap: var(--space-lg);
         }
 
         .logo {
@@ -196,7 +372,14 @@
             background-clip: text;
             -webkit-text-fill-color: transparent;
             cursor: pointer;
+            letter-spacing: -0.5px;
+            transition: var(--transition-base);
             text-decoration: none;
+            line-height: 1.1;
+            background-size: 200% 200%;
+        }
+        .logo:hover {
+            transform: scale(1.02);
         }
         .logo-sub {
             font-size: 9px;
@@ -209,9 +392,10 @@
 
         .nav-links {
             display: flex;
-            gap: 24px;
+            gap: var(--space-lg);
             list-style: none;
             font-weight: 600;
+            align-items: center;
         }
         .nav-links a {
             text-decoration: none;
@@ -219,6 +403,8 @@
             font-size: 12px;
             transition: var(--transition-base);
             position: relative;
+            font-weight: 500;
+            letter-spacing: 0.3px;
         }
         .nav-links a::after {
             content: '';
@@ -238,42 +424,17 @@
             color: var(--gold);
         }
 
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-            gap: 4px;
-            padding: 4px;
-            background: none;
-            border: none;
-        }
-        .hamburger span {
-            width: 22px;
-            height: 2.5px;
-            background: var(--gray-700);
-            border-radius: var(--radius-full);
-            transition: var(--transition-base);
-        }
-        .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(4px, 4px);
-        }
-        .hamburger.active span:nth-child(2) {
-            opacity: 0;
-        }
-        .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(4px, -4px);
-        }
-
         .navbar-right {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
         }
 
         .search-box {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: var(--space-xs);
             background: var(--gray-100);
             border-radius: var(--radius-full);
             padding: 4px 4px 4px 16px;
@@ -283,6 +444,9 @@
         .search-box:focus-within {
             border-color: var(--gold);
             box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.06);
+        }
+        [data-theme="dark"] .search-box {
+            background: rgba(255, 255, 255, 0.03);
         }
         .search-box input {
             border: none;
@@ -297,6 +461,7 @@
         }
         .search-box input::placeholder {
             color: var(--gray-400);
+            font-weight: 300;
         }
         .search-box button {
             background: none;
@@ -326,6 +491,9 @@
             color: var(--gray-700);
             font-family: var(--font-sans);
         }
+        [data-theme="dark"] .user-btn {
+            background: rgba(255, 255, 255, 0.03);
+        }
         .user-btn:hover {
             border-color: var(--gold);
             background: var(--white);
@@ -342,21 +510,36 @@
             font-size: 11px;
             font-weight: 700;
         }
+        .user-btn .user-info {
+            display: none;
+        }
+        .user-btn .user-name-mobile {
+            font-weight: 600;
+            font-size: 10px;
+            max-width: 50px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
 
         .cart-icon {
+            font-size: 18px;
+            cursor: pointer;
+            transition: var(--transition-base);
+            background: var(--gray-100);
+            padding: 6px 12px;
+            border-radius: var(--radius-full);
+            border: 1.5px solid transparent;
             display: flex;
             align-items: center;
             gap: 6px;
-            padding: 6px 12px;
-            border-radius: var(--radius-full);
-            background: var(--gray-100);
-            border: 1.5px solid transparent;
-            cursor: pointer;
-            transition: var(--transition-base);
             font-weight: 600;
-            font-size: 12px;
+            position: relative;
             color: var(--gray-700);
-            font-family: var(--font-sans);
+            font-size: 12px;
+        }
+        [data-theme="dark"] .cart-icon {
+            background: rgba(255, 255, 255, 0.03);
         }
         .cart-icon:hover {
             border-color: var(--gold);
@@ -374,33 +557,97 @@
             line-height: 18px;
         }
 
-        /* ===== HERO ===== */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+            padding: 4px;
+            background: none;
+            border: none;
+            z-index: var(--z-sticky);
+        }
+        .hamburger span {
+            width: 22px;
+            height: 2.5px;
+            background: var(--gray-700);
+            border-radius: var(--radius-full);
+            transition: var(--transition-base);
+        }
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(4px, 4px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(4px, -4px);
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(30px);
+            z-index: var(--z-overlay);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-lg);
+        }
+        [data-theme="dark"] .mobile-menu {
+            background: rgba(18, 18, 18, 0.98);
+        }
+        .mobile-menu.open {
+            display: flex;
+            animation: fadeInScale 0.3s ease;
+        }
+        .mobile-menu a {
+            font-size: 1.5rem;
+            text-decoration: none;
+            color: var(--gray-800);
+            font-weight: 600;
+            transition: var(--transition-base);
+            font-family: var(--font-serif);
+        }
+        .mobile-menu a:hover {
+            color: var(--gold);
+            transform: translateX(8px);
+        }
+        .mobile-menu .close-menu {
+            font-size: var(--font-size-md);
+            opacity: 0.6;
+            margin-top: var(--space-md);
+            cursor: pointer;
+        }
+
+        /* ============================================
+           HERO PREMIUM
+           ============================================ */
         .hero {
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
             padding: 48px 4% 64px;
-            background: linear-gradient(135deg, #fce4ec, #f8e8f0, #f3e5f5, #e8eaf6);
+            background: linear-gradient(135deg, #fce4ec 0%, #f8e8f0 25%, #f3e5f5 50%, #e8eaf6 75%, #fce4ec 100%);
             background-size: 400% 400%;
             animation: gradientBG 12s ease infinite;
-            border-radius: 0 0 40px 40px;
-            margin: 0 16px 32px;
+            border-radius: 0 0 var(--radius-2xl) var(--radius-2xl);
+            margin: 0 var(--space-md) var(--space-xl);
             position: relative;
             overflow: hidden;
+            transition: var(--transition-base);
             box-shadow: var(--shadow-md);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         [data-theme="dark"] .hero {
             background: linear-gradient(135deg, #1a0b1a, #121212, #1a0b1a);
-        }
-        @keyframes gradientBG {
-            0%,
-            100% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
+            border: 1px solid rgba(255, 255, 255, 0.03);
         }
 
         .hero::before {
@@ -430,17 +677,20 @@
         }
 
         .hero-badge {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
             font-size: 10px;
             font-weight: 700;
-            color: var(--gold);
+            color: var(--gold-dark);
             background: rgba(212, 175, 55, 0.08);
             padding: 4px 16px;
             border-radius: var(--radius-full);
-            margin-bottom: 16px;
+            margin-bottom: var(--space-md);
             letter-spacing: 2px;
             text-transform: uppercase;
             border: 1px solid rgba(212, 175, 55, 0.08);
+            backdrop-filter: blur(8px);
         }
 
         .hero-title {
@@ -451,9 +701,9 @@
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 16px;
-            background-size: 200% 200%;
+            margin-bottom: var(--space-md);
             animation: shimmerGold 4s ease-in-out infinite;
+            background-size: 200% 200%;
         }
         .hero-title .highlight {
             background: var(--primary-gradient);
@@ -466,13 +716,15 @@
             font-size: 1.05rem;
             color: var(--gray-600);
             max-width: 420px;
-            margin-bottom: 32px;
+            margin-bottom: var(--space-xl);
             font-weight: 300;
+            line-height: 1.7;
         }
 
         .hero-stats {
             display: flex;
-            gap: 16px;
+            gap: var(--space-md);
+            margin-top: var(--space-md);
             flex-wrap: wrap;
         }
         .hero-stats .stat {
@@ -482,10 +734,16 @@
             padding: 8px 16px;
             border-radius: var(--radius-md);
             border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: var(--transition-base);
+            box-shadow: var(--shadow-sm);
         }
         [data-theme="dark"] .hero-stats .stat {
             background: rgba(255, 255, 255, 0.03);
             border-color: rgba(255, 255, 255, 0.03);
+        }
+        .hero-stats .stat:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
         }
         .hero-stats .stat .number {
             font-size: 1.4rem;
@@ -498,12 +756,13 @@
             font-size: 9px;
             color: var(--gray-500);
             font-weight: 500;
+            letter-spacing: 0.5px;
         }
 
         .hero-actions {
             display: flex;
-            gap: 8px;
-            margin-top: 32px;
+            gap: var(--space-sm);
+            margin-top: var(--space-xl);
             flex-wrap: wrap;
         }
 
@@ -512,15 +771,18 @@
             text-align: center;
             z-index: 2;
             font-size: 7rem;
+            filter: drop-shadow(0 30px 80px rgba(212, 175, 55, 0.1));
             animation: float 6s ease-in-out infinite;
         }
 
-        /* ===== BUTTONS ===== */
+        /* ============================================
+           BUTTONS PREMIUM
+           ============================================ */
         .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: var(--space-xs);
             padding: 12px 28px;
             border: none;
             border-radius: var(--radius-full);
@@ -533,6 +795,7 @@
             position: relative;
             overflow: hidden;
             box-shadow: var(--shadow-sm);
+            letter-spacing: 0.3px;
         }
         .btn::after {
             content: '';
@@ -585,31 +848,397 @@
             border-color: transparent;
         }
 
-        /* ============================================
-           CHAT CON OLLAMA - ASISTENTE COMPLETO
-           ============================================ */
+        .btn-sm {
+            padding: 8px 18px;
+            font-size: 10px;
+        }
+        .btn-lg {
+            padding: 16px 40px;
+            font-size: 15px;
+        }
 
+        /* ============================================
+           SECTIONS PREMIUM
+           ============================================ */
+        .section {
+            padding: var(--space-2xl) 4%;
+            max-width: 1400px;
+            margin: 0 auto;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: var(--space-xl);
+        }
+
+        .section-tag {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--gold);
+            background: rgba(212, 175, 55, 0.08);
+            padding: 4px 16px;
+            border-radius: var(--radius-full);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: var(--space-sm);
+            border: 1px solid rgba(212, 175, 55, 0.08);
+        }
+
+        .section-title {
+            font-family: var(--font-serif);
+            font-size: 2.2rem;
+            color: var(--gray-800);
+            font-weight: 700;
+            line-height: 1.1;
+        }
+        .section-title .accent {
+            color: var(--gold);
+            position: relative;
+        }
+        .section-title .accent::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--gold-gradient);
+            border-radius: var(--radius-full);
+            opacity: 0.2;
+        }
+
+        .section-subtitle {
+            font-size: 1rem;
+            color: var(--gray-500);
+            font-weight: 300;
+            max-width: 500px;
+            margin: var(--space-sm) auto 0;
+        }
+
+        /* ============================================
+           CATEGORY PILLS
+           ============================================ */
+        .category-pills {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: var(--space-xl);
+        }
+        .category-pills .pill {
+            padding: 8px 20px;
+            border-radius: var(--radius-full);
+            background: var(--white);
+            border: 1.5px solid rgba(212, 175, 55, 0.06);
+            font-weight: 600;
+            font-size: 11px;
+            color: var(--gray-700);
+            cursor: pointer;
+            transition: var(--transition-base);
+            font-family: var(--font-sans);
+            box-shadow: var(--shadow-xs);
+            letter-spacing: 0.3px;
+        }
+        [data-theme="dark"] .category-pills .pill {
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+        .category-pills .pill:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+            border-color: var(--gold);
+        }
+        .category-pills .pill.active {
+            background: var(--gold-gradient);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.15);
+        }
+
+        /* ============================================
+           PRODUCT GRID PREMIUM
+           ============================================ */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-lg);
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition-spring);
+            border: 1px solid rgba(212, 175, 55, 0.04);
+            position: relative;
+            animation: fadeInUp 0.7s ease forwards;
+            opacity: 0;
+        }
+        .product-card:nth-child(1) { animation-delay: 0.05s; }
+        .product-card:nth-child(2) { animation-delay: 0.1s; }
+        .product-card:nth-child(3) { animation-delay: 0.15s; }
+        .product-card:nth-child(4) { animation-delay: 0.2s; }
+        .product-card:nth-child(5) { animation-delay: 0.25s; }
+        .product-card:nth-child(6) { animation-delay: 0.3s; }
+        .product-card:nth-child(7) { animation-delay: 0.35s; }
+        .product-card:nth-child(8) { animation-delay: 0.4s; }
+
+        [data-theme="dark"] .product-card {
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(255, 255, 255, 0.03);
+        }
+
+        .product-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: var(--shadow-xl);
+            border-color: rgba(212, 175, 55, 0.08);
+        }
+
+        .product-image {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto var(--space-sm);
+            border-radius: 50%;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition-base);
+            border: 3px solid rgba(212, 175, 55, 0.08);
+        }
+        .product-image:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-md);
+            border-color: var(--gold);
+        }
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition-base);
+        }
+        .product-image:hover img {
+            transform: scale(1.08);
+        }
+        .product-image .image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: var(--transition-base);
+            border-radius: 50%;
+        }
+        .product-image:hover .image-overlay {
+            opacity: 1;
+        }
+        .product-image .image-overlay span {
+            font-size: 1.8rem;
+            color: #fff;
+        }
+
+        .product-badges {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            z-index: 1;
+        }
+        .product-badges .badge {
+            font-size: 7px;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: var(--radius-full);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #fff;
+            box-shadow: var(--shadow-sm);
+        }
+        .badge-sale { background: var(--gold-gradient); }
+        .badge-hot { background: linear-gradient(135deg, #d32f2f, #e53935); animation: pulse 1.5s ease-in-out infinite; }
+        .badge-new { background: linear-gradient(135deg, #1565c0, #1e88e5); }
+        .badge-premium { background: linear-gradient(135deg, #6a1b4d, #9c27b0); }
+        .badge-discount { background: linear-gradient(135deg, #e53935, #ef5350); }
+        .badge-ai { background: linear-gradient(135deg, #00bcd4, #0097a7); }
+
+        .product-wishlist {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--white);
+            border: none;
+            font-size: 13px;
+            cursor: pointer;
+            transition: var(--transition-base);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+        [data-theme="dark"] .product-wishlist {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .product-wishlist:hover {
+            transform: scale(1.15);
+            box-shadow: var(--shadow-md);
+        }
+        .product-wishlist.active {
+            color: #e53935;
+            background: #fff;
+        }
+
+        .product-name {
+            font-family: var(--font-serif);
+            font-size: 14px;
+            color: var(--gray-800);
+            margin-bottom: 2px;
+            transition: var(--transition-base);
+        }
+        .product-description {
+            font-size: 10px;
+            color: var(--gray-500);
+            font-weight: 300;
+            margin-bottom: 6px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.4;
+        }
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--gold);
+            margin-bottom: 6px;
+            display: block;
+            font-family: var(--font-serif);
+        }
+        [data-theme="dark"] .product-price {
+            color: var(--gold-light);
+        }
+        .product-price .old {
+            font-size: 11px;
+            color: var(--gray-400);
+            text-decoration: line-through;
+            font-weight: 400;
+            margin-left: 4px;
+        }
+        .product-price .discount {
+            font-size: 9px;
+            color: #e53935;
+            font-weight: 700;
+            margin-left: 4px;
+            background: rgba(229, 57, 53, 0.06);
+            padding: 2px 8px;
+            border-radius: var(--radius-full);
+        }
+
+        .product-stock {
+            font-size: 9px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .product-stock.in-stock {
+            color: #2e7d32;
+        }
+        [data-theme="dark"] .product-stock.in-stock {
+            color: #66bb6a;
+        }
+        .product-stock.low-stock {
+            color: #c62828;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .product-meta {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-sm);
+            font-size: 8px;
+            color: var(--gray-400);
+            margin-bottom: 6px;
+        }
+
+        .btn-add {
+            padding: 8px 16px;
+            border-radius: var(--radius-full);
+            border: none;
+            font-weight: 700;
+            font-size: 10px;
+            font-family: var(--font-sans);
+            cursor: pointer;
+            transition: var(--transition-spring);
+            background: rgba(212, 175, 55, 0.04);
+            color: var(--gray-700);
+            border: 1.5px solid rgba(212, 175, 55, 0.04);
+            width: 100%;
+            letter-spacing: 0.3px;
+        }
+        [data-theme="dark"] .btn-add {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.05);
+            color: var(--gray-700);
+        }
+        .btn-add:hover:not(:disabled) {
+            background: var(--gold-gradient);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: transparent;
+        }
+        .btn-add:active:not(:disabled) {
+            transform: scale(0.96);
+        }
+        .btn-add:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .btn-add.added {
+            background: #2e7d32;
+            color: #fff;
+            border-color: #2e7d32;
+        }
+
+        /* ============================================
+           CHAT CON IA - PREMIUM
+           ============================================ */
         .chat-float-ai {
             position: fixed;
             bottom: 24px;
             left: 24px;
             background: var(--gold-gradient);
             color: #fff;
-            width: 60px;
-            height: 60px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
+            text-decoration: none;
             box-shadow: var(--shadow-xl);
             transition: var(--transition-spring);
-            z-index: 999;
+            z-index: 50;
             cursor: pointer;
             border: none;
         }
         .chat-float-ai:hover {
             transform: scale(1.08) rotate(-5deg);
+            box-shadow: var(--shadow-2xl);
         }
         .chat-float-ai .chat-badge {
             position: absolute;
@@ -618,8 +1247,8 @@
             background: var(--primary);
             color: #fff;
             border-radius: 50%;
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             font-size: 8px;
             display: flex;
             align-items: center;
@@ -631,15 +1260,15 @@
         .chat-modal-ai {
             display: none;
             position: fixed;
-            bottom: 90px;
+            bottom: 85px;
             left: 24px;
-            width: 420px;
+            width: 400px;
             max-width: 90vw;
             background: var(--white);
             border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-2xl);
-            z-index: 1000;
-            max-height: 580px;
+            box-shadow: var(--shadow-3xl);
+            z-index: 100;
+            max-height: 560px;
             flex-direction: column;
             overflow: hidden;
             animation: slideDown 0.3s ease;
@@ -661,12 +1290,11 @@
             align-items: center;
             font-weight: 700;
             font-size: 14px;
-            flex-shrink: 0;
         }
         .chat-header-ai .chat-status {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: var(--space-sm);
             font-size: 10px;
             font-weight: 400;
             opacity: 0.8;
@@ -677,9 +1305,6 @@
             border-radius: 50%;
             background: #4caf50;
             animation: pulse 1.5s ease-in-out infinite;
-        }
-        .chat-header-ai .chat-status .dot.offline {
-            background: #ef5350;
         }
         .chat-header-ai .chat-close {
             background: none;
@@ -696,10 +1321,10 @@
         }
 
         .chat-messages-ai {
-            padding: 16px 20px;
+            padding: var(--space-md) var(--space-lg);
             flex: 1;
             overflow-y: auto;
-            max-height: 380px;
+            max-height: 360px;
             background: var(--gray-50);
         }
         [data-theme="dark"] .chat-messages-ai {
@@ -711,7 +1336,7 @@
             border-radius: var(--radius-md);
             margin-bottom: 6px;
             max-width: 90%;
-            animation: fadeInUp 0.3s ease;
+            animation: slideDown 0.3s ease;
             word-wrap: break-word;
             line-height: 1.5;
             font-size: 13px;
@@ -738,63 +1363,58 @@
             display: block;
             margin-top: 2px;
         }
-
-        .typing-indicator {
+        .chat-message-ai .typing-indicator {
             display: inline-flex;
             gap: 3px;
             padding: 4px 8px;
         }
-        .typing-indicator span {
+        .chat-message-ai .typing-indicator span {
             width: 6px;
             height: 6px;
             border-radius: 50%;
             background: var(--gray-400);
-            animation: typingBounce 1.4s ease-in-out infinite;
+            animation: typing 1.4s ease-in-out infinite;
         }
-        .typing-indicator span:nth-child(2) {
+        .chat-message-ai .typing-indicator span:nth-child(2) {
             animation-delay: 0.2s;
         }
-        .typing-indicator span:nth-child(3) {
+        .chat-message-ai .typing-indicator span:nth-child(3) {
             animation-delay: 0.4s;
-        }
-        @keyframes typingBounce {
-            0%,
-            60%,
-            100% {
-                transform: translateY(0);
-                opacity: 0.3;
-            }
-            30% {
-                transform: translateY(-6px);
-                opacity: 1;
-            }
         }
 
         .chat-options-ai {
-            padding: 6px 20px 12px;
+            padding: 6px 20px var(--space-md);
             display: flex;
             flex-wrap: wrap;
             gap: 4px;
             border-top: 1px solid rgba(212, 175, 55, 0.06);
-            flex-shrink: 0;
+        }
+        [data-theme="dark"] .chat-options-ai {
+            border-color: rgba(255, 255, 255, 0.03);
         }
         .chat-options-ai .chat-opt {
             padding: 4px 12px;
             border-radius: var(--radius-full);
-            border: 1.5px solid var(--gold);
+            border: 1px solid var(--gold);
             background: transparent;
             color: var(--gold);
             font-size: 9px;
             cursor: pointer;
             transition: var(--transition-base);
             font-family: var(--font-sans);
-            font-weight: 600;
-            white-space: nowrap;
         }
         .chat-options-ai .chat-opt:hover {
             background: var(--gold-gradient);
             color: #fff;
             border-color: transparent;
+        }
+        [data-theme="dark"] .chat-options-ai .chat-opt {
+            color: var(--gold-light);
+            border-color: var(--gold-light);
+        }
+        [data-theme="dark"] .chat-options-ai .chat-opt:hover {
+            background: var(--gold-gradient);
+            color: #fff;
         }
 
         .chat-input-ai {
@@ -802,7 +1422,9 @@
             border-top: 1px solid rgba(212, 175, 55, 0.06);
             display: flex;
             gap: 6px;
-            flex-shrink: 0;
+        }
+        [data-theme="dark"] .chat-input-ai {
+            border-color: rgba(255, 255, 255, 0.03);
         }
         .chat-input-ai input {
             flex: 1;
@@ -814,9 +1436,14 @@
             background: var(--gray-50);
             transition: var(--transition-base);
             color: var(--gray-800);
-            outline: none;
+        }
+        [data-theme="dark"] .chat-input-ai input {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.05);
+            color: var(--gray-700);
         }
         .chat-input-ai input:focus {
+            outline: none;
             border-color: var(--gold);
             box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.06);
         }
@@ -840,47 +1467,620 @@
         }
 
         /* ============================================
-           RESPONSIVE
+           FLOATING BUTTONS PREMIUM
+           ============================================ */
+        .floating-cart {
+            position: fixed;
+            bottom: 92px;
+            right: 20px;
+            background: var(--white);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-full);
+            padding: 6px 16px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(212, 175, 55, 0.06);
+            z-index: 50;
+            display: none;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: var(--transition-spring);
+            font-weight: 600;
+            font-size: 10px;
+            color: var(--gray-700);
+        }
+        [data-theme="dark"] .floating-cart {
+            background: rgba(18, 18, 18, 0.95);
+            border-color: rgba(255, 255, 255, 0.03);
+        }
+        .floating-cart:hover {
+            transform: scale(1.06) translateY(-3px);
+            box-shadow: var(--shadow-xl);
+        }
+        .floating-cart .fc-icon {
+            font-size: 16px;
+        }
+        .floating-cart .fc-count {
+            background: var(--gold-gradient);
+            color: #fff;
+            border-radius: 50%;
+            padding: 0 5px;
+            font-size: 9px;
+            font-weight: 700;
+            min-width: 18px;
+            text-align: center;
+            line-height: 18px;
+        }
+        .floating-cart .fc-total {
+            color: var(--gold);
+            font-weight: 800;
+            font-size: 11px;
+        }
+        [data-theme="dark"] .floating-cart .fc-total {
+            color: var(--gold-light);
+        }
+
+        .whatsapp-float {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #25D366;
+            color: #fff;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            text-decoration: none;
+            box-shadow: 0 6px 30px rgba(37, 211, 102, 0.3);
+            transition: var(--transition-spring);
+            z-index: 50;
+            animation: pulse 2.5s ease-in-out infinite;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.08) rotate(-5deg);
+            box-shadow: 0 8px 40px rgba(37, 211, 102, 0.4);
+        }
+
+        .btn-back-top {
+            position: fixed;
+            bottom: 140px;
+            right: 20px;
+            background: var(--gold-gradient);
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: var(--shadow-lg);
+            z-index: 50;
+            transition: var(--transition-spring);
+            border: none;
+            cursor: pointer;
+        }
+        .btn-back-top:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 186px;
+            right: 20px;
+            background: var(--white);
+            color: var(--gray-700);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid rgba(212, 175, 55, 0.06);
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 50;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition-spring);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        [data-theme="dark"] .dark-mode-toggle {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--gray-700);
+        }
+        .dark-mode-toggle:hover {
+            transform: scale(1.08) rotate(15deg);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .share-btn {
+            position: fixed;
+            bottom: 232px;
+            right: 20px;
+            background: var(--white);
+            color: var(--gray-700);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid rgba(212, 175, 55, 0.06);
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 50;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition-spring);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        [data-theme="dark"] .share-btn {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--gray-700);
+        }
+        .share-btn:hover {
+            transform: scale(1.08) rotate(-8deg);
+            box-shadow: var(--shadow-xl);
+        }
+
+        /* ============================================
+           NOTIFICATIONS
+           ============================================ */
+        .notification {
+            position: fixed;
+            top: 78px;
+            right: 20px;
+            background: var(--white);
+            backdrop-filter: blur(20px);
+            padding: 12px 20px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            border-left: 4px solid var(--gold);
+            transform: translateX(120%);
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 1000;
+            font-weight: 600;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            max-width: 90%;
+        }
+        [data-theme="dark"] .notification {
+            background: #1a0b1a;
+        }
+        .notification.show {
+            transform: translateX(0);
+        }
+        .notification .notif-icon {
+            font-size: 16px;
+        }
+
+        /* ============================================
+           FOOTER PREMIUM
+           ============================================ */
+        footer {
+            background: var(--gray-900);
+            color: var(--gray-300);
+            padding: var(--space-2xl) 4% var(--space-xl);
+            border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+            margin-top: var(--space-2xl);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.05);
+        }
+        footer::before {
+            content: '✦';
+            font-size: 10rem;
+            position: absolute;
+            right: -2rem;
+            bottom: -3rem;
+            opacity: 0.02;
+            transform: rotate(20deg);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: var(--space-xl);
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        .footer-grid h4 {
+            font-family: var(--font-serif);
+            color: var(--gold-light);
+            margin-bottom: var(--space-sm);
+            font-size: 14px;
+            font-weight: 700;
+        }
+        .footer-grid a {
+            display: block;
+            color: var(--gray-400);
+            text-decoration: none;
+            font-size: 11px;
+            margin-bottom: 4px;
+            transition: var(--transition-base);
+            font-weight: 400;
+        }
+        .footer-grid a:hover {
+            color: var(--gold-light);
+            transform: translateX(4px);
+        }
+        .footer-payments {
+            display: flex;
+            gap: 8px;
+            font-size: 1.6rem;
+            flex-wrap: wrap;
+        }
+        .footer-bottom {
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            padding-top: var(--space-lg);
+            margin-top: var(--space-xl);
+            font-size: 10px;
+            color: var(--gray-500);
+            position: relative;
+            z-index: 1;
+        }
+        .footer-bottom .heart {
+            color: var(--gold-light);
+            display: inline-block;
+            animation: pulse 1.8s ease-in-out infinite;
+        }
+
+        /* ============================================
+           CARRITO MODAL PREMIUM
+           ============================================ */
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(20px);
+            z-index: var(--z-modal);
+            align-items: center;
+            justify-content: center;
+        }
+        .cart-modal.show {
+            display: flex;
+            animation: fadeInScale 0.3s ease;
+        }
+        .cart-modal-content {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            max-width: 440px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideDown 0.4s ease;
+            box-shadow: var(--shadow-2xl);
+            border: 1px solid rgba(212, 175, 55, 0.06);
+        }
+        [data-theme="dark"] .cart-modal-content {
+            background: #1a0b1a;
+        }
+        .cart-modal-content .close-cart {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            font-size: 1.6rem;
+            cursor: pointer;
+            color: var(--gray-400);
+            transition: var(--transition-base);
+            background: none;
+            border: none;
+        }
+        .cart-modal-content .close-cart:hover {
+            color: var(--gold);
+            transform: rotate(90deg) scale(1.1);
+        }
+        .cart-modal-title {
+            font-family: var(--font-serif);
+            color: var(--gray-800);
+            margin-bottom: var(--space-lg);
+            font-size: 1.4rem;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.06);
+            animation: slideDown 0.3s ease;
+        }
+        .cart-item-info {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+        .cart-item-name {
+            font-weight: 600;
+            color: var(--gray-800);
+            font-size: 13px;
+        }
+        .cart-item-price {
+            color: var(--gold);
+            font-weight: 700;
+            font-size: 13px;
+        }
+        .cart-item-remove {
+            background: none;
+            border: none;
+            color: #e74c3c;
+            cursor: pointer;
+            font-size: 14px;
+            transition: var(--transition-base);
+            padding: 4px 8px;
+        }
+        .cart-item-remove:hover {
+            transform: scale(1.2);
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2rem;
+            font-weight: 800;
+            padding: var(--space-md) 0;
+            border-top: 2px solid rgba(212, 175, 55, 0.06);
+            margin-top: 4px;
+        }
+        .cart-total .total-price {
+            color: var(--gold);
+        }
+        [data-theme="dark"] .cart-total .total-price {
+            color: var(--gold-light);
+        }
+
+        .cart-empty {
+            text-align: center;
+            color: var(--gray-500);
+            padding: var(--space-2xl) 0;
+            font-size: 14px;
+        }
+        .cart-modal-content .btn {
+            width: 100%;
+            margin-top: var(--space-md);
+        }
+
+        /* ============================================
+           RESPONSIVE PREMIUM
            ============================================ */
 
-        @media (max-width: 1024px) {
+        /* ===== PC (1200px+) ===== */
+        @media (min-width: 1200px) {
+            .product-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: var(--space-xl);
+            }
             .hero-title {
-                font-size: 2.8rem;
+                font-size: 3.8rem;
+            }
+            .section {
+                padding: var(--space-3xl) 4%;
             }
         }
 
+        /* ===== TABLET (768px - 1199px) ===== */
+        @media (max-width: 1199px) and (min-width: 769px) {
+            .product-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: var(--space-lg);
+            }
+            .hero-title {
+                font-size: 2.8rem;
+            }
+            .hero {
+                padding: 40px 4% 48px;
+            }
+            .chat-modal-ai {
+                width: 380px;
+            }
+        }
+
+        /* ===== CELULAR (320px - 768px) ===== */
         @media (max-width: 768px) {
+            .navbar {
+                padding: 6px 3%;
+                min-height: 56px;
+                flex-wrap: wrap;
+                gap: 4px;
+            }
             .nav-links {
                 display: none;
             }
             .hamburger {
                 display: flex;
             }
-            .hero-title {
-                font-size: 2rem;
+            .navbar-left {
+                gap: var(--space-sm);
             }
+            .navbar-right {
+                width: 100%;
+                justify-content: center;
+                gap: 4px;
+            }
+
+            .logo {
+                font-size: 1.1rem;
+            }
+            .logo-sub {
+                font-size: 7px;
+            }
+
+            .search-box {
+                padding: 3px 3px 3px 10px;
+                flex: 1;
+                max-width: 180px;
+            }
+            .search-box input {
+                width: 60px;
+                font-size: 10px;
+            }
+            .search-box button {
+                font-size: 11px;
+                padding: 2px 6px;
+            }
+
+            .user-btn {
+                padding: 4px 8px;
+                font-size: 9px;
+            }
+            .user-btn .user-avatar {
+                width: 20px;
+                height: 20px;
+                font-size: 9px;
+            }
+            .user-btn .user-name-mobile {
+                max-width: 35px;
+                font-size: 9px;
+            }
+
+            .cart-icon {
+                padding: 4px 8px;
+                font-size: 10px;
+            }
+            .cart-icon .cart-count {
+                font-size: 8px;
+                min-width: 14px;
+                line-height: 14px;
+            }
+
             .hero {
                 padding: 32px 3% 40px;
+                border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+                margin: 0 var(--space-sm) var(--space-lg);
                 flex-direction: column;
                 text-align: center;
             }
+            .hero-title {
+                font-size: 2rem;
+            }
             .hero-description {
-                max-width: 100%;
-                margin: 0 auto 16px;
                 font-size: 12px;
+                max-width: 100%;
+                margin: 0 auto var(--space-md);
+            }
+            .hero-badge {
+                font-size: 8px;
+                padding: 3px 12px;
             }
             .hero-stats {
                 justify-content: center;
+                gap: var(--space-sm);
+            }
+            .hero-stats .stat {
+                padding: 4px 10px;
+            }
+            .hero-stats .stat .number {
+                font-size: 1rem;
+            }
+            .hero-stats .stat .label {
+                font-size: 7px;
             }
             .hero-actions {
                 justify-content: center;
             }
+            .hero-actions .btn {
+                padding: 8px 16px;
+                font-size: 10px;
+            }
             .hero-image {
                 display: none;
             }
-            .search-box input {
+
+            .section {
+                padding: var(--space-xl) 3%;
+            }
+            .section-title {
+                font-size: 1.6rem;
+            }
+            .section-subtitle {
+                font-size: 12px;
+            }
+            .section-header {
+                margin-bottom: var(--space-lg);
+            }
+
+            .category-pills {
+                gap: 4px;
+                margin-bottom: var(--space-md);
+            }
+            .category-pills .pill {
+                padding: 4px 12px;
+                font-size: 8px;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            .product-card {
+                padding: 12px 8px;
+            }
+            .product-image {
                 width: 80px;
+                height: 80px;
+            }
+            .product-name {
+                font-size: 11px;
+            }
+            .product-description {
+                font-size: 8px;
+                -webkit-line-clamp: 1;
+            }
+            .product-price {
+                font-size: 1rem;
+            }
+            .product-price .old {
+                font-size: 8px;
+            }
+            .product-price .discount {
+                font-size: 7px;
+                padding: 1px 6px;
+            }
+            .product-stock {
+                font-size: 7px;
+            }
+            .product-meta {
+                font-size: 6px;
+                gap: 4px;
+            }
+            .product-badges .badge {
+                font-size: 6px;
+                padding: 1px 6px;
+            }
+            .product-wishlist {
+                width: 24px;
+                height: 24px;
                 font-size: 10px;
+                top: 6px;
+                left: 6px;
+            }
+            .product-badges {
+                top: 6px;
+                right: 6px;
+            }
+            .btn-add {
+                padding: 4px 8px;
+                font-size: 8px;
+            }
+
+            .chat-float-ai {
+                width: 48px;
+                height: 48px;
+                font-size: 1.3rem;
+                bottom: 16px;
+                left: 16px;
             }
             .chat-modal-ai {
                 bottom: 72px;
@@ -890,13 +2090,6 @@
                 max-width: none;
                 max-height: 440px;
             }
-            .chat-float-ai {
-                width: 48px;
-                height: 48px;
-                font-size: 1.3rem;
-                bottom: 16px;
-                left: 16px;
-            }
             .chat-messages-ai {
                 max-height: 280px;
             }
@@ -905,7 +2098,7 @@
                 padding: 6px 10px;
             }
             .chat-options-ai .chat-opt {
-                font-size: 8px;
+                font-size: 7px;
                 padding: 3px 8px;
             }
             .chat-input-ai {
@@ -919,9 +2112,123 @@
                 font-size: 10px;
                 padding: 6px 12px;
             }
+
+            .whatsapp-float {
+                width: 48px;
+                height: 48px;
+                font-size: 1.3rem;
+                bottom: 16px;
+                right: 16px;
+            }
+            .floating-cart {
+                bottom: 76px;
+                right: 12px;
+                padding: 4px 10px;
+                font-size: 8px;
+            }
+            .floating-cart .fc-icon {
+                font-size: 13px;
+            }
+            .floating-cart .fc-count {
+                font-size: 7px;
+                min-width: 16px;
+                line-height: 16px;
+            }
+            .floating-cart .fc-total {
+                font-size: 8px;
+            }
+            .btn-back-top {
+                width: 34px;
+                height: 34px;
+                font-size: 13px;
+                bottom: 120px;
+                right: 12px;
+            }
+            .dark-mode-toggle {
+                width: 34px;
+                height: 34px;
+                font-size: 13px;
+                bottom: 158px;
+                right: 12px;
+            }
+            .share-btn {
+                width: 34px;
+                height: 34px;
+                font-size: 13px;
+                bottom: 196px;
+                right: 12px;
+            }
+
+            .notification {
+                top: 68px;
+                right: 12px;
+                left: 12px;
+                padding: 8px 14px;
+                font-size: 10px;
+            }
+
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: var(--space-lg);
+            }
+            .footer-grid h4 {
+                font-size: 12px;
+            }
+            .footer-grid a {
+                font-size: 9px;
+            }
+            .footer-payments {
+                font-size: 1.2rem;
+            }
+            .footer-bottom {
+                font-size: 8px;
+            }
+
+            .cart-modal-content {
+                padding: var(--space-lg);
+                max-width: 95%;
+            }
+            .cart-modal-title {
+                font-size: 1.2rem;
+            }
+            .cart-item-name {
+                font-size: 11px;
+            }
+            .cart-item-price {
+                font-size: 11px;
+            }
+            .cart-total {
+                font-size: 1rem;
+            }
+            .cart-empty {
+                font-size: 11px;
+                padding: var(--space-xl) 0;
+            }
         }
 
+        /* ===== CELULAR PEQUEÑO ===== */
         @media (max-width: 400px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 6px;
+            }
+            .product-card {
+                padding: 8px 4px;
+            }
+            .product-image {
+                width: 65px;
+                height: 65px;
+            }
+            .product-name {
+                font-size: 9px;
+            }
+            .product-price {
+                font-size: 0.85rem;
+            }
+            .btn-add {
+                padding: 3px 4px;
+                font-size: 7px;
+            }
             .hero-title {
                 font-size: 1.6rem;
             }
@@ -930,30 +2237,60 @@
                 font-size: 9px;
             }
             .search-box input {
-                width: 60px;
+                width: 50px;
                 font-size: 9px;
             }
             .logo {
-                font-size: 1.1rem;
-            }
-            .chat-modal-ai {
-                max-height: 380px;
-            }
-            .chat-messages-ai {
-                max-height: 220px;
+                font-size: 0.95rem;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- ===== FREE SHIPPING ===== -->
-    <div class="free-shipping">
-        🚚 <span class="highlight">Envío gratis</span> · 🎁 <span class="highlight">10% OFF</span> PAULINA10 · 🤖 <span class="highlight">IA con Ollama</span> · ✨ 2026
+    <!-- ===== PRELOADER ===== -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-logo">✦ Paulina ✦</div>
+        <div class="preloader-bar"></div>
+        <div class="preloader-text">Cargando experiencia de lujo...</div>
     </div>
 
-    <!-- ===== NAVBAR ===== -->
-    <nav class="navbar">
+    <!-- ===== FREE SHIPPING ===== -->
+    <div class="free-shipping">
+        🚚 <span class="highlight">Envío gratis</span> · 🎁 <span class="highlight">10% OFF</span> PAULINA10 · 🤖 IA 24/7 · ✨ 2026
+    </div>
+
+    <!-- ===== NOTIFICACIÓN ===== -->
+    <div class="notification" id="notification">
+        <span class="notif-icon">✅</span>
+        <span id="notificationText">Producto agregado al carrito</span>
+    </div>
+
+    <!-- ===== MENÚ HAMBURGUESA ===== -->
+    <button class="hamburger" id="hamburger" aria-label="Menú">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <div style="text-align:center;padding:var(--space-md);">
+            <div style="font-size:2.5rem;">👤</div>
+            <div style="font-weight:700;font-family:var(--font-serif);font-size:1.2rem;" id="mobileUserName">Invitado</div>
+            <div style="font-size:10px;opacity:0.7;" id="mobileUserLevel">Nivel: Visitante</div>
+        </div>
+        <a href="#inicio">✨ Inicio</a>
+        <a href="#productos">🛍️ Productos</a>
+        <a href="#ofertas">🔥 Ofertas</a>
+        <a href="#contacto">📩 Contacto</a>
+        <button class="btn btn-gold" id="mobileLoginBtn" style="padding:8px 20px;font-size:11px;">🔑 Iniciar sesión</button>
+        <a href="#" class="close-menu" id="mobileClose">✕ Cerrar</a>
+    </div>
+
+    <!-- ============================================
+    NAVBAR PREMIUM
+    ============================================ -->
+    <nav class="navbar" id="navbar" role="navigation" aria-label="Navegación principal">
         <div class="navbar-left">
             <button class="hamburger" id="hamburger" aria-label="Menú">
                 <span></span>
@@ -973,30 +2310,37 @@
         </div>
 
         <div class="navbar-right">
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Buscar..." />
-                <button id="searchBtn">🔍</button>
+            <div class="search-box" role="search">
+                <input type="text" id="searchInput" placeholder="Buscar..." aria-label="Buscar productos" />
+                <button id="searchBtn" aria-label="Realizar búsqueda">🔍</button>
             </div>
 
-            <button class="user-btn" id="userBtn">
-                <span class="user-avatar">👤</span>
-                <span id="userName">Invitado</span>
+            <button class="user-btn" id="userBtn" aria-label="Usuario">
+                <span class="user-avatar" id="userAvatar">👤</span>
+                <span class="user-name-mobile" id="userName">Invitado</span>
+                <span class="user-info">
+                    <span class="user-name" id="userNameDesktop">Invitado</span>
+                    <span class="user-level" id="userLevel">Nivel: Visitante</span>
+                </span>
             </button>
 
-            <div class="cart-icon" id="cartIcon">
+            <div class="cart-icon" id="cartIcon" role="button" aria-label="Abrir carrito">
                 🛍️ <span class="cart-count" id="cartCount">0</span>
             </div>
         </div>
     </nav>
 
-    <!-- ===== HERO ===== -->
-    <section class="hero" id="inicio">
+    <!-- ============================================
+    HERO PREMIUM
+    ============================================ -->
+    <section class="hero" id="inicio" aria-label="Inicio">
         <div class="hero-content">
             <div class="hero-badge">✦ Colección 2026 ✦</div>
             <h1 class="hero-title">Belleza que <br /><span class="highlight">brilla con estilo</span></h1>
             <p class="hero-description">Descubre nuestra colección exclusiva de aretes, extensiones de pestañas, accesorios de belleza y mucho más. Calidad premium y envíos a todo Perú.</p>
 
             <div class="hero-stats">
+                <div class="stat"><span class="number" id="visitCount">0</span><span class="label">Visitas</span></div>
                 <div class="stat"><span class="number">+500</span><span class="label">Clientas felices</span></div>
                 <div class="stat"><span class="number">⭐ 4.9</span><span class="label">Calificación</span></div>
                 <div class="stat"><span class="number">🇵🇪</span><span class="label">Envíos a todo Perú</span></div>
@@ -1005,7 +2349,7 @@
             <div class="hero-actions">
                 <a href="#productos" class="btn btn-primary">✨ Ver colección</a>
                 <a href="#ofertas" class="btn btn-gold">🔥 Ofertas</a>
-                <button class="btn btn-outline-gold" id="openChatBtn">🤖 Asistente IA</button>
+                <button class="btn btn-outline-gold" onclick="document.getElementById('chatFloatAI').click()">🤖 Chat IA</button>
             </div>
         </div>
 
@@ -1015,48 +2359,159 @@
     </section>
 
     <!-- ============================================
-    CHAT CON OLLAMA - BOTÓN Y MODAL
+    PRODUCTOS
     ============================================ -->
+    <section class="section" id="productos" aria-label="Productos">
+        <div class="section-header">
+            <span class="section-tag">🛍️ Colección 2026</span>
+            <h2 class="section-title">Nuestros <span class="accent">productos</span></h2>
+            <p class="section-subtitle">Lo mejor para ti, en cada detalle y ocasión</p>
+        </div>
 
-    <button class="chat-float-ai" id="chatFloatAI" aria-label="Asistente IA">
+        <div class="category-pills">
+            <button class="pill active" data-category="todos">✨ Todos</button>
+            <button class="pill" data-category="aretes">📿 Aretes</button>
+            <button class="pill" data-category="pestanas">👁️ Pestañas</button>
+            <button class="pill" data-category="collares">📿 Collares</button>
+            <button class="pill" data-category="maquillaje">💄 Maquillaje</button>
+            <button class="pill" data-category="capilar">💈 Cuidado Capilar</button>
+        </div>
+
+        <div class="product-grid" id="productGrid">
+            <!-- Se carga con JavaScript -->
+        </div>
+    </section>
+
+    <!-- ============================================
+    OFERTAS
+    ============================================ -->
+    <section class="section" id="ofertas" aria-label="Ofertas">
+        <div class="section-header">
+            <span class="section-tag">🔥 Ofertas 2026</span>
+            <h2 class="section-title">Promociones <span class="accent">especiales</span></h2>
+            <p class="section-subtitle">Aprovecha nuestras ofertas antes de que terminen</p>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:var(--space-lg);">
+            <div style="background:var(--white);border-radius:var(--radius-lg);padding:var(--space-lg);text-align:center;box-shadow:var(--shadow-md);border:1px solid rgba(212,175,55,0.06);transition:var(--transition-spring);">
+                <span style="font-size:3rem;">🔥</span>
+                <h3 style="font-family:var(--font-serif);margin:6px 0;font-size:1.2rem;">2x1 en Pestañas 5D</h3>
+                <p style="color:var(--gray-500);font-size:12px;">Lleva 2 pares por el precio de 1</p>
+                <p style="font-size:1.3rem;font-weight:800;color:var(--gold);margin:6px 0;">$35</p>
+                <a href="#productos" class="btn btn-gold btn-sm">Ver productos</a>
+            </div>
+            <div style="background:var(--white);border-radius:var(--radius-lg);padding:var(--space-lg);text-align:center;box-shadow:var(--shadow-md);border:1px solid rgba(212,175,55,0.06);transition:var(--transition-spring);">
+                <span style="font-size:3rem;">🎉</span>
+                <h3 style="font-family:var(--font-serif);margin:6px 0;font-size:1.2rem;">10% OFF</h3>
+                <p style="color:var(--gray-500);font-size:12px;">Usa el código PAULINA10</p>
+                <p style="font-size:1.3rem;font-weight:800;color:var(--gold);margin:6px 0;">10% descuento</p>
+                <button class="btn btn-gold btn-sm" onclick="navigator.clipboard.writeText('PAULINA10').then(()=>mostrarNotificacion('✅ Código copiado','📋'))">Copiar código</button>
+            </div>
+            <div style="background:var(--white);border-radius:var(--radius-lg);padding:var(--space-lg);text-align:center;box-shadow:var(--shadow-md);border:1px solid rgba(212,175,55,0.06);transition:var(--transition-spring);">
+                <span style="font-size:3rem;">🚚</span>
+                <h3 style="font-family:var(--font-serif);margin:6px 0;font-size:1.2rem;">Envío gratis</h3>
+                <p style="color:var(--gray-500);font-size:12px;">En compras mayores a $50</p>
+                <p style="font-size:1.3rem;font-weight:800;color:var(--gold);margin:6px 0;">$0 envío</p>
+                <a href="#productos" class="btn btn-gold btn-sm">Comprar ahora</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+    CONTACTO
+    ============================================ -->
+    <section class="section" id="contacto" aria-label="Contacto">
+        <div class="section-header">
+            <span class="section-tag">📩 Contacto</span>
+            <h2 class="section-title">Contáctanos</h2>
+            <p class="section-subtitle">¿Tienes dudas? Escríbenos y te respondemos en menos de 24 horas</p>
+        </div>
+
+        <div style="max-width:560px;margin:0 auto;background:var(--white);border-radius:var(--radius-lg);padding:var(--space-xl);box-shadow:var(--shadow-md);border:1px solid rgba(212,175,55,0.06);">
+            <form id="contactForm">
+                <div style="margin-bottom:var(--space-md);">
+                    <label style="display:block;font-weight:600;color:var(--gray-700);margin-bottom:4px;font-size:11px;">👤 Nombre</label>
+                    <input type="text" id="contactName" placeholder="Tu nombre" required style="width:100%;padding:10px 14px;border:1.5px solid rgba(212,175,55,0.06);border-radius:var(--radius-md);font-family:var(--font-sans);font-size:12px;background:var(--gray-50);color:var(--gray-800);transition:var(--transition-base);">
+                </div>
+                <div style="margin-bottom:var(--space-md);">
+                    <label style="display:block;font-weight:600;color:var(--gray-700);margin-bottom:4px;font-size:11px;">📧 Email</label>
+                    <input type="email" id="contactEmail" placeholder="tu@email.com" required style="width:100%;padding:10px 14px;border:1.5px solid rgba(212,175,55,0.06);border-radius:var(--radius-md);font-family:var(--font-sans);font-size:12px;background:var(--gray-50);color:var(--gray-800);transition:var(--transition-base);">
+                </div>
+                <div style="margin-bottom:var(--space-md);">
+                    <label style="display:block;font-weight:600;color:var(--gray-700);margin-bottom:4px;font-size:11px;">💬 Mensaje</label>
+                    <textarea id="contactMessage" placeholder="Tu mensaje..." required style="width:100%;padding:10px 14px;border:1.5px solid rgba(212,175,55,0.06);border-radius:var(--radius-md);font-family:var(--font-sans);font-size:12px;background:var(--gray-50);color:var(--gray-800);transition:var(--transition-base);min-height:100px;resize:vertical;"></textarea>
+                </div>
+                <button type="submit" class="btn btn-gold" style="width:100%;padding:10px;font-size:12px;">📨 Enviar mensaje</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- ============================================
+    CARRITO MODAL
+    ============================================ -->
+    <div class="cart-modal" id="cartModal" role="dialog" aria-modal="true" aria-label="Carrito de compras">
+        <div class="cart-modal-content">
+            <button class="close-cart" id="closeCart" aria-label="Cerrar carrito">✕</button>
+            <h2 class="cart-modal-title">🛍️ Tu carrito</h2>
+            <div id="cartItems">
+                <div class="cart-empty">🛒 Tu carrito está vacío<br><span style="font-size:11px;opacity:0.5;">¡Empieza a comprar!</span></div>
+            </div>
+            <div class="cart-total">
+                <span>Total:</span>
+                <span class="total-price" id="cartTotal">$0.00</span>
+            </div>
+            <button class="btn btn-gold" id="checkoutBtn" style="width:100%;padding:10px;font-size:12px;">✅ Finalizar compra</button>
+        </div>
+    </div>
+
+    <!-- ============================================
+    CARRITO FLOTANTE
+    ============================================ -->
+    <div class="floating-cart" id="floatingCart" role="button" aria-label="Abrir carrito">
+        <span class="fc-icon">🛍️</span>
+        <span class="fc-count" id="fcCount">0</span>
+        <span class="fc-total" id="fcTotal">$0.00</span>
+    </div>
+
+    <!-- ============================================
+    WHATSAPP FLOTANTE
+    ============================================ -->
+    <a href="https://wa.me/51923861016" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">💬</a>
+
+    <!-- ============================================
+    CHAT CON IA - BOTÓN FLOTANTE
+    ============================================ -->
+    <button class="chat-float-ai" id="chatFloatAI" aria-label="Chat con IA (responde TODO)">
         🤖
         <span class="chat-badge">IA</span>
     </button>
 
+    <!-- ============================================
+    CHAT CON IA - MODAL COMPLETO
+    ============================================ -->
     <div class="chat-modal-ai" id="chatModalAI">
         <div class="chat-header-ai">
-            <span>🤖 Paulina AI</span>
+            <span>🤖 Asistente IA</span>
             <span class="chat-status">
-                <span class="dot" id="statusDot"></span>
-                <span id="statusText">Conectando...</span>
+                <span class="dot"></span>
+                En línea 24/7
             </span>
             <button class="chat-close" id="chatCloseAI">✕</button>
         </div>
 
         <div class="chat-messages-ai" id="chatMessagesAI">
             <div class="chat-message-ai bot">
-                👋 ¡Hola! Soy <strong>Paulina AI</strong>, tu asistente personal con inteligencia artificial.<br><br>
-                💡 <strong>Puedo responder CUALQUIER PREGUNTA</strong> sobre:<br><br>
-                🛍️ <strong>PRODUCTOS</strong><br>
-                • ¿Tienen shampoo?<br>
-                • ¿Qué aretes tienen?<br>
-                • ¿Cuánto cuestan los collares?<br><br>
-                💰 <strong>PRECIOS Y PROMOCIONES</strong><br>
-                • ¿Cuánto cuesta la base Fit Me?<br>
-                • ¿Hay 2x1 en pestañas?<br>
-                • ¿Cómo uso el cupón PAULINA10?<br><br>
-                🚚 <strong>ENVÍOS Y PAGOS</strong><br>
-                • ¿Cuánto tardan los envíos?<br>
-                • ¿Aceptan Yape?<br>
-                • ¿Hay envío gratis?<br><br>
-                🌍 <strong>CULTURA GENERAL</strong><br>
-                • ¿Quién fue Einstein?<br>
-                • ¿Qué es la fotosíntesis?<br>
-                • ¿Dónde está Machu Picchu?<br><br>
-                🧮 <strong>MATEMÁTICAS</strong><br>
-                • ¿Cuánto es 2 + 2?<br>
-                • ¿Cuánto es 10 × 5?<br><br>
-                🗣️ <strong>¡Pregúntame lo que quieras!</strong>
+                👋 ¡Hola! Soy <strong>Paulina AI</strong>, tu asistente virtual con inteligencia artificial avanzada.<br><br>
+                💡 <strong>Puedo responder CUALQUIER PREGUNTA</strong> que tengas:<br><br>
+                • 📦 <strong>Productos</strong> - Aretes, pestañas, collares, maquillaje, shampoo y más<br>
+                • 💰 <strong>Precios</strong> - Información detallada de todos los productos<br>
+                • 🚚 <strong>Envíos</strong> - Tiempos, costos y seguimiento<br>
+                • 💳 <strong>Pagos</strong> - Yape, Plin, tarjeta, contraentrega<br>
+                • 📍 <strong>Ubicación</strong> - Dirección y horarios de la tienda<br>
+                • 🎁 <strong>Promociones</strong> - Descuentos, 2x1, cupones y ofertas<br>
+                • 🧮 <strong>Matemáticas</strong> - Cálculos, operaciones y más<br>
+                • 🌍 <strong>Cultura general</strong> - Ciencia, historia, arte, tecnología, geografía, deportes, música, cine, literatura y muchos temas más<br><br>
+                🗣️ <strong>¡Pregúntame lo que quieras, sin límites!</strong>
                 <span class="msg-time">10:30</span>
             </div>
         </div>
@@ -1069,363 +2524,1106 @@
             <button class="chat-opt" data-msg="📿 ¿Tienen collares?">📿 Collares</button>
             <button class="chat-opt" data-msg="💈 ¿Tienen shampoo?">💈 Shampoo</button>
             <button class="chat-opt" data-msg="🎁 ¿Tienen promociones?">🎁 Promociones</button>
+            <button class="chat-opt" data-msg="🤔 Recomiéndame un producto">🤔 Recomendar</button>
             <button class="chat-opt" data-msg="😊 Cuéntame un chiste">😊 Chiste</button>
             <button class="chat-opt" data-msg="🧮 ¿Cuánto es 2 + 2?">🧮 Matemáticas</button>
-            <button class="chat-opt" data-msg="🌍 ¿Qué es la fotosíntesis?">🌍 Ciencia</button>
-            <button class="chat-opt" data-msg="🏔️ ¿Dónde está Machu Picchu?">🏔️ Lugares</button>
+            <button class="chat-opt" data-msg="🌍 ¿Qué es la inteligencia artificial?">🌍 Cultura</button>
+            <button class="chat-opt" data-msg="🧠 ¿Cómo funciona el cerebro humano?">🧠 Ciencia</button>
         </div>
 
         <div class="chat-input-ai">
-            <input type="text" id="chatInputAI" placeholder="Escribe tu mensaje..." />
+            <input type="text" id="chatInputAI" placeholder="Escribe tu mensaje..." aria-label="Mensaje de chat" />
             <button id="chatSendAI">Enviar</button>
         </div>
     </div>
 
     <!-- ============================================
-    FOOTER
+    BOTONES FLOTANTES
     ============================================ -->
-    <footer style="background:var(--gray-900);color:var(--gray-300);padding:48px 4% 24px;border-radius:40px 40px 0 0;margin-top:48px;">
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:32px;max-width:1100px;margin:0 auto;">
+    <button class="dark-mode-toggle" id="darkModeToggle" aria-label="Cambiar modo oscuro">🌙</button>
+    <button class="share-btn" id="shareBtn" aria-label="Compartir tienda">📤</button>
+    <button class="btn-back-top" id="backTopBtn" aria-label="Volver arriba">↑</button>
+
+    <!-- ============================================
+    FOOTER PREMIUM
+    ============================================ -->
+    <footer role="contentinfo">
+        <div class="footer-grid">
             <div>
-                <h4 style="font-family:var(--font-serif);color:var(--gold-light);margin-bottom:8px;font-size:14px;">✦ Paulina Accesorios</h4>
-                <a href="#" style="display:block;color:var(--gray-400);text-decoration:none;font-size:11px;margin-bottom:4px;">Sobre nosotros</a>
-                <a href="#" style="display:block;color:var(--gray-400);text-decoration:none;font-size:11px;margin-bottom:4px;">Política de cambios</a>
+                <h4>✦ Paulina Accesorios</h4>
+                <a href="#">Sobre nosotros</a>
+                <a href="#">Política de cambios</a>
+                <a href="#">Términos y condiciones</a>
             </div>
             <div>
-                <h4 style="font-family:var(--font-serif);color:var(--gold-light);margin-bottom:8px;font-size:14px;">📞 Ayuda</h4>
-                <a href="#" style="display:block;color:var(--gray-400);text-decoration:none;font-size:11px;margin-bottom:4px;">Preguntas frecuentes</a>
-                <a href="#" style="display:block;color:var(--gray-400);text-decoration:none;font-size:11px;margin-bottom:4px;">Envíos y entregas</a>
+                <h4>📞 Ayuda</h4>
+                <a href="#">Preguntas frecuentes</a>
+                <a href="#">Envíos y entregas</a>
+                <a href="#">Devoluciones</a>
             </div>
             <div>
-                <h4 style="font-family:var(--font-serif);color:var(--gold-light);margin-bottom:8px;font-size:14px;">📱 Síguenos</h4>
-                <a href="#" style="display:block;color:var(--gray-400);text-decoration:none;font-size:11px;margin-bottom:4px;">Instagram</a>
-                <a href="#" style="display:block;color:var(--gray-400);text-decoration:none;font-size:11px;margin-bottom:4px;">Facebook</a>
+                <h4>📱 Síguenos</h4>
+                <a href="https://www.instagram.com/paulinaccesorios26/" target="_blank">Instagram</a>
+                <a href="https://www.facebook.com/share/1EVN5XT8kz/" target="_blank">Facebook</a>
+                <a href="https://www.tiktok.com/@paulinaaccesorios" target="_blank">TikTok</a>
             </div>
             <div>
-                <h4 style="font-family:var(--font-serif);color:var(--gold-light);margin-bottom:8px;font-size:14px;">💳 Formas de pago</h4>
-                <div style="display:flex;gap:8px;font-size:1.6rem;">💳📱🏦💵</div>
+                <h4>💳 Formas de pago</h4>
+                <div class="footer-payments">
+                    <span>💳</span>
+                    <span>📱</span>
+                    <span>🏦</span>
+                    <span>💵</span>
+                </div>
                 <div style="margin-top:4px;font-size:9px;opacity:0.5;">Yape · Plin · Transferencia · Efectivo</div>
             </div>
         </div>
-        <div style="text-align:center;border-top:1px solid rgba(255,255,255,0.03);padding-top:24px;margin-top:32px;font-size:10px;color:var(--gray-500);">
-            &copy; 2026 Paulina Accesorios · Hecho con 💖 · 🇵🇪 Perú · 🤖 Asistente con Ollama
+
+        <div class="footer-bottom">
+            &copy; 2026 Paulina Accesorios · Hecho con <span class="heart">💖</span> para mujeres que brillan · 🇵🇪 Perú · Todos los derechos reservados · 🤖 IA que responde TODO
         </div>
     </footer>
 
     <!-- ============================================
-    JAVASCRIPT - ASISTENTE CON OLLAMA
+    JAVASCRIPT - COMPLETO
     ============================================ -->
     <script>
         // ============================================
-        // CONFIGURACIÓN - ELIGE TU MODELO
+        // PRODUCTOS
         // ============================================
 
-        // 🔥 CAMBIA ESTA LÍNEA SEGÚN EL MODELO QUE QUIERAS USAR:
-        const MODELO = 'gemma2:2b';  // ← RECOMENDADO (rápido y bueno en español)
-        // const MODELO = 'phi3:mini';    // ← Muy bueno, un poco más lento
-        // const MODELO = 'tinyllama:1.1b'; // ← El más rápido
-
-        const OLLAMA_URL = 'http://localhost:11434/api/generate';
-
-        // ============================================
-        // CONTEXTO COMPLETO DE LA TIENDA
-        // ============================================
-
-        const CONTEXTO = `
-        Eres Paulina AI, la asistente virtual de "Paulina Accesorios", una tienda de belleza en Perú.
-
-        🏢 INFORMACIÓN DE LA TIENDA:
-        - Nombre: Paulina Accesorios
-        - Ubicación: Francisco Bardales 705, Yurimaguas, Perú
-        - Horario: Lunes a Sábado 9am - 8pm
-        - Teléfono: +51 923 861 016
-        - Año: 2026
-
-        🛍️ PRODUCTOS DISPONIBLES:
-
-        📿 ARETES:
-        - Aretes Bohemios: $25 - Hechos a mano con piedras naturales
-        - Aretes de Perla Dorada: $38 - Perlas con acabado 18k
-        - Aretes Florales: $6.06 - Diseños coloridos
-        - Aretes de Compromiso: $65 - Zirconia cúbica en plata 925
-
-        👁️ PESTAÑAS:
-        - Pestañas 3D Premium: $25 - Volumen natural
-        - Pestañas 5D Mega: $35 - Mega volumen (OFERTA 2x1)
-        - Pestañas Magnéticas: $28 - Sin pegamento
-
-        📿 COLLARES:
-        - Collar de Perla: $45 - Perlas naturales 18k
-        - Collar Personalizado: $30 - Con iniciales
-        - Collar de Plata 925: $60 - Bañado en plata
-
-        💄 MAQUILLAJE:
-        - Base Fit Me 220: $43.89 - Cobertura media
-        - Paleta The City Mini: $37 - 12 tonos
-        - Labial SS Matte Ink: $51.20 - Larga duración
-        - Máscara The Falsies: $45.70 - Volumen y alargado
-
-        💈 CUIDADO CAPILAR:
-        - Shampoo Keratina: $26.66 - Reparación capilar
-        - Acondicionador Keratina: $26.66 - Nutrición intensa
-        - Tratamiento Platinum: $48.36 - Restauración total
-
-        💅 UÑAS:
-        - Esmalte Semipermanente: $8
-        - Top Coat Ultra Gloss: $12.09
-        - Esmalte Vogue Intenso: $4
-
-        💳 MÉTODOS DE PAGO:
-        - Yape: 5% OFF
-        - Plin: 5% OFF
-        - Transferencia bancaria: BCP, BBVA, Interbank
-        - Efectivo (en tienda física)
-        - Tarjeta de crédito/débito: Visa, Mastercard
-        - Contraentrega
-
-        🚚 ENVÍOS:
-        - Lima: 24-48 horas
-        - Provincias: 2-4 días
-        - Envío gratis: Compras mayores a $50
-
-        🎁 PROMOCIONES:
-        - 2x1 en Pestañas 5D: $35 (2 pares)
-        - 10% OFF: Código PAULINA10
-        - Envío gratis: > $50
-        - Descuento de cumpleaños: 15% OFF
-
-        📦 POLÍTICAS:
-        - Cambios y devoluciones: Hasta 7 días
-        - Producto en empaque original
-
-        REGLAS DE RESPUESTA:
-        1. Responde SIEMPRE en español
-        2. Usa emojis para hacer la conversación más amigable
-        3. Sé amable, profesional y servicial
-        4. Si te preguntan por un producto, da precio y descripción
-        5. Si te preguntan matemáticas, resuelve el cálculo
-        6. Si te preguntan cultura general, da información precisa
-        7. Si no sabes algo, dilo con honestidad
-        8. Siempre ofrece ayuda adicional al final de tu respuesta
-        `;
-
-        // ============================================
-        // DOM ELEMENTS
-        // ============================================
-
-        const chatFloat = document.getElementById('chatFloatAI');
-        const chatModal = document.getElementById('chatModalAI');
-        const chatClose = document.getElementById('chatCloseAI');
-        const chatMessages = document.getElementById('chatMessagesAI');
-        const chatInput = document.getElementById('chatInputAI');
-        const chatSend = document.getElementById('chatSendAI');
-        const chatOptions = document.getElementById('chatOptionsAI');
-        const statusDot = document.getElementById('statusDot');
-        const statusText = document.getElementById('statusText');
-
-        // ============================================
-        // FUNCIONES DEL CHAT
-        // ============================================
-
-        function agregarMensaje(texto, tipo, tiempo = null) {
-            const div = document.createElement('div');
-            div.className = `chat-message-ai ${tipo}`;
-            div.innerHTML = texto.replace(/\n/g, '<br>');
-            const timeSpan = document.createElement('span');
-            timeSpan.className = 'msg-time';
-            timeSpan.textContent = tiempo || new Date().toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' });
-            div.appendChild(timeSpan);
-            chatMessages.appendChild(div);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        function mostrarTyping() {
-            const div = document.createElement('div');
-            div.className = 'chat-message-ai bot';
-            div.id = 'typing';
-            div.innerHTML = `
-                <div class="typing-indicator">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            `;
-            chatMessages.appendChild(div);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        function ocultarTyping() {
-            const typing = document.getElementById('typing');
-            if (typing) typing.remove();
-        }
-
-        function actualizarEstado(estado, mensaje) {
-            statusText.textContent = mensaje;
-            statusDot.className = 'dot';
-            if (estado === 'online') {
-                statusDot.classList.add('online');
-            } else if (estado === 'offline') {
-                statusDot.classList.add('offline');
+        const productos = [{
+                id: 1,
+                nombre: 'Aretes Bohemios',
+                categoria: 'aretes',
+                descripcion: 'Hechos a mano con piedras naturales semi-preciosas',
+                precio: 25.00,
+                precio_old: null,
+                badge: '⭐ Top',
+                emoji: '📿',
+                stock: 15,
+                compradores: 134,
+                imagen: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400&h=400&fit=crop&crop=center&q=80'
+            },
+            {
+                id: 2,
+                nombre: 'Aretes de Perla Dorada',
+                categoria: 'aretes',
+                descripcion: 'Perlas naturales cultivadas con acabado dorado 18k',
+                precio: 38.00,
+                precio_old: null,
+                badge: '✨ Especial',
+                emoji: '📿',
+                stock: 8,
+                compradores: 89,
+                imagen: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=400&fit=crop&crop=center&q=80'
+            },
+            {
+                id: 3,
+                nombre: 'Pestañas 5D Mega',
+                categoria: 'pestanas',
+                descripcion: 'Extensiones de pestañas efecto volumen 5D',
+                precio: 35.00,
+                precio_old: 45.00,
+                badge: '🔥 2x1',
+                emoji: '👁️',
+                stock: 4,
+                compradores: 56,
+                imagen: 'https://images.unsplash.com/photo-1583182337426-8c2b5b2db6ae?w=400&h=400&fit=crop&crop=center&q=80'
+            },
+            {
+                id: 4,
+                nombre: 'Collar de Perla',
+                categoria: 'collares',
+                descripcion: 'Perlas naturales cultivadas con acabado dorado 18k',
+                precio: 45.00,
+                precio_old: null,
+                badge: '💎 Premium',
+                emoji: '📿',
+                stock: 6,
+                compradores: 45,
+                imagen: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400&h=400&fit=crop&crop=center&q=80'
+            },
+            {
+                id: 5,
+                nombre: 'Collar Personalizado',
+                categoria: 'collares',
+                descripcion: 'Con iniciales o nombres grabados',
+                precio: 30.00,
+                precio_old: null,
+                badge: '🌟 Especial',
+                emoji: '📿',
+                stock: 10,
+                compradores: 34,
+                imagen: 'https://images.unsplash.com/photo-1589128777073-2395665fec4c?w=400&h=400&fit=crop&crop=center&q=80'
+            },
+            {
+                id: 6,
+                nombre: 'Base Fit Me 220',
+                categoria: 'maquillaje',
+                descripcion: 'Base líquida de cobertura media, acabado natural mate',
+                precio: 43.89,
+                precio_old: null,
+                badge: '⭐ Top',
+                emoji: '💄',
+                stock: 12,
+                compradores: 45,
+                imagen: 'https://images.unsplash.com/photo-1583241803259-1fdc3d56cd49?w=400&h=400&fit=crop&crop=center&q=80'
+            },
+            {
+                id: 7,
+                nombre: 'Shampoo Keratina',
+                categoria: 'capilar',
+                descripcion: 'Shampoo con keratina para reparación capilar',
+                precio: 26.66,
+                precio_old: null,
+                badge: '⭐ Top',
+                emoji: '💈',
+                stock: 15,
+                compradores: 67,
+                imagen: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop&crop=center&q=80'
+            },
+            {
+                id: 8,
+                nombre: 'Acondicionador Keratina',
+                categoria: 'capilar',
+                descripcion: 'Acondicionador con keratina para cabello dañado',
+                precio: 26.66,
+                precio_old: null,
+                badge: '💖 Favorito',
+                emoji: '💈',
+                stock: 12,
+                compradores: 54,
+                imagen: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop&crop=center&q=80'
             }
-        }
+        ];
 
         // ============================================
-        // CONECTAR A OLLAMA
+        // IA - RESPONDE ABSOLUTAMENTE TODO
         // ============================================
 
-        async function conectarOllama() {
-            try {
-                actualizarEstado('', '🔄 Conectando a Ollama...');
-                const response = await fetch(OLLAMA_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        model: MODELO,
-                        prompt: 'Hola, ¿estás funcionando? Responde solo "Sí"',
-                        stream: false,
-                        options: {
-                            num_predict: 10
-                        }
-                    })
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.response) {
-                        actualizarEstado('online', '✅ Conectado (' + MODELO + ')');
-                        console.log('✅ Ollama conectado correctamente');
-                        return true;
+        const IA_KNOWLEDGE = {
+            'productos': '🛍️ Tenemos aretes, pestañas, collares, maquillaje, shampoo y acondicionador. ¿Qué te interesa?',
+            'aretes': '📿 Aretes bohemios ($25), de perla ($38), florales ($6) y de compromiso ($65).',
+            'collares': '📿 Collares de perla ($45), personalizados ($30), con piedras ($35-55) y plata 925 ($60).',
+            'pestañas': '👁️ Pestañas 3D ($25), 5D ($35), magnéticas ($28). ¡2x1 en 5D!',
+            'maquillaje': '💄 Base Fit Me ($43.89), Paleta ($37), Labial ($51.20), Máscara ($45.70).',
+            'shampoo': '💈 ¡Sí! Tenemos Shampoo Keratina ($26.66) y Acondicionador Keratina ($26.66).',
+            'acondicionador': '💈 ¡Sí! Tenemos Acondicionador Keratina ($26.66).',
+            'capilar': '💈 Tenemos Shampoo Keratina ($26.66), Acondicionador ($26.66) y Tratamiento Platinum ($48.36).',
+            'precio': '💰 Precios desde $1 hasta $65. ¿Qué producto buscas?',
+            'envío': '📦 Envíos a todo Perú. Lima: 24-48h, provincias: 2-4 días. Gratis > $50.',
+            'pago': '💳 Yape, Plin, transferencia, efectivo, tarjeta y contraentrega.',
+            'ubicación': '📍 Francisco Bardales 705, Yurimaguas. Lun-Sáb 9am-8pm.',
+            'promociones': '🎁 2x1 en Pestañas 5D, 10% OFF con PAULINA10, envío gratis > $50.',
+            'descuento': '🎉 10% OFF con PAULINA10.',
+            'cupón': '🎁 Usa PAULINA10 para 10% OFF.',
+            '2x1': '🔥 2x1 en Pestañas 5D Mega por solo $35.',
+            '2 + 2': '🧮 2 + 2 = 4.',
+            'hola': '👋 ¡Hola! Soy Paulina AI, tu asistente 24/7. ¿Cómo puedo ayudarte? ✨',
+            'buenos días': '🌞 ¡Muy buenos días!',
+            'cómo estás': '🤖 ¡Genial! Gracias por preguntar.',
+            'quién eres': '🤖 Soy Paulina AI, tu asistente virtual.',
+            'gracias': '🙌 ¡De nada! 💖',
+            'chiste': '😊 ¿Por qué las pestañas no van a la playa? ¡Les da miedo el agua salada! 😂',
+            'fotosíntesis': '🌿 La fotosíntesis es el proceso donde las plantas convierten luz solar, agua y CO₂ en oxígeno.',
+            'adn': '🧬 El ADN contiene la información genética de los seres vivos.',
+            'big bang': '💥 El Big Bang es la teoría del origen del universo hace 13.8 mil millones de años.',
+            'einstein': '🧠 Albert Einstein fue un físico alemán, creador de la teoría de la relatividad.',
+            'machu picchu': '🏔️ Machu Picchu está en Cusco, Perú. Es una de las 7 maravillas del mundo.',
+            'perú': '🇵🇪 Perú está en América del Sur.',
+            'independencia perú': '📅 La independencia de Perú fue el 28 de julio de 1821.',
+            'default': '🤖 ¡Hola! Puedo ayudarte con productos, precios, envíos, pagos, matemáticas o cultura general. ¿Qué te gustaría saber? ✨'
+        };
+
+        // ============================================
+        // FUNCIÓN PRINCIPAL DE LA IA
+        // ============================================
+
+        function getAIResponse(message) {
+            const msg = message.toLowerCase().trim();
+
+            // Buscar en conocimiento base
+            for (const [key, response] of Object.entries(IA_KNOWLEDGE)) {
+                if (msg.includes(key) && key !== 'default') {
+                    return response;
+                }
+            }
+
+            // Operaciones matemáticas
+            if (msg.includes('+')) {
+                const parts = msg.split('+');
+                if (parts.length === 2) {
+                    const num1 = parseFloat(parts[0].trim());
+                    const num2 = parseFloat(parts[1].trim());
+                    if (!isNaN(num1) && !isNaN(num2)) {
+                        return `🧮 ${num1} + ${num2} = ${num1 + num2}`;
                     }
                 }
-                throw new Error('Error de conexión');
-            } catch (error) {
-                console.error('❌ Error:', error);
-                actualizarEstado('offline', '❌ Offline - Inicia Ollama');
-                return false;
+            }
+
+            if (msg.includes('-') && !msg.includes('+')) {
+                const parts = msg.split('-');
+                if (parts.length === 2) {
+                    const num1 = parseFloat(parts[0].trim());
+                    const num2 = parseFloat(parts[1].trim());
+                    if (!isNaN(num1) && !isNaN(num2)) {
+                        return `🧮 ${num1} - ${num2} = ${num1 - num2}`;
+                    }
+                }
+            }
+
+            if (msg.includes('*') || msg.includes('x')) {
+                const separator = msg.includes('*') ? '*' : 'x';
+                const parts = msg.split(separator);
+                if (parts.length === 2) {
+                    const num1 = parseFloat(parts[0].trim());
+                    const num2 = parseFloat(parts[1].trim());
+                    if (!isNaN(num1) && !isNaN(num2)) {
+                        return `🧮 ${num1} × ${num2} = ${num1 * num2}`;
+                    }
+                }
+            }
+
+            if (msg.includes('/')) {
+                const parts = msg.split('/');
+                if (parts.length === 2) {
+                    const num1 = parseFloat(parts[0].trim());
+                    const num2 = parseFloat(parts[1].trim());
+                    if (!isNaN(num1) && !isNaN(num2) && num2 !== 0) {
+                        return `🧮 ${num1} ÷ ${num2} = ${num1 / num2}`;
+                    }
+                    if (num2 === 0) {
+                        return '🧮 No se puede dividir por cero. ¡Eso es matemáticamente imposible! 😅';
+                    }
+                }
+            }
+
+            // Buscar en productos
+            for (const producto of productos) {
+                if (msg.includes(producto.nombre.toLowerCase())) {
+                    const price = producto.precio_old ?
+                        `$${producto.precio} (antes $${producto.precio_old})` :
+                        `$${producto.precio}`;
+                    return `🔍 <strong>${producto.nombre}</strong>\n📝 ${producto.descripcion}\n💰 Precio: ${price}\n📦 Stock: ${producto.stock} unidades\n⭐ ${producto.badge || 'Producto destacado'}\n\n¿Te gustaría agregarlo a tu carrito? 🛒`;
+                }
+            }
+
+            // Preguntas sobre la tienda
+            if (msg.includes('producto') || msg.includes('productos') || msg.includes('tienen')) {
+                return IA_KNOWLEDGE.productos || '🛍️ Tenemos una gran variedad de productos. ¿Qué tipo de accesorio buscas?';
+            }
+            if (msg.includes('precio') || msg.includes('cuesta') || msg.includes('costo')) {
+                return IA_KNOWLEDGE.precio || '💰 Nuestros precios son muy competitivos. ¿Qué producto te interesa?';
+            }
+            if (msg.includes('envío') || msg.includes('envio') || msg.includes('llegar')) {
+                return IA_KNOWLEDGE.envío || '📦 Realizamos envíos a todo Perú. ¿En qué ciudad estás?';
+            }
+            if (msg.includes('pago') || msg.includes('pagar') || msg.includes('yape') || msg.includes('plin')) {
+                return IA_KNOWLEDGE.pago || '💳 Aceptamos Yape, Plin, transferencia, efectivo, tarjeta y contraentrega.';
+            }
+            if (msg.includes('ubicación') || msg.includes('dirección') || msg.includes('donde están')) {
+                return IA_KNOWLEDGE.ubicación || '📍 Estamos en Francisco Bardales 705, Yurimaguas. ¡Te esperamos!';
+            }
+            if (msg.includes('horario') || msg.includes('abren') || msg.includes('cierran')) {
+                return IA_KNOWLEDGE.horario || '⏰ Abrimos de Lunes a Sábado de 9am a 8pm. Domingo cerrado.';
+            }
+            if (msg.includes('descuento') || msg.includes('promoción') || msg.includes('oferta')) {
+                return IA_KNOWLEDGE.promociones ||
+                '🎁 10% OFF con PAULINA10, 2x1 en pestañas 5D, envío gratis > $50. ¡Aprovecha!';
+            }
+            if (msg.includes('arete') || msg.includes('aretes')) {
+                return '📿 ¡Sí! Tenemos aretes bohemios ($25), de perla ($38), florales ($6.06), de compromiso ($65), aros, colgantes y minimalistas. ¿Qué estilo te gusta?';
+            }
+            if (msg.includes('collar') || msg.includes('collares')) {
+                return '📿 ¡Sí! Tenemos collares de perla ($45), personalizados ($30), con piedras ($35-55), de plata 925 ($60), florales ($25), de compromiso ($75). ¿Cuál te interesa?';
+            }
+            if (msg.includes('pestaña') || msg.includes('pestañas')) {
+                return '👁️ Tenemos pestañas 3D ($25), 5D ($35), magnéticas ($28), de seda ($30), de colores ($18). ¡2x1 en las 5D!';
+            }
+            if (msg.includes('maquillaje')) {
+                return '💄 Base Fit Me ($43.89), Paleta City Mini ($37), Labial Matte Ink ($51.20), Máscara The Falsies ($45.70). ¿Qué necesitas?';
+            }
+            if (msg.includes('shampoo')) {
+                return '💈 ¡Sí! Tenemos Shampoo Keratina ($26.66) para reparar el cabello. ¿Quieres más información?';
+            }
+            if (msg.includes('acondicionador')) {
+                return '💈 ¡Sí! Tenemos Acondicionador Keratina ($26.66) para nutrir el cabello. ¿Te interesa?';
+            }
+            if (msg.includes('capilar')) {
+                return '💈 Tenemos Shampoo Keratina ($26.66), Acondicionador Keratina ($26.66) y Tratamiento Platinum ($48.36). ¿Qué necesitas para tu cabello?';
+            }
+
+            // Saludos
+            if (msg.includes('hola') || msg.includes('buenos días') || msg.includes('buenas tardes') || msg.includes('buenas noches')) {
+                return '👋 ¡Hola! Soy Paulina AI, tu asistente 24/7. Puedo responder CUALQUIER pregunta. ¿Cómo puedo ayudarte hoy? ✨';
+            }
+            if (msg.includes('cómo estás') || msg.includes('como estas')) {
+                return '🤖 ¡Estoy genial! Gracias por preguntar. ¿Qué necesitas saber?';
+            }
+            if (msg.includes('gracias') || msg.includes('muchas gracias')) {
+                return '🙌 ¡De nada! Fue un placer ayudarte. 💖';
+            }
+            if (msg.includes('chao') || msg.includes('adios') || msg.includes('adiós') || msg.includes('bye')) {
+                return '👋 ¡Hasta luego! Vuelve cuando quieras. ✨';
+            }
+
+            // Chistes
+            if (msg.includes('chiste') || msg.includes('chistes')) {
+                const chistes = [
+                    '😊 ¿Por qué las pestañas no van a la playa? ¡Porque les da miedo el agua salada y que se les corra el rímel! 😂',
+                    '😂 ¿Qué le dice una pestaña a otra? — ¡No te me pegues que me despeinas! 😂',
+                    '😄 ¿Por qué los aretes son tan felices? — ¡Porque siempre están colgados de la moda!'
+                ];
+                return chistes[Math.floor(Math.random() * chistes.length)];
+            }
+
+            // Respuesta por defecto
+            const respuestasGeniales = [
+                '🤖 ¡Excelente pregunta! Aunque no tengo información específica, puedo ayudarte con productos, precios, envíos, pagos y cultura general. ¿Qué te gustaría saber? ✨',
+                '🧠 ¡Qué pregunta tan interesante! ¿Te gustaría saber sobre productos, precios, envíos, pagos o cultura general? 🤔',
+                '💡 ¡Buena pregunta! Puedo ayudarte con nuestro catálogo de productos, promociones y temas de cultura general. ¡Estoy 24/7 para ti! 🛍️',
+                '🌟 ¡Me encanta tu curiosidad! Puedo recomendarte productos, contarte sobre promociones o hablar de ciencia, historia, arte y más. ¿Qué te gusta? 😊'
+            ];
+
+            return respuestasGeniales[Math.floor(Math.random() * respuestasGeniales.length)];
+        }
+
+        // ============================================
+        // INICIALIZACIÓN DEL CHAT
+        // ============================================
+
+        function initChatAI() {
+            const chatFloat = document.getElementById('chatFloatAI');
+            const chatModal = document.getElementById('chatModalAI');
+            const chatClose = document.getElementById('chatCloseAI');
+            const chatInput = document.getElementById('chatInputAI');
+            const chatSend = document.getElementById('chatSendAI');
+            const chatMessages = document.getElementById('chatMessagesAI');
+            const chatOptions = document.getElementById('chatOptionsAI');
+
+            chatFloat.addEventListener('click', () => {
+                chatModal.classList.toggle('open');
+                if (chatModal.classList.contains('open')) {
+                    chatInput.focus();
+                }
+            });
+
+            chatClose.addEventListener('click', () => {
+                chatModal.classList.remove('open');
+            });
+
+            function sendMessage(text) {
+                if (!text.trim()) return;
+
+                const now = new Date();
+                const timeStr = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+
+                const userMsg = document.createElement('div');
+                userMsg.className = 'chat-message-ai user';
+                userMsg.innerHTML = `${text} <span class="msg-time">${timeStr}</span>`;
+                chatMessages.appendChild(userMsg);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                chatInput.value = '';
+                chatSend.disabled = true;
+
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'chat-message-ai bot';
+                typingDiv.innerHTML =
+                    `<div class="typing-indicator"><span></span><span></span><span></span></div>`;
+                chatMessages.appendChild(typingDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                const processingTime = 400 + Math.random() * 700;
+
+                setTimeout(() => {
+                    typingDiv.remove();
+
+                    const response = getAIResponse(text);
+
+                    const botMsg = document.createElement('div');
+                    botMsg.className = 'chat-message-ai bot';
+                    botMsg.innerHTML = `${response} <span class="msg-time">${timeStr}</span>`;
+                    chatMessages.appendChild(botMsg);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                    chatSend.disabled = false;
+                }, processingTime);
+            }
+
+            chatSend.addEventListener('click', () => sendMessage(chatInput.value));
+            chatInput.addEventListener('keyup', (e) => {
+                if (e.key === 'Enter') sendMessage(chatInput.value);
+            });
+
+            chatOptions.addEventListener('click', (e) => {
+                const opt = e.target.closest('.chat-opt');
+                if (opt) {
+                    sendMessage(opt.dataset.msg);
+                }
+            });
+        }
+
+        // ============================================
+        // FUNCIONES DEL SISTEMA
+        // ============================================
+
+        let cart = [];
+        let currentUser = null;
+        let notificationTimeout = null;
+
+        function formatPrice(price) {
+            return `$${price.toFixed(2)}`;
+        }
+
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+        }
+
+        function mostrarNotificacion(mensaje, icono = '✅') {
+            const notification = document.getElementById('notification');
+            const text = document.getElementById('notificationText');
+            if (!notification || !text) return;
+
+            text.textContent = mensaje;
+            document.querySelector('.notification .notif-icon').textContent = icono;
+            notification.classList.add('show');
+
+            if (notificationTimeout) clearTimeout(notificationTimeout);
+            notificationTimeout = setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3500);
+        }
+
+        function lanzarConfetti() {
+            const container = document.getElementById('confettiContainer');
+            if (!container) {
+                const newContainer = document.createElement('div');
+                newContainer.id = 'confettiContainer';
+                newContainer.className = 'confetti-container';
+                document.body.appendChild(newContainer);
+            }
+            const colors = ['#c2185b', '#d63384', '#f06292', '#f9a825', '#43a047', '#1a73e8', '#ff6f00', '#e53935', '#9c27b0',
+                '#00bcd4'
+            ];
+            for (let i = 0; i < 40; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = '-20px';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = (Math.random() * 8 + 4) + 'px';
+                confetti.style.height = (Math.random() * 8 + 4) + 'px';
+                confetti.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+                confetti.style.animationDelay = (Math.random() * 0.5) + 's';
+                document.getElementById('confettiContainer').appendChild(confetti);
+                setTimeout(() => confetti.remove(), 4000);
             }
         }
 
         // ============================================
-        // ENVIAR MENSAJE A OLLAMA
+        // SISTEMA DE USUARIOS
         // ============================================
 
-        async function enviarMensajeAI(mensaje) {
+        function loadUser() {
             try {
-                const prompt = `${CONTEXTO}\n\nUsuario: ${mensaje}\n\nPaulina AI:`;
+                const data = localStorage.getItem('paulina_user');
+                if (data) {
+                    currentUser = JSON.parse(data);
+                    return true;
+                }
+            } catch (e) {}
+            return false;
+        }
 
-                const response = await fetch(OLLAMA_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        model: MODELO,
-                        prompt: prompt,
-                        stream: false,
-                        options: {
-                            temperature: 0.7,
-                            num_predict: 600,
-                            top_p: 0.9
-                        }
-                    })
-                });
-
-                if (!response.ok) throw new Error('Error en Ollama');
-
-                const data = await response.json();
-                return data.response || 'No entendí tu pregunta. ¿Puedes repetirla? 😊';
-
-            } catch (error) {
-                console.error('❌ Error:', error);
-                return '❌ No puedo conectarme a Ollama.\n\nAsegúrate de tener Ollama corriendo:\n• ollama serve\n• ollama pull ' + MODELO;
+        function saveUser() {
+            if (currentUser) {
+                localStorage.setItem('paulina_user', JSON.stringify(currentUser));
             }
         }
 
-        // ============================================
-        // ENVIAR MENSAJE DEL USUARIO
-        // ============================================
+        function getUserLevel(points) {
+            if (points >= 1000) return { name: '💎 Diamante' };
+            if (points >= 500) return { name: '🥇 Oro' };
+            if (points >= 200) return { name: '🥈 Plata' };
+            if (points >= 50) return { name: '🥉 Bronce' };
+            return { name: '✨ Visitante' };
+        }
 
-        async function enviarMensaje() {
-            const mensaje = chatInput.value.trim();
-            if (!mensaje) return;
+        function updateUserUI() {
+            const userName = document.getElementById('userName');
+            const userNameDesktop = document.getElementById('userNameDesktop');
+            const userLevel = document.getElementById('userLevel');
+            const userAvatar = document.getElementById('userAvatar');
+            const mobileUserName = document.getElementById('mobileUserName');
+            const mobileUserLevel = document.getElementById('mobileUserLevel');
+            const mobileLoginBtn = document.getElementById('mobileLoginBtn');
 
-            agregarMensaje(mensaje, 'user');
-            chatInput.value = '';
-            chatSend.disabled = true;
+            if (currentUser) {
+                const displayName = currentUser.name || currentUser.email.split('@')[0];
+                const level = getUserLevel(currentUser.points || 0);
 
-            const conectado = await conectarOllama();
-            if (!conectado) {
-                agregarMensaje(`❌ No puedo conectarme a Ollama.\n\nComandos para arreglarlo:\n1. ollama serve\n2. ollama pull ${MODELO}\n\nSi ya está corriendo, asegúrate de que el modelo esté descargado.`, 'bot');
-                chatSend.disabled = false;
+                if (userName) userName.textContent = displayName;
+                if (userNameDesktop) userNameDesktop.textContent = displayName;
+                if (userLevel) userLevel.textContent = `${level.name} · ${currentUser.points || 0} pts`;
+                if (userAvatar) userAvatar.textContent = displayName.charAt(0).toUpperCase();
+
+                if (mobileUserName) mobileUserName.textContent = displayName;
+                if (mobileUserLevel) mobileUserLevel.textContent = `${level.name} · ${currentUser.points || 0} pts`;
+
+                if (mobileLoginBtn) {
+                    mobileLoginBtn.textContent = `👤 ${displayName}`;
+                    mobileLoginBtn.onclick = () => {
+                        if (confirm('¿Cerrar sesión?')) {
+                            logoutUser();
+                        }
+                    };
+                }
+            } else {
+                if (userName) userName.textContent = 'Invitado';
+                if (userNameDesktop) userNameDesktop.textContent = 'Invitado';
+                if (userLevel) userLevel.textContent = 'Nivel: Visitante';
+                if (userAvatar) userAvatar.textContent = '👤';
+
+                if (mobileUserName) mobileUserName.textContent = 'Invitado';
+                if (mobileUserLevel) mobileUserLevel.textContent = 'Nivel: Visitante';
+
+                if (mobileLoginBtn) {
+                    mobileLoginBtn.textContent = '🔑 Iniciar sesión';
+                    mobileLoginBtn.onclick = showLoginModal;
+                }
+            }
+        }
+
+        function showLoginModal() {
+            const email = prompt('📧 Ingresa tu correo electrónico:');
+            if (!email || !email.includes('@')) {
+                if (email) mostrarNotificacion('⚠️ Correo electrónico inválido', '⚠️');
                 return;
             }
 
-            mostrarTyping();
-            const respuesta = await enviarMensajeAI(mensaje);
-            ocultarTyping();
-            agregarMensaje(respuesta, 'bot');
-            chatSend.disabled = false;
-            chatInput.focus();
+            const name = prompt('👤 Ingresa tu nombre (opcional):') || email.split('@')[0];
+
+            currentUser = {
+                id: generateId(),
+                email: email,
+                name: name,
+                points: parseInt(localStorage.getItem(`paulina_points_${email}`)) || 0,
+                createdAt: new Date().toISOString()
+            };
+
+            saveUser();
+            updateUserUI();
+            mostrarNotificacion(`✅ ¡Bienvenida ${name}!`, '👋');
+            lanzarConfetti();
+        }
+
+        function logoutUser() {
+            currentUser = null;
+            localStorage.removeItem('paulina_user');
+            updateUserUI();
+            mostrarNotificacion('👋 Sesión cerrada', '👋');
         }
 
         // ============================================
-        // ABRIR/CERRAR CHAT
+        // SISTEMA DE CARRITO
         // ============================================
 
-        function toggleChat() {
-            chatModal.classList.toggle('open');
-            if (chatModal.classList.contains('open')) {
-                chatInput.focus();
+        function loadCart() {
+            try {
+                const data = localStorage.getItem('paulina_cart');
+                if (data) {
+                    cart = JSON.parse(data);
+                    updateCartUI();
+                    renderCart();
+                }
+            } catch (e) {
+                cart = [];
             }
         }
 
-        chatFloat.addEventListener('click', toggleChat);
-        chatClose.addEventListener('click', toggleChat);
-        document.getElementById('openChatBtn').addEventListener('click', toggleChat);
+        function saveCart() {
+            localStorage.setItem('paulina_cart', JSON.stringify(cart));
+        }
 
-        document.addEventListener('click', (e) => {
-            if (chatModal.classList.contains('open') &&
-                !chatModal.contains(e.target) &&
-                !chatFloat.contains(e.target) &&
-                !document.getElementById('openChatBtn').contains(e.target)) {
-                chatModal.classList.remove('open');
+        function addToCart(productId) {
+            const product = productos.find(p => p.id === productId);
+            if (!product) return;
+
+            const existing = cart.find(item => item.id === productId);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.nombre,
+                    price: product.precio,
+                    quantity: 1,
+                    image: product.imagen,
+                });
             }
-        });
 
-        // ============================================
-        // EVENTOS
-        // ============================================
+            saveCart();
+            updateCartUI();
+            renderCart();
 
-        chatSend.addEventListener('click', enviarMensaje);
-        chatInput.addEventListener('keyup', (e) => {
-            if (e.key === 'Enter') enviarMensaje();
-        });
-
-        chatOptions.addEventListener('click', (e) => {
-            const opt = e.target.closest('.chat-opt');
-            if (opt) {
-                chatInput.value = opt.dataset.msg;
-                enviarMensaje();
+            const btn = document.querySelector(`.btn-add[data-id="${productId}"]`);
+            if (btn) {
+                const originalText = btn.textContent;
+                btn.textContent = '✅ ¡Añadido!';
+                btn.classList.add('added');
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.remove('added');
+                }, 2000);
             }
-        });
 
-        // ============================================
-        // INICIALIZACIÓN
-        // ============================================
+            mostrarNotificacion(`✅ ${product.nombre} agregado al carrito`, '🛍️');
+            lanzarConfetti();
+        }
 
-        async function init() {
-            console.log('🤖 Paulina AI - Asistente Personal con Ollama');
-            console.log(`📌 Modelo: ${MODELO}`);
-            console.log('📌 Ollama URL: ' + OLLAMA_URL);
-            console.log('📌 Modelos disponibles: gemma2:2b, phi3:mini, tinyllama:1.1b');
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            saveCart();
+            updateCartUI();
+            renderCart();
+        }
 
-            await conectarOllama();
-            chatInput.focus();
+        function updateCartUI() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
-            // Mostrar mensaje de bienvenida si está conectado
-            if (statusDot.classList.contains('online')) {
-                console.log('✅ Asistente listo para usar!');
+            document.getElementById('cartCount').textContent = totalItems;
+            document.getElementById('fcCount').textContent = totalItems;
+            document.getElementById('fcTotal').textContent = formatPrice(totalPrice);
+
+            const floatingCart = document.getElementById('floatingCart');
+            if (totalItems > 0) {
+                floatingCart.style.display = 'flex';
+            } else {
+                floatingCart.style.display = 'none';
             }
         }
 
-        document.addEventListener('DOMContentLoaded', init);
+        function renderCart() {
+            const container = document.getElementById('cartItems');
+            const totalEl = document.getElementById('cartTotal');
+
+            if (cart.length === 0) {
+                container.innerHTML =
+                    `<div class="cart-empty">🛒 Tu carrito está vacío<br><span style="font-size:11px;opacity:0.5;">¡Empieza a comprar!</span></div>`;
+                totalEl.textContent = formatPrice(0);
+                return;
+            }
+
+            let html = '';
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                const subtotal = item.price * item.quantity;
+                total += subtotal;
+                html += `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <span class="cart-item-name">${item.name} × ${item.quantity}</span>
+                            <span class="cart-item-price">${formatPrice(subtotal)}</span>
+                        </div>
+                        <button class="cart-item-remove" data-index="${index}" aria-label="Eliminar producto">✕</button>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            totalEl.textContent = formatPrice(total);
+
+            document.querySelectorAll('.cart-item-remove').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    removeFromCart(parseInt(this.dataset.index));
+                });
+            });
+        }
+
+        // ============================================
+        // RENDERIZAR PRODUCTOS
+        // ============================================
+
+        function renderizarProductos(products) {
+            const container = document.getElementById('productGrid');
+            if (!container) return;
+
+            if (products.length === 0) {
+                container.innerHTML =
+                    `<div style="grid-column:1/-1;text-align:center;padding:var(--space-2xl) var(--space-md);"><span style="font-size:3rem;display:block;margin-bottom:var(--space-md);">🔍</span><h3 style="font-family:var(--font-serif);color:var(--gray-700);font-size:1.1rem;">No encontramos productos</h3></div>`;
+                return;
+            }
+
+            let html = '';
+            products.forEach(product => {
+                const isLowStock = product.stock <= 3;
+                const discount = product.precio_old ? Math.round(((product.precio_old - product.precio) / product
+                    .precio_old) * 100) : null;
+
+                html += `
+                    <div class="product-card" data-category="${product.categoria}">
+                        <div class="product-badges">
+                            ${product.badge ? `<span class="badge badge-sale">${product.badge}</span>` : ''}
+                            ${discount ? `<span class="badge badge-discount">-${discount}%</span>` : ''}
+                            ${isLowStock ? `<span class="badge badge-hot">🔥</span>` : ''}
+                            <span class="badge badge-ai">🤖</span>
+                        </div>
+                        <div class="product-image" onclick="mostrarNotificacion('📦 ${product.nombre}','${product.emoji}')">
+                            <img src="${product.imagen}" alt="${product.nombre}" loading="lazy" width="200" height="200" />
+                            <div class="image-overlay"><span>🔍</span></div>
+                        </div>
+                        <div class="product-meta">
+                            <span>👥 ${product.compradores || 0}</span>
+                        </div>
+                        <h3 class="product-name">${product.nombre}</h3>
+                        <p class="product-description">${product.descripcion}</p>
+                        <span class="product-stock ${isLowStock ? 'low-stock' : 'in-stock'}">
+                            ${isLowStock ? `⚠️ ${product.stock}` : `✅ ${product.stock}`}
+                        </span>
+                        <span class="product-price">
+                            ${formatPrice(product.precio)}
+                            ${product.precio_old ? `<span class="old">${formatPrice(product.precio_old)}</span>` : ''}
+                            ${discount ? `<span class="discount">-${discount}%</span>` : ''}
+                        </span>
+                        <button class="btn-add" data-id="${product.id}" ${product.stock === 0 ? 'disabled' : ''}>
+                            ${product.stock === 0 ? '❌' : '🛒'}
+                        </button>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+
+            container.querySelectorAll('.btn-add').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (!this.disabled) {
+                        addToCart(parseInt(this.dataset.id));
+                    }
+                });
+            });
+        }
+
+        // ============================================
+        // FILTRO DE CATEGORÍAS
+        // ============================================
+
+        function initFilters() {
+            document.querySelectorAll('.category-pills .pill').forEach(pill => {
+                pill.addEventListener('click', function() {
+                    document.querySelectorAll('.category-pills .pill').forEach(p => p.classList.remove('active'));
+                    this.classList.add('active');
+                    const category = this.dataset.category;
+                    const filtered = category === 'todos' ? productos : productos.filter(p => p.categoria ===
+                    category);
+                    renderizarProductos(filtered);
+                });
+            });
+        }
+
+        // ============================================
+        // CARRITO MODAL
+        // ============================================
+
+        function initCartModal() {
+            const modal = document.getElementById('cartModal');
+            const openBtn = document.getElementById('cartIcon');
+            const closeBtn = document.getElementById('closeCart');
+            const floatingCart = document.getElementById('floatingCart');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+
+            function openModal() {
+                modal.classList.add('show');
+                renderCart();
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeModal() {
+                modal.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+
+            openBtn.addEventListener('click', openModal);
+            floatingCart.addEventListener('click', openModal);
+            closeBtn.addEventListener('click', closeModal);
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal();
+            });
+
+            checkoutBtn.addEventListener('click', function() {
+                if (cart.length === 0) {
+                    mostrarNotificacion('⚠️ Tu carrito está vacío', '⚠️');
+                    return;
+                }
+
+                let message = '✨ ¡Hola Paulina! ✨%0A%0A';
+
+                if (currentUser) {
+                    message += `👤 ${currentUser.name || currentUser.email}%0A`;
+                    message += `📧 ${currentUser.email}%0A`;
+                    message += `⭐ ${currentUser.points || 0} puntos%0A%0A`;
+                }
+
+                message += '📦 Quiero hacer el siguiente pedido:%0A%0A';
+
+                let total = 0;
+                cart.forEach(item => {
+                    const subtotal = item.price * item.quantity;
+                    total += subtotal;
+                    message += `✅ ${item.name}  x  ${item.quantity}  =  ${formatPrice(subtotal)}%0A`;
+                });
+
+                message += `%0A━━━━━━━━━━━━━━━━━━━━━━%0A`;
+                message += `💰 TOTAL: ${formatPrice(total)}%0A`;
+                message += `━━━━━━━━━━━━━━━━━━━━━━%0A%0A`;
+
+                if (total >= 50) {
+                    message += `🚚 Envío gratis (por compra > $50)%0A`;
+                }
+
+                message += `📍 ¿Cómo puedo pagar? (Yape, Plin, Transferencia)%0A`;
+                message += `📦 ¿Tienes stock disponible?%0A%0A`;
+                message += `💖 ¡Gracias! Espero tu respuesta.`;
+
+                const url = `https://wa.me/51923861016?text=${message}`;
+                window.open(url, '_blank');
+
+                cart = [];
+                saveCart();
+                updateCartUI();
+                renderCart();
+                closeModal();
+                mostrarNotificacion('✅ Pedido enviado por WhatsApp', '📨');
+            });
+        }
+
+        // ============================================
+        // CONTACTO
+        // ============================================
+
+        function initContact() {
+            const form = document.getElementById('contactForm');
+            if (!form) return;
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const nombre = document.getElementById('contactName').value;
+                const email = document.getElementById('contactEmail').value;
+                const mensaje = document.getElementById('contactMessage').value;
+
+                let message = `✨ Hola Paulina ✨%0A%0A`;
+                message += `👤 ${nombre}%0A`;
+                message += `📧 ${email}%0A%0A`;
+                message += `📩 Mensaje:%0A${mensaje}%0A%0A`;
+                message += `📍 ¿Podrías darme más información sobre tu catálogo y precios?`;
+
+                const url = `https://wa.me/51923861016?text=${message}`;
+                window.open(url, '_blank');
+
+                mostrarNotificacion('✅ Mensaje enviado por WhatsApp', '📨');
+                this.reset();
+            });
+        }
+
+        // ============================================
+        // MODO OSCURO
+        // ============================================
+
+        function initDarkMode() {
+            const btn = document.getElementById('darkModeToggle');
+            if (!btn) return;
+
+            const savedMode = localStorage.getItem('paulina_theme') || 'light';
+            if (savedMode === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                btn.textContent = '☀️';
+            }
+
+            btn.addEventListener('click', () => {
+                const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                if (isDark) {
+                    document.documentElement.removeAttribute('data-theme');
+                    btn.textContent = '🌙';
+                    localStorage.setItem('paulina_theme', 'light');
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    btn.textContent = '☀️';
+                    localStorage.setItem('paulina_theme', 'dark');
+                }
+            });
+        }
+
+        // ============================================
+        // COMPARTIR
+        // ============================================
+
+        function initShare() {
+            const btn = document.getElementById('shareBtn');
+            if (!btn) return;
+
+            btn.addEventListener('click', () => {
+                const url = window.location.href;
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'Paulina Accesorios ✨',
+                        text: 'Descubre los mejores accesorios de belleza con IA que responde TODO',
+                        url: url
+                    }).catch(() => {});
+                } else if (navigator.clipboard) {
+                    navigator.clipboard.writeText(url).then(() => {
+                        mostrarNotificacion('✅ Enlace copiado', '📤');
+                    }).catch(() => {
+                        mostrarNotificacion('📤 Comparte: ' + url, '📤');
+                    });
+                } else {
+                    mostrarNotificacion('📤 Comparte: ' + url, '📤');
+                }
+            });
+        }
+
+        // ============================================
+        // VOLVER ARRIBA
+        // ============================================
+
+        function initBackTop() {
+            const btn = document.getElementById('backTopBtn');
+            if (!btn) return;
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 400) {
+                    btn.style.display = 'flex';
+                } else {
+                    btn.style.display = 'none';
+                }
+            });
+
+            btn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        // ============================================
+        // MENÚ HAMBURGUESA
+        // ============================================
+
+        function initHamburger() {
+            const hamburger = document.getElementById('hamburger');
+            const menu = document.getElementById('mobileMenu');
+            const closeBtn = document.getElementById('mobileClose');
+
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                menu.classList.toggle('open');
+                document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+            });
+
+            closeBtn.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                menu.classList.remove('open');
+                document.body.style.overflow = '';
+            });
+
+            menu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    hamburger.classList.remove('active');
+                    menu.classList.remove('open');
+                    document.body.style.overflow = '';
+                });
+            });
+        }
+
+        // ============================================
+        // NAVBAR SCROLL
+        // ============================================
+
+        function initNavbarScroll() {
+            const navbar = document.getElementById('navbar');
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('navbar-scrolled');
+                } else {
+                    navbar.classList.remove('navbar-scrolled');
+                }
+            });
+        }
+
+        // ============================================
+        // CONTADOR DE VISITAS
+        // ============================================
+
+        function initVisitCounter() {
+            let count = parseInt(localStorage.getItem('paulina_visits')) || 0;
+            count++;
+            localStorage.setItem('paulina_visits', count);
+
+            const el = document.getElementById('visitCount');
+            if (el) el.textContent = count;
+        }
+
+        // ============================================
+        // PRELOADER
+        // ============================================
+
+        function initPreloader() {
+            const preloader = document.getElementById('preloader');
+
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    preloader.classList.add('hidden');
+                }, 1000);
+            });
+
+            setTimeout(() => {
+                if (!preloader.classList.contains('hidden')) {
+                    preloader.classList.add('hidden');
+                }
+            }, 4000);
+        }
+
+        // ============================================
+        // INICIALIZACIÓN PRINCIPAL
+        // ============================================
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUser();
+            loadCart();
+
+            renderizarProductos(productos);
+
+            initVisitCounter();
+            initDarkMode();
+            initShare();
+            initBackTop();
+            initHamburger();
+            initNavbarScroll();
+            initPreloader();
+            initChatAI();
+            initCartModal();
+            initContact();
+            initFilters();
+
+            document.getElementById('userBtn').addEventListener('click', () => {
+                if (currentUser) {
+                    const level = getUserLevel(currentUser.points || 0);
+                    mostrarNotificacion(`👤 ${currentUser.name} · ${level.name} · ${currentUser.points || 0} pts`, '⭐');
+                } else {
+                    showLoginModal();
+                }
+            });
+
+            console.log('✨ Paulina Accesorios 2026 - Ultra Premium ✨');
+            console.log('🎨 Diseño de lujo - Farfetch/Sephora');
+            console.log('📱 Totalmente responsive - PC y Celular');
+            console.log('🤖 IA que responde ABSOLUTAMENTE TODO');
+            console.log('💎 Colores dorado + rosa + gris premium');
+            console.log('🚀 Versión 2026 - Diseño de lujo');
+        });
     </script>
 
 </body>
