@@ -1214,259 +1214,6 @@
         }
 
         /* ============================================
-           CHAT CON IA - PREMIUM
-           ============================================ */
-        .chat-float-ai {
-            position: fixed;
-            bottom: 24px;
-            left: 24px;
-            background: var(--gold-gradient);
-            color: #fff;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.6rem;
-            text-decoration: none;
-            box-shadow: var(--shadow-xl);
-            transition: var(--transition-spring);
-            z-index: 50;
-            cursor: pointer;
-            border: none;
-        }
-        .chat-float-ai:hover {
-            transform: scale(1.08) rotate(-5deg);
-            box-shadow: var(--shadow-2xl);
-        }
-        .chat-float-ai .chat-badge {
-            position: absolute;
-            top: -3px;
-            right: -3px;
-            background: var(--primary);
-            color: #fff;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            font-size: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            animation: pulse 1.5s ease-in-out infinite;
-        }
-
-        .chat-modal-ai {
-            display: none;
-            position: fixed;
-            bottom: 85px;
-            left: 24px;
-            width: 400px;
-            max-width: 90vw;
-            background: var(--white);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-3xl);
-            z-index: 100;
-            max-height: 560px;
-            flex-direction: column;
-            overflow: hidden;
-            animation: slideDown 0.3s ease;
-            border: 1px solid rgba(212, 175, 55, 0.06);
-        }
-        [data-theme="dark"] .chat-modal-ai {
-            background: #1a0b1a;
-        }
-        .chat-modal-ai.open {
-            display: flex;
-        }
-
-        .chat-header-ai {
-            padding: 14px 20px;
-            background: var(--gold-gradient);
-            color: #fff;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 700;
-            font-size: 14px;
-        }
-        .chat-header-ai .chat-status {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-            font-size: 10px;
-            font-weight: 400;
-            opacity: 0.8;
-        }
-        .chat-header-ai .chat-status .dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #4caf50;
-            animation: pulse 1.5s ease-in-out infinite;
-        }
-        .chat-header-ai .chat-close {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 1.2rem;
-            cursor: pointer;
-            opacity: 0.7;
-            transition: var(--transition-base);
-        }
-        .chat-header-ai .chat-close:hover {
-            opacity: 1;
-            transform: rotate(90deg);
-        }
-
-        .chat-messages-ai {
-            padding: var(--space-md) var(--space-lg);
-            flex: 1;
-            overflow-y: auto;
-            max-height: 360px;
-            background: var(--gray-50);
-        }
-        [data-theme="dark"] .chat-messages-ai {
-            background: rgba(255, 255, 255, 0.01);
-        }
-
-        .chat-message-ai {
-            padding: 8px 14px;
-            border-radius: var(--radius-md);
-            margin-bottom: 6px;
-            max-width: 90%;
-            animation: slideDown 0.3s ease;
-            word-wrap: break-word;
-            line-height: 1.5;
-            font-size: 13px;
-        }
-        .chat-message-ai.bot {
-            background: rgba(212, 175, 55, 0.04);
-            align-self: flex-start;
-            margin-right: auto;
-            border-bottom-left-radius: 4px;
-        }
-        [data-theme="dark"] .chat-message-ai.bot {
-            background: rgba(255, 255, 255, 0.03);
-        }
-        .chat-message-ai.user {
-            background: var(--gold-gradient);
-            color: #fff;
-            align-self: flex-end;
-            margin-left: auto;
-            border-bottom-right-radius: 4px;
-        }
-        .chat-message-ai .msg-time {
-            font-size: 9px;
-            opacity: 0.5;
-            display: block;
-            margin-top: 2px;
-        }
-        .chat-message-ai .typing-indicator {
-            display: inline-flex;
-            gap: 3px;
-            padding: 4px 8px;
-        }
-        .chat-message-ai .typing-indicator span {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--gray-400);
-            animation: typing 1.4s ease-in-out infinite;
-        }
-        .chat-message-ai .typing-indicator span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-        .chat-message-ai .typing-indicator span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        .chat-options-ai {
-            padding: 6px 20px var(--space-md);
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            border-top: 1px solid rgba(212, 175, 55, 0.06);
-        }
-        [data-theme="dark"] .chat-options-ai {
-            border-color: rgba(255, 255, 255, 0.03);
-        }
-        .chat-options-ai .chat-opt {
-            padding: 4px 12px;
-            border-radius: var(--radius-full);
-            border: 1px solid var(--gold);
-            background: transparent;
-            color: var(--gold);
-            font-size: 9px;
-            cursor: pointer;
-            transition: var(--transition-base);
-            font-family: var(--font-sans);
-        }
-        .chat-options-ai .chat-opt:hover {
-            background: var(--gold-gradient);
-            color: #fff;
-            border-color: transparent;
-        }
-        [data-theme="dark"] .chat-options-ai .chat-opt {
-            color: var(--gold-light);
-            border-color: var(--gold-light);
-        }
-        [data-theme="dark"] .chat-options-ai .chat-opt:hover {
-            background: var(--gold-gradient);
-            color: #fff;
-        }
-
-        .chat-input-ai {
-            padding: 8px 20px;
-            border-top: 1px solid rgba(212, 175, 55, 0.06);
-            display: flex;
-            gap: 6px;
-        }
-        [data-theme="dark"] .chat-input-ai {
-            border-color: rgba(255, 255, 255, 0.03);
-        }
-        .chat-input-ai input {
-            flex: 1;
-            padding: 8px 14px;
-            border: 1.5px solid rgba(212, 175, 55, 0.06);
-            border-radius: var(--radius-full);
-            font-family: var(--font-sans);
-            font-size: 12px;
-            background: var(--gray-50);
-            transition: var(--transition-base);
-            color: var(--gray-800);
-        }
-        [data-theme="dark"] .chat-input-ai input {
-            background: rgba(255, 255, 255, 0.03);
-            border-color: rgba(255, 255, 255, 0.05);
-            color: var(--gray-700);
-        }
-        .chat-input-ai input:focus {
-            outline: none;
-            border-color: var(--gold);
-            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.06);
-        }
-        .chat-input-ai button {
-            padding: 8px 18px;
-            border: none;
-            border-radius: var(--radius-full);
-            background: var(--gold-gradient);
-            color: #fff;
-            font-weight: 700;
-            font-size: 12px;
-            cursor: pointer;
-            transition: var(--transition-base);
-        }
-        .chat-input-ai button:hover {
-            transform: scale(1.05);
-        }
-        .chat-input-ai button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* ============================================
            FLOATING BUTTONS PREMIUM
            ============================================ */
         .floating-cart {
@@ -1882,9 +1629,6 @@
             .hero {
                 padding: 40px 4% 48px;
             }
-            .chat-modal-ai {
-                width: 380px;
-            }
         }
 
         /* ===== CELULAR (320px - 768px) ===== */
@@ -2075,44 +1819,6 @@
                 font-size: 8px;
             }
 
-            .chat-float-ai {
-                width: 48px;
-                height: 48px;
-                font-size: 1.3rem;
-                bottom: 16px;
-                left: 16px;
-            }
-            .chat-modal-ai {
-                bottom: 72px;
-                left: 12px;
-                right: 12px;
-                width: auto;
-                max-width: none;
-                max-height: 440px;
-            }
-            .chat-messages-ai {
-                max-height: 280px;
-            }
-            .chat-message-ai {
-                font-size: 11px;
-                padding: 6px 10px;
-            }
-            .chat-options-ai .chat-opt {
-                font-size: 7px;
-                padding: 3px 8px;
-            }
-            .chat-input-ai {
-                padding: 6px 12px;
-            }
-            .chat-input-ai input {
-                font-size: 10px;
-                padding: 6px 10px;
-            }
-            .chat-input-ai button {
-                font-size: 10px;
-                padding: 6px 12px;
-            }
-
             .whatsapp-float {
                 width: 48px;
                 height: 48px;
@@ -2244,6 +1950,290 @@
                 font-size: 0.95rem;
             }
         }
+
+        /* ===== CHAT GROQ ===== */
+        .chat-float-groq {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            background: linear-gradient(135deg, #d4af37, #f5d76e);
+            color: #fff;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            box-shadow: 0 16px 64px rgba(212, 175, 55, 0.3);
+            transition: all 0.3s ease;
+            z-index: 999;
+            cursor: pointer;
+            border: none;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        .chat-float-groq:hover { transform: scale(1.1) rotate(-5deg); }
+        .chat-float-groq .badge {
+            position: absolute;
+            top: -3px;
+            right: -3px;
+            background: #c2185b;
+            color: #fff;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            font-size: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            animation: pulse 1.5s infinite;
+        }
+        .chat-float-groq .label {
+            position: absolute;
+            bottom: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 7px;
+            font-weight: 700;
+            color: #d4af37;
+            background: #fff;
+            padding: 1px 8px;
+            border-radius: 10px;
+            white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        [data-theme="dark"] .chat-float-groq .label {
+            background: #1a0b1a;
+            color: #f5d76e;
+        }
+
+        .chat-modal-groq {
+            display: none;
+            position: fixed;
+            bottom: 90px;
+            left: 24px;
+            width: 420px;
+            max-width: 90vw;
+            background: #fff;
+            border-radius: 24px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.15);
+            z-index: 1000;
+            max-height: 560px;
+            flex-direction: column;
+            overflow: hidden;
+            animation: slideUp 0.3s ease;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+        [data-theme="dark"] .chat-modal-groq { background: #1a0b1a; }
+        .chat-modal-groq.open { display: flex; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .chat-header-groq {
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #d4af37, #f5d76e);
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .chat-header-groq .status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 10px;
+            font-weight: 400;
+            opacity: 0.8;
+        }
+        .chat-header-groq .status .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #4caf50;
+            animation: pulse 1.5s infinite;
+        }
+        .chat-header-groq .status .dot.offline { background: #ef5350; }
+        .chat-header-groq .close {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: 0.2s;
+        }
+        .chat-header-groq .close:hover { opacity: 1; transform: rotate(90deg); }
+
+        .chat-messages-groq {
+            padding: 16px 20px;
+            flex: 1;
+            overflow-y: auto;
+            max-height: 380px;
+            background: #faf8fa;
+        }
+        [data-theme="dark"] .chat-messages-groq { background: rgba(255,255,255,0.01); }
+
+        .chat-msg-groq {
+            padding: 8px 14px;
+            border-radius: 12px;
+            margin-bottom: 6px;
+            max-width: 90%;
+            word-wrap: break-word;
+            line-height: 1.5;
+            font-size: 13px;
+        }
+        .chat-msg-groq.bot {
+            background: rgba(212, 175, 55, 0.06);
+            align-self: flex-start;
+            margin-right: auto;
+            border-bottom-left-radius: 4px;
+            color: #333;
+        }
+        [data-theme="dark"] .chat-msg-groq.bot {
+            background: rgba(255,255,255,0.05);
+            color: #ddd;
+        }
+        .chat-msg-groq.user {
+            background: linear-gradient(135deg, #d4af37, #f5d76e);
+            color: #fff;
+            align-self: flex-end;
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+        .chat-msg-groq .time {
+            font-size: 9px;
+            opacity: 0.4;
+            display: block;
+            margin-top: 2px;
+        }
+
+        .typing-indicator-groq {
+            display: inline-flex;
+            gap: 3px;
+            padding: 4px 8px;
+        }
+        .typing-indicator-groq span {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #999;
+            animation: typingBounce 1.4s infinite;
+        }
+        .typing-indicator-groq span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator-groq span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typingBounce {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.3; }
+            30% { transform: translateY(-6px); opacity: 1; }
+        }
+
+        .chat-options-groq {
+            padding: 6px 20px 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            border-top: 1px solid rgba(212, 175, 55, 0.06);
+            flex-shrink: 0;
+        }
+        .chat-options-groq .opt {
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1.5px solid #d4af37;
+            background: transparent;
+            color: #d4af37;
+            font-size: 9px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 600;
+            white-space: nowrap;
+            font-family: inherit;
+        }
+        .chat-options-groq .opt:hover {
+            background: linear-gradient(135deg, #d4af37, #f5d76e);
+            color: #fff;
+            border-color: transparent;
+        }
+        [data-theme="dark"] .chat-options-groq .opt {
+            color: #f5d76e;
+            border-color: #f5d76e;
+        }
+        [data-theme="dark"] .chat-options-groq .opt:hover {
+            background: linear-gradient(135deg, #d4af37, #f5d76e);
+            color: #fff;
+        }
+
+        .chat-input-groq {
+            padding: 8px 20px;
+            border-top: 1px solid rgba(212, 175, 55, 0.06);
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+        .chat-input-groq input {
+            flex: 1;
+            padding: 8px 14px;
+            border: 1.5px solid rgba(212, 175, 55, 0.1);
+            border-radius: 25px;
+            font-family: inherit;
+            font-size: 12px;
+            background: #faf8fa;
+            transition: 0.2s;
+            color: #333;
+            outline: none;
+        }
+        .chat-input-groq input:focus {
+            border-color: #d4af37;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+        [data-theme="dark"] .chat-input-groq input {
+            background: rgba(255,255,255,0.05);
+            color: #ddd;
+            border-color: rgba(255,255,255,0.1);
+        }
+        .chat-input-groq button {
+            padding: 8px 18px;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(135deg, #d4af37, #f5d76e);
+            color: #fff;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .chat-input-groq button:hover { transform: scale(1.05); }
+        .chat-input-groq button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        @media (max-width: 768px) {
+            .chat-float-groq { 
+                width: 48px; 
+                height: 48px; 
+                font-size: 1.3rem; 
+                bottom: 16px; 
+                left: 16px; 
+            }
+            .chat-float-groq .label { display: none; }
+            .chat-modal-groq { 
+                bottom: 72px; 
+                left: 12px; 
+                right: 12px; 
+                width: auto; 
+                max-width: none; 
+                max-height: 440px; 
+            }
+            .chat-messages-groq { max-height: 280px; }
+            .chat-msg-groq { font-size: 12px; padding: 6px 10px; }
+            .chat-options-groq .opt { font-size: 8px; padding: 3px 8px; }
+            .chat-input-groq { padding: 6px 12px; }
+            .chat-input-groq input { font-size: 11px; padding: 6px 10px; }
+            .chat-input-groq button { font-size: 10px; padding: 6px 12px; }
+        }
     </style>
 </head>
 <body>
@@ -2349,7 +2339,7 @@
             <div class="hero-actions">
                 <a href="#productos" class="btn btn-primary">✨ Ver colección</a>
                 <a href="#ofertas" class="btn btn-gold">🔥 Ofertas</a>
-                <button class="btn btn-outline-gold" onclick="document.getElementById('chatFloatAI').click()">🤖 Chat IA</button>
+                <button class="btn btn-outline-gold" onclick="document.getElementById('chatFloatGroq').click()">🤖 Chat IA</button>
             </div>
         </div>
 
@@ -2479,29 +2469,27 @@
     <a href="https://wa.me/51923861016" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">💬</a>
 
     <!-- ============================================
-    CHAT CON IA - BOTÓN FLOTANTE
+    CHAT GROQ (ÚNICO CHAT - RESPONDE TODO)
     ============================================ -->
-    <button class="chat-float-ai" id="chatFloatAI" aria-label="Chat con IA (responde TODO)">
+    <button class="chat-float-groq" id="chatFloatGroq">
         🤖
-        <span class="chat-badge">IA</span>
+        <span class="badge">⭐</span>
+        <span class="label">Groq IA</span>
     </button>
 
-    <!-- ============================================
-    CHAT CON IA - MODAL COMPLETO
-    ============================================ -->
-    <div class="chat-modal-ai" id="chatModalAI">
-        <div class="chat-header-ai">
-            <span>🤖 Asistente IA</span>
-            <span class="chat-status">
-                <span class="dot"></span>
-                En línea 24/7
+    <div class="chat-modal-groq" id="chatModalGroq">
+        <div class="chat-header-groq">
+            <span>🤖 Paulina AI (Groq)</span>
+            <span class="status">
+                <span class="dot" id="statusDotGroq"></span>
+                <span id="statusTextGroq">Conectando...</span>
             </span>
-            <button class="chat-close" id="chatCloseAI">✕</button>
+            <button class="close" id="chatCloseGroq">✕</button>
         </div>
 
-        <div class="chat-messages-ai" id="chatMessagesAI">
-            <div class="chat-message-ai bot">
-                👋 ¡Hola! Soy <strong>Paulina AI</strong>, tu asistente virtual con inteligencia artificial avanzada.<br><br>
+        <div class="chat-messages-groq" id="chatMessagesGroq">
+            <div class="chat-msg-groq bot">
+                👋 ¡Hola! Soy <strong>Paulina AI</strong>, tu asistente con Groq.<br><br>
                 💡 <strong>Puedo responder CUALQUIER PREGUNTA</strong> que tengas:<br><br>
                 • 📦 <strong>Productos</strong> - Aretes, pestañas, collares, maquillaje, shampoo y más<br>
                 • 💰 <strong>Precios</strong> - Información detallada de todos los productos<br>
@@ -2512,28 +2500,28 @@
                 • 🧮 <strong>Matemáticas</strong> - Cálculos, operaciones y más<br>
                 • 🌍 <strong>Cultura general</strong> - Ciencia, historia, arte, tecnología, geografía, deportes, música, cine, literatura y muchos temas más<br><br>
                 🗣️ <strong>¡Pregúntame lo que quieras, sin límites!</strong>
-                <span class="msg-time">10:30</span>
+                <span class="time">10:30</span>
             </div>
         </div>
 
-        <div class="chat-options-ai" id="chatOptionsAI">
-            <button class="chat-opt" data-msg="📦 ¿Qué productos tienen?">📦 Productos</button>
-            <button class="chat-opt" data-msg="💰 ¿Cuánto cuestan los aretes?">💰 Precios</button>
-            <button class="chat-opt" data-msg="🚚 ¿Cuánto tardan los envíos?">🚚 Envíos</button>
-            <button class="chat-opt" data-msg="💳 ¿Cómo puedo pagar?">💳 Pagos</button>
-            <button class="chat-opt" data-msg="📿 ¿Tienen collares?">📿 Collares</button>
-            <button class="chat-opt" data-msg="💈 ¿Tienen shampoo?">💈 Shampoo</button>
-            <button class="chat-opt" data-msg="🎁 ¿Tienen promociones?">🎁 Promociones</button>
-            <button class="chat-opt" data-msg="🤔 Recomiéndame un producto">🤔 Recomendar</button>
-            <button class="chat-opt" data-msg="😊 Cuéntame un chiste">😊 Chiste</button>
-            <button class="chat-opt" data-msg="🧮 ¿Cuánto es 2 + 2?">🧮 Matemáticas</button>
-            <button class="chat-opt" data-msg="🌍 ¿Qué es la inteligencia artificial?">🌍 Cultura</button>
-            <button class="chat-opt" data-msg="🧠 ¿Cómo funciona el cerebro humano?">🧠 Ciencia</button>
+        <div class="chat-options-groq" id="chatOptionsGroq">
+            <button class="opt" data-msg="📦 ¿Qué productos tienen?">📦 Productos</button>
+            <button class="opt" data-msg="💰 ¿Cuánto cuestan los aretes?">💰 Precios</button>
+            <button class="opt" data-msg="🚚 ¿Cuánto tardan los envíos?">🚚 Envíos</button>
+            <button class="opt" data-msg="💳 ¿Cómo puedo pagar?">💳 Pagos</button>
+            <button class="opt" data-msg="📿 ¿Tienen collares?">📿 Collares</button>
+            <button class="opt" data-msg="💈 ¿Tienen shampoo?">💈 Shampoo</button>
+            <button class="opt" data-msg="🎁 ¿Tienen promociones?">🎁 Promociones</button>
+            <button class="opt" data-msg="🤔 Recomiéndame un producto">🤔 Recomendar</button>
+            <button class="opt" data-msg="😊 Cuéntame un chiste">😊 Chiste</button>
+            <button class="opt" data-msg="🧮 ¿Cuánto es 2 + 2?">🧮 Matemáticas</button>
+            <button class="opt" data-msg="🌍 ¿Qué es la inteligencia artificial?">🌍 Cultura</button>
+            <button class="opt" data-msg="🧠 ¿Cómo funciona el cerebro humano?">🧠 Ciencia</button>
         </div>
 
-        <div class="chat-input-ai">
-            <input type="text" id="chatInputAI" placeholder="Escribe tu mensaje..." aria-label="Mensaje de chat" />
-            <button id="chatSendAI">Enviar</button>
+        <div class="chat-input-groq">
+            <input type="text" id="chatInputGroq" placeholder="Escribe tu mensaje..." />
+            <button id="chatSendGroq">Enviar</button>
         </div>
     </div>
 
@@ -2580,7 +2568,7 @@
         </div>
 
         <div class="footer-bottom">
-            &copy; 2026 Paulina Accesorios · Hecho con <span class="heart">💖</span> para mujeres que brillan · 🇵🇪 Perú · Todos los derechos reservados · 🤖 IA que responde TODO
+            &copy; 2026 Paulina Accesorios · Hecho con <span class="heart">💖</span> para mujeres que brillan · 🇵🇪 Perú · Todos los derechos reservados · 🤖 IA con Groq (ILIMITADA)
         </div>
     </footer>
 
@@ -2697,262 +2685,6 @@
                 imagen: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop&crop=center&q=80'
             }
         ];
-
-        // ============================================
-        // IA - RESPONDE ABSOLUTAMENTE TODO (BACKUP)
-        // ============================================
-
-        const IA_KNOWLEDGE = {
-            'productos': '🛍️ Tenemos aretes, pestañas, collares, maquillaje, shampoo y acondicionador. ¿Qué te interesa?',
-            'aretes': '📿 Aretes bohemios ($25), de perla ($38), florales ($6) y de compromiso ($65).',
-            'collares': '📿 Collares de perla ($45), personalizados ($30), con piedras ($35-55) y plata 925 ($60).',
-            'pestañas': '👁️ Pestañas 3D ($25), 5D ($35), magnéticas ($28). ¡2x1 en 5D!',
-            'maquillaje': '💄 Base Fit Me ($43.89), Paleta ($37), Labial ($51.20), Máscara ($45.70).',
-            'shampoo': '💈 ¡Sí! Tenemos Shampoo Keratina ($26.66) y Acondicionador Keratina ($26.66).',
-            'acondicionador': '💈 ¡Sí! Tenemos Acondicionador Keratina ($26.66).',
-            'capilar': '💈 Tenemos Shampoo Keratina ($26.66), Acondicionador ($26.66) y Tratamiento Platinum ($48.36).',
-            'precio': '💰 Precios desde $1 hasta $65. ¿Qué producto buscas?',
-            'envío': '📦 Envíos a todo Perú. Lima: 24-48h, provincias: 2-4 días. Gratis > $50.',
-            'pago': '💳 Yape, Plin, transferencia, efectivo, tarjeta y contraentrega.',
-            'ubicación': '📍 Francisco Bardales 705, Yurimaguas. Lun-Sáb 9am-8pm.',
-            'promociones': '🎁 2x1 en Pestañas 5D, 10% OFF con PAULINA10, envío gratis > $50.',
-            'descuento': '🎉 10% OFF con PAULINA10.',
-            'cupón': '🎁 Usa PAULINA10 para 10% OFF.',
-            '2x1': '🔥 2x1 en Pestañas 5D Mega por solo $35.',
-            '2 + 2': '🧮 2 + 2 = 4.',
-            'hola': '👋 ¡Hola! Soy Paulina AI, tu asistente 24/7. ¿Cómo puedo ayudarte? ✨',
-            'buenos días': '🌞 ¡Muy buenos días!',
-            'cómo estás': '🤖 ¡Genial! Gracias por preguntar.',
-            'quién eres': '🤖 Soy Paulina AI, tu asistente virtual.',
-            'gracias': '🙌 ¡De nada! 💖',
-            'chiste': '😊 ¿Por qué las pestañas no van a la playa? ¡Les da miedo el agua salada! 😂',
-            'fotosíntesis': '🌿 La fotosíntesis es el proceso donde las plantas convierten luz solar, agua y CO₂ en oxígeno.',
-            'adn': '🧬 El ADN contiene la información genética de los seres vivos.',
-            'big bang': '💥 El Big Bang es la teoría del origen del universo hace 13.8 mil millones de años.',
-            'einstein': '🧠 Albert Einstein fue un físico alemán, creador de la teoría de la relatividad.',
-            'machu picchu': '🏔️ Machu Picchu está en Cusco, Perú. Es una de las 7 maravillas del mundo.',
-            'perú': '🇵🇪 Perú está en América del Sur.',
-            'independencia perú': '📅 La independencia de Perú fue el 28 de julio de 1821.',
-            'default': '🤖 ¡Hola! Puedo ayudarte con productos, precios, envíos, pagos, matemáticas o cultura general. ¿Qué te gustaría saber? ✨'
-        };
-
-        function getAIResponse(message) {
-            const msg = message.toLowerCase().trim();
-
-            for (const [key, response] of Object.entries(IA_KNOWLEDGE)) {
-                if (msg.includes(key) && key !== 'default') {
-                    return response;
-                }
-            }
-
-            if (msg.includes('+')) {
-                const parts = msg.split('+');
-                if (parts.length === 2) {
-                    const num1 = parseFloat(parts[0].trim());
-                    const num2 = parseFloat(parts[1].trim());
-                    if (!isNaN(num1) && !isNaN(num2)) {
-                        return `🧮 ${num1} + ${num2} = ${num1 + num2}`;
-                    }
-                }
-            }
-
-            if (msg.includes('-') && !msg.includes('+')) {
-                const parts = msg.split('-');
-                if (parts.length === 2) {
-                    const num1 = parseFloat(parts[0].trim());
-                    const num2 = parseFloat(parts[1].trim());
-                    if (!isNaN(num1) && !isNaN(num2)) {
-                        return `🧮 ${num1} - ${num2} = ${num1 - num2}`;
-                    }
-                }
-            }
-
-            if (msg.includes('*') || msg.includes('x')) {
-                const separator = msg.includes('*') ? '*' : 'x';
-                const parts = msg.split(separator);
-                if (parts.length === 2) {
-                    const num1 = parseFloat(parts[0].trim());
-                    const num2 = parseFloat(parts[1].trim());
-                    if (!isNaN(num1) && !isNaN(num2)) {
-                        return `🧮 ${num1} × ${num2} = ${num1 * num2}`;
-                    }
-                }
-            }
-
-            if (msg.includes('/')) {
-                const parts = msg.split('/');
-                if (parts.length === 2) {
-                    const num1 = parseFloat(parts[0].trim());
-                    const num2 = parseFloat(parts[1].trim());
-                    if (!isNaN(num1) && !isNaN(num2) && num2 !== 0) {
-                        return `🧮 ${num1} ÷ ${num2} = ${num1 / num2}`;
-                    }
-                    if (num2 === 0) {
-                        return '🧮 No se puede dividir por cero. ¡Eso es matemáticamente imposible! 😅';
-                    }
-                }
-            }
-
-            for (const producto of productos) {
-                if (msg.includes(producto.nombre.toLowerCase())) {
-                    const price = producto.precio_old ?
-                        `$${producto.precio} (antes $${producto.precio_old})` :
-                        `$${producto.precio}`;
-                    return `🔍 <strong>${producto.nombre}</strong>\n📝 ${producto.descripcion}\n💰 Precio: ${price}\n📦 Stock: ${producto.stock} unidades\n⭐ ${producto.badge || 'Producto destacado'}\n\n¿Te gustaría agregarlo a tu carrito? 🛒`;
-                }
-            }
-
-            if (msg.includes('producto') || msg.includes('productos') || msg.includes('tienen')) {
-                return IA_KNOWLEDGE.productos || '🛍️ Tenemos una gran variedad de productos. ¿Qué tipo de accesorio buscas?';
-            }
-            if (msg.includes('precio') || msg.includes('cuesta') || msg.includes('costo')) {
-                return IA_KNOWLEDGE.precio || '💰 Nuestros precios son muy competitivos. ¿Qué producto te interesa?';
-            }
-            if (msg.includes('envío') || msg.includes('envio') || msg.includes('llegar')) {
-                return IA_KNOWLEDGE.envío || '📦 Realizamos envíos a todo Perú. ¿En qué ciudad estás?';
-            }
-            if (msg.includes('pago') || msg.includes('pagar') || msg.includes('yape') || msg.includes('plin')) {
-                return IA_KNOWLEDGE.pago || '💳 Aceptamos Yape, Plin, transferencia, efectivo, tarjeta y contraentrega.';
-            }
-            if (msg.includes('ubicación') || msg.includes('dirección') || msg.includes('donde están')) {
-                return IA_KNOWLEDGE.ubicación || '📍 Estamos en Francisco Bardales 705, Yurimaguas. ¡Te esperamos!';
-            }
-            if (msg.includes('horario') || msg.includes('abren') || msg.includes('cierran')) {
-                return IA_KNOWLEDGE.horario || '⏰ Abrimos de Lunes a Sábado de 9am a 8pm. Domingo cerrado.';
-            }
-            if (msg.includes('descuento') || msg.includes('promoción') || msg.includes('oferta')) {
-                return IA_KNOWLEDGE.promociones ||
-                '🎁 10% OFF con PAULINA10, 2x1 en pestañas 5D, envío gratis > $50. ¡Aprovecha!';
-            }
-            if (msg.includes('arete') || msg.includes('aretes')) {
-                return '📿 ¡Sí! Tenemos aretes bohemios ($25), de perla ($38), florales ($6.06), de compromiso ($65), aros, colgantes y minimalistas. ¿Qué estilo te gusta?';
-            }
-            if (msg.includes('collar') || msg.includes('collares')) {
-                return '📿 ¡Sí! Tenemos collares de perla ($45), personalizados ($30), con piedras ($35-55), de plata 925 ($60), florales ($25), de compromiso ($75). ¿Cuál te interesa?';
-            }
-            if (msg.includes('pestaña') || msg.includes('pestañas')) {
-                return '👁️ Tenemos pestañas 3D ($25), 5D ($35), magnéticas ($28), de seda ($30), de colores ($18). ¡2x1 en las 5D!';
-            }
-            if (msg.includes('maquillaje')) {
-                return '💄 Base Fit Me ($43.89), Paleta City Mini ($37), Labial Matte Ink ($51.20), Máscara The Falsies ($45.70). ¿Qué necesitas?';
-            }
-            if (msg.includes('shampoo')) {
-                return '💈 ¡Sí! Tenemos Shampoo Keratina ($26.66) para reparar el cabello. ¿Quieres más información?';
-            }
-            if (msg.includes('acondicionador')) {
-                return '💈 ¡Sí! Tenemos Acondicionador Keratina ($26.66) para nutrir el cabello. ¿Te interesa?';
-            }
-            if (msg.includes('capilar')) {
-                return '💈 Tenemos Shampoo Keratina ($26.66), Acondicionador Keratina ($26.66) y Tratamiento Platinum ($48.36). ¿Qué necesitas para tu cabello?';
-            }
-
-            if (msg.includes('hola') || msg.includes('buenos días') || msg.includes('buenas tardes') || msg.includes('buenas noches')) {
-                return '👋 ¡Hola! Soy Paulina AI, tu asistente 24/7. Puedo responder CUALQUIER pregunta. ¿Cómo puedo ayudarte hoy? ✨';
-            }
-            if (msg.includes('cómo estás') || msg.includes('como estas')) {
-                return '🤖 ¡Estoy genial! Gracias por preguntar. ¿Qué necesitas saber?';
-            }
-            if (msg.includes('gracias') || msg.includes('muchas gracias')) {
-                return '🙌 ¡De nada! Fue un placer ayudarte. 💖';
-            }
-            if (msg.includes('chao') || msg.includes('adios') || msg.includes('adiós') || msg.includes('bye')) {
-                return '👋 ¡Hasta luego! Vuelve cuando quieras. ✨';
-            }
-
-            if (msg.includes('chiste') || msg.includes('chistes')) {
-                const chistes = [
-                    '😊 ¿Por qué las pestañas no van a la playa? ¡Porque les da miedo el agua salada y que se les corra el rímel! 😂',
-                    '😂 ¿Qué le dice una pestaña a otra? — ¡No te me pegues que me despeinas! 😂',
-                    '😄 ¿Por qué los aretes son tan felices? — ¡Porque siempre están colgados de la moda!'
-                ];
-                return chistes[Math.floor(Math.random() * chistes.length)];
-            }
-
-            const respuestasGeniales = [
-                '🤖 ¡Excelente pregunta! Aunque no tengo información específica, puedo ayudarte con productos, precios, envíos, pagos y cultura general. ¿Qué te gustaría saber? ✨',
-                '🧠 ¡Qué pregunta tan interesante! ¿Te gustaría saber sobre productos, precios, envíos, pagos o cultura general? 🤔',
-                '💡 ¡Buena pregunta! Puedo ayudarte con nuestro catálogo de productos, promociones y temas de cultura general. ¡Estoy 24/7 para ti! 🛍️',
-                '🌟 ¡Me encanta tu curiosidad! Puedo recomendarte productos, contarte sobre promociones o hablar de ciencia, historia, arte y más. ¿Qué te gusta? 😊'
-            ];
-
-            return respuestasGeniales[Math.floor(Math.random() * respuestasGeniales.length)];
-        }
-
-        // ============================================
-        // INICIALIZACIÓN DEL CHAT LOCAL
-        // ============================================
-
-        function initChatAI() {
-            const chatFloat = document.getElementById('chatFloatAI');
-            const chatModal = document.getElementById('chatModalAI');
-            const chatClose = document.getElementById('chatCloseAI');
-            const chatInput = document.getElementById('chatInputAI');
-            const chatSend = document.getElementById('chatSendAI');
-            const chatMessages = document.getElementById('chatMessagesAI');
-            const chatOptions = document.getElementById('chatOptionsAI');
-
-            chatFloat.addEventListener('click', () => {
-                chatModal.classList.toggle('open');
-                if (chatModal.classList.contains('open')) {
-                    chatInput.focus();
-                }
-            });
-
-            chatClose.addEventListener('click', () => {
-                chatModal.classList.remove('open');
-            });
-
-            function sendMessage(text) {
-                if (!text.trim()) return;
-
-                const now = new Date();
-                const timeStr = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
-
-                const userMsg = document.createElement('div');
-                userMsg.className = 'chat-message-ai user';
-                userMsg.innerHTML = `${text} <span class="msg-time">${timeStr}</span>`;
-                chatMessages.appendChild(userMsg);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-
-                chatInput.value = '';
-                chatSend.disabled = true;
-
-                const typingDiv = document.createElement('div');
-                typingDiv.className = 'chat-message-ai bot';
-                typingDiv.innerHTML =
-                    `<div class="typing-indicator"><span></span><span></span><span></span></div>`;
-                chatMessages.appendChild(typingDiv);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-
-                const processingTime = 400 + Math.random() * 700;
-
-                setTimeout(() => {
-                    typingDiv.remove();
-
-                    const response = getAIResponse(text);
-
-                    const botMsg = document.createElement('div');
-                    botMsg.className = 'chat-message-ai bot';
-                    botMsg.innerHTML = `${response} <span class="msg-time">${timeStr}</span>`;
-                    chatMessages.appendChild(botMsg);
-                    chatMessages.scrollTop = chatMessages.scrollHeight;
-
-                    chatSend.disabled = false;
-                }, processingTime);
-            }
-
-            chatSend.addEventListener('click', () => sendMessage(chatInput.value));
-            chatInput.addEventListener('keyup', (e) => {
-                if (e.key === 'Enter') sendMessage(chatInput.value);
-            });
-
-            chatOptions.addEventListener('click', (e) => {
-                const opt = e.target.closest('.chat-opt');
-                if (opt) {
-                    sendMessage(opt.dataset.msg);
-                }
-            });
-        }
 
         // ============================================
         // FUNCIONES DEL SISTEMA
@@ -3592,7 +3324,6 @@
             initHamburger();
             initNavbarScroll();
             initPreloader();
-            initChatAI();
             initCartModal();
             initContact();
             initFilters();
@@ -3609,374 +3340,19 @@
             console.log('✨ Paulina Accesorios 2026 - Ultra Premium ✨');
             console.log('🎨 Diseño de lujo - Farfetch/Sephora');
             console.log('📱 Totalmente responsive - PC y Celular');
-            console.log('🤖 IA que responde ABSOLUTAMENTE TODO');
+            console.log('🤖 Groq IA - ILIMITADA y GRATIS');
             console.log('💎 Colores dorado + rosa + gris premium');
             console.log('🚀 Versión 2026 - Diseño de lujo');
         });
-    </script>
 
-    <!-- ============================================
-    ASISTENTE CON GROQ (ILIMITADO Y GRATIS)
-    ============================================ -->
-
-    <!-- ===== CSS DEL ASISTENTE ===== -->
-    <style>
-        .chat-float-groq {
-            position: fixed;
-            bottom: 90px;
-            left: 24px;
-            background: linear-gradient(135deg, #d4af37, #f5d76e);
-            color: #fff;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.6rem;
-            box-shadow: 0 16px 64px rgba(212, 175, 55, 0.3);
-            transition: all 0.3s ease;
-            z-index: 999;
-            cursor: pointer;
-            border: none;
-            animation: pulse 2s ease-in-out infinite;
-        }
-        .chat-float-groq:hover { transform: scale(1.1) rotate(-5deg); }
-        .chat-float-groq .badge {
-            position: absolute;
-            top: -3px;
-            right: -3px;
-            background: #c2185b;
-            color: #fff;
-            border-radius: 50%;
-            width: 22px;
-            height: 22px;
-            font-size: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            animation: pulse 1.5s infinite;
-        }
-        .chat-float-groq .label {
-            position: absolute;
-            bottom: -18px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 7px;
-            font-weight: 700;
-            color: #d4af37;
-            background: #fff;
-            padding: 1px 8px;
-            border-radius: 10px;
-            white-space: nowrap;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-        [data-theme="dark"] .chat-float-groq .label {
-            background: #1a0b1a;
-            color: #f5d76e;
-        }
-
-        .chat-modal-groq {
-            display: none;
-            position: fixed;
-            bottom: 155px;
-            left: 24px;
-            width: 420px;
-            max-width: 90vw;
-            background: #fff;
-            border-radius: 24px;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.15);
-            z-index: 1000;
-            max-height: 560px;
-            flex-direction: column;
-            overflow: hidden;
-            animation: slideUp 0.3s ease;
-            border: 1px solid rgba(212, 175, 55, 0.1);
-        }
-        [data-theme="dark"] .chat-modal-groq { background: #1a0b1a; }
-        .chat-modal-groq.open { display: flex; }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .chat-header-groq {
-            padding: 14px 20px;
-            background: linear-gradient(135deg, #d4af37, #f5d76e);
-            color: #fff;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 700;
-            font-size: 14px;
-            flex-shrink: 0;
-        }
-        .chat-header-groq .status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 10px;
-            font-weight: 400;
-            opacity: 0.8;
-        }
-        .chat-header-groq .status .dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #4caf50;
-            animation: pulse 1.5s infinite;
-        }
-        .chat-header-groq .status .dot.offline { background: #ef5350; }
-        .chat-header-groq .close {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 1.2rem;
-            cursor: pointer;
-            opacity: 0.7;
-            transition: 0.2s;
-        }
-        .chat-header-groq .close:hover { opacity: 1; transform: rotate(90deg); }
-
-        .chat-messages-groq {
-            padding: 16px 20px;
-            flex: 1;
-            overflow-y: auto;
-            max-height: 380px;
-            background: #faf8fa;
-        }
-        [data-theme="dark"] .chat-messages-groq { background: rgba(255,255,255,0.01); }
-
-        .chat-msg-groq {
-            padding: 8px 14px;
-            border-radius: 12px;
-            margin-bottom: 6px;
-            max-width: 90%;
-            word-wrap: break-word;
-            line-height: 1.5;
-            font-size: 13px;
-        }
-        .chat-msg-groq.bot {
-            background: rgba(212, 175, 55, 0.06);
-            align-self: flex-start;
-            margin-right: auto;
-            border-bottom-left-radius: 4px;
-            color: #333;
-        }
-        [data-theme="dark"] .chat-msg-groq.bot {
-            background: rgba(255,255,255,0.05);
-            color: #ddd;
-        }
-        .chat-msg-groq.user {
-            background: linear-gradient(135deg, #d4af37, #f5d76e);
-            color: #fff;
-            align-self: flex-end;
-            margin-left: auto;
-            border-bottom-right-radius: 4px;
-        }
-        .chat-msg-groq .time {
-            font-size: 9px;
-            opacity: 0.4;
-            display: block;
-            margin-top: 2px;
-        }
-
-        .typing-indicator-groq {
-            display: inline-flex;
-            gap: 3px;
-            padding: 4px 8px;
-        }
-        .typing-indicator-groq span {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #999;
-            animation: typingBounce 1.4s infinite;
-        }
-        .typing-indicator-groq span:nth-child(2) { animation-delay: 0.2s; }
-        .typing-indicator-groq span:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes typingBounce {
-            0%, 60%, 100% { transform: translateY(0); opacity: 0.3; }
-            30% { transform: translateY(-6px); opacity: 1; }
-        }
-
-        .chat-options-groq {
-            padding: 6px 20px 12px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            border-top: 1px solid rgba(212, 175, 55, 0.06);
-            flex-shrink: 0;
-        }
-        .chat-options-groq .opt {
-            padding: 4px 12px;
-            border-radius: 20px;
-            border: 1.5px solid #d4af37;
-            background: transparent;
-            color: #d4af37;
-            font-size: 9px;
-            cursor: pointer;
-            transition: 0.2s;
-            font-weight: 600;
-            white-space: nowrap;
-            font-family: inherit;
-        }
-        .chat-options-groq .opt:hover {
-            background: linear-gradient(135deg, #d4af37, #f5d76e);
-            color: #fff;
-            border-color: transparent;
-        }
-        [data-theme="dark"] .chat-options-groq .opt {
-            color: #f5d76e;
-            border-color: #f5d76e;
-        }
-        [data-theme="dark"] .chat-options-groq .opt:hover {
-            background: linear-gradient(135deg, #d4af37, #f5d76e);
-            color: #fff;
-        }
-
-        .chat-input-groq {
-            padding: 8px 20px;
-            border-top: 1px solid rgba(212, 175, 55, 0.06);
-            display: flex;
-            gap: 6px;
-            flex-shrink: 0;
-        }
-        .chat-input-groq input {
-            flex: 1;
-            padding: 8px 14px;
-            border: 1.5px solid rgba(212, 175, 55, 0.1);
-            border-radius: 25px;
-            font-family: inherit;
-            font-size: 12px;
-            background: #faf8fa;
-            transition: 0.2s;
-            color: #333;
-            outline: none;
-        }
-        .chat-input-groq input:focus {
-            border-color: #d4af37;
-            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
-        }
-        [data-theme="dark"] .chat-input-groq input {
-            background: rgba(255,255,255,0.05);
-            color: #ddd;
-            border-color: rgba(255,255,255,0.1);
-        }
-        .chat-input-groq button {
-            padding: 8px 18px;
-            border: none;
-            border-radius: 25px;
-            background: linear-gradient(135deg, #d4af37, #f5d76e);
-            color: #fff;
-            font-weight: 700;
-            font-size: 12px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .chat-input-groq button:hover { transform: scale(1.05); }
-        .chat-input-groq button:disabled { opacity: 0.5; cursor: not-allowed; }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        @media (max-width: 768px) {
-            .chat-float-groq { 
-                width: 48px; 
-                height: 48px; 
-                font-size: 1.3rem; 
-                bottom: 72px; 
-                left: 16px; 
-            }
-            .chat-float-groq .label { display: none; }
-            .chat-modal-groq { 
-                bottom: 130px; 
-                left: 12px; 
-                right: 12px; 
-                width: auto; 
-                max-width: none; 
-                max-height: 440px; 
-            }
-            .chat-messages-groq { max-height: 280px; }
-            .chat-msg-groq { font-size: 12px; padding: 6px 10px; }
-            .chat-options-groq .opt { font-size: 8px; padding: 3px 8px; }
-            .chat-input-groq { padding: 6px 12px; }
-            .chat-input-groq input { font-size: 11px; padding: 6px 10px; }
-            .chat-input-groq button { font-size: 10px; padding: 6px 12px; }
-        }
-    </style>
-
-    <!-- ===== HTML DEL ASISTENTE GROQ ===== -->
-    <button class="chat-float-groq" id="chatFloatGroq">
-        🤖
-        <span class="badge">⭐</span>
-        <span class="label">Groq IA</span>
-    </button>
-
-    <div class="chat-modal-groq" id="chatModalGroq">
-        <div class="chat-header-groq">
-            <span>🤖 Paulina AI (Groq)</span>
-            <span class="status">
-                <span class="dot" id="statusDotGroq"></span>
-                <span id="statusTextGroq">Conectando...</span>
-            </span>
-            <button class="close" id="chatCloseGroq">✕</button>
-        </div>
-
-        <div class="chat-messages-groq" id="chatMessagesGroq">
-            <div class="chat-msg-groq bot">
-                👋 ¡Hola! Soy <strong>Paulina AI</strong>, tu asistente con IA de Groq.<br><br>
-                💡 <strong>Puedo responder CUALQUIER PREGUNTA</strong> que tengas:<br><br>
-                • 📦 Productos - Aretes, pestañas, collares, maquillaje, shampoo<br>
-                • 💰 Precios y promociones<br>
-                • 🚚 Envíos y pagos<br>
-                • 📍 Ubicación y horarios<br>
-                • 🧮 Matemáticas y cultura general<br>
-                • 🌍 Ciencia, historia, arte, tecnología y más<br><br>
-                🗣️ <strong>¡Pregúntame lo que quieras, sin límites!</strong>
-                <span class="time">10:30</span>
-            </div>
-        </div>
-
-        <div class="chat-options-groq" id="chatOptionsGroq">
-            <button class="opt" data-msg="📦 ¿Qué productos tienen?">📦 Productos</button>
-            <button class="opt" data-msg="💰 ¿Cuánto cuestan los aretes?">💰 Precios</button>
-            <button class="opt" data-msg="🚚 ¿Cuánto tardan los envíos?">🚚 Envíos</button>
-            <button class="opt" data-msg="💳 ¿Cómo puedo pagar?">💳 Pagos</button>
-            <button class="opt" data-msg="📿 ¿Tienen collares?">📿 Collares</button>
-            <button class="opt" data-msg="💈 ¿Tienen shampoo?">💈 Shampoo</button>
-            <button class="opt" data-msg="🎁 ¿Tienen promociones?">🎁 Promociones</button>
-            <button class="opt" data-msg="🤔 Recomiéndame un producto">🤔 Recomendar</button>
-            <button class="opt" data-msg="😊 Cuéntame un chiste">😊 Chiste</button>
-            <button class="opt" data-msg="🧮 ¿Cuánto es 2 + 2?">🧮 Matemáticas</button>
-            <button class="opt" data-msg="🌍 ¿Qué es la inteligencia artificial?">🌍 Cultura</button>
-            <button class="opt" data-msg="🧠 ¿Cómo funciona el cerebro humano?">🧠 Ciencia</button>
-        </div>
-
-        <div class="chat-input-groq">
-            <input type="text" id="chatInputGroq" placeholder="Escribe tu mensaje..." />
-            <button id="chatSendGroq">Enviar</button>
-        </div>
-    </div>
-
-    <!-- ===== JAVASCRIPT - GROQ AI ===== -->
-    <script>
         // ============================================
-        // CONFIGURACIÓN GROQ
+        // GROQ - CHAT ILIMITADO
         // ============================================
 
         // 🔥 TU API KEY DE GROQ (GRATIS E ILIMITADA)
         const GROQ_API_KEY = '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';
 
         const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
-
-        // ============================================
-        // CONTEXTO DE LA TIENDA
-        // ============================================
 
         const CONTEXTO_GROQ = `
         Eres Paulina AI, la asistente virtual de "Paulina Accesorios", una tienda de belleza en Perú.
@@ -3994,10 +3370,6 @@
         Si te preguntan algo fuera de la tienda, responde con educación.
         `;
 
-        // ============================================
-        // DOM ELEMENTS
-        // ============================================
-
         const chatFloatGroq = document.getElementById('chatFloatGroq');
         const chatModalGroq = document.getElementById('chatModalGroq');
         const chatCloseGroq = document.getElementById('chatCloseGroq');
@@ -4007,10 +3379,6 @@
         const chatOptionsGroq = document.getElementById('chatOptionsGroq');
         const statusDotGroq = document.getElementById('statusDotGroq');
         const statusTextGroq = document.getElementById('statusTextGroq');
-
-        // ============================================
-        // FUNCIONES
-        // ============================================
 
         function agregarMensajeGroq(texto, tipo, tiempo = null) {
             const div = document.createElement('div');
@@ -4048,10 +3416,6 @@
             }
         }
 
-        // ============================================
-        // ENVIAR MENSAJE A GROQ
-        // ============================================
-
         async function enviarMensajeGroq(mensaje) {
             try {
                 const response = await fetch(GROQ_URL, {
@@ -4082,14 +3446,9 @@
 
             } catch (error) {
                 console.error('❌ Error en Groq:', error);
-                // Si falla, usa la IA local como respaldo
-                return getAIResponse(mensaje);
+                return '❌ Error al conectar con Groq. Por favor, intenta de nuevo. 😅';
             }
         }
-
-        // ============================================
-        // ENVIAR MENSAJE DEL USUARIO
-        // ============================================
 
         async function enviarMensajeGroqHandler() {
             const mensaje = chatInputGroq.value.trim();
@@ -4110,10 +3469,6 @@
             chatInputGroq.focus();
         }
 
-        // ============================================
-        // ABRIR/CERRAR CHAT
-        // ============================================
-
         function toggleChatGroq() {
             chatModalGroq.classList.toggle('open');
             if (chatModalGroq.classList.contains('open')) {
@@ -4133,10 +3488,6 @@
             }
         });
 
-        // ============================================
-        // EVENTOS
-        // ============================================
-
         chatSendGroq.addEventListener('click', enviarMensajeGroqHandler);
         chatInputGroq.addEventListener('keyup', (e) => {
             if (e.key === 'Enter') enviarMensajeGroqHandler();
@@ -4149,10 +3500,6 @@
                 enviarMensajeGroqHandler();
             }
         });
-
-        // ============================================
-        // INICIALIZACIÓN
-        // ============================================
 
         function initGroq() {
             console.log('🤖 Paulina AI con Groq (ILIMITADO)');
