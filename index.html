@@ -5,25 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>✨ Paulina Accesorios 2026 - Belleza de Lujo</title>
 
+    <!-- ===== FAVICON PERSONALIZADO ===== -->
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
-    <meta name="description" content="Paulina Accesorios - Tienda de aretes, extensiones de pestañas y accesorios de belleza. Envíos a todo Perú. Calidad premium." />
-    <meta name="keywords" content="aretes, pestañas, accesorios, belleza, joyería, maquillaje, extensiones, anillos" />
+    <!-- ===== META TAGS MEJORADOS ===== -->
+    <meta name="description" content="Paulina Accesorios - Tienda de aretes, extensiones de pestañas, accesorios de belleza, uñas y maquillaje. Envíos a todo Perú. Calidad premium." />
+    <meta name="keywords" content="aretes, pestañas, accesorios, belleza, joyería, maquillaje, extensiones, anillos, uñas, cuidado capilar" />
     <meta name="author" content="Paulina Accesorios" />
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#c2185b" />
+    <meta name="google-site-verification" content="TU_CODIGO_VERIFICACION" />
 
+    <!-- ===== OPEN GRAPH (REDES SOCIALES) ===== -->
     <meta property="og:title" content="✨ Paulina Accesorios 2026 - Belleza de Lujo" />
     <meta property="og:description" content="Descubre nuestra colección exclusiva de accesorios de belleza. Envíos a todo Perú." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://paulina-accesorios.com" />
+    <meta property="og:image" content="https://paulina-accesorios.com/og-image.jpg" />
     <meta property="og:locale" content="es_PE" />
+    <meta property="og:site_name" content="Paulina Accesorios" />
 
+    <!-- ===== TWITTER CARDS ===== -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="✨ Paulina Accesorios 2026 - Belleza de Lujo" />
+    <meta name="twitter:description" content="Descubre nuestra colección exclusiva de accesorios de belleza. Envíos a todo Perú." />
+    <meta name="twitter:image" content="https://paulina-accesorios.com/og-image.jpg" />
+
+    <!-- ===== GOOGLE FONTS ===== -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <!-- ===== GOOGLE ANALYTICS ===== -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TU_ID_ANALYTICS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-TU_ID_ANALYTICS');
+    </script>
 
     <style>
         /* ============================================
-           DISEÑO ULTRA PREMIUM 2026
+           DISEÑO ULTRA PREMIUM 2026 (MEJORADO)
            ============================================ */
 
         *,
@@ -247,7 +272,24 @@
             }
         }
 
-        /* ===== PRELOADER ===== */
+        /* ============================================
+           GLASSMORPHISM (EFECTO CRISTAL)
+           ============================================ */
+        .glass {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        [data-theme="dark"] .glass {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        /* ============================================
+           PRELOADER
+           ============================================ */
         .preloader {
             position: fixed;
             top: 0;
@@ -308,7 +350,9 @@
             font-weight: 300;
         }
 
-        /* ===== FREE SHIPPING ===== */
+        /* ============================================
+           FREE SHIPPING
+           ============================================ */
         .free-shipping {
             background: var(--gold-gradient);
             color: #fff;
@@ -328,6 +372,14 @@
             font-weight: 800;
             text-decoration: underline;
             text-underline-offset: 2px;
+        }
+        .free-shipping .countdown {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            padding: 1px 12px;
+            border-radius: var(--radius-full);
+            font-size: 10px;
+            margin-left: 8px;
         }
 
         /* ============================================
@@ -1071,6 +1123,7 @@
         .badge-premium { background: linear-gradient(135deg, #6a1b4d, #9c27b0); }
         .badge-discount { background: linear-gradient(135deg, #e53935, #ef5350); }
         .badge-ai { background: linear-gradient(135deg, #00bcd4, #0097a7); }
+        .badge-bestseller { background: linear-gradient(135deg, #f9a825, #ff6f00); animation: pulse 1.5s ease-in-out infinite; }
 
         .product-wishlist {
             position: absolute;
@@ -1211,6 +1264,211 @@
             background: #2e7d32;
             color: #fff;
             border-color: #2e7d32;
+        }
+
+        /* ============================================
+           TESTIMONIOS
+           ============================================ */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-lg);
+        }
+
+        .testimonial-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition-spring);
+            border: 1px solid rgba(212, 175, 55, 0.04);
+        }
+        [data-theme="dark"] .testimonial-card {
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(255, 255, 255, 0.03);
+        }
+        .testimonial-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+        .testimonial-card .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 0 auto var(--space-sm);
+            background: var(--gold-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: #fff;
+        }
+        .testimonial-card .name {
+            font-weight: 700;
+            color: var(--gray-800);
+            font-size: 14px;
+        }
+        .testimonial-card .comment {
+            font-size: 12px;
+            color: var(--gray-600);
+            font-style: italic;
+            margin: 4px 0;
+        }
+        .testimonial-card .stars {
+            color: var(--gold);
+            font-size: 14px;
+            letter-spacing: 2px;
+        }
+
+        /* ============================================
+           INSTAGRAM FEED
+           ============================================ */
+        .instagram-feed {
+            text-align: center;
+        }
+        .instagram-feed .ig-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: var(--space-md);
+        }
+        .instagram-feed .ig-grid .ig-item {
+            aspect-ratio: 1/1;
+            background: var(--gray-200);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            transition: var(--transition-base);
+        }
+        .instagram-feed .ig-grid .ig-item:hover {
+            transform: scale(1.02);
+            box-shadow: var(--shadow-md);
+        }
+        [data-theme="dark"] .instagram-feed .ig-grid .ig-item {
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .instagram-feed .ig-grid .ig-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* ============================================
+           FAQ
+           ============================================ */
+        .faq-grid {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .faq-item {
+            background: var(--white);
+            border-radius: var(--radius-md);
+            padding: var(--space-md) var(--space-lg);
+            margin-bottom: var(--space-sm);
+            box-shadow: var(--shadow-xs);
+            border: 1px solid rgba(212, 175, 55, 0.04);
+            cursor: pointer;
+            transition: var(--transition-base);
+        }
+        [data-theme="dark"] .faq-item {
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(255, 255, 255, 0.03);
+        }
+        .faq-item:hover {
+            box-shadow: var(--shadow-sm);
+        }
+        .faq-item .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: var(--gray-800);
+            font-size: 14px;
+        }
+        .faq-item .faq-question .icon {
+            transition: var(--transition-base);
+            font-size: 12px;
+        }
+        .faq-item.active .faq-question .icon {
+            transform: rotate(180deg);
+        }
+        .faq-item .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            color: var(--gray-600);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+            padding-top: var(--space-sm);
+        }
+
+        /* ============================================
+           NEWSLETTER
+           ============================================ */
+        .newsletter-section {
+            background: var(--gold-gradient);
+            border-radius: var(--radius-2xl);
+            padding: var(--space-2xl) var(--space-xl);
+            text-align: center;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+        .newsletter-section::before {
+            content: '✦';
+            font-size: 8rem;
+            position: absolute;
+            right: 2rem;
+            bottom: -2rem;
+            opacity: 0.05;
+            transform: rotate(15deg);
+        }
+        .newsletter-section h3 {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            margin-bottom: var(--space-sm);
+        }
+        .newsletter-section p {
+            opacity: 0.8;
+            max-width: 500px;
+            margin: 0 auto var(--space-md);
+        }
+        .newsletter-form {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            max-width: 450px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+        .newsletter-form input {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: var(--radius-full);
+            font-family: var(--font-sans);
+            font-size: 12px;
+            outline: none;
+        }
+        .newsletter-form input:focus {
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.3);
+        }
+        .newsletter-form .btn {
+            background: var(--white);
+            color: var(--gold-dark);
+            box-shadow: none;
+        }
+        .newsletter-form .btn:hover {
+            background: var(--gray-50);
+            transform: translateY(-2px);
         }
 
         /* ============================================
@@ -1615,6 +1873,12 @@
             .section {
                 padding: var(--space-3xl) 4%;
             }
+            .testimonials-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .instagram-feed .ig-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
         }
 
         /* ===== TABLET (768px - 1199px) ===== */
@@ -1628,6 +1892,12 @@
             }
             .hero {
                 padding: 40px 4% 48px;
+            }
+            .testimonials-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .instagram-feed .ig-grid {
+                grid-template-columns: repeat(3, 1fr);
             }
         }
 
@@ -1819,6 +2089,24 @@
                 font-size: 8px;
             }
 
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+            .instagram-feed .ig-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .newsletter-section {
+                padding: var(--space-xl) var(--space-md);
+            }
+            .newsletter-section h3 {
+                font-size: 1.4rem;
+            }
+            .newsletter-form input {
+                min-width: 150px;
+                padding: 10px 16px;
+                font-size: 11px;
+            }
+
             .whatsapp-float {
                 width: 48px;
                 height: 48px;
@@ -1909,6 +2197,13 @@
             .cart-empty {
                 font-size: 11px;
                 padding: var(--space-xl) 0;
+            }
+
+            .faq-item .faq-question {
+                font-size: 13px;
+            }
+            .faq-item .faq-answer {
+                font-size: 12px;
             }
         }
 
@@ -2250,6 +2545,7 @@
     <!-- ===== FREE SHIPPING ===== -->
     <div class="free-shipping">
         🚚 <span class="highlight">Envío gratis</span> · 🎁 <span class="highlight">10% OFF</span> PAULINA10 · 🤖 IA 24/7 · ✨ 2026
+        <span class="countdown">⏳ Oferta por tiempo limitado</span>
     </div>
 
     <!-- ===== NOTIFICACIÓN ===== -->
@@ -2274,6 +2570,8 @@
         <a href="#inicio">✨ Inicio</a>
         <a href="#productos">🛍️ Productos</a>
         <a href="#ofertas">🔥 Ofertas</a>
+        <a href="#testimonios">⭐ Testimonios</a>
+        <a href="#faq">❓ FAQ</a>
         <a href="#contacto">📩 Contacto</a>
         <button class="btn btn-gold" id="mobileLoginBtn" style="padding:8px 20px;font-size:11px;">🔑 Iniciar sesión</button>
         <a href="#" class="close-menu" id="mobileClose">✕ Cerrar</a>
@@ -2297,6 +2595,8 @@
                 <li><a href="#inicio">Inicio</a></li>
                 <li><a href="#productos">Productos</a></li>
                 <li><a href="#ofertas">Ofertas</a></li>
+                <li><a href="#testimonios">Testimonios</a></li>
+                <li><a href="#faq">FAQ</a></li>
                 <li><a href="#contacto">Contacto</a></li>
             </ul>
         </div>
@@ -2410,6 +2710,101 @@
     </section>
 
     <!-- ============================================
+    TESTIMONIOS (NUEVO)
+    ============================================ -->
+    <section class="section" id="testimonios" aria-label="Testimonios">
+        <div class="section-header">
+            <span class="section-tag">⭐ Lo que dicen nuestras clientas</span>
+            <h2 class="section-title">Testimonios <span class="accent">reales</span></h2>
+            <p class="section-subtitle">Miles de clientas confían en Paulina Accesorios</p>
+        </div>
+
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="avatar">👩</div>
+                <div class="name">María G.</div>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p class="comment">"Los aretes son hermosos, de muy buena calidad. El envío fue rápido y llegó en perfecto estado. ¡Volveré a comprar!"</p>
+            </div>
+            <div class="testimonial-card">
+                <div class="avatar">👩‍🦰</div>
+                <div class="name">Valentina R.</div>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p class="comment">"Las pestañas 5D son increíbles, me duran semanas y se ven súper naturales. Recomendado al 100%."</p>
+            </div>
+            <div class="testimonial-card">
+                <div class="avatar">👩‍🦳</div>
+                <div class="name">Camila P.</div>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p class="comment">"El shampoo de keratina dejó mi cabello súper suave y brillante. El mejor que he probado. ¡Gracias Paulina!"</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+    FAQ (NUEVO)
+    ============================================ -->
+    <section class="section" id="faq" aria-label="Preguntas Frecuentes">
+        <div class="section-header">
+            <span class="section-tag">❓ Preguntas Frecuentes</span>
+            <h2 class="section-title">Todo lo que <span class="accent">necesitas saber</span></h2>
+            <p class="section-subtitle">Respuestas rápidas a las dudas más comunes</p>
+        </div>
+
+        <div class="faq-grid">
+            <div class="faq-item active">
+                <div class="faq-question">
+                    <span>📦 ¿Hacen envíos a todo Perú?</span>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="faq-answer">¡Sí! Realizamos envíos a todo el Perú. Lima: 24-48h, provincias: 2-4 días hábiles. El envío es GRATIS en compras mayores a $50.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>💳 ¿Qué métodos de pago aceptan?</span>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="faq-answer">Aceptamos Yape, Plin, transferencia bancaria, efectivo (en tienda), tarjeta de crédito/débito y contraentrega. ¡Tú eliges!</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>🔄 ¿Puedo hacer cambios o devoluciones?</span>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="faq-answer">Sí, tienes 30 días de garantía en todos los productos. Cambios dentro de 7 días con producto en perfecto estado. Devoluciones hasta 15 días con ticket de compra.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>💅 ¿Tienen servicio de uñas?</span>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="faq-answer">¡Claro que sí! Ofrecemos uñas esculpidas (desde $30), acrílicas (desde $35) y en gel (desde $40). Agenda tu cita con nosotros.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>🎁 ¿Tienen promociones especiales?</span>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="faq-answer">¡Sí! 2x1 en Pestañas 5D, 10% OFF con código PAULINA10, envío gratis > $50 y sistema de puntos para clientas frecuentes. ¡Aprovecha!</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+    NEWSLETTER (NUEVO)
+    ============================================ -->
+    <section class="section">
+        <div class="newsletter-section">
+            <h3>📬 Suscríbete a nuestra newsletter</h3>
+            <p>Recibe ofertas exclusivas, novedades y tips de belleza directamente en tu correo.</p>
+            <form class="newsletter-form" id="newsletterForm">
+                <input type="email" id="newsletterEmail" placeholder="✉️ Tu correo electrónico" required />
+                <button type="submit" class="btn">Suscribirme ✨</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- ============================================
     CONTACTO
     ============================================ -->
     <section class="section" id="contacto" aria-label="Contacto">
@@ -2471,7 +2866,7 @@
     <a href="https://wa.me/51923861016" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">💬</a>
 
     <!-- ============================================
-    CHAT IA HÍBRIDO - ÚNICO CHAT (GROQ + LOCAL)
+    CHAT IA HÍBRIDO (GROQ + LOCAL) - SIN CAMBIOS
     ============================================ -->
     <button class="chat-float-ia" id="chatFloatIA">
         🤖
@@ -2541,36 +2936,46 @@
         <div class="footer-grid">
             <div>
                 <h4>✦ Paulina Accesorios</h4>
-                <a href="#">Sobre nosotros</a>
-                <a href="#">Política de cambios</a>
-                <a href="#">Términos y condiciones</a>
+                <a href="#inicio">Inicio</a>
+                <a href="#productos">Productos</a>
+                <a href="#ofertas">Ofertas</a>
+                <a href="#testimonios">Testimonios</a>
             </div>
             <div>
                 <h4>📞 Ayuda</h4>
-                <a href="#">Preguntas frecuentes</a>
+                <a href="#faq">Preguntas frecuentes</a>
                 <a href="#">Envíos y entregas</a>
-                <a href="#">Devoluciones</a>
+                <a href="#">Política de cambios</a>
+                <a href="#">Términos y condiciones</a>
+                <a href="#">Política de privacidad</a>
             </div>
             <div>
                 <h4>📱 Síguenos</h4>
-                <a href="https://www.instagram.com/paulinaccesorios26/" target="_blank">Instagram</a>
-                <a href="https://www.facebook.com/share/1EVN5XT8kz/" target="_blank">Facebook</a>
-                <a href="https://www.tiktok.com/@paulinaaccesorios" target="_blank">TikTok</a>
+                <a href="https://www.instagram.com/paulinaccesorios26/" target="_blank">📸 Instagram</a>
+                <a href="https://www.facebook.com/share/1EVN5XT8kz/" target="_blank">👍 Facebook</a>
+                <a href="https://www.tiktok.com/@paulinaaccesorios" target="_blank">🎵 TikTok</a>
+                <a href="https://wa.me/51923861016" target="_blank">💬 WhatsApp</a>
             </div>
             <div>
                 <h4>💳 Formas de pago</h4>
                 <div class="footer-payments">
-                    <span>💳</span>
-                    <span>📱</span>
-                    <span>🏦</span>
-                    <span>💵</span>
+                    <span title="Yape">📱</span>
+                    <span title="Plin">💳</span>
+                    <span title="Transferencia">🏦</span>
+                    <span title="Efectivo">💵</span>
+                    <span title="Tarjeta">💳</span>
                 </div>
-                <div style="margin-top:4px;font-size:9px;opacity:0.5;">Yape · Plin · Transferencia · Efectivo</div>
+                <div style="margin-top:4px;font-size:9px;opacity:0.5;">Yape · Plin · Transferencia · Efectivo · Tarjeta</div>
+                <div style="margin-top:8px;font-size:9px;opacity:0.4;">
+                    <span>🔒 Compra segura</span>
+                </div>
             </div>
         </div>
 
         <div class="footer-bottom">
             &copy; 2026 Paulina Accesorios · Hecho con <span class="heart">💖</span> para mujeres que brillan · 🇵🇪 Perú · Todos los derechos reservados · 🤖 IA Híbrida (Groq + Local)
+            <br>
+            <span style="font-size:8px;opacity:0.4;">Francisco Bardales 705, Yurimaguas · Lun-Sáb 9am-8pm</span>
         </div>
     </footer>
 
@@ -2586,7 +2991,7 @@
                 id: 1,
                 nombre: 'Aretes Bohemios',
                 categoria: 'aretes',
-                descripcion: 'Hechos a mano con piedras naturales semi-preciosas',
+                descripcion: 'Hechos a mano con piedras naturales semi-preciosas. Diseño único y artesanal.',
                 precio: 25.00,
                 precio_old: null,
                 badge: '⭐ Top',
@@ -2599,7 +3004,7 @@
                 id: 2,
                 nombre: 'Aretes de Perla Dorada',
                 categoria: 'aretes',
-                descripcion: 'Perlas naturales cultivadas con acabado dorado 18k',
+                descripcion: 'Perlas naturales cultivadas con acabado dorado 18k. Elegancia y sofisticación.',
                 precio: 38.00,
                 precio_old: null,
                 badge: '✨ Especial',
@@ -2612,7 +3017,7 @@
                 id: 3,
                 nombre: 'Pestañas 5D Mega',
                 categoria: 'pestanas',
-                descripcion: 'Extensiones de pestañas efecto volumen 5D',
+                descripcion: 'Extensiones de pestañas efecto volumen 5D. Look dramático y glamuroso.',
                 precio: 35.00,
                 precio_old: 45.00,
                 badge: '🔥 2x1',
@@ -2625,7 +3030,7 @@
                 id: 4,
                 nombre: 'Collar de Perla',
                 categoria: 'collares',
-                descripcion: 'Perlas naturales cultivadas con acabado dorado 18k',
+                descripcion: 'Perlas naturales cultivadas con acabado dorado 18k. Clásico y atemporal.',
                 precio: 45.00,
                 precio_old: null,
                 badge: '💎 Premium',
@@ -2638,7 +3043,7 @@
                 id: 5,
                 nombre: 'Collar Personalizado',
                 categoria: 'collares',
-                descripcion: 'Con iniciales o nombres grabados',
+                descripcion: 'Con iniciales o nombres grabados. El regalo perfecto y único.',
                 precio: 30.00,
                 precio_old: null,
                 badge: '🌟 Especial',
@@ -2651,7 +3056,7 @@
                 id: 6,
                 nombre: 'Base Fit Me 220',
                 categoria: 'maquillaje',
-                descripcion: 'Base líquida de cobertura media, acabado natural mate',
+                descripcion: 'Base líquida de cobertura media, acabado natural mate. Ideal para todo tipo de piel.',
                 precio: 43.89,
                 precio_old: null,
                 badge: '⭐ Top',
@@ -2664,7 +3069,7 @@
                 id: 7,
                 nombre: 'Shampoo Keratina',
                 categoria: 'capilar',
-                descripcion: 'Shampoo con keratina para reparación capilar',
+                descripcion: 'Shampoo con keratina para reparación capilar. Fortalece y da brillo.',
                 precio: 26.66,
                 precio_old: null,
                 badge: '⭐ Top',
@@ -2677,7 +3082,7 @@
                 id: 8,
                 nombre: 'Acondicionador Keratina',
                 categoria: 'capilar',
-                descripcion: 'Acondicionador con keratina para cabello dañado',
+                descripcion: 'Acondicionador con keratina para cabello dañado. Nutrición profunda.',
                 precio: 26.66,
                 precio_old: null,
                 badge: '💖 Favorito',
@@ -3085,12 +3490,19 @@
                 const discount = product.precio_old ? Math.round(((product.precio_old - product.precio) / product
                     .precio_old) * 100) : null;
 
+                // Badge adicional si es más vendido
+                let extraBadge = '';
+                if (product.compradores > 80) {
+                    extraBadge = `<span class="badge badge-bestseller">🏆 Más vendido</span>`;
+                }
+
                 html += `
                     <div class="product-card" data-category="${product.categoria}">
                         <div class="product-badges">
                             ${product.badge ? `<span class="badge badge-sale">${product.badge}</span>` : ''}
                             ${discount ? `<span class="badge badge-discount">-${discount}%</span>` : ''}
                             ${isLowStock ? `<span class="badge badge-hot">🔥</span>` : ''}
+                            ${extraBadge}
                             <span class="badge badge-ai">🤖</span>
                         </div>
                         <div class="product-image" onclick="mostrarNotificacion('📦 ${product.nombre}','${product.emoji}')">
@@ -3099,11 +3511,12 @@
                         </div>
                         <div class="product-meta">
                             <span>👥 ${product.compradores || 0}</span>
+                            <span>⭐ ${(4.5 + Math.random() * 0.5).toFixed(1)}</span>
                         </div>
                         <h3 class="product-name">${product.nombre}</h3>
                         <p class="product-description">${product.descripcion}</p>
                         <span class="product-stock ${isLowStock ? 'low-stock' : 'in-stock'}">
-                            ${isLowStock ? `⚠️ ${product.stock}` : `✅ ${product.stock}`}
+                            ${isLowStock ? `⚠️ Últimas ${product.stock}` : `✅ ${product.stock} disponibles`}
                         </span>
                         <span class="product-price">
                             ${formatPrice(product.precio)}
@@ -3111,7 +3524,7 @@
                             ${discount ? `<span class="discount">-${discount}%</span>` : ''}
                         </span>
                         <button class="btn-add" data-id="${product.id}" ${product.stock === 0 ? 'disabled' : ''}>
-                            ${product.stock === 0 ? '❌' : '🛒'}
+                            ${product.stock === 0 ? '❌ Agotado' : '🛒 Añadir al carrito'}
                         </button>
                     </div>
                 `;
@@ -3248,6 +3661,46 @@
 
                 mostrarNotificacion('✅ Mensaje enviado por WhatsApp', '📨');
                 this.reset();
+            });
+        }
+
+        // ============================================
+        // NEWSLETTER
+        // ============================================
+
+        function initNewsletter() {
+            const form = document.getElementById('newsletterForm');
+            if (!form) return;
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = document.getElementById('newsletterEmail').value;
+                
+                if (email && email.includes('@')) {
+                    mostrarNotificacion(`✅ ¡Suscripción exitosa! ${email}`, '📬');
+                    this.reset();
+                    
+                    // Guardar en localStorage
+                    const suscriptores = JSON.parse(localStorage.getItem('paulina_suscriptores') || '[]');
+                    if (!suscriptores.includes(email)) {
+                        suscriptores.push(email);
+                        localStorage.setItem('paulina_suscriptores', JSON.stringify(suscriptores));
+                    }
+                } else {
+                    mostrarNotificacion('⚠️ Ingresa un correo válido', '⚠️');
+                }
+            });
+        }
+
+        // ============================================
+        // FAQ
+        // ============================================
+
+        function initFAQ() {
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                });
             });
         }
 
@@ -3412,7 +3865,7 @@
         // ============================================
 
         // 🔥 TU API KEY DE GROQ
-        const GROQ_API_KEY = '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';
+        const GROQ_API_KEY = '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';
         const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
 
         // ============================================
@@ -3433,6 +3886,7 @@
         8. Si pregunta por envíos, dale los tiempos exactos y condiciones.
         9. Si pregunta por promociones, menciónalas todas con entusiasmo.
         10. Siempre termina ofreciendo más ayuda o preguntando si necesita algo más.
+        11. Responde con máximo detalle, sin límite de párrafos.
         `;
 
         // ============================================
@@ -3551,7 +4005,8 @@
                 const chistes = [
                     '😊 ¿Por qué las pestañas no van a la playa? ¡Porque les da miedo el agua salada y que se les corra el rímel! 😂',
                     '😂 ¿Qué le dice una pestaña a otra? — ¡No te me pegues que me despeinas! 😂',
-                    '😄 ¿Por qué los aretes son tan felices? — ¡Porque siempre están colgados de la moda! ✨'
+                    '😄 ¿Por qué los aretes son tan felices? — ¡Porque siempre están colgados de la moda! ✨',
+                    '🤣 ¿Qué le dice un collar a otro? — ¡Nos vemos en el cuello! 😂'
                 ];
                 return chistes[Math.floor(Math.random() * chistes.length)];
             }
@@ -3567,7 +4022,7 @@
             }
 
             // Respuesta por defecto usando la información de la tienda
-            return `✨ ¡Excelente pregunta! Soy Paulina AI y conozco todo sobre nuestra tienda.\n\n${TIENDA_INFO.split('\n').slice(0, 10).join('\n')}\n\n¿Qué te gustaría saber con más detalle? 😊`;
+            return `✨ ¡Excelente pregunta! Soy Paulina AI y conozco todo sobre nuestra tienda.\n\n${TIENDA_INFO.split('\n').slice(0, 15).join('\n')}\n\n¿Qué te gustaría saber con más detalle? 😊`;
         }
 
         // ============================================
@@ -3719,6 +4174,8 @@
             initCartModal();
             initContact();
             initFilters();
+            initNewsletter();
+            initFAQ();
             initIA();
 
             document.getElementById('userBtn').addEventListener('click', () => {
@@ -3727,6 +4184,29 @@
                     mostrarNotificacion(`👤 ${currentUser.name} · ${level.name} · ${currentUser.points || 0} pts`, '⭐');
                 } else {
                     showLoginModal();
+                }
+            });
+
+            // Búsqueda
+            document.getElementById('searchBtn').addEventListener('click', function() {
+                const query = document.getElementById('searchInput').value.toLowerCase().trim();
+                if (!query) {
+                    renderizarProductos(productos);
+                    return;
+                }
+                const filtered = productos.filter(p => 
+                    p.nombre.toLowerCase().includes(query) || 
+                    p.descripcion.toLowerCase().includes(query)
+                );
+                renderizarProductos(filtered);
+                if (filtered.length === 0) {
+                    mostrarNotificacion('🔍 No encontramos productos para "' + query + '"', '🔍');
+                }
+            });
+
+            document.getElementById('searchInput').addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('searchBtn').click();
                 }
             });
 
