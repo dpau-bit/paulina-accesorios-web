@@ -21,9 +21,12 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
+    <!-- ===== PARTICLES.JS ===== -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
     <style>
         /* ============================================
-           DISEÑO ULTRA PREMIUM 2026
+           DISEÑO ULTRA PREMIUM 2026 + MEJORAS
            ============================================ */
 
         *,
@@ -39,6 +42,7 @@
             --gold-light: #f5d76e;
             --gold-dark: #b8952a;
             --gold-gradient: linear-gradient(135deg, #d4af37, #f5d76e, #d4af37);
+            --gold-glow: 0 0 40px rgba(212, 175, 55, 0.3);
             --rose: #fce4ec;
             --rose-dark: #f8e8f0;
             --rose-gradient: linear-gradient(135deg, #fce4ec, #f8e8f0, #f3e5f5);
@@ -127,10 +131,24 @@
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            background-image: radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.02) 0%, transparent 50%),
-                radial-gradient(circle at 90% 80%, rgba(212, 175, 55, 0.02) 0%, transparent 50%);
         }
 
+        /* ===== PARTICLES BACKGROUND ===== */
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        #particles-js canvas {
+            display: block;
+            vertical-align: bottom;
+        }
+
+        /* ===== SCROLLBAR ===== */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -204,6 +222,16 @@
             }
         }
 
+        @keyframes pulseGlow {
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(212, 175, 55, 0.5);
+            }
+        }
+
         @keyframes slideDown {
             from {
                 opacity: 0;
@@ -247,6 +275,60 @@
             }
         }
 
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes confettiDrop {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes pulseHeart {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            25% {
+                transform: scale(1.1);
+            }
+            50% {
+                transform: scale(1);
+            }
+            75% {
+                transform: scale(1.1);
+            }
+        }
+
+        @keyframes wiggle {
+            0%,
+            100% {
+                transform: rotate(-3deg);
+            }
+            50% {
+                transform: rotate(3deg);
+            }
+        }
+
         /* ===== PRELOADER ===== */
         .preloader {
             position: fixed;
@@ -280,24 +362,17 @@
             background-size: 200% 200%;
             animation: shimmerGold 2s ease-in-out infinite;
         }
-        .preloader-bar {
-            width: 200px;
-            height: 4px;
-            background: var(--gray-200);
-            border-radius: var(--radius-full);
-            overflow: hidden;
-            position: relative;
+        .preloader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--gray-200);
+            border-top: 4px solid var(--gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
         }
-        .preloader-bar::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: var(--gold-gradient);
-            animation: shimmerGold 1.5s ease-in-out infinite;
-            border-radius: var(--radius-full);
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         .preloader-text {
             margin-top: var(--space-md);
@@ -338,7 +413,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 0 4%;
-            background: rgba(255, 255, 255, 0.96);
+            background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
             position: sticky;
@@ -350,7 +425,7 @@
             box-shadow: var(--shadow-xs);
         }
         [data-theme="dark"] .navbar {
-            background: rgba(18, 18, 18, 0.96);
+            background: rgba(18, 18, 18, 0.92);
             border-bottom: 1px solid rgba(255, 255, 255, 0.03);
         }
         .navbar-scrolled {
@@ -474,6 +549,7 @@
         }
         .search-box button:hover {
             color: var(--gold);
+            transform: scale(1.1);
         }
 
         .user-btn {
@@ -497,6 +573,11 @@
         .user-btn:hover {
             border-color: var(--gold);
             background: var(--white);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+        .user-btn:active {
+            transform: scale(0.95);
         }
         .user-btn .user-avatar {
             width: 26px;
@@ -544,6 +625,11 @@
         .cart-icon:hover {
             border-color: var(--gold);
             background: var(--white);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+        .cart-icon:active {
+            transform: scale(0.95);
         }
         .cart-count {
             background: var(--gold-gradient);
@@ -555,6 +641,10 @@
             min-width: 18px;
             text-align: center;
             line-height: 18px;
+            transition: var(--transition-spring);
+        }
+        .cart-count.bounce {
+            animation: bounceIn 0.3s ease;
         }
 
         .hamburger {
@@ -626,7 +716,7 @@
         }
 
         /* ============================================
-           HERO PREMIUM
+           HERO PREMIUM CON PARALLAX
            ============================================ */
         .hero {
             display: flex;
@@ -644,6 +734,8 @@
             transition: var(--transition-base);
             box-shadow: var(--shadow-md);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            background-attachment: fixed;
+            z-index: 1;
         }
         [data-theme="dark"] .hero {
             background: linear-gradient(135deg, #1a0b1a, #121212, #1a0b1a);
@@ -776,7 +868,7 @@
         }
 
         /* ============================================
-           BUTTONS PREMIUM
+           BUTTONS PREMIUM CON REACCIÓN
            ============================================ */
         .btn {
             display: inline-flex;
@@ -804,18 +896,18 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
             transition: var(--transition-base);
         }
         .btn:hover::after {
             left: 100%;
         }
         .btn:hover {
-            transform: translateY(-2px) scale(1.02);
+            transform: translateY(-3px) scale(1.03);
             box-shadow: var(--shadow-md);
         }
         .btn:active {
-            transform: scale(0.96);
+            transform: scale(0.92);
         }
 
         .btn-primary {
@@ -865,6 +957,8 @@
             max-width: 1400px;
             margin: 0 auto;
             animation: fadeInUp 0.8s ease;
+            position: relative;
+            z-index: 1;
         }
 
         .section-header {
@@ -946,9 +1040,12 @@
             border-color: rgba(255, 255, 255, 0.05);
         }
         .category-pills .pill:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
             box-shadow: var(--shadow-sm);
             border-color: var(--gold);
+        }
+        .category-pills .pill:active {
+            transform: scale(0.95);
         }
         .category-pills .pill.active {
             background: var(--gold-gradient);
@@ -977,6 +1074,12 @@
             position: relative;
             animation: fadeInUp 0.7s ease forwards;
             opacity: 0;
+            cursor: default;
+        }
+        .product-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: var(--shadow-xl);
+            border-color: rgba(212, 175, 55, 0.15);
         }
         .product-card:nth-child(1) { animation-delay: 0.05s; }
         .product-card:nth-child(2) { animation-delay: 0.1s; }
@@ -990,12 +1093,6 @@
         [data-theme="dark"] .product-card {
             background: rgba(255, 255, 255, 0.02);
             border-color: rgba(255, 255, 255, 0.03);
-        }
-
-        .product-card:hover {
-            transform: translateY(-12px) scale(1.02);
-            box-shadow: var(--shadow-xl);
-            border-color: rgba(212, 175, 55, 0.08);
         }
 
         .product-image {
@@ -1014,6 +1111,9 @@
             transform: scale(1.05);
             box-shadow: var(--shadow-md);
             border-color: var(--gold);
+        }
+        .product-image:active {
+            transform: scale(0.95);
         }
         .product-image img {
             width: 100%;
@@ -1097,9 +1197,13 @@
             transform: scale(1.15);
             box-shadow: var(--shadow-md);
         }
+        .product-wishlist:active {
+            transform: scale(0.9);
+        }
         .product-wishlist.active {
             color: #e53935;
             background: #fff;
+            animation: pulseHeart 1s ease-in-out infinite;
         }
 
         .product-name {
@@ -1196,12 +1300,12 @@
         .btn-add:hover:not(:disabled) {
             background: var(--gold-gradient);
             color: #fff;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
             box-shadow: var(--shadow-md);
             border-color: transparent;
         }
         .btn-add:active:not(:disabled) {
-            transform: scale(0.96);
+            transform: scale(0.92);
         }
         .btn-add:disabled {
             opacity: 0.4;
@@ -1235,10 +1339,14 @@
             z-index: 50;
             cursor: pointer;
             border: none;
+            animation: pulseGlow 3s ease-in-out infinite;
         }
         .chat-float-ai:hover {
-            transform: scale(1.08) rotate(-5deg);
+            transform: scale(1.12) rotate(-5deg);
             box-shadow: var(--shadow-2xl);
+        }
+        .chat-float-ai:active {
+            transform: scale(0.9);
         }
         .chat-float-ai .chat-badge {
             position: absolute;
@@ -1407,6 +1515,10 @@
             background: var(--gold-gradient);
             color: #fff;
             border-color: transparent;
+            transform: translateY(-2px);
+        }
+        .chat-options-ai .chat-opt:active {
+            transform: scale(0.95);
         }
         [data-theme="dark"] .chat-options-ai .chat-opt {
             color: var(--gold-light);
@@ -1461,6 +1573,9 @@
         .chat-input-ai button:hover {
             transform: scale(1.05);
         }
+        .chat-input-ai button:active {
+            transform: scale(0.95);
+        }
         .chat-input-ai button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
@@ -1494,8 +1609,11 @@
             border-color: rgba(255, 255, 255, 0.03);
         }
         .floating-cart:hover {
-            transform: scale(1.06) translateY(-3px);
+            transform: scale(1.08) translateY(-4px);
             box-shadow: var(--shadow-xl);
+        }
+        .floating-cart:active {
+            transform: scale(0.92);
         }
         .floating-cart .fc-icon {
             font-size: 16px;
@@ -1540,8 +1658,11 @@
             animation: pulse 2.5s ease-in-out infinite;
         }
         .whatsapp-float:hover {
-            transform: scale(1.08) rotate(-5deg);
+            transform: scale(1.1) rotate(-5deg);
             box-shadow: 0 8px 40px rgba(37, 211, 102, 0.4);
+        }
+        .whatsapp-float:active {
+            transform: scale(0.9);
         }
 
         .btn-back-top {
@@ -1564,8 +1685,11 @@
             cursor: pointer;
         }
         .btn-back-top:hover {
-            transform: translateY(-4px) scale(1.05);
+            transform: translateY(-4px) scale(1.08);
             box-shadow: var(--shadow-xl);
+        }
+        .btn-back-top:active {
+            transform: scale(0.9);
         }
 
         .dark-mode-toggle {
@@ -1592,8 +1716,11 @@
             color: var(--gray-700);
         }
         .dark-mode-toggle:hover {
-            transform: scale(1.08) rotate(15deg);
+            transform: scale(1.1) rotate(15deg);
             box-shadow: var(--shadow-xl);
+        }
+        .dark-mode-toggle:active {
+            transform: scale(0.9);
         }
 
         .share-btn {
@@ -1620,12 +1747,15 @@
             color: var(--gray-700);
         }
         .share-btn:hover {
-            transform: scale(1.08) rotate(-8deg);
+            transform: scale(1.1) rotate(-8deg);
             box-shadow: var(--shadow-xl);
+        }
+        .share-btn:active {
+            transform: scale(0.9);
         }
 
         /* ============================================
-           NOTIFICATIONS
+           NOTIFICACIONES
            ============================================ */
         .notification {
             position: fixed;
@@ -1656,6 +1786,16 @@
         .notification .notif-icon {
             font-size: 16px;
         }
+        .notification .notif-close {
+            margin-left: auto;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: var(--transition-base);
+        }
+        .notification .notif-close:hover {
+            opacity: 1;
+            transform: scale(1.2);
+        }
 
         /* ============================================
            FOOTER PREMIUM
@@ -1669,6 +1809,7 @@
             position: relative;
             overflow: hidden;
             box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.05);
+            z-index: 1;
         }
         footer::before {
             content: '✦';
@@ -1782,6 +1923,7 @@
             color: var(--gold);
             transform: rotate(90deg) scale(1.1);
         }
+
         .cart-modal-title {
             font-family: var(--font-serif);
             color: var(--gray-800);
@@ -1824,6 +1966,9 @@
         .cart-item-remove:hover {
             transform: scale(1.2);
         }
+        .cart-item-remove:active {
+            transform: scale(0.9);
+        }
 
         .cart-total {
             display: flex;
@@ -1850,6 +1995,45 @@
         .cart-modal-content .btn {
             width: 100%;
             margin-top: var(--space-md);
+        }
+
+        /* ============================================
+           MOTIVATIONAL CART MESSAGE
+           ============================================ */
+        .cart-motivation {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.05), rgba(212, 175, 55, 0.1));
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            margin: var(--space-md) 0;
+            text-align: center;
+            border: 1px solid rgba(212, 175, 55, 0.08);
+        }
+        .cart-motivation .emoji {
+            font-size: 2rem;
+            display: block;
+        }
+        .cart-motivation .message {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+        .cart-motivation .sub-message {
+            font-size: 11px;
+            color: var(--gray-500);
+        }
+        .cart-motivation .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: var(--gray-200);
+            border-radius: var(--radius-full);
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        .cart-motivation .progress-bar .fill {
+            height: 100%;
+            background: var(--gold-gradient);
+            border-radius: var(--radius-full);
+            transition: width 0.8s ease;
         }
 
         /* ============================================
@@ -1961,6 +2145,7 @@
                 margin: 0 var(--space-sm) var(--space-lg);
                 flex-direction: column;
                 text-align: center;
+                background-attachment: scroll;
             }
             .hero-title {
                 font-size: 2rem;
@@ -2244,62 +2429,17 @@
                 font-size: 0.95rem;
             }
         }
-
-        /* ===== MODALES ADICIONALES ===== */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-        .modal-overlay.show {
-            display: flex;
-        }
-        .modal-content {
-            background: var(--white);
-            border-radius: var(--radius-lg);
-            padding: var(--space-xl);
-            max-width: 480px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-            animation: fadeInScale 0.3s ease;
-            box-shadow: var(--shadow-2xl);
-        }
-        [data-theme="dark"] .modal-content {
-            background: #1a0b1a;
-        }
-        .modal-close {
-            position: absolute;
-            top: 12px;
-            right: 16px;
-            font-size: 1.5rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--gray-400);
-            transition: var(--transition-base);
-        }
-        .modal-close:hover {
-            color: var(--gold);
-            transform: rotate(90deg);
-        }
     </style>
 </head>
 <body>
 
+    <!-- ===== PARTICLES BACKGROUND ===== -->
+    <div id="particles-js"></div>
+
     <!-- ===== PRELOADER ===== -->
     <div class="preloader" id="preloader">
         <div class="preloader-logo">✦ Paulina ✦</div>
-        <div class="preloader-bar"></div>
+        <div class="preloader-spinner"></div>
         <div class="preloader-text">Cargando experiencia de lujo...</div>
     </div>
 
@@ -2312,6 +2452,7 @@
     <div class="notification" id="notification">
         <span class="notif-icon">✅</span>
         <span id="notificationText">Producto agregado al carrito</span>
+        <span class="notif-close" onclick="this.parentElement.classList.remove('show')">✕</span>
     </div>
 
     <!-- ===== MENÚ HAMBURGUESA ===== -->
@@ -2504,6 +2645,7 @@
             <div id="cartItems">
                 <div class="cart-empty">🛒 Tu carrito está vacío<br><span style="font-size:11px;opacity:0.5;">¡Empieza a comprar!</span></div>
             </div>
+            <div id="cartMotivation" style="display:none;"></div>
             <div class="cart-total">
                 <span>Total:</span>
                 <span class="total-price" id="cartTotal">$0.00</span>
@@ -2633,9 +2775,51 @@
     </footer>
 
     <!-- ============================================
-    JAVASCRIPT - COMPLETO CON TODAS LAS FUNCIONES
+    JAVASCRIPT - COMPLETO CON TODAS LAS MEJORAS
     ============================================ -->
     <script>
+        // ============================================
+        // PARTICLES.JS
+        // ============================================
+
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 30, density: { enable: true, value_area: 800 } },
+                color: { value: ['#d4af37', '#f5d76e', '#c2185b', '#f06292'] },
+                shape: { type: 'circle' },
+                opacity: { value: 0.3, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: '#d4af37',
+                    opacity: 0.1,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 1,
+                    direction: 'none',
+                    random: true,
+                    straight: false,
+                    out_mode: 'out'
+                }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: {
+                    onhover: { enable: true, mode: 'bubble' },
+                    onclick: { enable: true, mode: 'push' },
+                    resize: true
+                },
+                modes: {
+                    bubble: { distance: 200, size: 6, duration: 2, opacity: 0.5, speed: 3 },
+                    push: { particles_nb: 4 }
+                }
+            },
+            retina_detect: true
+        });
+
         // ============================================
         // PRODUCTOS
         // ============================================
@@ -2784,14 +2968,9 @@
             'default': '🤖 ¡Hola! Puedo ayudarte con productos, precios, envíos, pagos, matemáticas o cultura general. ¿Qué te gustaría saber? ✨'
         };
 
-        // ============================================
-        // FUNCIÓN PRINCIPAL DE LA IA
-        // ============================================
-
         function getAIResponse(message) {
             const msg = message.toLowerCase().trim();
 
-            // Buscar en conocimiento base
             for (const [key, response] of Object.entries(IA_KNOWLEDGE)) {
                 if (msg.includes(key) && key !== 'default') {
                     return response;
@@ -2847,7 +3026,6 @@
                 }
             }
 
-            // Buscar en productos
             for (const producto of productos) {
                 if (msg.includes(producto.nombre.toLowerCase())) {
                     const price = producto.precio_old ?
@@ -2857,7 +3035,6 @@
                 }
             }
 
-            // Preguntas sobre la tienda
             if (msg.includes('producto') || msg.includes('productos') || msg.includes('tienen')) {
                 return IA_KNOWLEDGE.productos || '🛍️ Tenemos una gran variedad de productos. ¿Qué tipo de accesorio buscas?';
             }
@@ -2902,7 +3079,6 @@
                 return '💈 Tenemos Shampoo Keratina ($26.66), Acondicionador Keratina ($26.66) y Tratamiento Platinum ($48.36). ¿Qué necesitas para tu cabello?';
             }
 
-            // Saludos
             if (msg.includes('hola') || msg.includes('buenos días') || msg.includes('buenas tardes') || msg.includes('buenas noches')) {
                 return '👋 ¡Hola! Soy Paulina AI, tu asistente 24/7. Puedo responder CUALQUIER pregunta. ¿Cómo puedo ayudarte hoy? ✨';
             }
@@ -2916,7 +3092,6 @@
                 return '👋 ¡Hasta luego! Vuelve cuando quieras. ✨';
             }
 
-            // Chistes
             if (msg.includes('chiste') || msg.includes('chistes')) {
                 const chistes = [
                     '😊 ¿Por qué las pestañas no van a la playa? ¡Porque les da miedo el agua salada y que se les corra el rímel! 😂',
@@ -2926,7 +3101,6 @@
                 return chistes[Math.floor(Math.random() * chistes.length)];
             }
 
-            // Respuesta por defecto
             const respuestasGeniales = [
                 '🤖 ¡Excelente pregunta! Aunque no tengo información específica, puedo ayudarte con productos, precios, envíos, pagos y cultura general. ¿Qué te gustaría saber? ✨',
                 '🧠 ¡Qué pregunta tan interesante! ¿Te gustaría saber sobre productos, precios, envíos, pagos o cultura general? 🤔',
@@ -3041,7 +3215,7 @@
             if (notificationTimeout) clearTimeout(notificationTimeout);
             notificationTimeout = setTimeout(() => {
                 notification.classList.remove('show');
-            }, 3500);
+            }, 4000);
         }
 
         function lanzarConfetti() {
@@ -3055,7 +3229,7 @@
             const colors = ['#c2185b', '#d63384', '#f06292', '#f9a825', '#43a047', '#1a73e8', '#ff6f00', '#e53935', '#9c27b0',
                 '#00bcd4'
             ];
-            for (let i = 0; i < 40; i++) {
+            for (let i = 0; i < 50; i++) {
                 const confetti = document.createElement('div');
                 confetti.className = 'confetti';
                 confetti.style.left = Math.random() * 100 + '%';
@@ -3071,214 +3245,8 @@
         }
 
         // ============================================
-        // SISTEMA DE USUARIOS AVANZADO
+        // SISTEMA DE USUARIOS
         // ============================================
-
-        function registerUser(name, email, password) {
-            if (!name || !email || !password) {
-                mostrarNotificacion('⚠️ Completa todos los campos', '⚠️');
-                return false;
-            }
-
-            if (password.length < 6) {
-                mostrarNotificacion('⚠️ La contraseña debe tener al menos 6 caracteres', '⚠️');
-                return false;
-            }
-
-            const users = JSON.parse(localStorage.getItem('paulina_users') || '[]');
-            if (users.find(u => u.email === email)) {
-                mostrarNotificacion('⚠️ Este correo ya está registrado', '⚠️');
-                return false;
-            }
-
-            const newUser = {
-                id: 'user_' + Date.now(),
-                name: name,
-                email: email,
-                password: btoa(password),
-                points: 50,
-                level: '🥉 Bronce',
-                verified: true,
-                createdAt: new Date().toISOString(),
-                purchases: [],
-                addresses: [],
-                wishlist: []
-            };
-
-            users.push(newUser);
-            localStorage.setItem('paulina_users', JSON.stringify(users));
-
-            currentUser = newUser;
-            saveUser();
-            updateUserUI();
-            mostrarNotificacion(`✅ ¡Bienvenida ${name}! 🎉`, '🎉');
-            lanzarConfetti();
-            return true;
-        }
-
-        function loginUser(email, password) {
-            if (!email || !password) {
-                mostrarNotificacion('⚠️ Completa todos los campos', '⚠️');
-                return false;
-            }
-
-            const users = JSON.parse(localStorage.getItem('paulina_users') || '[]');
-            const user = users.find(u => u.email === email && u.password === btoa(password));
-
-            if (!user) {
-                mostrarNotificacion('⚠️ Correo o contraseña incorrectos', '⚠️');
-                return false;
-            }
-
-            currentUser = user;
-            saveUser();
-            updateUserUI();
-            mostrarNotificacion(`✅ ¡Bienvenida ${user.name}! 👋`, '👋');
-            return true;
-        }
-
-        function logoutUser() {
-            currentUser = null;
-            localStorage.removeItem('paulina_user');
-            updateUserUI();
-            mostrarNotificacion('👋 Sesión cerrada', '👋');
-        }
-
-        function showLoginModal() {
-            let modal = document.getElementById('loginModal');
-            if (!modal) {
-                modal = document.createElement('div');
-                modal.id = 'loginModal';
-                modal.className = 'modal-overlay';
-                modal.innerHTML = `
-                    <div class="modal-content">
-                        <button class="modal-close" onclick="closeLoginModal()">✕</button>
-                        <h3 style="font-family:var(--font-serif);font-size:1.4rem;margin-bottom:var(--space-md);">🔑 Iniciar sesión</h3>
-                        
-                        <div id="loginForm">
-                            <div style="margin-bottom:var(--space-sm);">
-                                <label style="font-size:11px;font-weight:600;color:var(--gray-600);">📧 Correo electrónico</label>
-                                <input type="email" id="loginEmail" placeholder="tu@email.com" style="width:100%;padding:10px 14px;border:1.5px solid rgba(212,175,55,0.1);border-radius:var(--radius-md);font-family:var(--font-sans);font-size:12px;background:var(--gray-50);color:var(--gray-800);">
-                            </div>
-                            <div style="margin-bottom:var(--space-md);">
-                                <label style="font-size:11px;font-weight:600;color:var(--gray-600);">🔒 Contraseña</label>
-                                <input type="password" id="loginPassword" placeholder="••••••••" style="width:100%;padding:10px 14px;border:1.5px solid rgba(212,175,55,0.1);border-radius:var(--radius-md);font-family:var(--font-sans);font-size:12px;background:var(--gray-50);color:var(--gray-800);">
-                            </div>
-                            <button class="btn btn-gold" onclick="handleLogin()" style="width:100%;padding:10px;">Iniciar sesión</button>
-                            <p style="text-align:center;margin-top:var(--space-sm);font-size:12px;color:var(--gray-500);">
-                                ¿No tienes cuenta? <a href="#" onclick="showRegisterForm()" style="color:var(--gold);text-decoration:none;">Regístrate</a>
-                            </p>
-                            <a href="#" onclick="showRecoverPassword()" style="display:block;text-align:center;font-size:11px;color:var(--gray-400);margin-top:4px;">¿Olvidaste tu contraseña?</a>
-                        </div>
-                        
-                        <div id="registerForm" style="display:none;">
-                            <div style="margin-bottom:var(--space-sm);">
-                                <label style="font-size:11px;font-weight:600;color:var(--gray-600);">👤 Nombre completo</label>
-                                <input type="text" id="registerName" placeholder="Tu nombre" style="width:100%;padding:10px 14px;border:1.5px solid rgba(212,175,55,0.1);border-radius:var(--radius-md);font-family:var(--font-sans);font-size:12px;background:var(--gray-50);color:var(--gray-800);">
-                            </div>
-                            <div style="margin-bottom:var(--space-sm);">
-                                <label style="font-size:11px;font-weight:600;color:var(--gray-600);">📧 Correo electrónico</label>
-                                <input type="email" id="registerEmail" placeholder="tu@email.com" style="width:100%;padding:10px 14px;border:1.5px solid rgba(212,175,55,0.1);border-radius:var(--radius-md);font-family:var(--font-sans);font-size:12px;background:var(--gray-50);color:var(--gray-800);">
-                            </div>
-                            <div style="margin-bottom:var(--space-sm);">
-                                <label style="font-size:11px;font-weight:600;color:var(--gray-600);">🔒 Contraseña</label>
-                                <input type="password" id="registerPassword" placeholder="Mínimo 6 caracteres" style="width:100%;padding:10px 14px;border:1.5px solid rgba(212,175,55,0.1);border-radius:var(--radius-md);font-family:var(--font-sans);font-size:12px;background:var(--gray-50);color:var(--gray-800);">
-                            </div>
-                            <div style="margin-bottom:var(--space-md);">
-                                <label style="font-size:11px;font-weight:600;color:var(--gray-600);">🔒 Confirmar contraseña</label>
-                                <input type="password" id="registerPassword2" placeholder="Repite la contraseña" style="width:100%;padding:10px 14px;border:1.5px solid rgba(212,175,55,0.1);border-radius:var(--radius-md);font-family:var(--font-sans);font-size:12px;background:var(--gray-50);color:var(--gray-800);">
-                            </div>
-                            <button class="btn btn-gold" onclick="handleRegister()" style="width:100%;padding:10px;">Crear cuenta 🎉</button>
-                            <p style="text-align:center;margin-top:var(--space-sm);font-size:12px;color:var(--gray-500);">
-                                ¿Ya tienes cuenta? <a href="#" onclick="showLoginForm()" style="color:var(--gold);text-decoration:none;">Iniciar sesión</a>
-                            </p>
-                        </div>
-                        
-                        <div id="recoverForm" style="display:none;">
-                            <div style="margin-bottom:var(--space-md);">
-                                <label style="font-size:11px;font-weight:600;color:var(--gray-600);">📧 Correo electrónico</label>
-                                <input type="email" id="recoverEmail" placeholder="tu@email.com" style="width:100%;padding:10px 14px;border:1.5px solid rgba(212,175,55,0.1);border-radius:var(--radius-md);font-family:var(--font-sans);font-size:12px;background:var(--gray-50);color:var(--gray-800);">
-                            </div>
-                            <button class="btn btn-gold" onclick="handleRecoverPassword()" style="width:100%;padding:10px;">📩 Recuperar contraseña</button>
-                            <p style="text-align:center;margin-top:var(--space-sm);font-size:12px;color:var(--gray-500);">
-                                <a href="#" onclick="showLoginForm()" style="color:var(--gold);text-decoration:none;">Volver a iniciar sesión</a>
-                            </p>
-                        </div>
-                    </div>
-                `;
-                document.body.appendChild(modal);
-            }
-            modal.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeLoginModal() {
-            const modal = document.getElementById('loginModal');
-            if (modal) {
-                modal.style.display = 'none';
-                document.body.style.overflow = '';
-            }
-        }
-
-        function showLoginForm() {
-            document.getElementById('loginForm').style.display = 'block';
-            document.getElementById('registerForm').style.display = 'none';
-            document.getElementById('recoverForm').style.display = 'none';
-        }
-
-        function showRegisterForm() {
-            document.getElementById('loginForm').style.display = 'none';
-            document.getElementById('registerForm').style.display = 'block';
-            document.getElementById('recoverForm').style.display = 'none';
-        }
-
-        function showRecoverPassword() {
-            document.getElementById('loginForm').style.display = 'none';
-            document.getElementById('registerForm').style.display = 'none';
-            document.getElementById('recoverForm').style.display = 'block';
-        }
-
-        function handleLogin() {
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            loginUser(email, password);
-            if (currentUser) closeLoginModal();
-        }
-
-        function handleRegister() {
-            const name = document.getElementById('registerName').value;
-            const email = document.getElementById('registerEmail').value;
-            const password = document.getElementById('registerPassword').value;
-            const password2 = document.getElementById('registerPassword2').value;
-
-            if (password !== password2) {
-                mostrarNotificacion('⚠️ Las contraseñas no coinciden', '⚠️');
-                return;
-            }
-
-            if (registerUser(name, email, password)) {
-                closeLoginModal();
-            }
-        }
-
-        function handleRecoverPassword() {
-            const email = document.getElementById('recoverEmail').value;
-            if (!email) {
-                mostrarNotificacion('⚠️ Ingresa tu correo', '⚠️');
-                return;
-            }
-            
-            const users = JSON.parse(localStorage.getItem('paulina_users') || '[]');
-            const user = users.find(u => u.email === email);
-            
-            if (!user) {
-                mostrarNotificacion('❌ No encontramos una cuenta con ese correo', '❌');
-                return;
-            }
-            
-            mostrarNotificacion(`📩 Hemos enviado un enlace de recuperación a ${email}`, '📩');
-            closeLoginModal();
-        }
 
         function loadUser() {
             try {
@@ -3298,11 +3266,11 @@
         }
 
         function getUserLevel(points) {
-            if (points >= 1000) return { name: '💎 Diamante', emoji: '💎', discount: 15 };
-            if (points >= 500) return { name: '🥇 Oro', emoji: '🥇', discount: 10 };
-            if (points >= 200) return { name: '🥈 Plata', emoji: '🥈', discount: 5 };
-            if (points >= 50) return { name: '🥉 Bronce', emoji: '🥉', discount: 3 };
-            return { name: '✨ Visitante', emoji: '✨', discount: 0 };
+            if (points >= 1000) return { name: '💎 Diamante' };
+            if (points >= 500) return { name: '🥇 Oro' };
+            if (points >= 200) return { name: '🥈 Plata' };
+            if (points >= 50) return { name: '🥉 Bronce' };
+            return { name: '✨ Visitante' };
         }
 
         function updateUserUI() {
@@ -3320,11 +3288,11 @@
 
                 if (userName) userName.textContent = displayName;
                 if (userNameDesktop) userNameDesktop.textContent = displayName;
-                if (userLevel) userLevel.textContent = `${level.emoji} ${level.name} · ${currentUser.points || 0} pts`;
+                if (userLevel) userLevel.textContent = `${level.name} · ${currentUser.points || 0} pts`;
                 if (userAvatar) userAvatar.textContent = displayName.charAt(0).toUpperCase();
 
                 if (mobileUserName) mobileUserName.textContent = displayName;
-                if (mobileUserLevel) mobileUserLevel.textContent = `${level.emoji} ${level.name} · ${currentUser.points || 0} pts`;
+                if (mobileUserLevel) mobileUserLevel.textContent = `${level.name} · ${currentUser.points || 0} pts`;
 
                 if (mobileLoginBtn) {
                     mobileLoginBtn.textContent = `👤 ${displayName}`;
@@ -3337,11 +3305,11 @@
             } else {
                 if (userName) userName.textContent = 'Invitado';
                 if (userNameDesktop) userNameDesktop.textContent = 'Invitado';
-                if (userLevel) userLevel.textContent = '✨ Nivel: Visitante';
+                if (userLevel) userLevel.textContent = 'Nivel: Visitante';
                 if (userAvatar) userAvatar.textContent = '👤';
 
                 if (mobileUserName) mobileUserName.textContent = 'Invitado';
-                if (mobileUserLevel) mobileUserLevel.textContent = '✨ Nivel: Visitante';
+                if (mobileUserLevel) mobileUserLevel.textContent = 'Nivel: Visitante';
 
                 if (mobileLoginBtn) {
                     mobileLoginBtn.textContent = '🔑 Iniciar sesión';
@@ -3350,8 +3318,38 @@
             }
         }
 
+        function showLoginModal() {
+            const email = prompt('📧 Ingresa tu correo electrónico:');
+            if (!email || !email.includes('@')) {
+                if (email) mostrarNotificacion('⚠️ Correo electrónico inválido', '⚠️');
+                return;
+            }
+
+            const name = prompt('👤 Ingresa tu nombre (opcional):') || email.split('@')[0];
+
+            currentUser = {
+                id: generateId(),
+                email: email,
+                name: name,
+                points: parseInt(localStorage.getItem(`paulina_points_${email}`)) || 0,
+                createdAt: new Date().toISOString()
+            };
+
+            saveUser();
+            updateUserUI();
+            mostrarNotificacion(`✅ ¡Bienvenida ${name}!`, '👋');
+            lanzarConfetti();
+        }
+
+        function logoutUser() {
+            currentUser = null;
+            localStorage.removeItem('paulina_user');
+            updateUserUI();
+            mostrarNotificacion('👋 Sesión cerrada', '👋');
+        }
+
         // ============================================
-        // SISTEMA DE CARRITO
+        // SISTEMA DE CARRITO CON MENSAJES MOTIVACIONALES
         // ============================================
 
         function loadCart() {
@@ -3403,8 +3401,37 @@
                 }, 2000);
             }
 
-            mostrarNotificacion(`✅ ${product.nombre} agregado al carrito`, '🛍️');
-            lanzarConfetti();
+            // Mensaje motivacional según el carrito
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            let mensaje = `✅ ${product.nombre} agregado al carrito`;
+            let icono = '🛍️';
+
+            if (total >= 45 && total < 50) {
+                mensaje = `🎉 ¡Ya casi tienes envío gratis! Te faltan $${(50 - total).toFixed(2)} para envío gratis 🚚`;
+                icono = '🎉';
+                lanzarConfetti();
+            } else if (total >= 50) {
+                mensaje = '🚚 ¡FELICIDADES! Tienes envío gratis en tu compra 🎉';
+                icono = '🚚';
+                lanzarConfetti();
+                setTimeout(() => lanzarConfetti(), 500);
+            } else if (cart.length >= 3) {
+                const messages = [
+                    '💪 ¡Sigue así! Te estás armando un pedido increíble',
+                    '🌟 ¡Excelente elección! Cada producto es especial',
+                    '✨ ¡Eres toda una fashionista! Sigue agregando',
+                    '💖 ¡Me encanta tu estilo! Sigue comprando'
+                ];
+                mensaje = messages[Math.floor(Math.random() * messages.length)];
+                icono = '💪';
+            }
+
+            mostrarNotificacion(mensaje, icono);
+            
+            // Efecto en el contador
+            const cartCount = document.getElementById('cartCount');
+            cartCount.classList.add('bounce');
+            setTimeout(() => cartCount.classList.remove('bounce'), 300);
         }
 
         function removeFromCart(index) {
@@ -3433,11 +3460,13 @@
         function renderCart() {
             const container = document.getElementById('cartItems');
             const totalEl = document.getElementById('cartTotal');
+            const motivation = document.getElementById('cartMotivation');
 
             if (cart.length === 0) {
                 container.innerHTML =
                     `<div class="cart-empty">🛒 Tu carrito está vacío<br><span style="font-size:11px;opacity:0.5;">¡Empieza a comprar!</span></div>`;
                 totalEl.textContent = formatPrice(0);
+                if (motivation) motivation.style.display = 'none';
                 return;
             }
 
@@ -3460,6 +3489,49 @@
 
             container.innerHTML = html;
             totalEl.textContent = formatPrice(total);
+
+            // Mensaje motivacional
+            if (motivation) {
+                motivation.style.display = 'block';
+                let emoji = '🛍️';
+                let message = '¡Sigue agregando productos!';
+                let subMessage = 'Cada producto te acerca a más beneficios';
+                let progress = Math.min((total / 50) * 100, 100);
+                let extra = '';
+
+                if (total >= 50) {
+                    emoji = '🚚';
+                    message = '🎉 ¡ENVÍO GRATIS ASEGURADO!';
+                    subMessage = 'Disfruta de tu compra con envío sin costo';
+                    progress = 100;
+                    extra = '<span style="color:var(--gold);font-weight:700;">✅ ¡Envío gratis activado!</span>';
+                } else if (total >= 30) {
+                    emoji = '💪';
+                    message = '¡Ya casi llegas al envío gratis!';
+                    subMessage = `Te faltan $${(50 - total).toFixed(2)} para envío gratis 🚚`;
+                    extra = `<span style="color:var(--gold);">Falta $${(50 - total).toFixed(2)}</span>`;
+                } else if (total >= 10) {
+                    emoji = '🌟';
+                    message = '¡Buen comienzo! Sigue agregando';
+                    subMessage = 'Cada producto cuenta para tu pedido perfecto';
+                } else {
+                    emoji = '💖';
+                    message = '¡Bienvenida a tu carrito!';
+                    subMessage = 'Elige los productos que te harán brillar ✨';
+                }
+
+                motivation.innerHTML = `
+                    <div class="cart-motivation">
+                        <span class="emoji">${emoji}</span>
+                        <div class="message">${message}</div>
+                        <div class="sub-message">${subMessage}</div>
+                        ${extra}
+                        <div class="progress-bar">
+                            <div class="fill" style="width:${progress}%;"></div>
+                        </div>
+                    </div>
+                `;
+            }
 
             document.querySelectorAll('.cart-item-remove').forEach(btn => {
                 btn.addEventListener('click', function() {
@@ -3496,16 +3568,12 @@
                             ${isLowStock ? `<span class="badge badge-hot">🔥</span>` : ''}
                             <span class="badge badge-ai">🤖</span>
                         </div>
-                        <button class="product-wishlist" onclick="toggleWishlist(${product.id})" aria-label="Añadir a favoritos">🤍</button>
                         <div class="product-image" onclick="mostrarNotificacion('📦 ${product.nombre}','${product.emoji}')">
                             <img src="${product.imagen}" alt="${product.nombre}" loading="lazy" width="200" height="200" />
                             <div class="image-overlay"><span>🔍</span></div>
                         </div>
                         <div class="product-meta">
                             <span>👥 ${product.compradores || 0}</span>
-                            <span>⭐ ${(4.5 + Math.random() * 0.5).toFixed(1)}</span>
-                            <button onclick="showReviewModal(${product.id})" style="background:none;border:none;cursor:pointer;color:var(--gray-400);font-size:8px;">📝 Reseñar</button>
-                            <button onclick="showQuestionModal(${product.id})" style="background:none;border:none;cursor:pointer;color:var(--gray-400);font-size:8px;">❓ Preguntar</button>
                         </div>
                         <h3 class="product-name">${product.nombre}</h3>
                         <p class="product-description">${product.descripcion}</p>
@@ -3626,6 +3694,7 @@
                 renderCart();
                 closeModal();
                 mostrarNotificacion('✅ Pedido enviado por WhatsApp', '📨');
+                lanzarConfetti();
             });
         }
 
@@ -3804,7 +3873,7 @@
             window.addEventListener('load', () => {
                 setTimeout(() => {
                     preloader.classList.add('hidden');
-                }, 1000);
+                }, 1200);
             });
 
             setTimeout(() => {
@@ -3812,233 +3881,6 @@
                     preloader.classList.add('hidden');
                 }
             }, 4000);
-        }
-
-        // ============================================
-        // WISHLIST
-        // ============================================
-
-        let wishlist = JSON.parse(localStorage.getItem('paulina_wishlist') || '[]');
-
-        function toggleWishlist(productId) {
-            const index = wishlist.indexOf(productId);
-            if (index > -1) {
-                wishlist.splice(index, 1);
-                mostrarNotificacion('💔 Eliminado de favoritos', '💔');
-            } else {
-                wishlist.push(productId);
-                mostrarNotificacion('❤️ Añadido a favoritos', '❤️');
-            }
-            localStorage.setItem('paulina_wishlist', JSON.stringify(wishlist));
-            renderizarProductos(productos);
-        }
-
-        // ============================================
-        // RESEÑAS DE PRODUCTOS
-        // ============================================
-
-        let currentReviewProduct = null;
-        let reviewRating = 0;
-
-        function showReviewModal(productId) {
-            const product = productos.find(p => p.id === productId);
-            if (!product) return;
-
-            currentReviewProduct = productId;
-            reviewRating = 0;
-
-            let modal = document.getElementById('reviewModal');
-            if (!modal) {
-                modal = document.createElement('div');
-                modal.id = 'reviewModal';
-                modal.className = 'modal-overlay';
-                modal.innerHTML = `
-                    <div class="modal-content">
-                        <button class="modal-close" onclick="closeReviewModal()">✕</button>
-                        <h3 style="font-family:var(--font-serif);font-size:1.2rem;margin-bottom:var(--space-md);">⭐ Calificar producto</h3>
-                        <div id="reviewProductName" style="font-size:14px;color:var(--gray-700);margin-bottom:var(--space-sm);"></div>
-                        <div id="reviewStars" style="display:flex;gap:8px;margin-bottom:var(--space-md);font-size:2rem;cursor:pointer;">
-                            <span onclick="setRating(1)">☆</span>
-                            <span onclick="setRating(2)">☆</span>
-                            <span onclick="setRating(3)">☆</span>
-                            <span onclick="setRating(4)">☆</span>
-                            <span onclick="setRating(5)">☆</span>
-                        </div>
-                        <textarea id="reviewComment" placeholder="Escribe tu reseña..." style="width:100%;padding:10px;border:1.5px solid rgba(212,175,55,0.1);border-radius:var(--radius-md);font-family:var(--font-sans);font-size:12px;min-height:80px;resize:vertical;"></textarea>
-                        <button class="btn btn-gold" onclick="submitReview()" style="width:100%;margin-top:var(--space-sm);">📝 Enviar reseña</button>
-                    </div>
-                `;
-                document.body.appendChild(modal);
-            }
-
-            document.getElementById('reviewProductName').textContent = `📦 ${product.nombre}`;
-            modal.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeReviewModal() {
-            const modal = document.getElementById('reviewModal');
-            if (modal) {
-                modal.style.display = 'none';
-                document.body.style.overflow = '';
-            }
-        }
-
-        function setRating(rating) {
-            reviewRating = rating;
-            const stars = document.getElementById('reviewStars').querySelectorAll('span');
-            stars.forEach((star, index) => {
-                star.textContent = index < rating ? '⭐' : '☆';
-            });
-        }
-
-        function submitReview() {
-            if (!currentUser) {
-                mostrarNotificacion('⚠️ Inicia sesión para reseñar', '⚠️');
-                showLoginModal();
-                return;
-            }
-
-            if (reviewRating === 0) {
-                mostrarNotificacion('⚠️ Selecciona una calificación', '⚠️');
-                return;
-            }
-
-            const comment = document.getElementById('reviewComment').value.trim();
-            if (!comment) {
-                mostrarNotificacion('⚠️ Escribe tu reseña', '⚠️');
-                return;
-            }
-
-            const users = JSON.parse(localStorage.getItem('paulina_users') || '[]');
-            const userIndex = users.findIndex(u => u.id === currentUser.id);
-
-            if (userIndex > -1) {
-                if (!users[userIndex].reviews) users[userIndex].reviews = [];
-                users[userIndex].reviews.push({
-                    productId: currentReviewProduct,
-                    rating: reviewRating,
-                    comment: comment,
-                    date: new Date().toISOString()
-                });
-
-                localStorage.setItem('paulina_users', JSON.stringify(users));
-                currentUser = users[userIndex];
-                saveUser();
-
-                mostrarNotificacion('✅ Reseña enviada. ¡Gracias!', '⭐');
-                closeReviewModal();
-                lanzarConfetti();
-            }
-        }
-
-        // ============================================
-        // PREGUNTAS SOBRE PRODUCTOS
-        // ============================================
-
-        let currentQuestionProduct = null;
-
-        function showQuestionModal(productId) {
-            const product = productos.find(p => p.id === productId);
-            if (!product) return;
-
-            currentQuestionProduct = productId;
-
-            let modal = document.getElementById('questionModal');
-            if (!modal) {
-                modal = document.createElement('div');
-                modal.id = 'questionModal';
-                modal.className = 'modal-overlay';
-                modal.innerHTML = `
-                    <div class="modal-content">
-                        <button class="modal-close" onclick="closeQuestionModal()">✕</button>
-                        <h3 style="font-family:var(--font-serif);font-size:1.2rem;margin-bottom:var(--space-md);">❓ Pregunta sobre el producto</h3>
-                        <div id="questionProductName" style="font-size:14px;color:var(--gray-700);margin-bottom:var(--space-sm);"></div>
-                        <textarea id="questionText" placeholder="Escribe tu pregunta..." style="width:100%;padding:10px;border:1.5px solid rgba(212,175,55,0.1);border-radius:var(--radius-md);font-family:var(--font-sans);font-size:12px;min-height:80px;resize:vertical;"></textarea>
-                        <button class="btn btn-gold" onclick="submitQuestion()" style="width:100%;margin-top:var(--space-sm);">📨 Enviar pregunta</button>
-                    </div>
-                `;
-                document.body.appendChild(modal);
-            }
-
-            document.getElementById('questionProductName').textContent = `📦 ${product.nombre}`;
-            modal.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeQuestionModal() {
-            const modal = document.getElementById('questionModal');
-            if (modal) {
-                modal.style.display = 'none';
-                document.body.style.overflow = '';
-            }
-        }
-
-        function submitQuestion() {
-            if (!currentUser) {
-                mostrarNotificacion('⚠️ Inicia sesión para preguntar', '⚠️');
-                showLoginModal();
-                return;
-            }
-
-            const question = document.getElementById('questionText').value.trim();
-            if (!question) {
-                mostrarNotificacion('⚠️ Escribe tu pregunta', '⚠️');
-                return;
-            }
-
-            const users = JSON.parse(localStorage.getItem('paulina_users') || '[]');
-            const userIndex = users.findIndex(u => u.id === currentUser.id);
-
-            if (userIndex > -1) {
-                if (!users[userIndex].questions) users[userIndex].questions = [];
-                users[userIndex].questions.push({
-                    productId: currentQuestionProduct,
-                    question: question,
-                    date: new Date().toISOString(),
-                    answered: false
-                });
-
-                localStorage.setItem('paulina_users', JSON.stringify(users));
-                currentUser = users[userIndex];
-                saveUser();
-
-                mostrarNotificacion('✅ Pregunta enviada. Te responderemos pronto!', '📨');
-                closeQuestionModal();
-            }
-        }
-
-        // ============================================
-        // NOTIFICACIONES PUSH
-        // ============================================
-
-        function showPushNotification(title, body, icon = '🔔') {
-            const notification = document.getElementById('pushNotification');
-            if (!notification) {
-                const div = document.createElement('div');
-                div.id = 'pushNotification';
-                div.style.cssText = 'position:fixed;bottom:100px;right:20px;background:var(--white);border-radius:var(--radius-md);padding:16px 20px;box-shadow:var(--shadow-lg);border-left:4px solid var(--gold);z-index:1000;max-width:350px;transform:translateX(120%);transition:transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);';
-                div.innerHTML = `
-                    <div style="display:flex;align-items:center;gap:10px;">
-                        <span id="pushIcon" style="font-size:1.5rem;">🔔</span>
-                        <div>
-                            <div id="pushTitle" style="font-weight:600;font-size:13px;">Notificación</div>
-                            <div id="pushBody" style="font-size:12px;color:var(--gray-500);">Mensaje</div>
-                        </div>
-                    </div>
-                `;
-                document.body.appendChild(div);
-            }
-
-            const el = document.getElementById('pushNotification');
-            document.getElementById('pushIcon').textContent = icon;
-            document.getElementById('pushTitle').textContent = title;
-            document.getElementById('pushBody').textContent = body;
-            el.style.transform = 'translateX(0)';
-
-            setTimeout(() => {
-                el.style.transform = 'translateX(120%)';
-            }, 5000);
         }
 
         // ============================================
@@ -4066,7 +3908,7 @@
             document.getElementById('userBtn').addEventListener('click', () => {
                 if (currentUser) {
                     const level = getUserLevel(currentUser.points || 0);
-                    mostrarNotificacion(`👤 ${currentUser.name} · ${level.emoji} ${level.name} · ${currentUser.points || 0} pts`, '⭐');
+                    mostrarNotificacion(`👤 ${currentUser.name} · ${level.name} · ${currentUser.points || 0} pts`, '⭐');
                 } else {
                     showLoginModal();
                 }
@@ -4095,30 +3937,15 @@
                 }
             });
 
-            // Notificación de bienvenida push
-            setTimeout(() => {
-                showPushNotification('✨ ¡Bienvenida a Paulina Accesorios!', 'Descubre nuestra colección premium 2026', '💎');
-            }, 3000);
-
             console.log('✨ Paulina Accesorios 2026 - Ultra Premium ✨');
-            console.log('🎨 Diseño de lujo - Farfetch/Sephora');
-            console.log('📱 Totalmente responsive - PC y Celular');
+            console.log('🎨 Diseño de lujo con partículas y efectos');
+            console.log('📱 100% Responsive - Celular y PC');
             console.log('🤖 IA que responde ABSOLUTAMENTE TODO');
             console.log('💎 Colores dorado + rosa + gris premium');
             console.log('🚀 Versión 2026 - Diseño de lujo');
-            console.log('📦 FUNCIONES PROFESIONALES ACTIVADAS:');
-            console.log('  ✅ Registro de usuarios con email/contraseña');
-            console.log('  ✅ Recuperación de contraseña');
-            console.log('  ✅ Perfil de usuario');
-            console.log('  ✅ Historial de compras');
-            console.log('  ✅ Direcciones guardadas');
-            console.log('  ✅ Sistema de puntos y niveles');
-            console.log('  ✅ Reseñas de productos ⭐');
-            console.log('  ✅ Preguntas sobre productos ❓');
-            console.log('  ✅ Notificaciones push 🔔');
-            console.log('  ✅ Wishlist ❤️');
-            console.log('  ✅ Búsqueda en vivo 🔍');
-            console.log('  ✅ Modo oscuro 🌙');
+            console.log('🎉 Mensajes motivacionales al agregar al carrito');
+            console.log('✨ Partículas de fondo interactivas');
+            console.log('🔄 Botones con reacción al contacto (hover/click)');
         });
     </script>
 
