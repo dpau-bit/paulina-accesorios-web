@@ -1884,7 +1884,7 @@
         }
 
         // ============================================
-        // RECUPERAR CONTRASEÑA — USA FIREBASE NATIVO
+        // RECUPERAR CONTRASEÑA — USA WORKER DE BREVO
         // ============================================
 
         async function handleRecoverPassword() {
@@ -1895,18 +1895,26 @@
             }
 
             try {
-                // Firebase envía el correo con el enlace (URL de acción ya configurada)
-                await window.firebaseAuth.sendPasswordResetEmail(window.auth, email);
+                const WORKER_URL = 'https://paulina-email.dpau.workers.dev';
                 
-                mostrarNotificacion(`📩 Enviamos un enlace a ${email}. Revisa tu bandeja y SPAM.`, '📩');
-                closeLoginModal();
-                lanzarConfetti();
+                const response = await fetch(WORKER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    mostrarNotificacion(`📩 Enviamos un enlace a ${email}. Revisa tu bandeja.`, '📩');
+                    closeLoginModal();
+                    lanzarConfetti();
+                } else {
+                    mostrarNotificacion(data.error || '❌ Error al enviar', '❌');
+                }
             } catch (error) {
                 console.error('❌ Error:', error);
-                let mensaje = '❌ Error al enviar el correo';
-                if (error.code === 'auth/user-not-found') mensaje = '⚠️ No existe una cuenta con ese correo';
-                else if (error.code === 'auth/invalid-email') mensaje = '⚠️ Correo electrónico inválido';
-                mostrarNotificacion(mensaje, '❌');
+                mostrarNotificacion('❌ Error al procesar. Intenta de nuevo.', '❌');
             }
         }
 
@@ -1968,13 +1976,11 @@
             }
 
             try {
-                // Usar el código (oobCode) que viene en la URL del correo
                 await window.firebaseAuth.confirmPasswordReset(window.auth, oobCode, newPassword);
                 
                 mostrarNotificacion('✅ ¡Contraseña actualizada! 🎉', '🎉');
                 lanzarConfetti();
                 
-                // Limpiar URL y cerrar modal
                 window.history.replaceState({}, document.title, window.location.pathname);
                 document.getElementById('resetPasswordModal').style.display = 'none';
                 document.body.style.overflow = '';
@@ -2344,7 +2350,7 @@
 
             console.log('✨ Paulina Accesorios 2026 - Ultra Premium ✨');
             console.log('🔥 Firebase integrado');
-            console.log('🔐 Recuperación de contraseña sin pedir anterior');
+            console.log('📧 Brevo + Worker para correos de recuperación');
         });
     </script>
 
