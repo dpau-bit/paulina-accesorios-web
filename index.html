@@ -33,7 +33,7 @@
         } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
         import { 
             getFirestore, doc, setDoc, getDoc, updateDoc,
-            collection, getDocs, deleteDoc, onSnapshot
+            collection, getDocs, deleteDoc
         } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -58,7 +58,7 @@
             signOut, onAuthStateChanged, updateProfile, sendPasswordResetEmail,
             confirmPasswordReset, verifyPasswordResetCode
         };
-        window.firebaseDB = { doc, setDoc, getDoc, updateDoc, collection, getDocs, deleteDoc, onSnapshot };
+        window.firebaseDB = { doc, setDoc, getDoc, updateDoc, collection, getDocs, deleteDoc };
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -78,6 +78,7 @@
                     }
                     if (typeof updateUserUI === 'function') updateUserUI();
 
+                    // 🔥 VERIFICAR SI ES ADMIN
                     const adminDoc = await getDoc(doc(db, "admins", user.uid));
                     if (adminDoc.exists()) {
                         crearPanelAdmin();
@@ -1440,20 +1441,20 @@
         });
 
         // ============================================
-        // PRODUCTOS CON ACTUALIZACIÓN EN TIEMPO REAL
+        // PRODUCTOS (SE CARGAN DESDE FIRESTORE)
         // ============================================
         let productos = [];
 
-        function escucharProductosTiempoReal() {
-            const productosRef = window.firebaseDB.collection(window.db, "productos");
-            
-            window.firebaseDB.onSnapshot(productosRef, (snapshot) => {
+        async function cargarProductosDesdeFirestore() {
+            try {
+                const productosRef = window.firebaseDB.collection(window.db, "productos");
+                const querySnapshot = await window.firebaseDB.getDocs(productosRef);
+                
                 productos = [];
-                snapshot.forEach((doc) => {
+                querySnapshot.forEach((doc) => {
                     productos.push(doc.data());
                 });
                 
-                // Si no hay productos en Firestore, cargar los por defecto
                 if (productos.length === 0) {
                     productos = [
                         { id: 1, nombre: 'Aretes Bohemios', categoria: 'aretes', descripcion: 'Hechos a mano con piedras naturales semi-preciosas', precio: 25.00, precio_old: null, badge: '⭐ Top', emoji: '📿', stock: 15, compradores: 134, imagen: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400&h=400&fit=crop&crop=center&q=80' },
@@ -1467,11 +1468,15 @@
                     ];
                 }
                 
-                renderizarProductos(productos);
+                if (typeof renderizarProductos === 'function') {
+                    renderizarProductos(productos);
+                }
+                
                 actualizarIALocal();
                 
-                console.log('🔄 Productos actualizados en tiempo real:', productos.length);
-            });
+            } catch (error) {
+                console.error('❌ Error al cargar productos:', error);
+            }
         }
 
         const IA_KNOWLEDGE = {
@@ -1511,6 +1516,7 @@
         function getAIResponse(message) {
             const msg = message.toLowerCase().trim();
 
+            // 🔥 VERIFICAR SI MENCIONA UN PRODUCTO ESPECÍFICO
             for (const producto of productos) {
                 const nombreLower = producto.nombre.toLowerCase();
                 
@@ -1526,6 +1532,7 @@
                 }
             }
 
+            // 🔥 SI PREGUNTA POR PRODUCTOS AGOTADOS
             if (msg.includes('agotado') || msg.includes('acabó') || msg.includes('no hay')) {
                 const agotados = productos.filter(p => p.stock <= 0);
                 if (agotados.length === 0) {
@@ -1535,6 +1542,7 @@
                 }
             }
 
+            // 🔥 SI PREGUNTA POR LO QUE HAY DISPONIBLE
             if (msg.includes('disponible') || msg.includes('stock')) {
                 const disponibles = productos.filter(p => p.stock > 0);
                 return `✅ Tenemos ${disponibles.length} productos disponibles:\n\n${disponibles.map(p => `🛍️ ${p.nombre} - $${p.precio.toFixed(2)}`).join('\n')}\n\n¿Cuál te interesa? ✨`;
@@ -1938,6 +1946,10 @@
             if (success) closeLoginModal();
         }
 
+        // ============================================
+        // RECUPERAR CONTRASEÑA — USA WORKER DE BREVO
+        // ============================================
+
         async function handleRecoverPassword() {
             const email = document.getElementById('recoverEmail').value;
             if (!email || !email.includes('@')) {
@@ -1968,6 +1980,10 @@
                 mostrarNotificacion('❌ Error al procesar. Intenta de nuevo.', '❌');
             }
         }
+
+        // ============================================
+        // DETECTAR ENLACE DE RECUPERACIÓN DE FIREBASE
+        // ============================================
 
         const urlParams = new URLSearchParams(window.location.search);
         const mode = urlParams.get('mode');
@@ -2149,8 +2165,6 @@
         }
 
         function renderizarProductos(products) {
-            const container
-                    function renderizarProductos(products) {
             const container = document.getElementById('productGrid');
             if (!container) return;
             if (products.length === 0) {
@@ -2551,6 +2565,7 @@
                 document.getElementById('adminStock').value = '';
                 
                 cargarProductosAdmin();
+                cargarProductosDesdeFirestore();
 
             } catch (error) {
                 console.error('❌ Error:', error);
@@ -2596,6 +2611,7 @@
                 );
                 mostrarNotificacion('✅ Producto eliminado', '🗑️');
                 cargarProductosAdmin();
+                cargarProductosDesdeFirestore();
             } catch (error) {
                 console.error('❌ Error:', error);
             }
@@ -2603,7 +2619,7 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             loadCart();
-            escucharProductosTiempoReal();
+            cargarProductosDesdeFirestore();
 
             initVisitCounter();
             initDarkMode();
@@ -2633,7 +2649,6 @@
             console.log('🔥 Firebase integrado');
             console.log('📧 Brevo + Worker para correos de recuperación');
             console.log('⚙️ Panel de admin con Firebase Admin');
-            console.log('🔄 Productos en TIEMPO REAL con onSnapshot');
         });
     </script>
 
