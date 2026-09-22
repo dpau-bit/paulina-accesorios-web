@@ -60,30 +60,24 @@
         };
         window.firebaseDB = { doc, setDoc, getDoc, updateDoc, collection, getDocs, deleteDoc };
 
-        onAuthStateChanged(auth, async (user) => {
+        // 🚀 SIN await bloqueante — UI inmediata, datos en segundo plano
+        onAuthStateChanged(auth, (user) => {
             if (user) {
-                try {
-                    const docRef = doc(db, "usuarios", user.uid);
-                    const docSnap = await getDoc(docRef);
+                window.currentUser = {
+                    id: user.uid,
+                    name: user.displayName || user.email.split('@')[0],
+                    email: user.email,
+                    points: 0,
+                    level: '✨ Visitante'
+                };
+                if (typeof updateUserUI === 'function') updateUserUI();
+
+                getDoc(doc(db, "usuarios", user.uid)).then(docSnap => {
                     if (docSnap.exists()) {
                         window.currentUser = docSnap.data();
-                    } else {
-                        window.currentUser = {
-                            id: user.uid,
-                            name: user.displayName || user.email.split('@')[0],
-                            email: user.email,
-                            points: 0,
-                            level: '✨ Visitante'
-                        };
+                        if (typeof updateUserUI === 'function') updateUserUI();
                     }
-                    if (typeof updateUserUI === 'function') updateUserUI();
-
-                    // 🔥 VERIFICAR SI ES ADMIN
-                    const adminDoc = await getDoc(doc(db, "admins", user.uid));
-                    if (adminDoc.exists()) {
-                        crearPanelAdmin();
-                    }
-                } catch (error) { console.error('❌', error); }
+                }).catch(err => console.warn('⚠️', err));
             } else {
                 window.currentUser = null;
                 if (typeof updateUserUI === 'function') updateUserUI();
@@ -175,12 +169,13 @@
         @keyframes gradientBG { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
         @keyframes bounceIn { 0% { transform: scale(0.3); opacity: 0; } 50% { transform: scale(1.05); } 70% { transform: scale(0.9); } 100% { transform: scale(1); opacity: 1; } }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes confettiFall { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
 
         .preloader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--gray-50); z-index: var(--z-loader);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
         }
         .preloader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
         .preloader-logo {
@@ -376,7 +371,7 @@
             transition: var(--transition-base);
             box-shadow: var(--shadow-md);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            background-attachment: fixed; z-index: 1;
+            z-index: 1;
         }
         [data-theme="dark"] .hero {
             background: linear-gradient(135deg, #1a0b1a, #121212, #1a0b1a);
@@ -1001,6 +996,16 @@
         }
         .modal-close:hover { color: var(--gold); transform: rotate(90deg); }
 
+        .confetti-container {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none; z-index: 9999;
+        }
+        .confetti {
+            position: absolute; border-radius: 2px;
+            animation: confettiFall linear forwards;
+        }
+
         @media (min-width: 1200px) {
             .product-grid { grid-template-columns: repeat(4, 1fr); gap: var(--space-xl); }
             .hero-title { font-size: 3.8rem; }
@@ -1040,7 +1045,6 @@
                 border-radius: 0 0 var(--radius-xl) var(--radius-xl);
                 margin: 0 var(--space-sm) var(--space-lg);
                 flex-direction: column; text-align: center;
-                background-attachment: scroll;
             }
             .hero-title { font-size: 2rem; }
             .hero-description { font-size: 12px; max-width: 100%; margin: 0 auto var(--space-md); }
@@ -1141,10 +1145,6 @@
         <span id="notificationText">Producto agregado al carrito</span>
         <span class="notif-close" onclick="this.parentElement.classList.remove('show')">✕</span>
     </div>
-
-    <button class="hamburger" id="hamburger" aria-label="Menú">
-        <span></span><span></span><span></span>
-    </button>
 
     <div class="mobile-menu" id="mobileMenu">
         <div style="text-align:center;padding:var(--space-md);">
@@ -1457,14 +1457,14 @@
                 
                 if (productos.length === 0) {
                     productos = [
-                        { id: 1, nombre: 'Aretes Bohemios', categoria: 'aretes', descripcion: 'Hechos a mano con piedras naturales semi-preciosas', precio: 25.00, precio_old: null, badge: '⭐ Top', emoji: '📿', stock: 15, compradores: 134, imagen: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400&h=400&fit=crop&crop=center&q=80' },
-                        { id: 2, nombre: 'Aretes de Perla Dorada', categoria: 'aretes', descripcion: 'Perlas naturales cultivadas con acabado dorado 18k', precio: 38.00, precio_old: null, badge: '✨ Especial', emoji: '📿', stock: 8, compradores: 89, imagen: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=400&fit=crop&crop=center&q=80' },
-                        { id: 3, nombre: 'Pestañas 5D Mega', categoria: 'pestanas', descripcion: 'Extensiones de pestañas efecto volumen 5D', precio: 35.00, precio_old: 45.00, badge: '🔥 2x1', emoji: '👁️', stock: 4, compradores: 56, imagen: 'https://images.unsplash.com/photo-1583182337426-8c2b5b2db6ae?w=400&h=400&fit=crop&crop=center&q=80' },
-                        { id: 4, nombre: 'Collar de Perla', categoria: 'collares', descripcion: 'Perlas naturales cultivadas con acabado dorado 18k', precio: 45.00, precio_old: null, badge: '💎 Premium', emoji: '📿', stock: 6, compradores: 45, imagen: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400&h=400&fit=crop&crop=center&q=80' },
-                        { id: 5, nombre: 'Collar Personalizado', categoria: 'collares', descripcion: 'Con iniciales o nombres grabados', precio: 30.00, precio_old: null, badge: '🌟 Especial', emoji: '📿', stock: 10, compradores: 34, imagen: 'https://images.unsplash.com/photo-1589128777073-2395665fec4c?w=400&h=400&fit=crop&crop=center&q=80' },
-                        { id: 6, nombre: 'Base Fit Me 220', categoria: 'maquillaje', descripcion: 'Base líquida de cobertura media, acabado natural mate', precio: 43.89, precio_old: null, badge: '⭐ Top', emoji: '💄', stock: 12, compradores: 45, imagen: 'https://images.unsplash.com/photo-1583241803259-1fdc3d56cd49?w=400&h=400&fit=crop&crop=center&q=80' },
-                        { id: 7, nombre: 'Shampoo Keratina', categoria: 'capilar', descripcion: 'Shampoo con keratina para reparación capilar', precio: 26.66, precio_old: null, badge: '⭐ Top', emoji: '💈', stock: 15, compradores: 67, imagen: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop&crop=center&q=80' },
-                        { id: 8, nombre: 'Acondicionador Keratina', categoria: 'capilar', descripcion: 'Acondicionador con keratina para cabello dañado', precio: 26.66, precio_old: null, badge: '💖 Favorito', emoji: '💈', stock: 12, compradores: 54, imagen: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop&crop=center&q=80' }
+                        { id: 1, nombre: 'Aretes Bohemios', categoria: 'aretes', descripcion: 'Hechos a mano con piedras naturales semi-preciosas', precio: 25.00, precio_old: null, badge: '⭐ Top', emoji: '📿', stock: 15, compradores: 134, imagen: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=200&h=200&fit=crop&q=60' },
+                        { id: 2, nombre: 'Aretes de Perla Dorada', categoria: 'aretes', descripcion: 'Perlas naturales cultivadas con acabado dorado 18k', precio: 38.00, precio_old: null, badge: '✨ Especial', emoji: '📿', stock: 8, compradores: 89, imagen: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=200&h=200&fit=crop&q=60' },
+                        { id: 3, nombre: 'Pestañas 5D Mega', categoria: 'pestanas', descripcion: 'Extensiones de pestañas efecto volumen 5D', precio: 35.00, precio_old: 45.00, badge: '🔥 2x1', emoji: '👁️', stock: 4, compradores: 56, imagen: 'https://images.unsplash.com/photo-1583182337426-8c2b5b2db6ae?w=200&h=200&fit=crop&q=60' },
+                        { id: 4, nombre: 'Collar de Perla', categoria: 'collares', descripcion: 'Perlas naturales cultivadas con acabado dorado 18k', precio: 45.00, precio_old: null, badge: '💎 Premium', emoji: '📿', stock: 6, compradores: 45, imagen: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=200&h=200&fit=crop&q=60' },
+                        { id: 5, nombre: 'Collar Personalizado', categoria: 'collares', descripcion: 'Con iniciales o nombres grabados', precio: 30.00, precio_old: null, badge: '🌟 Especial', emoji: '📿', stock: 10, compradores: 34, imagen: 'https://images.unsplash.com/photo-1589128777073-2395665fec4c?w=200&h=200&fit=crop&q=60' },
+                        { id: 6, nombre: 'Base Fit Me 220', categoria: 'maquillaje', descripcion: 'Base líquida de cobertura media, acabado natural mate', precio: 43.89, precio_old: null, badge: '⭐ Top', emoji: '💄', stock: 12, compradores: 45, imagen: 'https://images.unsplash.com/photo-1583241803259-1fdc3d56cd49?w=200&h=200&fit=crop&q=60' },
+                        { id: 7, nombre: 'Shampoo Keratina', categoria: 'capilar', descripcion: 'Shampoo con keratina para reparación capilar', precio: 26.66, precio_old: null, badge: '⭐ Top', emoji: '💈', stock: 15, compradores: 67, imagen: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=200&h=200&fit=crop&q=60' },
+                        { id: 8, nombre: 'Acondicionador Keratina', categoria: 'capilar', descripcion: 'Acondicionador con keratina para cabello dañado', precio: 26.66, precio_old: null, badge: '💖 Favorito', emoji: '💈', stock: 12, compradores: 54, imagen: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=200&h=200&fit=crop&q=60' }
                     ];
                 }
                 
@@ -1492,6 +1492,7 @@
             'envío': '📦 Envíos a todo Perú. Lima: 24-48h, provincias: 2-4 días. Gratis > $50.',
             'pago': '💳 Yape, Plin, transferencia, efectivo, tarjeta y contraentrega.',
             'ubicación': '📍 Francisco Bardales 705, Yurimaguas. Lun-Sáb 9am-8pm.',
+            'horario': '🕐 Nuestro horario es: Lun-Sáb 9am-8pm. Domingos cerrado.',
             'promociones': '🎁 2x1 en Pestañas 5D, 10% OFF con PAULINA10, envío gratis > $50.',
             'descuento': '🎉 10% OFF con PAULINA10.',
             'cupón': '🎁 Usa PAULINA10 para 10% OFF.',
@@ -1516,7 +1517,6 @@
         function getAIResponse(message) {
             const msg = message.toLowerCase().trim();
 
-            // 🔥 VERIFICAR SI MENCIONA UN PRODUCTO ESPECÍFICO
             for (const producto of productos) {
                 const nombreLower = producto.nombre.toLowerCase();
                 
@@ -1532,7 +1532,6 @@
                 }
             }
 
-            // 🔥 SI PREGUNTA POR PRODUCTOS AGOTADOS
             if (msg.includes('agotado') || msg.includes('acabó') || msg.includes('no hay')) {
                 const agotados = productos.filter(p => p.stock <= 0);
                 if (agotados.length === 0) {
@@ -1542,7 +1541,6 @@
                 }
             }
 
-            // 🔥 SI PREGUNTA POR LO QUE HAY DISPONIBLE
             if (msg.includes('disponible') || msg.includes('stock')) {
                 const disponibles = productos.filter(p => p.stock > 0);
                 return `✅ Tenemos ${disponibles.length} productos disponibles:\n\n${disponibles.map(p => `🛍️ ${p.nombre} - $${p.precio.toFixed(2)}`).join('\n')}\n\n¿Cuál te interesa? ✨`;
@@ -1695,12 +1693,12 @@
         }
 
         function lanzarConfetti() {
-            const container = document.getElementById('confettiContainer');
+            let container = document.getElementById('confettiContainer');
             if (!container) {
-                const newContainer = document.createElement('div');
-                newContainer.id = 'confettiContainer';
-                newContainer.className = 'confetti-container';
-                document.body.appendChild(newContainer);
+                container = document.createElement('div');
+                container.id = 'confettiContainer';
+                container.className = 'confetti-container';
+                document.body.appendChild(container);
             }
             const colors = ['#c2185b', '#d63384', '#f06292', '#f9a825', '#43a047', '#1a73e8', '#ff6f00', '#e53935', '#9c27b0', '#00bcd4'];
             for (let i = 0; i < 50; i++) {
@@ -1713,7 +1711,7 @@
                 confetti.style.height = (Math.random() * 8 + 4) + 'px';
                 confetti.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
                 confetti.style.animationDelay = (Math.random() * 0.5) + 's';
-                document.getElementById('confettiContainer').appendChild(confetti);
+                container.appendChild(confetti);
                 setTimeout(() => confetti.remove(), 4000);
             }
         }
@@ -1946,10 +1944,6 @@
             if (success) closeLoginModal();
         }
 
-        // ============================================
-        // RECUPERAR CONTRASEÑA — USA WORKER DE BREVO
-        // ============================================
-
         async function handleRecoverPassword() {
             const email = document.getElementById('recoverEmail').value;
             if (!email || !email.includes('@')) {
@@ -1980,10 +1974,6 @@
                 mostrarNotificacion('❌ Error al procesar. Intenta de nuevo.', '❌');
             }
         }
-
-        // ============================================
-        // DETECTAR ENLACE DE RECUPERACIÓN DE FIREBASE
-        // ============================================
 
         const urlParams = new URLSearchParams(window.location.search);
         const mode = urlParams.get('mode');
@@ -2302,7 +2292,7 @@
             btn.addEventListener('click', () => {
                 const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
                 if (isDark) {
-                    document.documentElement.removeAttribute('data-theme');
+                    document.documentElement.setAttribute('data-theme', 'light');
                     btn.textContent = '🌙';
                     localStorage.setItem('paulina_theme', 'light');
                 } else {
@@ -2342,12 +2332,14 @@
             const menu = document.getElementById('mobileMenu');
             const closeBtn = document.getElementById('mobileClose');
 
+            if (!hamburger || !menu) return;
+
             hamburger.addEventListener('click', () => {
                 hamburger.classList.toggle('active');
                 menu.classList.toggle('open');
                 document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
             });
-            closeBtn.addEventListener('click', () => {
+            if (closeBtn) closeBtn.addEventListener('click', () => {
                 hamburger.classList.remove('active');
                 menu.classList.remove('open');
                 document.body.style.overflow = '';
@@ -2379,13 +2371,15 @@
 
         function initPreloader() {
             const preloader = document.getElementById('preloader');
-            window.addEventListener('load', () => setTimeout(() => preloader.classList.add('hidden'), 1200));
-            setTimeout(() => { if (!preloader.classList.contains('hidden')) preloader.classList.add('hidden'); }, 4000);
+            if (!preloader) return;
+            const hide = () => setTimeout(() => preloader.classList.add('hidden'), 300);
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', hide);
+            } else {
+                hide();
+            }
+            setTimeout(() => preloader.classList.add('hidden'), 1500);
         }
-
-        // ============================================
-        // ACTUALIZAR IA LOCAL CON PRODUCTOS DE FIRESTORE
-        // ============================================
 
         function actualizarIALocal() {
             const clavesProductos = Object.keys(IA_KNOWLEDGE).filter(k => 
@@ -2433,7 +2427,7 @@
         }
 
         // ============================================
-        // PANEL DE ADMINISTRACIÓN
+        // ⚙️ PANEL DE ADMINISTRACIÓN
         // ============================================
 
         function crearPanelAdmin() {
@@ -2617,6 +2611,44 @@
             }
         }
 
+        // Hacer funciones globales para onclick
+        window.crearPanelAdmin = crearPanelAdmin;
+        window.abrirPanelAdmin = abrirPanelAdmin;
+        window.cerrarPanelAdmin = cerrarPanelAdmin;
+        window.guardarProducto = guardarProducto;
+        window.cargarProductosAdmin = cargarProductosAdmin;
+        window.eliminarProducto = eliminarProducto;
+        window.showLoginModal = showLoginModal;
+        window.closeLoginModal = closeLoginModal;
+        window.showLoginForm = showLoginForm;
+        window.showRegisterForm = showRegisterForm;
+        window.showRecoverPassword = showRecoverPassword;
+        window.handleLogin = handleLogin;
+        window.handleRegister = handleRegister;
+        window.handleRecoverPassword = handleRecoverPassword;
+        window.handleResetPassword = handleResetPassword;
+        window.mostrarNotificacion = mostrarNotificacion;
+
+        // ============================================
+        // 👑 ADMIN ÚNICO — SOLO paulinabellezaperu@gmail.com
+        // ============================================
+        const ADMIN_EMAIL = 'paulinabellezaperu@gmail.com';
+
+        function verificarAdmin(user) {
+            const btnExistente = document.getElementById('adminPanelBtn');
+            if (!user) {
+                if (btnExistente) btnExistente.remove();
+                return;
+            }
+            if (user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+                console.log('👑 Bienvenida Paulina — Panel Admin activado');
+                crearPanelAdmin();
+            } else {
+                if (btnExistente) btnExistente.remove();
+                console.log('ℹ️ Usuario normal (sin admin):', user.email);
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             loadCart();
             cargarProductosDesdeFirestore();
@@ -2645,10 +2677,19 @@
                 if (e.key === 'Enter') document.getElementById('searchBtn').click();
             });
 
+            // 🔥 VERIFICAR ADMIN EN CUANTO FIREBASE ESTÉ LISTO
+            const checkAuth = setInterval(() => {
+                if (window.auth) {
+                    clearInterval(checkAuth);
+                    window.auth.onAuthStateChanged((user) => {
+                        setTimeout(() => verificarAdmin(user), 500);
+                    });
+                }
+            }, 300);
+
             console.log('✨ Paulina Accesorios 2026 - Ultra Premium ✨');
             console.log('🔥 Firebase integrado');
-            console.log('📧 Brevo + Worker para correos de recuperación');
-            console.log('⚙️ Panel de admin con Firebase Admin');
+            console.log('👑 Admin autorizado:', ADMIN_EMAIL);
         });
     </script>
 
