@@ -31,7 +31,10 @@
             signOut, onAuthStateChanged, updateProfile, sendPasswordResetEmail,
             confirmPasswordReset, verifyPasswordResetCode
         } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        import { 
+            getFirestore, doc, setDoc, getDoc, updateDoc,
+            collection, getDocs, deleteDoc
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCuL027hF1uwJ0ZAIXaPTvNA6dBDVrztLA",
@@ -55,7 +58,7 @@
             signOut, onAuthStateChanged, updateProfile, sendPasswordResetEmail,
             confirmPasswordReset, verifyPasswordResetCode
         };
-        window.firebaseDB = { doc, setDoc, getDoc, updateDoc };
+        window.firebaseDB = { doc, setDoc, getDoc, updateDoc, collection, getDocs, deleteDoc };
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -74,10 +77,18 @@
                         };
                     }
                     if (typeof updateUserUI === 'function') updateUserUI();
+
+                    // 🔥 VERIFICAR SI ES ADMIN
+                    const adminDoc = await getDoc(doc(db, "admins", user.uid));
+                    if (adminDoc.exists()) {
+                        crearPanelAdmin();
+                    }
                 } catch (error) { console.error('❌', error); }
             } else {
                 window.currentUser = null;
                 if (typeof updateUserUI === 'function') updateUserUI();
+                const adminBtn = document.getElementById('adminPanelBtn');
+                if (adminBtn) adminBtn.remove();
             }
         });
     </script>
@@ -1429,16 +1440,44 @@
             retina_detect: true
         });
 
-        const productos = [
-            { id: 1, nombre: 'Aretes Bohemios', categoria: 'aretes', descripcion: 'Hechos a mano con piedras naturales semi-preciosas', precio: 25.00, precio_old: null, badge: '⭐ Top', emoji: '📿', stock: 15, compradores: 134, imagen: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400&h=400&fit=crop&crop=center&q=80' },
-            { id: 2, nombre: 'Aretes de Perla Dorada', categoria: 'aretes', descripcion: 'Perlas naturales cultivadas con acabado dorado 18k', precio: 38.00, precio_old: null, badge: '✨ Especial', emoji: '📿', stock: 8, compradores: 89, imagen: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=400&fit=crop&crop=center&q=80' },
-            { id: 3, nombre: 'Pestañas 5D Mega', categoria: 'pestanas', descripcion: 'Extensiones de pestañas efecto volumen 5D', precio: 35.00, precio_old: 45.00, badge: '🔥 2x1', emoji: '👁️', stock: 4, compradores: 56, imagen: 'https://images.unsplash.com/photo-1583182337426-8c2b5b2db6ae?w=400&h=400&fit=crop&crop=center&q=80' },
-            { id: 4, nombre: 'Collar de Perla', categoria: 'collares', descripcion: 'Perlas naturales cultivadas con acabado dorado 18k', precio: 45.00, precio_old: null, badge: '💎 Premium', emoji: '📿', stock: 6, compradores: 45, imagen: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400&h=400&fit=crop&crop=center&q=80' },
-            { id: 5, nombre: 'Collar Personalizado', categoria: 'collares', descripcion: 'Con iniciales o nombres grabados', precio: 30.00, precio_old: null, badge: '🌟 Especial', emoji: '📿', stock: 10, compradores: 34, imagen: 'https://images.unsplash.com/photo-1589128777073-2395665fec4c?w=400&h=400&fit=crop&crop=center&q=80' },
-            { id: 6, nombre: 'Base Fit Me 220', categoria: 'maquillaje', descripcion: 'Base líquida de cobertura media, acabado natural mate', precio: 43.89, precio_old: null, badge: '⭐ Top', emoji: '💄', stock: 12, compradores: 45, imagen: 'https://images.unsplash.com/photo-1583241803259-1fdc3d56cd49?w=400&h=400&fit=crop&crop=center&q=80' },
-            { id: 7, nombre: 'Shampoo Keratina', categoria: 'capilar', descripcion: 'Shampoo con keratina para reparación capilar', precio: 26.66, precio_old: null, badge: '⭐ Top', emoji: '💈', stock: 15, compradores: 67, imagen: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop&crop=center&q=80' },
-            { id: 8, nombre: 'Acondicionador Keratina', categoria: 'capilar', descripcion: 'Acondicionador con keratina para cabello dañado', precio: 26.66, precio_old: null, badge: '💖 Favorito', emoji: '💈', stock: 12, compradores: 54, imagen: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop&crop=center&q=80' }
-        ];
+        // ============================================
+        // PRODUCTOS (SE CARGAN DESDE FIRESTORE)
+        // ============================================
+        let productos = [];
+
+        async function cargarProductosDesdeFirestore() {
+            try {
+                const productosRef = window.firebaseDB.collection(window.db, "productos");
+                const querySnapshot = await window.firebaseDB.getDocs(productosRef);
+                
+                productos = [];
+                querySnapshot.forEach((doc) => {
+                    productos.push(doc.data());
+                });
+                
+                if (productos.length === 0) {
+                    productos = [
+                        { id: 1, nombre: 'Aretes Bohemios', categoria: 'aretes', descripcion: 'Hechos a mano con piedras naturales semi-preciosas', precio: 25.00, precio_old: null, badge: '⭐ Top', emoji: '📿', stock: 15, compradores: 134, imagen: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400&h=400&fit=crop&crop=center&q=80' },
+                        { id: 2, nombre: 'Aretes de Perla Dorada', categoria: 'aretes', descripcion: 'Perlas naturales cultivadas con acabado dorado 18k', precio: 38.00, precio_old: null, badge: '✨ Especial', emoji: '📿', stock: 8, compradores: 89, imagen: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=400&fit=crop&crop=center&q=80' },
+                        { id: 3, nombre: 'Pestañas 5D Mega', categoria: 'pestanas', descripcion: 'Extensiones de pestañas efecto volumen 5D', precio: 35.00, precio_old: 45.00, badge: '🔥 2x1', emoji: '👁️', stock: 4, compradores: 56, imagen: 'https://images.unsplash.com/photo-1583182337426-8c2b5b2db6ae?w=400&h=400&fit=crop&crop=center&q=80' },
+                        { id: 4, nombre: 'Collar de Perla', categoria: 'collares', descripcion: 'Perlas naturales cultivadas con acabado dorado 18k', precio: 45.00, precio_old: null, badge: '💎 Premium', emoji: '📿', stock: 6, compradores: 45, imagen: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400&h=400&fit=crop&crop=center&q=80' },
+                        { id: 5, nombre: 'Collar Personalizado', categoria: 'collares', descripcion: 'Con iniciales o nombres grabados', precio: 30.00, precio_old: null, badge: '🌟 Especial', emoji: '📿', stock: 10, compradores: 34, imagen: 'https://images.unsplash.com/photo-1589128777073-2395665fec4c?w=400&h=400&fit=crop&crop=center&q=80' },
+                        { id: 6, nombre: 'Base Fit Me 220', categoria: 'maquillaje', descripcion: 'Base líquida de cobertura media, acabado natural mate', precio: 43.89, precio_old: null, badge: '⭐ Top', emoji: '💄', stock: 12, compradores: 45, imagen: 'https://images.unsplash.com/photo-1583241803259-1fdc3d56cd49?w=400&h=400&fit=crop&crop=center&q=80' },
+                        { id: 7, nombre: 'Shampoo Keratina', categoria: 'capilar', descripcion: 'Shampoo con keratina para reparación capilar', precio: 26.66, precio_old: null, badge: '⭐ Top', emoji: '💈', stock: 15, compradores: 67, imagen: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop&crop=center&q=80' },
+                        { id: 8, nombre: 'Acondicionador Keratina', categoria: 'capilar', descripcion: 'Acondicionador con keratina para cabello dañado', precio: 26.66, precio_old: null, badge: '💖 Favorito', emoji: '💈', stock: 12, compradores: 54, imagen: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop&crop=center&q=80' }
+                    ];
+                }
+                
+                if (typeof renderizarProductos === 'function') {
+                    renderizarProductos(productos);
+                }
+                
+                actualizarIALocal();
+                
+            } catch (error) {
+                console.error('❌ Error al cargar productos:', error);
+            }
+        }
 
         const IA_KNOWLEDGE = {
             'productos': '🛍️ Tenemos aretes, pestañas, collares, maquillaje, shampoo y acondicionador. ¿Qué te interesa?',
@@ -1476,6 +1515,39 @@
 
         function getAIResponse(message) {
             const msg = message.toLowerCase().trim();
+
+            // 🔥 VERIFICAR SI MENCIONA UN PRODUCTO ESPECÍFICO
+            for (const producto of productos) {
+                const nombreLower = producto.nombre.toLowerCase();
+                
+                if (msg.includes(nombreLower) || msg.includes(nombreLower.split(' ')[0])) {
+                    if (producto.stock <= 0) {
+                        return `😢 Lo sentimos, <strong>${producto.nombre}</strong> está <strong>AGOTADO</strong> por ahora.\n\n¿Quieres que te recomiende otros productos similares? 💡`;
+                    } else {
+                        const price = producto.precio_old 
+                            ? `$${producto.precio} (antes $${producto.precio_old})` 
+                            : `$${producto.precio}`;
+                        return `🔍 <strong>${producto.nombre}</strong>\n📝 ${producto.descripcion}\n💰 Precio: ${price}\n📦 Stock: ✅ ${producto.stock} disponibles\n⭐ ${producto.badge || 'Producto destacado'}\n\n¿Te gustaría agregarlo a tu carrito? 🛒`;
+                    }
+                }
+            }
+
+            // 🔥 SI PREGUNTA POR PRODUCTOS AGOTADOS
+            if (msg.includes('agotado') || msg.includes('acabó') || msg.includes('no hay')) {
+                const agotados = productos.filter(p => p.stock <= 0);
+                if (agotados.length === 0) {
+                    return '✅ ¡Buenas noticias! Todos nuestros productos están disponibles. ¿Qué buscas? 🛍️';
+                } else {
+                    return `😢 Estos productos están agotados por ahora:\n\n${agotados.map(p => `❌ ${p.nombre}`).join('\n')}\n\n¿Quieres que te recomiende algo similar? 💡`;
+                }
+            }
+
+            // 🔥 SI PREGUNTA POR LO QUE HAY DISPONIBLE
+            if (msg.includes('disponible') || msg.includes('stock')) {
+                const disponibles = productos.filter(p => p.stock > 0);
+                return `✅ Tenemos ${disponibles.length} productos disponibles:\n\n${disponibles.map(p => `🛍️ ${p.nombre} - $${p.precio.toFixed(2)}`).join('\n')}\n\n¿Cuál te interesa? ✨`;
+            }
+
             for (const [key, response] of Object.entries(IA_KNOWLEDGE)) {
                 if (msg.includes(key) && key !== 'default') return response;
             }
@@ -1512,15 +1584,6 @@
                     const num2 = parseFloat(parts[1].trim());
                     if (!isNaN(num1) && !isNaN(num2) && num2 !== 0) return `🧮 ${num1} ÷ ${num2} = ${num1 / num2}`;
                     if (num2 === 0) return '🧮 No se puede dividir por cero. ¡Eso es matemáticamente imposible! 😅';
-                }
-            }
-
-            for (const producto of productos) {
-                if (msg.includes(producto.nombre.toLowerCase())) {
-                    const price = producto.precio_old ?
-                        `$${producto.precio} (antes $${producto.precio_old})` :
-                        `$${producto.precio}`;
-                    return `🔍 <strong>${producto.nombre}</strong>\n📝 ${producto.descripcion}\n💰 Precio: ${price}\n📦 Stock: ${producto.stock} unidades\n⭐ ${producto.badge || 'Producto destacado'}\n\n¿Te gustaría agregarlo a tu carrito? 🛒`;
                 }
             }
 
@@ -2320,9 +2383,243 @@
             setTimeout(() => { if (!preloader.classList.contains('hidden')) preloader.classList.add('hidden'); }, 4000);
         }
 
+        // ============================================
+        // ACTUALIZAR IA LOCAL CON PRODUCTOS DE FIRESTORE
+        // ============================================
+
+        function actualizarIALocal() {
+            const clavesProductos = Object.keys(IA_KNOWLEDGE).filter(k => 
+                k.startsWith('producto_') || 
+                k.startsWith('tienen_') ||
+                k.startsWith('hay_') ||
+                k.startsWith('disponible_')
+            );
+            clavesProductos.forEach(k => delete IA_KNOWLEDGE[k]);
+
+            productos.forEach(p => {
+                const stockText = p.stock > 0 ? `✅ ${p.stock} disponibles` : `❌ AGOTADO`;
+                IA_KNOWLEDGE[`producto_${p.nombre.toLowerCase()}`] = 
+                    `🔍 <strong>${p.nombre}</strong>\n📝 ${p.descripcion}\n💰 Precio: $${p.precio.toFixed(2)}\n📦 Stock: ${stockText}\n⭐ ${p.badge || 'Producto destacado'}\n\n¿Te gustaría agregarlo a tu carrito? 🛒`;
+
+                if (p.stock <= 0) {
+                    IA_KNOWLEDGE[`producto_${p.nombre.toLowerCase()}_agotado`] = 
+                        `😢 Lo sentimos, <strong>${p.nombre}</strong> está AGOTADO por ahora. ¿Quieres que te recomiende algo similar? 💡`;
+                }
+            });
+
+            const productosDisponibles = productos.filter(p => p.stock > 0);
+            const productosAgotados = productos.filter(p => p.stock <= 0);
+            
+            let respuestaProductos = '🛍️ <strong>Nuestros productos:</strong>\n\n';
+            productosDisponibles.forEach(p => {
+                respuestaProductos += `✅ ${p.nombre} - $${p.precio.toFixed(2)}\n`;
+            });
+            
+            if (productosAgotados.length > 0) {
+                respuestaProductos += '\n❌ <strong>Agotados por ahora:</strong>\n';
+                productosAgotados.forEach(p => {
+                    respuestaProductos += `😢 ${p.nombre}\n`;
+                });
+            }
+            
+            respuestaProductos += '\n¿Qué producto te interesa? ✨';
+            
+            IA_KNOWLEDGE['productos'] = respuestaProductos;
+            IA_KNOWLEDGE['tienen'] = respuestaProductos;
+            IA_KNOWLEDGE['lista'] = respuestaProductos;
+            IA_KNOWLEDGE['disponible'] = respuestaProductos;
+
+            console.log('✅ IA Local actualizada con', productos.length, 'productos');
+        }
+
+        // ============================================
+        // PANEL DE ADMINISTRACIÓN
+        // ============================================
+
+        function crearPanelAdmin() {
+            if (document.getElementById('adminPanelBtn')) return;
+
+            const adminBtn = document.createElement('button');
+            adminBtn.id = 'adminPanelBtn';
+            adminBtn.innerHTML = '⚙️ Panel Admin';
+            adminBtn.style.cssText = `
+                position: fixed; bottom: 100px; right: 20px;
+                background: linear-gradient(135deg, #d4af37, #f5d76e);
+                color: #fff; border: none; border-radius: 50px;
+                padding: 14px 24px; font-weight: 700; font-size: 13px;
+                cursor: pointer; z-index: 9999;
+                box-shadow: 0 8px 30px rgba(212,175,55,0.4);
+                transition: all 0.3s ease;
+            `;
+            adminBtn.onmouseover = () => { adminBtn.style.transform = 'scale(1.05)'; };
+            adminBtn.onmouseout = () => { adminBtn.style.transform = 'scale(1)'; };
+            document.body.appendChild(adminBtn);
+            adminBtn.addEventListener('click', abrirPanelAdmin);
+        }
+
+        function abrirPanelAdmin() {
+            let modal = document.getElementById('adminModal');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'adminModal';
+                modal.className = 'modal-overlay';
+                modal.innerHTML = `
+                    <div class="modal-content" style="max-width:520px;max-height:90vh;overflow-y:auto;">
+                        <button class="modal-close" onclick="cerrarPanelAdmin()">✕</button>
+                        <h3 style="font-family:var(--font-serif);font-size:1.4rem;margin-bottom:var(--space-md);">
+                            ⚙️ Panel de Administración
+                        </h3>
+                        
+                        <div style="margin-bottom:var(--space-sm);">
+                            <label style="font-size:11px;font-weight:600;">📦 Nombre del producto *</label>
+                            <input type="text" id="adminNombre" placeholder="Ej: Aretes de oro" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.2);">
+                        </div>
+                        
+                        <div style="margin-bottom:var(--space-sm);">
+                            <label style="font-size:11px;font-weight:600;">💰 Precio *</label>
+                            <input type="number" id="adminPrecio" step="0.01" placeholder="25.00" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.2);">
+                        </div>
+                        
+                        <div style="margin-bottom:var(--space-sm);">
+                            <label style="font-size:11px;font-weight:600;">📝 Descripción</label>
+                            <input type="text" id="adminDescripcion" placeholder="Descripción del producto" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.2);">
+                        </div>
+                        
+                        <div style="margin-bottom:var(--space-sm);">
+                            <label style="font-size:11px;font-weight:600;">📸 Foto (URL de la imagen)</label>
+                            <input type="text" id="adminImagen" placeholder="https://..." style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.2);">
+                        </div>
+                        
+                        <div style="margin-bottom:var(--space-sm);">
+                            <label style="font-size:11px;font-weight:600;">📊 Stock</label>
+                            <input type="number" id="adminStock" placeholder="10" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.2);">
+                        </div>
+                        
+                        <div style="margin-bottom:var(--space-sm);">
+                            <label style="font-size:11px;font-weight:600;">📂 Categoría</label>
+                            <select id="adminCategoria" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.2);">
+                                <option value="aretes">📿 Aretes</option>
+                                <option value="pestanas">👁️ Pestañas</option>
+                                <option value="collares">📿 Collares</option>
+                                <option value="maquillaje">💄 Maquillaje</option>
+                                <option value="capilar">💈 Cuidado Capilar</option>
+                            </select>
+                        </div>
+                        
+                        <button class="btn btn-gold" onclick="guardarProducto()" style="width:100%;padding:12px;margin-top:10px;">
+                            ✅ Guardar Producto
+                        </button>
+                        
+                        <div id="adminProductosLista" style="margin-top:20px;"></div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+            }
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            cargarProductosAdmin();
+        }
+
+        function cerrarPanelAdmin() {
+            const modal = document.getElementById('adminModal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+        }
+
+        async function guardarProducto() {
+            const nombre = document.getElementById('adminNombre').value.trim();
+            const precio = parseFloat(document.getElementById('adminPrecio').value);
+            const descripcion = document.getElementById('adminDescripcion').value.trim();
+            const imagen = document.getElementById('adminImagen').value.trim();
+            const stock = parseInt(document.getElementById('adminStock').value) || 0;
+            const categoria = document.getElementById('adminCategoria').value;
+
+            if (!nombre || !precio) {
+                mostrarNotificacion('⚠️ Completa nombre y precio', '⚠️');
+                return;
+            }
+
+            try {
+                const nuevoId = Date.now();
+                await window.firebaseDB.setDoc(
+                    window.firebaseDB.doc(window.db, "productos", nuevoId.toString()),
+                    {
+                        id: nuevoId, nombre: nombre, precio: precio,
+                        descripcion: descripcion || 'Producto de calidad premium',
+                        imagen: imagen || 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400&h=400&fit=crop',
+                        stock: stock, categoria: categoria,
+                        badge: '✨ Nuevo', emoji: '📿',
+                        compradores: 0, precio_old: null
+                    }
+                );
+
+                mostrarNotificacion('✅ Producto agregado', '✅');
+                lanzarConfetti();
+                
+                document.getElementById('adminNombre').value = '';
+                document.getElementById('adminPrecio').value = '';
+                document.getElementById('adminDescripcion').value = '';
+                document.getElementById('adminImagen').value = '';
+                document.getElementById('adminStock').value = '';
+                
+                cargarProductosAdmin();
+                cargarProductosDesdeFirestore();
+
+            } catch (error) {
+                console.error('❌ Error:', error);
+                mostrarNotificacion('❌ Error al guardar', '❌');
+            }
+        }
+
+        async function cargarProductosAdmin() {
+            try {
+                const productosRef = window.firebaseDB.collection(window.db, "productos");
+                const querySnapshot = await window.firebaseDB.getDocs(productosRef);
+                
+                let html = '<h4 style="font-size:13px;margin-bottom:8px;">📦 Productos (' + querySnapshot.size + ')</h4>';
+                
+                if (querySnapshot.size === 0) {
+                    html += '<p style="font-size:12px;color:#999;">No hay productos aún</p>';
+                } else {
+                    querySnapshot.forEach((doc) => {
+                        const p = doc.data();
+                        html += `
+                            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;border-bottom:1px solid #eee;font-size:12px;">
+                                <div>
+                                    <strong>${p.nombre}</strong><br>
+                                    <span style="color:#d4af37;">$${p.precio}</span> · Stock: ${p.stock}
+                                </div>
+                                <button onclick="eliminarProducto('${doc.id}')" style="background:#e74c3c;color:#fff;border:none;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:11px;">🗑️</button>
+                            </div>
+                        `;
+                    });
+                }
+                
+                document.getElementById('adminProductosLista').innerHTML = html;
+            } catch (error) {
+                console.error('❌ Error:', error);
+            }
+        }
+
+        async function eliminarProducto(id) {
+            if (!confirm('¿Eliminar este producto?')) return;
+            try {
+                await window.firebaseDB.deleteDoc(
+                    window.firebaseDB.doc(window.db, "productos", id)
+                );
+                mostrarNotificacion('✅ Producto eliminado', '🗑️');
+                cargarProductosAdmin();
+                cargarProductosDesdeFirestore();
+            } catch (error) {
+                console.error('❌ Error:', error);
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             loadCart();
-            renderizarProductos(productos);
+            cargarProductosDesdeFirestore();
 
             initVisitCounter();
             initDarkMode();
@@ -2351,6 +2648,7 @@
             console.log('✨ Paulina Accesorios 2026 - Ultra Premium ✨');
             console.log('🔥 Firebase integrado');
             console.log('📧 Brevo + Worker para correos de recuperación');
+            console.log('⚙️ Panel de admin con Firebase Admin');
         });
     </script>
 
