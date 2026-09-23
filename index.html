@@ -33,7 +33,7 @@
         } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
         import { 
             getFirestore, doc, setDoc, getDoc, updateDoc,
-            collection, getDocs, deleteDoc
+            collection, getDocs, deleteDoc, onSnapshot
         } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -58,9 +58,9 @@
             signOut, onAuthStateChanged, updateProfile, sendPasswordResetEmail,
             confirmPasswordReset, verifyPasswordResetCode
         };
-        window.firebaseDB = { doc, setDoc, getDoc, updateDoc, collection, getDocs, deleteDoc };
+        window.firebaseDB = { doc, setDoc, getDoc, updateDoc, collection, getDocs, deleteDoc, onSnapshot };
 
-        // 🚀 SIN await bloqueante — UI inmediata, datos en segundo plano
+        // 🚀 Sin await bloqueante — UI inmediata
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 window.currentUser = {
@@ -1441,44 +1441,49 @@
         });
 
         // ============================================
-        // PRODUCTOS (SE CARGAN DESDE FIRESTORE)
+        // PRODUCTOS EN TIEMPO REAL (onSnapshot)
         // ============================================
         let productos = [];
+        let unsubscribeProductos = null;
 
-        async function cargarProductosDesdeFirestore() {
+        function cargarProductosDesdeFirestore() {
             try {
+                if (unsubscribeProductos) unsubscribeProductos();
                 const productosRef = window.firebaseDB.collection(window.db, "productos");
-                const querySnapshot = await window.firebaseDB.getDocs(productosRef);
-                
-                productos = [];
-                querySnapshot.forEach((doc) => {
-                    productos.push(doc.data());
+
+                unsubscribeProductos = window.firebaseDB.onSnapshot(productosRef, (querySnapshot) => {
+                    productos = [];
+                    querySnapshot.forEach((doc) => {
+                        productos.push(doc.data());
+                    });
+
+                    if (productos.length === 0) {
+                        productos = [
+                            { id: 1, nombre: 'Aretes Bohemios', categoria: 'aretes', descripcion: 'Hechos a mano con piedras naturales semi-preciosas', precio: 25.00, precio_old: null, badge: '⭐ Top', emoji: '📿', stock: 15, compradores: 134, imagen: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=200&h=200&fit=crop&q=60' },
+                            { id: 2, nombre: 'Aretes de Perla Dorada', categoria: 'aretes', descripcion: 'Perlas naturales cultivadas con acabado dorado 18k', precio: 38.00, precio_old: null, badge: '✨ Especial', emoji: '📿', stock: 8, compradores: 89, imagen: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=200&h=200&fit=crop&q=60' },
+                            { id: 3, nombre: 'Pestañas 5D Mega', categoria: 'pestanas', descripcion: 'Extensiones de pestañas efecto volumen 5D', precio: 35.00, precio_old: 45.00, badge: '🔥 2x1', emoji: '👁️', stock: 4, compradores: 56, imagen: 'https://images.unsplash.com/photo-1583182337426-8c2b5b2db6ae?w=200&h=200&fit=crop&q=60' },
+                            { id: 4, nombre: 'Collar de Perla', categoria: 'collares', descripcion: 'Perlas naturales cultivadas con acabado dorado 18k', precio: 45.00, precio_old: null, badge: '💎 Premium', emoji: '📿', stock: 6, compradores: 45, imagen: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=200&h=200&fit=crop&q=60' },
+                            { id: 5, nombre: 'Collar Personalizado', categoria: 'collares', descripcion: 'Con iniciales o nombres grabados', precio: 30.00, precio_old: null, badge: '🌟 Especial', emoji: '📿', stock: 10, compradores: 34, imagen: 'https://images.unsplash.com/photo-1589128777073-2395665fec4c?w=200&h=200&fit=crop&q=60' },
+                            { id: 6, nombre: 'Base Fit Me 220', categoria: 'maquillaje', descripcion: 'Base líquida de cobertura media, acabado natural mate', precio: 43.89, precio_old: null, badge: '⭐ Top', emoji: '💄', stock: 12, compradores: 45, imagen: 'https://images.unsplash.com/photo-1583241803259-1fdc3d56cd49?w=200&h=200&fit=crop&q=60' },
+                            { id: 7, nombre: 'Shampoo Keratina', categoria: 'capilar', descripcion: 'Shampoo con keratina para reparación capilar', precio: 26.66, precio_old: null, badge: '⭐ Top', emoji: '💈', stock: 15, compradores: 67, imagen: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=200&h=200&fit=crop&q=60' },
+                            { id: 8, nombre: 'Acondicionador Keratina', categoria: 'capilar', descripcion: 'Acondicionador con keratina para cabello dañado', precio: 26.66, precio_old: null, badge: '💖 Favorito', emoji: '💈', stock: 12, compradores: 54, imagen: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=200&h=200&fit=crop&q=60' }
+                        ];
+                    }
+
+                    if (typeof renderizarProductos === 'function') renderizarProductos(productos);
+                    actualizarIALocal();
+                    console.log('🔄 Productos en tiempo real:', productos.length);
+                }, (error) => {
+                    console.error('❌ Error onSnapshot:', error);
                 });
-                
-                if (productos.length === 0) {
-                    productos = [
-                        { id: 1, nombre: 'Aretes Bohemios', categoria: 'aretes', descripcion: 'Hechos a mano con piedras naturales semi-preciosas', precio: 25.00, precio_old: null, badge: '⭐ Top', emoji: '📿', stock: 15, compradores: 134, imagen: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=200&h=200&fit=crop&q=60' },
-                        { id: 2, nombre: 'Aretes de Perla Dorada', categoria: 'aretes', descripcion: 'Perlas naturales cultivadas con acabado dorado 18k', precio: 38.00, precio_old: null, badge: '✨ Especial', emoji: '📿', stock: 8, compradores: 89, imagen: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=200&h=200&fit=crop&q=60' },
-                        { id: 3, nombre: 'Pestañas 5D Mega', categoria: 'pestanas', descripcion: 'Extensiones de pestañas efecto volumen 5D', precio: 35.00, precio_old: 45.00, badge: '🔥 2x1', emoji: '👁️', stock: 4, compradores: 56, imagen: 'https://images.unsplash.com/photo-1583182337426-8c2b5b2db6ae?w=200&h=200&fit=crop&q=60' },
-                        { id: 4, nombre: 'Collar de Perla', categoria: 'collares', descripcion: 'Perlas naturales cultivadas con acabado dorado 18k', precio: 45.00, precio_old: null, badge: '💎 Premium', emoji: '📿', stock: 6, compradores: 45, imagen: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=200&h=200&fit=crop&q=60' },
-                        { id: 5, nombre: 'Collar Personalizado', categoria: 'collares', descripcion: 'Con iniciales o nombres grabados', precio: 30.00, precio_old: null, badge: '🌟 Especial', emoji: '📿', stock: 10, compradores: 34, imagen: 'https://images.unsplash.com/photo-1589128777073-2395665fec4c?w=200&h=200&fit=crop&q=60' },
-                        { id: 6, nombre: 'Base Fit Me 220', categoria: 'maquillaje', descripcion: 'Base líquida de cobertura media, acabado natural mate', precio: 43.89, precio_old: null, badge: '⭐ Top', emoji: '💄', stock: 12, compradores: 45, imagen: 'https://images.unsplash.com/photo-1583241803259-1fdc3d56cd49?w=200&h=200&fit=crop&q=60' },
-                        { id: 7, nombre: 'Shampoo Keratina', categoria: 'capilar', descripcion: 'Shampoo con keratina para reparación capilar', precio: 26.66, precio_old: null, badge: '⭐ Top', emoji: '💈', stock: 15, compradores: 67, imagen: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=200&h=200&fit=crop&q=60' },
-                        { id: 8, nombre: 'Acondicionador Keratina', categoria: 'capilar', descripcion: 'Acondicionador con keratina para cabello dañado', precio: 26.66, precio_old: null, badge: '💖 Favorito', emoji: '💈', stock: 12, compradores: 54, imagen: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=200&h=200&fit=crop&q=60' }
-                    ];
-                }
-                
-                if (typeof renderizarProductos === 'function') {
-                    renderizarProductos(productos);
-                }
-                
-                actualizarIALocal();
-                
             } catch (error) {
                 console.error('❌ Error al cargar productos:', error);
             }
         }
 
+        // ============================================
+        // IA LOCAL (completa, sin cambios)
+        // ============================================
         const IA_KNOWLEDGE = {
             'productos': '🛍️ Tenemos aretes, pestañas, collares, maquillaje, shampoo y acondicionador. ¿Qué te interesa?',
             'aretes': '📿 Aretes bohemios ($25), de perla ($38), florales ($6) y de compromiso ($65).',
@@ -1519,7 +1524,6 @@
 
             for (const producto of productos) {
                 const nombreLower = producto.nombre.toLowerCase();
-                
                 if (msg.includes(nombreLower) || msg.includes(nombreLower.split(' ')[0])) {
                     if (producto.stock <= 0) {
                         return `😢 Lo sentimos, <strong>${producto.nombre}</strong> está <strong>AGOTADO</strong> por ahora.\n\n¿Quieres que te recomiende otros productos similares? 💡`;
@@ -1750,7 +1754,6 @@
                 if (userBtn) userBtn.onclick = () => {
                     if (confirm('¿Cerrar sesión?')) logoutUser();
                 };
-
                 if (mobileLoginBtn) {
                     mobileLoginBtn.textContent = `👤 ${displayName}`;
                     mobileLoginBtn.onclick = () => {
@@ -1762,12 +1765,9 @@
                 if (userNameDesktop) userNameDesktop.textContent = 'Iniciar sesión';
                 if (userLevel) userLevel.textContent = '✨ Regístrate o inicia sesión';
                 if (userAvatar) userAvatar.textContent = '👤';
-
                 if (mobileUserName) mobileUserName.textContent = 'Bienvenido';
                 if (mobileUserLevel) mobileUserLevel.textContent = 'Regístrate o inicia sesión';
-
                 if (userBtn) userBtn.onclick = showLoginModal;
-
                 if (mobileLoginBtn) {
                     mobileLoginBtn.textContent = '🔑 Registrarse / Iniciar sesión';
                     mobileLoginBtn.onclick = showLoginModal;
@@ -1950,18 +1950,14 @@
                 mostrarNotificacion('⚠️ Ingresa un correo válido', '⚠️');
                 return;
             }
-
             try {
                 const WORKER_URL = 'https://paulina-email.vercel.app/api/hello';
-                
                 const response = await fetch(WORKER_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email: email })
                 });
-
                 const data = await response.json();
-
                 if (response.ok && data.success) {
                     mostrarNotificacion(`📩 Enviamos un enlace a ${email}. Revisa tu bandeja.`, '📩');
                     closeLoginModal();
@@ -2022,22 +2018,17 @@
                 mostrarNotificacion('⚠️ La contraseña debe tener al menos 6 caracteres', '⚠️');
                 return;
             }
-
             if (newPassword !== newPassword2) {
                 mostrarNotificacion('⚠️ Las contraseñas no coinciden', '⚠️');
                 return;
             }
-
             try {
                 await window.firebaseAuth.confirmPasswordReset(window.auth, oobCode, newPassword);
-                
                 mostrarNotificacion('✅ ¡Contraseña actualizada! 🎉', '🎉');
                 lanzarConfetti();
-                
                 window.history.replaceState({}, document.title, window.location.pathname);
                 document.getElementById('resetPasswordModal').style.display = 'none';
                 document.body.style.overflow = '';
-                
                 setTimeout(() => showLoginModal(), 2000);
             } catch (error) {
                 console.error('❌ Error:', error);
@@ -2331,9 +2322,7 @@
             const hamburger = document.getElementById('hamburger');
             const menu = document.getElementById('mobileMenu');
             const closeBtn = document.getElementById('mobileClose');
-
             if (!hamburger || !menu) return;
-
             hamburger.addEventListener('click', () => {
                 hamburger.classList.toggle('active');
                 menu.classList.toggle('open');
@@ -2373,20 +2362,14 @@
             const preloader = document.getElementById('preloader');
             if (!preloader) return;
             const hide = () => setTimeout(() => preloader.classList.add('hidden'), 300);
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', hide);
-            } else {
-                hide();
-            }
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', hide);
+            else hide();
             setTimeout(() => preloader.classList.add('hidden'), 1500);
         }
 
         function actualizarIALocal() {
             const clavesProductos = Object.keys(IA_KNOWLEDGE).filter(k => 
-                k.startsWith('producto_') || 
-                k.startsWith('tienen_') ||
-                k.startsWith('hay_') ||
-                k.startsWith('disponible_')
+                k.startsWith('producto_') || k.startsWith('tienen_') || k.startsWith('hay_') || k.startsWith('disponible_')
             );
             clavesProductos.forEach(k => delete IA_KNOWLEDGE[k]);
 
@@ -2394,41 +2377,29 @@
                 const stockText = p.stock > 0 ? `✅ ${p.stock} disponibles` : `❌ AGOTADO`;
                 IA_KNOWLEDGE[`producto_${p.nombre.toLowerCase()}`] = 
                     `🔍 <strong>${p.nombre}</strong>\n📝 ${p.descripcion}\n💰 Precio: $${p.precio.toFixed(2)}\n📦 Stock: ${stockText}\n⭐ ${p.badge || 'Producto destacado'}\n\n¿Te gustaría agregarlo a tu carrito? 🛒`;
-
-                if (p.stock <= 0) {
-                    IA_KNOWLEDGE[`producto_${p.nombre.toLowerCase()}_agotado`] = 
-                        `😢 Lo sentimos, <strong>${p.nombre}</strong> está AGOTADO por ahora. ¿Quieres que te recomiende algo similar? 💡`;
-                }
             });
 
-            const productosDisponibles = productos.filter(p => p.stock > 0);
-            const productosAgotados = productos.filter(p => p.stock <= 0);
-            
-            let respuestaProductos = '🛍️ <strong>Nuestros productos:</strong>\n\n';
-            productosDisponibles.forEach(p => {
-                respuestaProductos += `✅ ${p.nombre} - $${p.precio.toFixed(2)}\n`;
-            });
-            
-            if (productosAgotados.length > 0) {
-                respuestaProductos += '\n❌ <strong>Agotados por ahora:</strong>\n';
-                productosAgotados.forEach(p => {
-                    respuestaProductos += `😢 ${p.nombre}\n`;
-                });
+            const disponibles = productos.filter(p => p.stock > 0);
+            const agotados = productos.filter(p => p.stock <= 0);
+            let resp = '🛍️ <strong>Nuestros productos:</strong>\n\n';
+            disponibles.forEach(p => { resp += `✅ ${p.nombre} - $${p.precio.toFixed(2)}\n`; });
+            if (agotados.length > 0) {
+                resp += '\n❌ <strong>Agotados:</strong>\n';
+                agotados.forEach(p => { resp += `😢 ${p.nombre}\n`; });
             }
-            
-            respuestaProductos += '\n¿Qué producto te interesa? ✨';
-            
-            IA_KNOWLEDGE['productos'] = respuestaProductos;
-            IA_KNOWLEDGE['tienen'] = respuestaProductos;
-            IA_KNOWLEDGE['lista'] = respuestaProductos;
-            IA_KNOWLEDGE['disponible'] = respuestaProductos;
-
-            console.log('✅ IA Local actualizada con', productos.length, 'productos');
+            resp += '\n¿Qué producto te interesa? ✨';
+            IA_KNOWLEDGE['productos'] = resp;
+            IA_KNOWLEDGE['tienen'] = resp;
+            IA_KNOWLEDGE['lista'] = resp;
+            IA_KNOWLEDGE['disponible'] = resp;
         }
 
         // ============================================
-        // ⚙️ PANEL DE ADMINISTRACIÓN
+        // ⚙️ PANEL DE ADMINISTRACIÓN COMPLETO
         // ============================================
+
+        let adminProductosCache = [];
+        let adminUsuariosCache = [];
 
         function crearPanelAdmin() {
             if (document.getElementById('adminPanelBtn')) return;
@@ -2451,67 +2422,116 @@
             adminBtn.addEventListener('click', abrirPanelAdmin);
         }
 
-        function abrirPanelAdmin() {
+        async function abrirPanelAdmin() {
             let modal = document.getElementById('adminModal');
             if (!modal) {
                 modal = document.createElement('div');
                 modal.id = 'adminModal';
                 modal.className = 'modal-overlay';
                 modal.innerHTML = `
-                    <div class="modal-content" style="max-width:520px;max-height:90vh;overflow-y:auto;">
-                        <button class="modal-close" onclick="cerrarPanelAdmin()">✕</button>
-                        <h3 style="font-family:var(--font-serif);font-size:1.4rem;margin-bottom:var(--space-md);">
-                            ⚙️ Panel de Administración
-                        </h3>
-                        
-                        <div style="margin-bottom:var(--space-sm);">
-                            <label style="font-size:11px;font-weight:600;">📦 Nombre del producto *</label>
-                            <input type="text" id="adminNombre" placeholder="Ej: Aretes de oro" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.2);">
+                    <div class="modal-content" style="max-width:800px;width:95%;max-height:92vh;overflow-y:auto;padding:0;">
+                        <div style="background:linear-gradient(135deg,#d4af37,#f5d76e);padding:20px 24px;border-radius:24px 24px 0 0;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10;">
+                            <div>
+                                <h2 style="font-family:var(--font-serif);color:#fff;font-size:1.5rem;margin:0;">👑 Panel Admin</h2>
+                                <p style="color:rgba(255,255,255,0.9);font-size:11px;margin-top:2px;">Control total de Paulina Accesorios</p>
+                            </div>
+                            <button onclick="cerrarPanelAdmin()" style="background:rgba(255,255,255,0.2);border:none;color:#fff;font-size:1.5rem;width:36px;height:36px;border-radius:50%;cursor:pointer;">✕</button>
                         </div>
-                        
-                        <div style="margin-bottom:var(--space-sm);">
-                            <label style="font-size:11px;font-weight:600;">💰 Precio *</label>
-                            <input type="number" id="adminPrecio" step="0.01" placeholder="25.00" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.2);">
+
+                        <div style="display:flex;background:var(--gray-100);padding:8px;gap:4px;flex-wrap:wrap;position:sticky;top:80px;z-index:9;">
+                            <button class="admin-tab" data-tab="dashboard" onclick="cambiarTabAdmin('dashboard')" style="flex:1;min-width:90px;padding:10px;border:none;border-radius:8px;font-weight:700;font-size:11px;cursor:pointer;transition:all 0.2s;">📊 Inicio</button>
+                            <button class="admin-tab" data-tab="productos" onclick="cambiarTabAdmin('productos')" style="flex:1;min-width:90px;padding:10px;border:none;border-radius:8px;font-weight:700;font-size:11px;cursor:pointer;transition:all 0.2s;">📦 Productos</button>
+                            <button class="admin-tab" data-tab="agregar" onclick="cambiarTabAdmin('agregar')" style="flex:1;min-width:90px;padding:10px;border:none;border-radius:8px;font-weight:700;font-size:11px;cursor:pointer;transition:all 0.2s;">➕ Agregar</button>
+                            <button class="admin-tab" data-tab="usuarios" onclick="cambiarTabAdmin('usuarios')" style="flex:1;min-width:90px;padding:10px;border:none;border-radius:8px;font-weight:700;font-size:11px;cursor:pointer;transition:all 0.2s;">👥 Usuarios</button>
+                            <button class="admin-tab" data-tab="stats" onclick="cambiarTabAdmin('stats')" style="flex:1;min-width:90px;padding:10px;border:none;border-radius:8px;font-weight:700;font-size:11px;cursor:pointer;transition:all 0.2s;">📈 Stats</button>
                         </div>
-                        
-                        <div style="margin-bottom:var(--space-sm);">
-                            <label style="font-size:11px;font-weight:600;">📝 Descripción</label>
-                            <input type="text" id="adminDescripcion" placeholder="Descripción del producto" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.2);">
+
+                        <div style="padding:20px 24px 32px;">
+                            <div id="tab-dashboard" class="admin-tab-content">
+                                <div id="dashboardStats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;">
+                                    <p style="text-align:center;color:#999;font-size:12px;grid-column:1/-1;">Cargando...</p>
+                                </div>
+                            </div>
+
+                            <div id="tab-productos" class="admin-tab-content" style="display:none;">
+                                <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+                                    <input type="text" id="adminBuscarProducto" placeholder="🔍 Buscar..." oninput="filtrarProductosAdmin()" style="flex:1;min-width:150px;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);font-size:12px;">
+                                    <button onclick="cargarProductosAdmin()" style="padding:10px 16px;border-radius:8px;border:none;background:#3498db;color:#fff;font-weight:700;cursor:pointer;font-size:12px;">🔄</button>
+                                    <button onclick="exportarProductosJSON()" style="padding:10px 16px;border-radius:8px;border:none;background:#27ae60;color:#fff;font-weight:700;cursor:pointer;font-size:12px;">📥</button>
+                                </div>
+                                <div id="adminProductosLista"></div>
+                            </div>
+
+                            <div id="tab-agregar" class="admin-tab-content" style="display:none;">
+                                <div style="margin-bottom:10px;">
+                                    <label style="font-size:11px;font-weight:600;">📦 Nombre *</label>
+                                    <input type="text" id="adminNombre" placeholder="Ej: Aretes de oro" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
+                                </div>
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+                                    <div>
+                                        <label style="font-size:11px;font-weight:600;">💰 Precio *</label>
+                                        <input type="number" id="adminPrecio" step="0.01" placeholder="25.00" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
+                                    </div>
+                                    <div>
+                                        <label style="font-size:11px;font-weight:600;">💸 Precio anterior</label>
+                                        <input type="number" id="adminPrecioOld" step="0.01" placeholder="45.00" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
+                                    </div>
+                                </div>
+                                <div style="margin-bottom:10px;">
+                                    <label style="font-size:11px;font-weight:600;">📝 Descripción</label>
+                                    <input type="text" id="adminDescripcion" placeholder="Descripción" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
+                                </div>
+                                <div style="margin-bottom:10px;">
+                                    <label style="font-size:11px;font-weight:600;">📸 Foto (URL)</label>
+                                    <input type="text" id="adminImagen" placeholder="https://..." style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
+                                </div>
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+                                    <div>
+                                        <label style="font-size:11px;font-weight:600;">📊 Stock</label>
+                                        <input type="number" id="adminStock" placeholder="10" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
+                                    </div>
+                                    <div>
+                                        <label style="font-size:11px;font-weight:600;">⭐ Badge</label>
+                                        <input type="text" id="adminBadge" placeholder="⭐ Top" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
+                                    </div>
+                                </div>
+                                <div style="margin-bottom:10px;">
+                                    <label style="font-size:11px;font-weight:600;">📂 Categoría</label>
+                                    <select id="adminCategoria" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
+                                        <option value="aretes">📿 Aretes</option>
+                                        <option value="pestanas">👁️ Pestañas</option>
+                                        <option value="collares">📿 Collares</option>
+                                        <option value="maquillaje">💄 Maquillaje</option>
+                                        <option value="capilar">💈 Cuidado Capilar</option>
+                                    </select>
+                                </div>
+                                <button class="btn btn-gold" onclick="guardarProducto()" style="width:100%;padding:12px;margin-top:8px;">✅ Guardar Producto</button>
+                            </div>
+
+                            <div id="tab-usuarios" class="admin-tab-content" style="display:none;">
+                                <div style="display:flex;gap:8px;margin-bottom:12px;">
+                                    <input type="text" id="adminBuscarUsuario" placeholder="🔍 Buscar por email o nombre..." oninput="filtrarUsuariosAdmin()" style="flex:1;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);font-size:12px;">
+                                    <button onclick="cargarUsuariosAdmin()" style="padding:10px 16px;border-radius:8px;border:none;background:#3498db;color:#fff;font-weight:700;cursor:pointer;font-size:12px;">🔄</button>
+                                </div>
+                                <div id="adminUsuariosLista"></div>
+                            </div>
+
+                            <div id="tab-stats" class="admin-tab-content" style="display:none;">
+                                <div id="adminStatsContent">
+                                    <p style="text-align:center;color:#999;font-size:12px;">Cargando estadísticas...</p>
+                                </div>
+                            </div>
                         </div>
-                        
-                        <div style="margin-bottom:var(--space-sm);">
-                            <label style="font-size:11px;font-weight:600;">📸 Foto (URL de la imagen)</label>
-                            <input type="text" id="adminImagen" placeholder="https://..." style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.2);">
-                        </div>
-                        
-                        <div style="margin-bottom:var(--space-sm);">
-                            <label style="font-size:11px;font-weight:600;">📊 Stock</label>
-                            <input type="number" id="adminStock" placeholder="10" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.2);">
-                        </div>
-                        
-                        <div style="margin-bottom:var(--space-sm);">
-                            <label style="font-size:11px;font-weight:600;">📂 Categoría</label>
-                            <select id="adminCategoria" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.2);">
-                                <option value="aretes">📿 Aretes</option>
-                                <option value="pestanas">👁️ Pestañas</option>
-                                <option value="collares">📿 Collares</option>
-                                <option value="maquillaje">💄 Maquillaje</option>
-                                <option value="capilar">💈 Cuidado Capilar</option>
-                            </select>
-                        </div>
-                        
-                        <button class="btn btn-gold" onclick="guardarProducto()" style="width:100%;padding:12px;margin-top:10px;">
-                            ✅ Guardar Producto
-                        </button>
-                        
-                        <div id="adminProductosLista" style="margin-top:20px;"></div>
                     </div>
                 `;
                 document.body.appendChild(modal);
             }
             modal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
+            cambiarTabAdmin('dashboard');
+            cargarDashboardStats();
             cargarProductosAdmin();
+            cargarUsuariosAdmin();
         }
 
         function cerrarPanelAdmin() {
@@ -2522,12 +2542,287 @@
             }
         }
 
+        function cambiarTabAdmin(tab) {
+            document.querySelectorAll('.admin-tab-content').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.admin-tab').forEach(el => {
+                const isActive = el.dataset.tab === tab;
+                el.style.background = isActive ? 'linear-gradient(135deg,#d4af37,#f5d76e)' : 'white';
+                el.style.color = isActive ? 'white' : '#6a4a6a';
+                el.style.boxShadow = isActive ? '0 4px 12px rgba(212,175,55,0.3)' : 'none';
+            });
+            const target = document.getElementById('tab-' + tab);
+            if (target) target.style.display = 'block';
+
+            if (tab === 'dashboard') cargarDashboardStats();
+            if (tab === 'productos') cargarProductosAdmin();
+            if (tab === 'usuarios') cargarUsuariosAdmin();
+            if (tab === 'stats') cargarEstadisticas();
+        }
+
+        async function cargarDashboardStats() {
+            try {
+                const productosRef = window.firebaseDB.collection(window.db, "productos");
+                const snap = await window.firebaseDB.getDocs(productosRef);
+                const lista = [];
+                snap.forEach(d => lista.push({ id: d.id, ...d.data() }));
+
+                const totalProductos = lista.length;
+                const stockTotal = lista.reduce((s, p) => s + (parseInt(p.stock) || 0), 0);
+                const valorInventario = lista.reduce((s, p) => s + ((parseFloat(p.precio) || 0) * (parseInt(p.stock) || 0)), 0);
+                const agotados = lista.filter(p => (parseInt(p.stock) || 0) === 0).length;
+                const stockBajo = lista.filter(p => (parseInt(p.stock) || 0) > 0 && (parseInt(p.stock) || 0) <= 3).length;
+
+                let totalUsuarios = 0;
+                try {
+                    const userSnap = await window.firebaseDB.getDocs(window.firebaseDB.collection(window.db, "usuarios"));
+                    totalUsuarios = userSnap.size;
+                } catch(e) {}
+
+                const html = `
+                    <div style="background:linear-gradient(135deg,#d4af37,#f5d76e);padding:16px;border-radius:12px;color:#fff;">
+                        <div style="font-size:11px;opacity:0.9;">📦 Productos</div>
+                        <div style="font-size:1.8rem;font-weight:800;">${totalProductos}</div>
+                    </div>
+                    <div style="background:linear-gradient(135deg,#27ae60,#2ecc71);padding:16px;border-radius:12px;color:#fff;">
+                        <div style="font-size:11px;opacity:0.9;">📊 Stock total</div>
+                        <div style="font-size:1.8rem;font-weight:800;">${stockTotal}</div>
+                    </div>
+                    <div style="background:linear-gradient(135deg,#3498db,#5dade2);padding:16px;border-radius:12px;color:#fff;">
+                        <div style="font-size:11px;opacity:0.9;">💰 Valor inventario</div>
+                        <div style="font-size:1.8rem;font-weight:800;">$${valorInventario.toFixed(2)}</div>
+                    </div>
+                    <div style="background:linear-gradient(135deg,#9b59b6,#bb8fce);padding:16px;border-radius:12px;color:#fff;">
+                        <div style="font-size:11px;opacity:0.9;">👥 Usuarios</div>
+                        <div style="font-size:1.8rem;font-weight:800;">${totalUsuarios}</div>
+                    </div>
+                    <div style="background:linear-gradient(135deg,#e74c3c,#ec7063);padding:16px;border-radius:12px;color:#fff;">
+                        <div style="font-size:11px;opacity:0.9;">❌ Agotados</div>
+                        <div style="font-size:1.8rem;font-weight:800;">${agotados}</div>
+                    </div>
+                    <div style="background:linear-gradient(135deg,#e67e22,#f39c12);padding:16px;border-radius:12px;color:#fff;">
+                        <div style="font-size:11px;opacity:0.9;">⚠️ Stock bajo</div>
+                        <div style="font-size:1.8rem;font-weight:800;">${stockBajo}</div>
+                    </div>
+                    <div style="grid-column:1/-1;background:var(--gray-100);padding:14px;border-radius:12px;margin-top:8px;">
+                        <div style="font-size:11px;font-weight:700;color:var(--gray-600);margin-bottom:6px;">🚀 Acciones rápidas</div>
+                        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                            <button onclick="cambiarTabAdmin('agregar')" style="padding:8px 14px;border-radius:8px;border:none;background:#d4af37;color:#fff;font-weight:700;cursor:pointer;font-size:11px;">➕ Agregar producto</button>
+                            <button onclick="cambiarTabAdmin('productos')" style="padding:8px 14px;border-radius:8px;border:none;background:#3498db;color:#fff;font-weight:700;cursor:pointer;font-size:11px;">📦 Ver productos</button>
+                            <button onclick="cambiarTabAdmin('usuarios')" style="padding:8px 14px;border-radius:8px;border:none;background:#9b59b6;color:#fff;font-weight:700;cursor:pointer;font-size:11px;">👥 Ver usuarios</button>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('dashboardStats').innerHTML = html;
+            } catch (error) {
+                console.error('❌ Error dashboard:', error);
+                document.getElementById('dashboardStats').innerHTML = '<p style="color:#e74c3c;text-align:center;grid-column:1/-1;">❌ Error al cargar dashboard</p>';
+            }
+        }
+
+        async function cargarProductosAdmin() {
+            try {
+                const productosRef = window.firebaseDB.collection(window.db, "productos");
+                const querySnapshot = await window.firebaseDB.getDocs(productosRef);
+                adminProductosCache = [];
+                querySnapshot.forEach((doc) => {
+                    adminProductosCache.push({ id: doc.id, ...doc.data() });
+                });
+                renderizarListaProductosAdmin(adminProductosCache);
+            } catch (error) {
+                console.error('❌ Error:', error);
+                document.getElementById('adminProductosLista').innerHTML = '<p style="color:#e74c3c;text-align:center;font-size:12px;">❌ Error al cargar productos</p>';
+            }
+        }
+
+        function filtrarProductosAdmin() {
+            const q = (document.getElementById('adminBuscarProducto')?.value || '').toLowerCase().trim();
+            if (!q) { renderizarListaProductosAdmin(adminProductosCache); return; }
+            const filtrados = adminProductosCache.filter(p => 
+                (p.nombre || '').toLowerCase().includes(q) || (p.categoria || '').toLowerCase().includes(q)
+            );
+            renderizarListaProductosAdmin(filtrados);
+        }
+
+        function renderizarListaProductosAdmin(lista) {
+            const cont = document.getElementById('adminProductosLista');
+            if (!cont) return;
+            if (lista.length === 0) {
+                cont.innerHTML = '<p style="text-align:center;color:#999;font-size:12px;padding:20px;">No hay productos</p>';
+                return;
+            }
+            let html = `<h4 style="font-size:13px;margin-bottom:8px;">📦 ${lista.length} producto(s)</h4>`;
+            lista.forEach(p => {
+                const stock = parseInt(p.stock) || 0;
+                const stockColor = stock === 0 ? '#e74c3c' : (stock <= 3 ? '#e67e22' : '#27ae60');
+                const imgSrc = p.imagen || 'https://via.placeholder.com/50';
+                html += `
+                    <div style="padding:10px;border:1px solid #eee;border-radius:10px;margin-bottom:8px;background:#fff;">
+                        <div style="display:flex;gap:10px;align-items:start;">
+                            <img src="${imgSrc}" alt="${p.nombre}" style="width:50px;height:50px;object-fit:cover;border-radius:8px;border:2px solid rgba(212,175,55,0.2);" onerror="this.src='https://via.placeholder.com/50';">
+                            <div style="flex:1;min-width:0;">
+                                <div style="font-weight:700;font-size:12px;">${p.nombre || 'Sin nombre'}</div>
+                                <div style="font-size:11px;color:#d4af37;font-weight:700;">$${parseFloat(p.precio || 0).toFixed(2)}</div>
+                                <div style="font-size:10px;color:#999;">${p.categoria || 'sin categoría'}</div>
+                            </div>
+                            <div style="font-size:12px;color:${stockColor};font-weight:800;white-space:nowrap;">${stock} uds</div>
+                        </div>
+                        <div style="display:flex;gap:4px;align-items:center;margin-top:8px;">
+                            <button onclick="cambiarStock('${p.id}', -1)" style="background:#e67e22;color:#fff;border:none;padding:5px 10px;border-radius:6px;cursor:pointer;font-weight:700;">➖</button>
+                            <input type="number" id="stock-${p.id}" value="${stock}" min="0" style="width:55px;padding:5px;border:1.5px solid rgba(212,175,55,0.3);border-radius:6px;font-size:11px;text-align:center;">
+                            <button onclick="cambiarStock('${p.id}', 1)" style="background:#27ae60;color:#fff;border:none;padding:5px 10px;border-radius:6px;cursor:pointer;font-weight:700;">➕</button>
+                            <button onclick="guardarStockManual('${p.id}')" style="background:#d4af37;color:#fff;border:none;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:11px;">💾</button>
+                            <button onclick="editarProducto('${p.id}')" style="background:#3498db;color:#fff;border:none;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:11px;margin-left:auto;">✏️</button>
+                            <button onclick="eliminarProducto('${p.id}')" style="background:#e74c3c;color:#fff;border:none;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:11px;">🗑️</button>
+                        </div>
+                    </div>
+                `;
+            });
+            cont.innerHTML = html;
+        }
+
+        async function cambiarStock(id, delta) {
+            try {
+                const docRef = window.firebaseDB.doc(window.db, "productos", id);
+                const docSnap = await window.firebaseDB.getDoc(docRef);
+                if (!docSnap.exists()) return;
+                const producto = docSnap.data();
+                const stockActual = parseInt(producto.stock) || 0;
+                const nuevoStock = Math.max(0, stockActual + delta);
+                await window.firebaseDB.updateDoc(docRef, { stock: nuevoStock });
+                mostrarNotificacion(`📦 ${producto.nombre}: ${nuevoStock} uds`, '📦');
+                cargarProductosAdmin();
+                cargarDashboardStats();
+            } catch (error) {
+                console.error('❌ Error:', error);
+                mostrarNotificacion('❌ Error al cambiar stock', '❌');
+            }
+        }
+
+        async function guardarStockManual(id) {
+            try {
+                const input = document.getElementById('stock-' + id);
+                if (!input) return;
+                const nuevoStock = Math.max(0, parseInt(input.value) || 0);
+                const docRef = window.firebaseDB.doc(window.db, "productos", id);
+                await window.firebaseDB.updateDoc(docRef, { stock: nuevoStock });
+                mostrarNotificacion(`✅ Stock guardado: ${nuevoStock}`, '✅');
+                cargarProductosAdmin();
+                cargarDashboardStats();
+            } catch (error) {
+                console.error('❌ Error:', error);
+                mostrarNotificacion('❌ Error al guardar', '❌');
+            }
+        }
+
+        async function editarProducto(id) {
+            try {
+                const docRef = window.firebaseDB.doc(window.db, "productos", id);
+                const docSnap = await window.firebaseDB.getDoc(docRef);
+                if (!docSnap.exists()) return;
+                const p = docSnap.data();
+
+                let modal = document.getElementById('editarProductoModal');
+                if (modal) modal.remove();
+
+                modal = document.createElement('div');
+                modal.id = 'editarProductoModal';
+                modal.className = 'modal-overlay';
+                modal.style.zIndex = '10000';
+                modal.innerHTML = `
+                    <div class="modal-content" style="max-width:480px;">
+                        <button class="modal-close" onclick="document.getElementById('editarProductoModal').remove()">✕</button>
+                        <h3 style="font-family:var(--font-serif);font-size:1.3rem;margin-bottom:var(--space-md);">✏️ Editar producto</h3>
+                        <div style="margin-bottom:10px;">
+                            <label style="font-size:11px;font-weight:600;">📦 Nombre</label>
+                            <input type="text" id="editNombre" value="${(p.nombre || '').replace(/"/g, '&quot;')}" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
+                        </div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+                            <div>
+                                <label style="font-size:11px;font-weight:600;">💰 Precio</label>
+                                <input type="number" step="0.01" id="editPrecio" value="${p.precio}" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
+                            </div>
+                            <div>
+                                <label style="font-size:11px;font-weight:600;">💸 Precio anterior</label>
+                                <input type="number" step="0.01" id="editPrecioOld" value="${p.precio_old || ''}" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
+                            </div>
+                        </div>
+                        <div style="margin-bottom:10px;">
+                            <label style="font-size:11px;font-weight:600;">📝 Descripción</label>
+                            <input type="text" id="editDescripcion" value="${(p.descripcion || '').replace(/"/g, '&quot;')}" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
+                        </div>
+                        <div style="margin-bottom:10px;">
+                            <label style="font-size:11px;font-weight:600;">📸 URL de imagen</label>
+                            <input type="text" id="editImagen" value="${(p.imagen || '').replace(/"/g, '&quot;')}" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
+                        </div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+                            <div>
+                                <label style="font-size:11px;font-weight:600;">📊 Stock</label>
+                                <input type="number" id="editStock" value="${p.stock || 0}" min="0" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
+                            </div>
+                            <div>
+                                <label style="font-size:11px;font-weight:600;">⭐ Badge</label>
+                                <input type="text" id="editBadge" value="${(p.badge || '').replace(/"/g, '&quot;')}" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
+                            </div>
+                        </div>
+                        <div style="margin-bottom:10px;">
+                            <label style="font-size:11px;font-weight:600;">📂 Categoría</label>
+                            <select id="editCategoria" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
+                                <option value="aretes" ${p.categoria === 'aretes' ? 'selected' : ''}>📿 Aretes</option>
+                                <option value="pestanas" ${p.categoria === 'pestanas' ? 'selected' : ''}>👁️ Pestañas</option>
+                                <option value="collares" ${p.categoria === 'collares' ? 'selected' : ''}>📿 Collares</option>
+                                <option value="maquillaje" ${p.categoria === 'maquillaje' ? 'selected' : ''}>💄 Maquillaje</option>
+                                <option value="capilar" ${p.categoria === 'capilar' ? 'selected' : ''}>💈 Cuidado Capilar</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-gold" onclick="guardarEdicion('${id}')" style="width:100%;padding:12px;margin-top:8px;">✅ Guardar cambios</button>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+                modal.style.display = 'flex';
+            } catch (error) {
+                console.error('❌ Error:', error);
+            }
+        }
+
+        async function guardarEdicion(id) {
+            try {
+                const nombre = document.getElementById('editNombre').value.trim();
+                const precio = parseFloat(document.getElementById('editPrecio').value);
+                const precioOld = parseFloat(document.getElementById('editPrecioOld').value) || null;
+                const descripcion = document.getElementById('editDescripcion').value.trim();
+                const imagen = document.getElementById('editImagen').value.trim();
+                const stock = Math.max(0, parseInt(document.getElementById('editStock').value) || 0);
+                const badge = document.getElementById('editBadge').value.trim();
+                const categoria = document.getElementById('editCategoria').value;
+
+                if (!nombre || !precio) {
+                    mostrarNotificacion('⚠️ Nombre y precio son obligatorios', '⚠️');
+                    return;
+                }
+
+                const docRef = window.firebaseDB.doc(window.db, "productos", id);
+                await window.firebaseDB.updateDoc(docRef, {
+                    nombre, precio, precio_old: precioOld, descripcion, imagen, stock, badge, categoria
+                });
+
+                mostrarNotificacion('✅ Producto actualizado', '✅');
+                document.getElementById('editarProductoModal').remove();
+                cargarProductosAdmin();
+                cargarDashboardStats();
+            } catch (error) {
+                console.error('❌ Error:', error);
+                mostrarNotificacion('❌ Error al guardar cambios', '❌');
+            }
+        }
+
         async function guardarProducto() {
             const nombre = document.getElementById('adminNombre').value.trim();
             const precio = parseFloat(document.getElementById('adminPrecio').value);
+            const precioOld = parseFloat(document.getElementById('adminPrecioOld').value) || null;
             const descripcion = document.getElementById('adminDescripcion').value.trim();
             const imagen = document.getElementById('adminImagen').value.trim();
             const stock = parseInt(document.getElementById('adminStock').value) || 0;
+            const badge = document.getElementById('adminBadge').value.trim() || '✨ Nuevo';
             const categoria = document.getElementById('adminCategoria').value;
 
             if (!nombre || !precio) {
@@ -2540,12 +2835,10 @@
                 await window.firebaseDB.setDoc(
                     window.firebaseDB.doc(window.db, "productos", nuevoId.toString()),
                     {
-                        id: nuevoId, nombre: nombre, precio: precio,
+                        id: nuevoId, nombre, precio, precio_old: precioOld,
                         descripcion: descripcion || 'Producto de calidad premium',
-                        imagen: imagen || 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400&h=400&fit=crop',
-                        stock: stock, categoria: categoria,
-                        badge: '✨ Nuevo', emoji: '📿',
-                        compradores: 0, precio_old: null
+                        imagen: imagen || 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=200&h=200&fit=crop&q=60',
+                        stock, categoria, badge, emoji: '📿', compradores: 0
                     }
                 );
 
@@ -2554,70 +2847,157 @@
                 
                 document.getElementById('adminNombre').value = '';
                 document.getElementById('adminPrecio').value = '';
+                document.getElementById('adminPrecioOld').value = '';
                 document.getElementById('adminDescripcion').value = '';
                 document.getElementById('adminImagen').value = '';
                 document.getElementById('adminStock').value = '';
+                document.getElementById('adminBadge').value = '';
                 
                 cargarProductosAdmin();
-                cargarProductosDesdeFirestore();
-
+                cargarDashboardStats();
             } catch (error) {
                 console.error('❌ Error:', error);
                 mostrarNotificacion('❌ Error al guardar', '❌');
             }
         }
 
-        async function cargarProductosAdmin() {
-            try {
-                const productosRef = window.firebaseDB.collection(window.db, "productos");
-                const querySnapshot = await window.firebaseDB.getDocs(productosRef);
-                
-                let html = '<h4 style="font-size:13px;margin-bottom:8px;">📦 Productos (' + querySnapshot.size + ')</h4>';
-                
-                if (querySnapshot.size === 0) {
-                    html += '<p style="font-size:12px;color:#999;">No hay productos aún</p>';
-                } else {
-                    querySnapshot.forEach((doc) => {
-                        const p = doc.data();
-                        html += `
-                            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;border-bottom:1px solid #eee;font-size:12px;">
-                                <div>
-                                    <strong>${p.nombre}</strong><br>
-                                    <span style="color:#d4af37;">$${p.precio}</span> · Stock: ${p.stock}
-                                </div>
-                                <button onclick="eliminarProducto('${doc.id}')" style="background:#e74c3c;color:#fff;border:none;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:11px;">🗑️</button>
-                            </div>
-                        `;
-                    });
-                }
-                
-                document.getElementById('adminProductosLista').innerHTML = html;
-            } catch (error) {
-                console.error('❌ Error:', error);
-            }
-        }
-
         async function eliminarProducto(id) {
             if (!confirm('¿Eliminar este producto?')) return;
             try {
-                await window.firebaseDB.deleteDoc(
-                    window.firebaseDB.doc(window.db, "productos", id)
-                );
+                await window.firebaseDB.deleteDoc(window.firebaseDB.doc(window.db, "productos", id));
                 mostrarNotificacion('✅ Producto eliminado', '🗑️');
                 cargarProductosAdmin();
-                cargarProductosDesdeFirestore();
+                cargarDashboardStats();
             } catch (error) {
                 console.error('❌ Error:', error);
             }
         }
 
-        // Hacer funciones globales para onclick
+        async function cargarUsuariosAdmin() {
+            try {
+                const usuariosRef = window.firebaseDB.collection(window.db, "usuarios");
+                const querySnapshot = await window.firebaseDB.getDocs(usuariosRef);
+                adminUsuariosCache = [];
+                querySnapshot.forEach((doc) => {
+                    adminUsuariosCache.push({ id: doc.id, ...doc.data() });
+                });
+                renderizarListaUsuariosAdmin(adminUsuariosCache);
+            } catch (error) {
+                console.error('❌ Error:', error);
+                document.getElementById('adminUsuariosLista').innerHTML = '<p style="color:#e74c3c;text-align:center;font-size:12px;">❌ Error al cargar usuarios</p>';
+            }
+        }
+
+        function filtrarUsuariosAdmin() {
+            const q = (document.getElementById('adminBuscarUsuario')?.value || '').toLowerCase().trim();
+            if (!q) { renderizarListaUsuariosAdmin(adminUsuariosCache); return; }
+            const filtrados = adminUsuariosCache.filter(u => 
+                (u.email || '').toLowerCase().includes(q) || (u.name || '').toLowerCase().includes(q)
+            );
+            renderizarListaUsuariosAdmin(filtrados);
+        }
+
+        function renderizarListaUsuariosAdmin(lista) {
+            const cont = document.getElementById('adminUsuariosLista');
+            if (!cont) return;
+            if (lista.length === 0) {
+                cont.innerHTML = '<p style="text-align:center;color:#999;font-size:12px;padding:20px;">No hay usuarios</p>';
+                return;
+            }
+            let html = `<h4 style="font-size:13px;margin-bottom:8px;">👥 ${lista.length} usuario(s)</h4>`;
+            lista.forEach(u => {
+                const points = u.points || 0;
+                html += `
+                    <div style="padding:10px;border:1px solid #eee;border-radius:10px;margin-bottom:8px;background:#fff;">
+                        <div style="font-weight:700;font-size:12px;">👤 ${u.name || 'Sin nombre'}</div>
+                        <div style="font-size:11px;color:#666;">📧 ${u.email || 'sin email'}</div>
+                        <div style="font-size:11px;color:#d4af37;margin-top:3px;">⭐ ${points} puntos · ${u.level || '✨ Visitante'}</div>
+                    </div>
+                `;
+            });
+            cont.innerHTML = html;
+        }
+
+        async function cargarEstadisticas() {
+            try {
+                const productosRef = window.firebaseDB.collection(window.db, "productos");
+                const snap = await window.firebaseDB.getDocs(productosRef);
+                const lista = [];
+                snap.forEach(d => lista.push(d.data()));
+
+                const porCategoria = {};
+                lista.forEach(p => {
+                    const c = p.categoria || 'otros';
+                    porCategoria[c] = (porCategoria[c] || 0) + 1;
+                });
+
+                const top5 = [...lista].sort((a, b) => (b.compradores || 0) - (a.compradores || 0)).slice(0, 5);
+                const stockBajo = lista.filter(p => (parseInt(p.stock) || 0) > 0 && (parseInt(p.stock) || 0) <= 3);
+
+                let html = '<div style="display:grid;gap:12px;">';
+
+                html += '<div style="background:#fff;padding:14px;border-radius:12px;border:1px solid #eee;">';
+                html += '<div style="font-weight:700;font-size:13px;margin-bottom:8px;">📂 Productos por categoría</div>';
+                for (const [cat, count] of Object.entries(porCategoria)) {
+                    html += `<div style="display:flex;justify-content:space-between;font-size:12px;padding:4px 0;"><span>${cat}</span><strong>${count}</strong></div>`;
+                }
+                html += '</div>';
+
+                html += '<div style="background:#fff;padding:14px;border-radius:12px;border:1px solid #eee;">';
+                html += '<div style="font-weight:700;font-size:13px;margin-bottom:8px;">🏆 Top 5 más vendidos</div>';
+                top5.forEach((p, i) => {
+                    html += `<div style="display:flex;justify-content:space-between;font-size:12px;padding:4px 0;"><span>${i+1}. ${p.nombre}</span><strong>${p.compradores || 0} 👥</strong></div>`;
+                });
+                html += '</div>';
+
+                if (stockBajo.length > 0) {
+                    html += '<div style="background:#fff3cd;padding:14px;border-radius:12px;border:1px solid #ffeaa7;">';
+                    html += '<div style="font-weight:700;font-size:13px;margin-bottom:8px;">⚠️ Productos con stock bajo</div>';
+                    stockBajo.forEach(p => {
+                        html += `<div style="display:flex;justify-content:space-between;font-size:12px;padding:4px 0;"><span>${p.nombre}</span><strong style="color:#e67e22;">${p.stock} uds</strong></div>`;
+                    });
+                    html += '</div>';
+                }
+
+                html += '</div>';
+                document.getElementById('adminStatsContent').innerHTML = html;
+            } catch (error) {
+                console.error('❌ Error stats:', error);
+            }
+        }
+
+        function exportarProductosJSON() {
+            try {
+                const dataStr = JSON.stringify(adminProductosCache, null, 2);
+                const blob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `paulina_productos_${Date.now()}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+                mostrarNotificacion('✅ Exportado', '📥');
+            } catch (error) {
+                console.error('❌ Error:', error);
+            }
+        }
+
+        // Hacer funciones globales
         window.crearPanelAdmin = crearPanelAdmin;
         window.abrirPanelAdmin = abrirPanelAdmin;
         window.cerrarPanelAdmin = cerrarPanelAdmin;
+        window.cambiarTabAdmin = cambiarTabAdmin;
         window.guardarProducto = guardarProducto;
         window.cargarProductosAdmin = cargarProductosAdmin;
+        window.filtrarProductosAdmin = filtrarProductosAdmin;
         window.eliminarProducto = eliminarProducto;
+        window.cambiarStock = cambiarStock;
+        window.guardarStockManual = guardarStockManual;
+        window.editarProducto = editarProducto;
+        window.guardarEdicion = guardarEdicion;
+        window.cargarUsuariosAdmin = cargarUsuariosAdmin;
+        window.filtrarUsuariosAdmin = filtrarUsuariosAdmin;
+        window.exportarProductosJSON = exportarProductosJSON;
         window.showLoginModal = showLoginModal;
         window.closeLoginModal = closeLoginModal;
         window.showLoginForm = showLoginForm;
@@ -2677,7 +3057,6 @@
                 if (e.key === 'Enter') document.getElementById('searchBtn').click();
             });
 
-            // 🔥 VERIFICAR ADMIN EN CUANTO FIREBASE ESTÉ LISTO
             const checkAuth = setInterval(() => {
                 if (window.auth) {
                     clearInterval(checkAuth);
@@ -2688,7 +3067,6 @@
             }, 300);
 
             console.log('✨ Paulina Accesorios 2026 - Ultra Premium ✨');
-            console.log('🔥 Firebase integrado');
             console.log('👑 Admin autorizado:', ADMIN_EMAIL);
         });
     </script>
