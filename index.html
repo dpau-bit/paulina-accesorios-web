@@ -60,7 +60,6 @@
         };
         window.firebaseDB = { doc, setDoc, getDoc, updateDoc, collection, getDocs, deleteDoc, onSnapshot };
 
-        // 🚀 Sin await bloqueante — UI inmediata
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 window.currentUser = {
@@ -71,7 +70,6 @@
                     level: '✨ Visitante'
                 };
                 if (typeof updateUserUI === 'function') updateUserUI();
-
                 getDoc(doc(db, "usuarios", user.uid)).then(docSnap => {
                     if (docSnap.exists()) {
                         window.currentUser = docSnap.data();
@@ -170,6 +168,10 @@
         @keyframes bounceIn { 0% { transform: scale(0.3); opacity: 0; } 50% { transform: scale(1.05); } 70% { transform: scale(0.9); } 100% { transform: scale(1); opacity: 1; } }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @keyframes confettiFall { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+        @keyframes premiumPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.4), 0 0 40px rgba(212, 175, 55, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(212, 175, 55, 0.6), 0 0 60px rgba(212, 175, 55, 0.3); }
+        }
 
         .preloader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -1006,17 +1008,580 @@
             animation: confettiFall linear forwards;
         }
 
-        @media (min-width: 1200px) {
-            .product-grid { grid-template-columns: repeat(4, 1fr); gap: var(--space-xl); }
-            .hero-title { font-size: 3.8rem; }
-            .section { padding: var(--space-3xl) 4%; }
+        /* ========================================
+           👑 PANEL ADMIN PREMIUM
+           ======================================== */
+        .admin-premium-overlay {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 10000;
+            display: none;
+            align-items: center; justify-content: center;
+            padding: 20px;
+        }
+        .admin-premium-overlay.show { display: flex; animation: fadeInScale 0.3s ease; }
+
+        .admin-premium {
+            width: 100%; max-width: 1100px; max-height: 94vh;
+            background: linear-gradient(180deg, #0a050a 0%, #1a0b1a 100%);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 
+                0 0 0 1px rgba(212, 175, 55, 0.2),
+                0 20px 80px rgba(0, 0, 0, 0.8),
+                0 0 100px rgba(212, 175, 55, 0.1);
+            display: flex; flex-direction: column;
+            position: relative;
+        }
+        .admin-premium::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
         }
 
-        @media (max-width: 1199px) and (min-width: 769px) {
-            .product-grid { grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
-            .hero-title { font-size: 2.8rem; }
-            .hero { padding: 40px 4% 48px; }
-            .chat-modal-ai { width: 380px; }
+        .admin-premium-header {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(194, 24, 91, 0.1));
+            padding: 24px 32px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+            display: flex; justify-content: space-between; align-items: center;
+            position: relative;
+        }
+        .admin-premium-header::after {
+            content: '';
+            position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+            width: 60%; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+        .admin-premium-title {
+            display: flex; align-items: center; gap: 14px;
+        }
+        .admin-premium-crown {
+            font-size: 2.2rem;
+            filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.6));
+            animation: pulse 2.5s ease-in-out infinite;
+        }
+        .admin-premium-title h2 {
+            font-family: var(--font-serif); font-size: 1.5rem;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            animation: shimmerGold 3s ease-in-out infinite;
+            font-weight: 900;
+            line-height: 1.1;
+        }
+        .admin-premium-title p {
+            font-size: 10px; color: rgba(212, 175, 55, 0.6);
+            letter-spacing: 3px; text-transform: uppercase;
+            font-weight: 600;
+        }
+        .admin-premium-close {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: var(--gold);
+            width: 40px; height: 40px; border-radius: 50%;
+            font-size: 1.3rem; cursor: pointer;
+            transition: var(--transition-base);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .admin-premium-close:hover {
+            background: rgba(212, 175, 55, 0.2);
+            transform: rotate(90deg);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .admin-premium-tabs {
+            display: flex;
+            padding: 16px 24px;
+            gap: 6px;
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .admin-premium-tabs::-webkit-scrollbar { display: none; }
+        .admin-premium-tab {
+            padding: 10px 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            background: rgba(212, 175, 55, 0.03);
+            color: rgba(212, 175, 55, 0.7);
+            font-weight: 700;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            white-space: nowrap;
+            font-family: var(--font-sans);
+            display: flex; align-items: center; gap: 6px;
+        }
+        .admin-premium-tab:hover {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: rgba(212, 175, 55, 0.4);
+            color: var(--gold);
+            transform: translateY(-2px);
+        }
+        .admin-premium-tab.active {
+            background: var(--gold-gradient);
+            color: #1a0b1a;
+            border-color: transparent;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+            font-weight: 800;
+        }
+
+        .admin-premium-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 32px 32px;
+            background: 
+                radial-gradient(circle at top right, rgba(212, 175, 55, 0.03), transparent 50%),
+                radial-gradient(circle at bottom left, rgba(194, 24, 91, 0.03), transparent 50%);
+        }
+        .admin-premium-body::-webkit-scrollbar { width: 8px; }
+        .admin-premium-body::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.3); }
+        .admin-premium-body::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #d4af37, #b8952a);
+            border-radius: 4px;
+        }
+
+        .admin-tab-content { display: none; animation: fadeInUp 0.3s ease; }
+        .admin-tab-content.active { display: block; }
+
+        .admin-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+        .admin-stat-card {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.08), rgba(212, 175, 55, 0.02));
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 16px;
+            padding: 20px 18px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+        .admin-stat-card::before {
+            content: '';
+            position: absolute; top: 0; right: 0;
+            width: 80px; height: 80px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.15), transparent 70%);
+            border-radius: 50%;
+            transform: translate(30%, -30%);
+        }
+        .admin-stat-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(212, 175, 55, 0.5);
+            box-shadow: 0 8px 32px rgba(212, 175, 55, 0.15);
+        }
+        .admin-stat-icon {
+            font-size: 1.6rem;
+            margin-bottom: 8px;
+            display: block;
+            filter: drop-shadow(0 2px 6px rgba(212, 175, 55, 0.4));
+        }
+        .admin-stat-label {
+            font-size: 10px;
+            color: rgba(212, 175, 55, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .admin-stat-value {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--gold);
+            font-family: var(--font-serif);
+            line-height: 1;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+        .admin-stat-sub {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.3);
+            margin-top: 4px;
+        }
+
+        .admin-panel {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+        .admin-panel-title {
+            font-family: var(--font-serif);
+            color: var(--gold);
+            font-size: 1rem;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+        }
+        .admin-panel-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.3), transparent);
+        }
+
+        .admin-input, .admin-select, .admin-textarea {
+            width: 100%;
+            padding: 11px 14px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1.5px solid rgba(212, 175, 55, 0.2);
+            border-radius: 10px;
+            color: #fff;
+            font-family: var(--font-sans);
+            font-size: 12px;
+            transition: all 0.25s ease;
+            outline: none;
+        }
+        .admin-input:focus, .admin-select:focus, .admin-textarea:focus {
+            border-color: var(--gold);
+            background: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+        }
+        .admin-input::placeholder { color: rgba(255, 255, 255, 0.25); }
+        .admin-select option { background: #1a0b1a; color: #fff; }
+        .admin-label {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            color: rgba(212, 175, 55, 0.8);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+        .admin-form-group { margin-bottom: 14px; }
+        .admin-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+        .admin-btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 11px;
+            cursor: pointer;
+            font-family: var(--font-sans);
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            letter-spacing: 0.3px;
+        }
+        .admin-btn-primary {
+            background: var(--gold-gradient);
+            color: #1a0b1a;
+            box-shadow: 0 4px 16px rgba(212, 175, 55, 0.3);
+        }
+        .admin-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(212, 175, 55, 0.5);
+        }
+        .admin-btn-primary:active { transform: translateY(0); }
+        .admin-btn-secondary {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: var(--gold);
+        }
+        .admin-btn-secondary:hover {
+            background: rgba(212, 175, 55, 0.2);
+            transform: translateY(-2px);
+        }
+        .admin-btn-danger {
+            background: rgba(231, 76, 60, 0.15);
+            border: 1px solid rgba(231, 76, 60, 0.4);
+            color: #ff6b6b;
+        }
+        .admin-btn-danger:hover {
+            background: rgba(231, 76, 60, 0.3);
+            transform: translateY(-2px);
+        }
+        .admin-btn-success {
+            background: rgba(39, 174, 96, 0.15);
+            border: 1px solid rgba(39, 174, 96, 0.4);
+            color: #4ade80;
+        }
+        .admin-btn-success:hover {
+            background: rgba(39, 174, 96, 0.3);
+            transform: translateY(-2px);
+        }
+        .admin-btn-sm { padding: 6px 12px; font-size: 10px; }
+        .admin-btn-full { width: 100%; }
+
+        .admin-search-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .admin-product-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 10px;
+            transition: all 0.25s ease;
+        }
+        .admin-product-item:hover {
+            border-color: rgba(212, 175, 55, 0.3);
+            background: rgba(212, 175, 55, 0.03);
+            transform: translateX(4px);
+        }
+        .admin-product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        .admin-product-img {
+            width: 56px; height: 56px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            flex-shrink: 0;
+        }
+        .admin-product-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .admin-product-name {
+            color: #fff;
+            font-weight: 700;
+            font-size: 13px;
+            margin-bottom: 3px;
+        }
+        .admin-product-price {
+            color: var(--gold);
+            font-weight: 800;
+            font-size: 14px;
+            font-family: var(--font-serif);
+        }
+        .admin-product-cat {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 2px;
+        }
+        .admin-product-stock {
+            font-size: 12px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 8px;
+            white-space: nowrap;
+        }
+        .admin-product-stock.ok { color: #4ade80; background: rgba(39, 174, 96, 0.15); }
+        .admin-product-stock.low { color: #fbbf24; background: rgba(251, 191, 36, 0.15); }
+        .admin-product-stock.out { color: #ff6b6b; background: rgba(231, 76, 60, 0.15); }
+
+        .admin-stock-controls {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .admin-stock-input {
+            width: 70px;
+            padding: 6px 10px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1.5px solid rgba(212, 175, 55, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 12px;
+            text-align: center;
+            font-weight: 700;
+        }
+        .admin-stock-input:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+        .admin-icon-btn {
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            background: rgba(212, 175, 55, 0.05);
+            color: var(--gold);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center; justify-content: center;
+            font-size: 13px;
+        }
+        .admin-icon-btn:hover {
+            background: rgba(212, 175, 55, 0.2);
+            transform: scale(1.05);
+        }
+        .admin-icon-btn.danger {
+            border-color: rgba(231, 76, 60, 0.3);
+            color: #ff6b6b;
+            background: rgba(231, 76, 60, 0.08);
+        }
+        .admin-icon-btn.danger:hover { background: rgba(231, 76, 60, 0.2); }
+        .admin-icon-btn.info {
+            border-color: rgba(52, 152, 219, 0.3);
+            color: #5dade2;
+            background: rgba(52, 152, 219, 0.08);
+        }
+        .admin-icon-btn.info:hover { background: rgba(52, 152, 219, 0.2); }
+
+        .admin-user-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 10px;
+            transition: all 0.25s ease;
+        }
+        .admin-user-item:hover {
+            border-color: rgba(212, 175, 55, 0.3);
+            background: rgba(212, 175, 55, 0.03);
+        }
+        .admin-user-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .admin-user-avatar {
+            width: 42px; height: 42px;
+            border-radius: 50%;
+            background: var(--gold-gradient);
+            display: flex;
+            align-items: center; justify-content: center;
+            color: #1a0b1a;
+            font-weight: 900;
+            font-size: 16px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        }
+        .admin-user-info { flex: 1; min-width: 0; }
+        .admin-user-name {
+            color: #fff;
+            font-weight: 700;
+            font-size: 13px;
+            margin-bottom: 2px;
+        }
+        .admin-user-email {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.4);
+            word-break: break-all;
+        }
+        .admin-user-badge {
+            text-align: right;
+            white-space: nowrap;
+        }
+        .admin-user-level {
+            font-size: 10px;
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+        .admin-user-points {
+            font-size: 16px;
+            font-weight: 900;
+            color: var(--gold);
+            font-family: var(--font-serif);
+        }
+
+        .admin-points-controls {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            align-items: center;
+            padding-top: 12px;
+            border-top: 1px dashed rgba(212, 175, 55, 0.15);
+        }
+        .admin-points-input {
+            flex: 1;
+            min-width: 80px;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1.5px solid rgba(212, 175, 55, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .admin-points-input:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .admin-empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 12px;
+        }
+        .admin-empty-icon {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 12px;
+            opacity: 0.4;
+        }
+
+        .admin-rank-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.08);
+        }
+        .admin-rank-num {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: var(--gold);
+            font-weight: 900;
+            font-size: 12px;
+            display: flex;
+            align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .admin-rank-num.gold { background: var(--gold-gradient); color: #1a0b1a; }
+        .admin-rank-name {
+            flex: 1;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .admin-rank-value {
+            color: var(--gold);
+            font-weight: 800;
+            font-size: 12px;
+        }
+
+        .admin-badge-pill {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 768px) {
+            .admin-premium { border-radius: 0; max-height: 100vh; }
+            .admin-premium-overlay { padding: 0; }
+            .admin-premium-header { padding: 16px 20px; }
+            .admin-premium-title h2 { font-size: 1.1rem; }
+            .admin-premium-title p { font-size: 8px; letter-spacing: 2px; }
+            .admin-premium-crown { font-size: 1.6rem; }
+            .admin-premium-tabs { padding: 10px 14px; gap: 4px; }
+            .admin-premium-tab { padding: 8px 12px; font-size: 10px; }
+            .admin-premium-body { padding: 16px 14px 24px; }
+            .admin-form-row { grid-template-columns: 1fr; }
+            .admin-stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .admin-stat-value { font-size: 1.4rem; }
+            .admin-product-img { width: 44px; height: 44px; }
         }
 
         @media (max-width: 768px) {
@@ -1025,27 +1590,17 @@
             .hamburger { display: flex; }
             .navbar-left { gap: var(--space-sm); }
             .navbar-right { width: 100%; justify-content: center; gap: 4px; }
-
             .logo { font-size: 1.1rem; }
             .logo-sub { font-size: 7px; }
-
             .search-box { padding: 3px 3px 3px 10px; flex: 1; max-width: 180px; }
             .search-box input { width: 60px; font-size: 10px; }
             .search-box button { font-size: 11px; padding: 2px 6px; }
-
             .user-btn { padding: 4px 8px; font-size: 9px; }
             .user-btn .user-avatar { width: 20px; height: 20px; font-size: 9px; }
             .user-btn .user-name-mobile { max-width: 50px; font-size: 9px; }
-
             .cart-icon { padding: 4px 8px; font-size: 10px; }
             .cart-icon .cart-count { font-size: 8px; min-width: 14px; line-height: 14px; }
-
-            .hero {
-                padding: 32px 3% 40px;
-                border-radius: 0 0 var(--radius-xl) var(--radius-xl);
-                margin: 0 var(--space-sm) var(--space-lg);
-                flex-direction: column; text-align: center;
-            }
+            .hero { padding: 32px 3% 40px; border-radius: 0 0 var(--radius-xl) var(--radius-xl); margin: 0 var(--space-sm) var(--space-lg); flex-direction: column; text-align: center; }
             .hero-title { font-size: 2rem; }
             .hero-description { font-size: 12px; max-width: 100%; margin: 0 auto var(--space-md); }
             .hero-badge { font-size: 8px; padding: 3px 12px; }
@@ -1056,15 +1611,12 @@
             .hero-actions { justify-content: center; }
             .hero-actions .btn { padding: 8px 16px; font-size: 10px; }
             .hero-image { display: none; }
-
             .section { padding: var(--space-xl) 3%; }
             .section-title { font-size: 1.6rem; }
             .section-subtitle { font-size: 12px; }
             .section-header { margin-bottom: var(--space-lg); }
-
             .category-pills { gap: 4px; margin-bottom: var(--space-md); }
             .category-pills .pill { padding: 4px 12px; font-size: 8px; }
-
             .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
             .product-card { padding: 12px 8px; }
             .product-image { width: 80px; height: 80px; }
@@ -1077,7 +1629,6 @@
             .product-meta { font-size: 6px; gap: 4px; }
             .product-badges .badge { font-size: 6px; padding: 1px 6px; }
             .btn-add { padding: 4px 8px; font-size: 8px; }
-
             .chat-float-ai { width: 48px; height: 48px; font-size: 1.3rem; bottom: 16px; left: 16px; }
             .chat-modal-ai { bottom: 72px; left: 12px; right: 12px; width: auto; max-width: none; max-height: 440px; }
             .chat-messages-ai { max-height: 280px; }
@@ -1086,7 +1637,6 @@
             .chat-input-ai { padding: 6px 12px; }
             .chat-input-ai input { font-size: 10px; padding: 6px 10px; }
             .chat-input-ai button { font-size: 10px; padding: 6px 12px; }
-
             .whatsapp-float { width: 48px; height: 48px; font-size: 1.3rem; bottom: 16px; right: 16px; }
             .floating-cart { bottom: 76px; right: 12px; padding: 4px 10px; font-size: 8px; }
             .floating-cart .fc-icon { font-size: 13px; }
@@ -1095,15 +1645,12 @@
             .btn-back-top { width: 34px; height: 34px; font-size: 13px; bottom: 120px; right: 12px; }
             .dark-mode-toggle { width: 34px; height: 34px; font-size: 13px; bottom: 158px; right: 12px; }
             .share-btn { width: 34px; height: 34px; font-size: 13px; bottom: 196px; right: 12px; }
-
             .notification { top: 68px; right: 12px; left: 12px; padding: 8px 14px; font-size: 10px; }
-
             .footer-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); }
             .footer-grid h4 { font-size: 12px; }
             .footer-grid a { font-size: 9px; }
             .footer-payments { font-size: 1.2rem; }
             .footer-bottom { font-size: 8px; }
-
             .cart-modal-content { padding: var(--space-lg); max-width: 95%; }
             .cart-modal-title { font-size: 1.2rem; }
             .cart-item-name { font-size: 11px; }
@@ -1441,7 +1988,7 @@
         });
 
         // ============================================
-        // PRODUCTOS EN TIEMPO REAL (onSnapshot)
+        // PRODUCTOS EN TIEMPO REAL
         // ============================================
         let productos = [];
         let unsubscribeProductos = null;
@@ -1481,9 +2028,6 @@
             }
         }
 
-        // ============================================
-        // IA LOCAL (completa, sin cambios)
-        // ============================================
         const IA_KNOWLEDGE = {
             'productos': '🛍️ Tenemos aretes, pestañas, collares, maquillaje, shampoo y acondicionador. ¿Qué te interesa?',
             'aretes': '📿 Aretes bohemios ($25), de perla ($38), florales ($6) y de compromiso ($65).',
@@ -1521,52 +2065,40 @@
 
         function getAIResponse(message) {
             const msg = message.toLowerCase().trim();
-
             for (const producto of productos) {
                 const nombreLower = producto.nombre.toLowerCase();
                 if (msg.includes(nombreLower) || msg.includes(nombreLower.split(' ')[0])) {
                     if (producto.stock <= 0) {
                         return `😢 Lo sentimos, <strong>${producto.nombre}</strong> está <strong>AGOTADO</strong> por ahora.\n\n¿Quieres que te recomiende otros productos similares? 💡`;
                     } else {
-                        const price = producto.precio_old 
-                            ? `$${producto.precio} (antes $${producto.precio_old})` 
-                            : `$${producto.precio}`;
+                        const price = producto.precio_old ? `$${producto.precio} (antes $${producto.precio_old})` : `$${producto.precio}`;
                         return `🔍 <strong>${producto.nombre}</strong>\n📝 ${producto.descripcion}\n💰 Precio: ${price}\n📦 Stock: ✅ ${producto.stock} disponibles\n⭐ ${producto.badge || 'Producto destacado'}\n\n¿Te gustaría agregarlo a tu carrito? 🛒`;
                     }
                 }
             }
-
             if (msg.includes('agotado') || msg.includes('acabó') || msg.includes('no hay')) {
                 const agotados = productos.filter(p => p.stock <= 0);
-                if (agotados.length === 0) {
-                    return '✅ ¡Buenas noticias! Todos nuestros productos están disponibles. ¿Qué buscas? 🛍️';
-                } else {
-                    return `😢 Estos productos están agotados por ahora:\n\n${agotados.map(p => `❌ ${p.nombre}`).join('\n')}\n\n¿Quieres que te recomiende algo similar? 💡`;
-                }
+                if (agotados.length === 0) return '✅ ¡Buenas noticias! Todos nuestros productos están disponibles. ¿Qué buscas? 🛍️';
+                return `😢 Estos productos están agotados por ahora:\n\n${agotados.map(p => `❌ ${p.nombre}`).join('\n')}\n\n¿Quieres que te recomiende algo similar? 💡`;
             }
-
             if (msg.includes('disponible') || msg.includes('stock')) {
                 const disponibles = productos.filter(p => p.stock > 0);
                 return `✅ Tenemos ${disponibles.length} productos disponibles:\n\n${disponibles.map(p => `🛍️ ${p.nombre} - $${p.precio.toFixed(2)}`).join('\n')}\n\n¿Cuál te interesa? ✨`;
             }
-
             for (const [key, response] of Object.entries(IA_KNOWLEDGE)) {
                 if (msg.includes(key) && key !== 'default') return response;
             }
-
             if (msg.includes('+')) {
                 const parts = msg.split('+');
                 if (parts.length === 2) {
-                    const num1 = parseFloat(parts[0].trim());
-                    const num2 = parseFloat(parts[1].trim());
+                    const num1 = parseFloat(parts[0].trim()), num2 = parseFloat(parts[1].trim());
                     if (!isNaN(num1) && !isNaN(num2)) return `🧮 ${num1} + ${num2} = ${num1 + num2}`;
                 }
             }
             if (msg.includes('-') && !msg.includes('+')) {
                 const parts = msg.split('-');
                 if (parts.length === 2) {
-                    const num1 = parseFloat(parts[0].trim());
-                    const num2 = parseFloat(parts[1].trim());
+                    const num1 = parseFloat(parts[0].trim()), num2 = parseFloat(parts[1].trim());
                     if (!isNaN(num1) && !isNaN(num2)) return `🧮 ${num1} - ${num2} = ${num1 - num2}`;
                 }
             }
@@ -1574,21 +2106,18 @@
                 const separator = msg.includes('*') ? '*' : 'x';
                 const parts = msg.split(separator);
                 if (parts.length === 2) {
-                    const num1 = parseFloat(parts[0].trim());
-                    const num2 = parseFloat(parts[1].trim());
+                    const num1 = parseFloat(parts[0].trim()), num2 = parseFloat(parts[1].trim());
                     if (!isNaN(num1) && !isNaN(num2)) return `🧮 ${num1} × ${num2} = ${num1 * num2}`;
                 }
             }
             if (msg.includes('/')) {
                 const parts = msg.split('/');
                 if (parts.length === 2) {
-                    const num1 = parseFloat(parts[0].trim());
-                    const num2 = parseFloat(parts[1].trim());
+                    const num1 = parseFloat(parts[0].trim()), num2 = parseFloat(parts[1].trim());
                     if (!isNaN(num1) && !isNaN(num2) && num2 !== 0) return `🧮 ${num1} ÷ ${num2} = ${num1 / num2}`;
                     if (num2 === 0) return '🧮 No se puede dividir por cero. ¡Eso es matemáticamente imposible! 😅';
                 }
             }
-
             if (msg.includes('producto') || msg.includes('productos') || msg.includes('tienen')) return IA_KNOWLEDGE.productos;
             if (msg.includes('precio') || msg.includes('cuesta') || msg.includes('costo')) return IA_KNOWLEDGE.precio;
             if (msg.includes('envío') || msg.includes('envio') || msg.includes('llegar')) return IA_KNOWLEDGE.envío;
@@ -1615,7 +2144,6 @@
                 ];
                 return chistes[Math.floor(Math.random() * chistes.length)];
             }
-
             const respuestasGeniales = [
                 '🤖 ¡Excelente pregunta! Puedo ayudarte con productos, precios, envíos, pagos y cultura general. ¿Qué te gustaría saber? ✨',
                 '🧠 ¡Qué pregunta tan interesante! ¿Te gustaría saber sobre productos, precios, envíos, pagos o cultura general? 🤔',
@@ -1644,22 +2172,18 @@
                 if (!text.trim()) return;
                 const now = new Date();
                 const timeStr = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
-
                 const userMsg = document.createElement('div');
                 userMsg.className = 'chat-message-ai user';
                 userMsg.innerHTML = `${text} <span class="msg-time">${timeStr}</span>`;
                 chatMessages.appendChild(userMsg);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
-
                 chatInput.value = '';
                 chatSend.disabled = true;
-
                 const typingDiv = document.createElement('div');
                 typingDiv.className = 'chat-message-ai bot';
                 typingDiv.innerHTML = `<div class="typing-indicator"><span></span><span></span><span></span></div>`;
                 chatMessages.appendChild(typingDiv);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
-
                 setTimeout(() => {
                     typingDiv.remove();
                     const response = getAIResponse(text);
@@ -1742,23 +2266,16 @@
             if (currentUser) {
                 const displayName = currentUser.name || (currentUser.email ? currentUser.email.split('@')[0] : 'Usuario');
                 const level = getUserLevel(currentUser.points || 0);
-
                 if (userName) userName.textContent = displayName;
                 if (userNameDesktop) userNameDesktop.textContent = displayName;
                 if (userLevel) userLevel.textContent = `${level.emoji} ${level.name} · ${currentUser.points || 0} pts`;
                 if (userAvatar) userAvatar.textContent = displayName.charAt(0).toUpperCase();
-
                 if (mobileUserName) mobileUserName.textContent = displayName;
                 if (mobileUserLevel) mobileUserLevel.textContent = `${level.emoji} ${level.name} · ${currentUser.points || 0} pts`;
-
-                if (userBtn) userBtn.onclick = () => {
-                    if (confirm('¿Cerrar sesión?')) logoutUser();
-                };
+                if (userBtn) userBtn.onclick = () => { if (confirm('¿Cerrar sesión?')) logoutUser(); };
                 if (mobileLoginBtn) {
                     mobileLoginBtn.textContent = `👤 ${displayName}`;
-                    mobileLoginBtn.onclick = () => {
-                        if (confirm('¿Cerrar sesión?')) logoutUser();
-                    };
+                    mobileLoginBtn.onclick = () => { if (confirm('¿Cerrar sesión?')) logoutUser(); };
                 }
             } else {
                 if (userName) userName.textContent = 'Ingresar';
@@ -1780,11 +2297,9 @@
                 if (!name || !name.trim()) { mostrarNotificacion('⚠️ Ingresa tu nombre', '⚠️'); return false; }
                 if (!email || !email.includes('@')) { mostrarNotificacion('⚠️ Ingresa un correo válido', '⚠️'); return false; }
                 if (password.length < 6) { mostrarNotificacion('⚠️ La contraseña debe tener al menos 6 caracteres', '⚠️'); return false; }
-
                 const userCredential = await window.firebaseAuth.createUserWithEmailAndPassword(window.auth, email, password);
                 const user = userCredential.user;
                 await window.firebaseAuth.updateProfile(user, { displayName: name });
-
                 await window.firebaseDB.setDoc(
                     window.firebaseDB.doc(window.db, "usuarios", user.uid),
                     {
@@ -1794,7 +2309,6 @@
                         purchases: [], addresses: [], wishlist: [], reviews: [], questions: []
                     }
                 );
-
                 mostrarNotificacion(`✅ ¡Bienvenida ${name}! 🎉`, '🎉');
                 lanzarConfetti();
                 return true;
@@ -1846,7 +2360,6 @@
                     <div class="modal-content">
                         <button class="modal-close" onclick="closeLoginModal()">✕</button>
                         <h3 style="font-family:var(--font-serif);font-size:1.4rem;margin-bottom:var(--space-md);">🔑 Iniciar sesión</h3>
-
                         <div id="loginForm">
                             <div style="margin-bottom:var(--space-sm);">
                                 <label style="font-size:11px;font-weight:600;color:var(--gray-600);">📧 Correo electrónico</label>
@@ -1857,12 +2370,9 @@
                                 <input type="password" id="loginPassword" placeholder="••••••••" style="width:100%;padding:10px 14px;border:1.5px solid rgba(212,175,55,0.1);border-radius:var(--radius-md);font-family:var(--font-sans);font-size:12px;background:var(--gray-50);color:var(--gray-800);">
                             </div>
                             <button class="btn btn-gold" onclick="handleLogin()" style="width:100%;padding:10px;">Iniciar sesión</button>
-                            <p style="text-align:center;margin-top:var(--space-sm);font-size:12px;color:var(--gray-500);">
-                                ¿No tienes cuenta? <a href="#" onclick="showRegisterForm()" style="color:var(--gold);text-decoration:none;">Regístrate</a>
-                            </p>
+                            <p style="text-align:center;margin-top:var(--space-sm);font-size:12px;color:var(--gray-500);">¿No tienes cuenta? <a href="#" onclick="showRegisterForm()" style="color:var(--gold);text-decoration:none;">Regístrate</a></p>
                             <a href="#" onclick="showRecoverPassword()" style="display:block;text-align:center;font-size:11px;color:var(--gray-400);margin-top:4px;">¿Olvidaste tu contraseña?</a>
                         </div>
-
                         <div id="registerForm" style="display:none;">
                             <div style="margin-bottom:var(--space-sm);">
                                 <label style="font-size:11px;font-weight:600;color:var(--gray-600);">👤 Nombre completo</label>
@@ -1881,20 +2391,15 @@
                                 <input type="password" id="registerPassword2" placeholder="Repite la contraseña" style="width:100%;padding:10px 14px;border:1.5px solid rgba(212,175,55,0.1);border-radius:var(--radius-md);font-family:var(--font-sans);font-size:12px;background:var(--gray-50);color:var(--gray-800);">
                             </div>
                             <button class="btn btn-gold" onclick="handleRegister()" style="width:100%;padding:10px;">Crear cuenta 🎉</button>
-                            <p style="text-align:center;margin-top:var(--space-sm);font-size:12px;color:var(--gray-500);">
-                                ¿Ya tienes cuenta? <a href="#" onclick="showLoginForm()" style="color:var(--gold);text-decoration:none;">Iniciar sesión</a>
-                            </p>
+                            <p style="text-align:center;margin-top:var(--space-sm);font-size:12px;color:var(--gray-500);">¿Ya tienes cuenta? <a href="#" onclick="showLoginForm()" style="color:var(--gold);text-decoration:none;">Iniciar sesión</a></p>
                         </div>
-
                         <div id="recoverForm" style="display:none;">
                             <div style="margin-bottom:var(--space-md);">
                                 <label style="font-size:11px;font-weight:600;color:var(--gray-600);">📧 Correo electrónico</label>
                                 <input type="email" id="recoverEmail" placeholder="tu@email.com" style="width:100%;padding:10px 14px;border:1.5px solid rgba(212,175,55,0.1);border-radius:var(--radius-md);font-family:var(--font-sans);font-size:12px;background:var(--gray-50);color:var(--gray-800);">
                             </div>
                             <button class="btn btn-gold" onclick="handleRecoverPassword()" style="width:100%;padding:10px;">📩 Enviar enlace de recuperación</button>
-                            <p style="text-align:center;margin-top:var(--space-sm);font-size:12px;color:var(--gray-500);">
-                                <a href="#" onclick="showLoginForm()" style="color:var(--gold);text-decoration:none;">Volver a iniciar sesión</a>
-                            </p>
+                            <p style="text-align:center;margin-top:var(--space-sm);font-size:12px;color:var(--gray-500);"><a href="#" onclick="showLoginForm()" style="color:var(--gold);text-decoration:none;">Volver a iniciar sesión</a></p>
                         </div>
                     </div>
                 `;
@@ -1946,10 +2451,7 @@
 
         async function handleRecoverPassword() {
             const email = document.getElementById('recoverEmail').value;
-            if (!email || !email.includes('@')) {
-                mostrarNotificacion('⚠️ Ingresa un correo válido', '⚠️');
-                return;
-            }
+            if (!email || !email.includes('@')) { mostrarNotificacion('⚠️ Ingresa un correo válido', '⚠️'); return; }
             try {
                 const WORKER_URL = 'https://paulina-email.vercel.app/api/hello';
                 const response = await fetch(WORKER_URL, {
@@ -1976,9 +2478,7 @@
         const oobCode = urlParams.get('oobCode');
 
         if (mode === 'resetPassword' && oobCode) {
-            setTimeout(() => {
-                showResetPasswordModal(oobCode);
-            }, 1500);
+            setTimeout(() => { showResetPasswordModal(oobCode); }, 1500);
         }
 
         function showResetPasswordModal(oobCode) {
@@ -1990,9 +2490,7 @@
                 modal.innerHTML = `
                     <div class="modal-content" style="max-width:420px;">
                         <h3 style="font-family:var(--font-serif);font-size:1.4rem;margin-bottom:var(--space-md);">🔐 Nueva contraseña</h3>
-                        <p style="font-size:12px;color:var(--gray-500);margin-bottom:var(--space-md);">
-                            Crea una nueva contraseña para tu cuenta. No necesitas recordar la anterior.
-                        </p>
+                        <p style="font-size:12px;color:var(--gray-500);margin-bottom:var(--space-md);">Crea una nueva contraseña para tu cuenta. No necesitas recordar la anterior.</p>
                         <div style="margin-bottom:var(--space-sm);">
                             <label style="font-size:11px;font-weight:600;color:var(--gray-600);">🔒 Nueva contraseña</label>
                             <input type="password" id="newPassword" placeholder="Mínimo 6 caracteres" style="width:100%;padding:10px 14px;border:1.5px solid rgba(212,175,55,0.1);border-radius:var(--radius-md);font-family:var(--font-sans);font-size:12px;background:var(--gray-50);color:var(--gray-800);">
@@ -2013,15 +2511,8 @@
         async function handleResetPassword(oobCode) {
             const newPassword = document.getElementById('newPassword').value;
             const newPassword2 = document.getElementById('newPassword2').value;
-
-            if (!newPassword || newPassword.length < 6) {
-                mostrarNotificacion('⚠️ La contraseña debe tener al menos 6 caracteres', '⚠️');
-                return;
-            }
-            if (newPassword !== newPassword2) {
-                mostrarNotificacion('⚠️ Las contraseñas no coinciden', '⚠️');
-                return;
-            }
+            if (!newPassword || newPassword.length < 6) { mostrarNotificacion('⚠️ La contraseña debe tener al menos 6 caracteres', '⚠️'); return; }
+            if (newPassword !== newPassword2) { mostrarNotificacion('⚠️ Las contraseñas no coinciden', '⚠️'); return; }
             try {
                 await window.firebaseAuth.confirmPasswordReset(window.auth, oobCode, newPassword);
                 mostrarNotificacion('✅ ¡Contraseña actualizada! 🎉', '🎉');
@@ -2055,11 +2546,9 @@
             const existing = cart.find(item => item.id === productId);
             if (existing) existing.quantity += 1;
             else cart.push({ id: product.id, name: product.nombre, price: product.precio, quantity: 1, image: product.imagen });
-
             saveCart();
             updateCartUI();
             renderCart();
-
             const btn = document.querySelector(`.btn-add[data-id="${productId}"]`);
             if (btn) {
                 const originalText = btn.textContent;
@@ -2067,11 +2556,9 @@
                 btn.classList.add('added');
                 setTimeout(() => { btn.textContent = originalText; btn.classList.remove('added'); }, 2000);
             }
-
             const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             let mensaje = `✅ ${product.nombre} agregado al carrito`;
             let icono = '🛍️';
-
             if (total >= 45 && total < 50) {
                 mensaje = `🎉 ¡Ya casi tienes envío gratis! Te faltan $${(50 - total).toFixed(2)} 🚚`;
                 icono = '🎉';
@@ -2082,16 +2569,10 @@
                 lanzarConfetti();
                 setTimeout(() => lanzarConfetti(), 500);
             } else if (cart.length >= 3) {
-                const messages = [
-                    '💪 ¡Sigue así! Te estás armando un pedido increíble',
-                    '🌟 ¡Excelente elección! Cada producto es especial',
-                    '✨ ¡Eres toda una fashionista! Sigue agregando',
-                    '💖 ¡Me encanta tu estilo! Sigue comprando'
-                ];
+                const messages = ['💪 ¡Sigue así! Te estás armando un pedido increíble', '🌟 ¡Excelente elección! Cada producto es especial', '✨ ¡Eres toda una fashionista! Sigue agregando', '💖 ¡Me encanta tu estilo! Sigue comprando'];
                 mensaje = messages[Math.floor(Math.random() * messages.length)];
                 icono = '💪';
             }
-
             mostrarNotificacion(mensaje, icono);
             const cartCount = document.getElementById('cartCount');
             cartCount.classList.add('bounce');
@@ -2220,7 +2701,6 @@
 
             checkoutBtn.addEventListener('click', function() {
                 if (cart.length === 0) { mostrarNotificacion('⚠️ Tu carrito está vacío', '⚠️'); return; }
-
                 let message = '✨ ¡Hola Paulina! ✨%0A%0A';
                 if (window.currentUser) {
                     message += `👤 ${window.currentUser.name || window.currentUser.email}%0A`;
@@ -2241,7 +2721,6 @@
                 message += `📍 ¿Cómo puedo pagar? (Yape, Plin, Transferencia)%0A`;
                 message += `📦 ¿Tienes stock disponible?%0A%0A`;
                 message += `💖 ¡Gracias! Espero tu respuesta.`;
-
                 const url = `https://wa.me/51923861016?text=${message}`;
                 window.open(url, '_blank');
                 cart = [];
@@ -2312,9 +2791,7 @@
         function initBackTop() {
             const btn = document.getElementById('backTopBtn');
             if (!btn) return;
-            window.addEventListener('scroll', () => {
-                btn.style.display = window.scrollY > 400 ? 'flex' : 'none';
-            });
+            window.addEventListener('scroll', () => { btn.style.display = window.scrollY > 400 ? 'flex' : 'none'; });
             btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
         }
 
@@ -2372,13 +2849,11 @@
                 k.startsWith('producto_') || k.startsWith('tienen_') || k.startsWith('hay_') || k.startsWith('disponible_')
             );
             clavesProductos.forEach(k => delete IA_KNOWLEDGE[k]);
-
             productos.forEach(p => {
                 const stockText = p.stock > 0 ? `✅ ${p.stock} disponibles` : `❌ AGOTADO`;
                 IA_KNOWLEDGE[`producto_${p.nombre.toLowerCase()}`] = 
                     `🔍 <strong>${p.nombre}</strong>\n📝 ${p.descripcion}\n💰 Precio: $${p.precio.toFixed(2)}\n📦 Stock: ${stockText}\n⭐ ${p.badge || 'Producto destacado'}\n\n¿Te gustaría agregarlo a tu carrito? 🛒`;
             });
-
             const disponibles = productos.filter(p => p.stock > 0);
             const agotados = productos.filter(p => p.stock <= 0);
             let resp = '🛍️ <strong>Nuestros productos:</strong>\n\n';
@@ -2395,130 +2870,147 @@
         }
 
         // ============================================
-        // ⚙️ PANEL DE ADMINISTRACIÓN COMPLETO
+        // 👑 PANEL ADMIN PREMIUM
         // ============================================
 
         let adminProductosCache = [];
         let adminUsuariosCache = [];
+        let adminTabActiva = 'dashboard';
 
         function crearPanelAdmin() {
             if (document.getElementById('adminPanelBtn')) return;
 
             const adminBtn = document.createElement('button');
             adminBtn.id = 'adminPanelBtn';
-            adminBtn.innerHTML = '⚙️ Panel Admin';
+            adminBtn.innerHTML = '👑 Admin';
             adminBtn.style.cssText = `
                 position: fixed; bottom: 100px; right: 20px;
-                background: linear-gradient(135deg, #d4af37, #f5d76e);
-                color: #fff; border: none; border-radius: 50px;
-                padding: 14px 24px; font-weight: 700; font-size: 13px;
+                background: linear-gradient(135deg, #0a050a, #1a0b1a);
+                color: #d4af37; border: 2px solid #d4af37; border-radius: 50px;
+                padding: 14px 24px; font-weight: 800; font-size: 13px;
                 cursor: pointer; z-index: 9999;
-                box-shadow: 0 8px 30px rgba(212,175,55,0.4);
+                font-family: var(--font-sans);
+                letter-spacing: 1px;
+                box-shadow: 0 8px 30px rgba(212,175,55,0.4), 0 0 40px rgba(212,175,55,0.2);
                 transition: all 0.3s ease;
+                animation: premiumPulse 2.5s ease-in-out infinite;
             `;
-            adminBtn.onmouseover = () => { adminBtn.style.transform = 'scale(1.05)'; };
-            adminBtn.onmouseout = () => { adminBtn.style.transform = 'scale(1)'; };
+            adminBtn.onmouseover = () => { 
+                adminBtn.style.transform = 'scale(1.08)';
+                adminBtn.style.background = 'linear-gradient(135deg, #d4af37, #f5d76e)';
+                adminBtn.style.color = '#0a050a';
+            };
+            adminBtn.onmouseout = () => { 
+                adminBtn.style.transform = 'scale(1)';
+                adminBtn.style.background = 'linear-gradient(135deg, #0a050a, #1a0b1a)';
+                adminBtn.style.color = '#d4af37';
+            };
             document.body.appendChild(adminBtn);
             adminBtn.addEventListener('click', abrirPanelAdmin);
         }
 
-        async function abrirPanelAdmin() {
+        function abrirPanelAdmin() {
             let modal = document.getElementById('adminModal');
             if (!modal) {
                 modal = document.createElement('div');
                 modal.id = 'adminModal';
-                modal.className = 'modal-overlay';
+                modal.className = 'admin-premium-overlay';
                 modal.innerHTML = `
-                    <div class="modal-content" style="max-width:800px;width:95%;max-height:92vh;overflow-y:auto;padding:0;">
-                        <div style="background:linear-gradient(135deg,#d4af37,#f5d76e);padding:20px 24px;border-radius:24px 24px 0 0;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10;">
-                            <div>
-                                <h2 style="font-family:var(--font-serif);color:#fff;font-size:1.5rem;margin:0;">👑 Panel Admin</h2>
-                                <p style="color:rgba(255,255,255,0.9);font-size:11px;margin-top:2px;">Control total de Paulina Accesorios</p>
+                    <div class="admin-premium">
+                        <div class="admin-premium-header">
+                            <div class="admin-premium-title">
+                                <span class="admin-premium-crown">👑</span>
+                                <div>
+                                    <h2>Panel de Control</h2>
+                                    <p>Paulina Accesorios · Admin</p>
+                                </div>
                             </div>
-                            <button onclick="cerrarPanelAdmin()" style="background:rgba(255,255,255,0.2);border:none;color:#fff;font-size:1.5rem;width:36px;height:36px;border-radius:50%;cursor:pointer;">✕</button>
+                            <button class="admin-premium-close" onclick="cerrarPanelAdmin()">✕</button>
                         </div>
 
-                        <div style="display:flex;background:var(--gray-100);padding:8px;gap:4px;flex-wrap:wrap;position:sticky;top:80px;z-index:9;">
-                            <button class="admin-tab" data-tab="dashboard" onclick="cambiarTabAdmin('dashboard')" style="flex:1;min-width:90px;padding:10px;border:none;border-radius:8px;font-weight:700;font-size:11px;cursor:pointer;transition:all 0.2s;">📊 Inicio</button>
-                            <button class="admin-tab" data-tab="productos" onclick="cambiarTabAdmin('productos')" style="flex:1;min-width:90px;padding:10px;border:none;border-radius:8px;font-weight:700;font-size:11px;cursor:pointer;transition:all 0.2s;">📦 Productos</button>
-                            <button class="admin-tab" data-tab="agregar" onclick="cambiarTabAdmin('agregar')" style="flex:1;min-width:90px;padding:10px;border:none;border-radius:8px;font-weight:700;font-size:11px;cursor:pointer;transition:all 0.2s;">➕ Agregar</button>
-                            <button class="admin-tab" data-tab="usuarios" onclick="cambiarTabAdmin('usuarios')" style="flex:1;min-width:90px;padding:10px;border:none;border-radius:8px;font-weight:700;font-size:11px;cursor:pointer;transition:all 0.2s;">👥 Usuarios</button>
-                            <button class="admin-tab" data-tab="stats" onclick="cambiarTabAdmin('stats')" style="flex:1;min-width:90px;padding:10px;border:none;border-radius:8px;font-weight:700;font-size:11px;cursor:pointer;transition:all 0.2s;">📈 Stats</button>
+                        <div class="admin-premium-tabs">
+                            <button class="admin-premium-tab active" data-tab="dashboard" onclick="cambiarTabAdmin('dashboard')">📊 Inicio</button>
+                            <button class="admin-premium-tab" data-tab="productos" onclick="cambiarTabAdmin('productos')">📦 Productos</button>
+                            <button class="admin-premium-tab" data-tab="agregar" onclick="cambiarTabAdmin('agregar')">➕ Agregar</button>
+                            <button class="admin-premium-tab" data-tab="usuarios" onclick="cambiarTabAdmin('usuarios')">👥 Usuarios</button>
+                            <button class="admin-premium-tab" data-tab="stats" onclick="cambiarTabAdmin('stats')">📈 Estadísticas</button>
                         </div>
 
-                        <div style="padding:20px 24px 32px;">
-                            <div id="tab-dashboard" class="admin-tab-content">
-                                <div id="dashboardStats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;">
-                                    <p style="text-align:center;color:#999;font-size:12px;grid-column:1/-1;">Cargando...</p>
+                        <div class="admin-premium-body">
+                            <div id="tab-dashboard" class="admin-tab-content active">
+                                <div id="dashboardStats" class="admin-stats-grid">
+                                    <p style="text-align:center;color:rgba(255,255,255,0.3);font-size:12px;grid-column:1/-1;">Cargando...</p>
                                 </div>
                             </div>
 
-                            <div id="tab-productos" class="admin-tab-content" style="display:none;">
-                                <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
-                                    <input type="text" id="adminBuscarProducto" placeholder="🔍 Buscar..." oninput="filtrarProductosAdmin()" style="flex:1;min-width:150px;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);font-size:12px;">
-                                    <button onclick="cargarProductosAdmin()" style="padding:10px 16px;border-radius:8px;border:none;background:#3498db;color:#fff;font-weight:700;cursor:pointer;font-size:12px;">🔄</button>
-                                    <button onclick="exportarProductosJSON()" style="padding:10px 16px;border-radius:8px;border:none;background:#27ae60;color:#fff;font-weight:700;cursor:pointer;font-size:12px;">📥</button>
+                            <div id="tab-productos" class="admin-tab-content">
+                                <div class="admin-search-bar">
+                                    <input type="text" id="adminBuscarProducto" class="admin-input" placeholder="🔍 Buscar producto por nombre o categoría..." oninput="filtrarProductosAdmin()">
+                                    <button class="admin-btn admin-btn-secondary" onclick="cargarProductosAdmin()">🔄</button>
                                 </div>
                                 <div id="adminProductosLista"></div>
                             </div>
 
-                            <div id="tab-agregar" class="admin-tab-content" style="display:none;">
-                                <div style="margin-bottom:10px;">
-                                    <label style="font-size:11px;font-weight:600;">📦 Nombre *</label>
-                                    <input type="text" id="adminNombre" placeholder="Ej: Aretes de oro" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
-                                </div>
-                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
-                                    <div>
-                                        <label style="font-size:11px;font-weight:600;">💰 Precio *</label>
-                                        <input type="number" id="adminPrecio" step="0.01" placeholder="25.00" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
+                            <div id="tab-agregar" class="admin-tab-content">
+                                <div class="admin-panel">
+                                    <div class="admin-panel-title">➕ Nuevo producto</div>
+                                    <div class="admin-form-group">
+                                        <label class="admin-label">📦 Nombre del producto *</label>
+                                        <input type="text" id="adminNombre" class="admin-input" placeholder="Ej: Aretes de oro">
                                     </div>
-                                    <div>
-                                        <label style="font-size:11px;font-weight:600;">💸 Precio anterior</label>
-                                        <input type="number" id="adminPrecioOld" step="0.01" placeholder="45.00" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
+                                    <div class="admin-form-row">
+                                        <div class="admin-form-group">
+                                            <label class="admin-label">💰 Precio *</label>
+                                            <input type="number" id="adminPrecio" class="admin-input" step="0.01" placeholder="25.00">
+                                        </div>
+                                        <div class="admin-form-group">
+                                            <label class="admin-label">💸 Precio anterior</label>
+                                            <input type="number" id="adminPrecioOld" class="admin-input" step="0.01" placeholder="45.00">
+                                        </div>
                                     </div>
-                                </div>
-                                <div style="margin-bottom:10px;">
-                                    <label style="font-size:11px;font-weight:600;">📝 Descripción</label>
-                                    <input type="text" id="adminDescripcion" placeholder="Descripción" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
-                                </div>
-                                <div style="margin-bottom:10px;">
-                                    <label style="font-size:11px;font-weight:600;">📸 Foto (URL)</label>
-                                    <input type="text" id="adminImagen" placeholder="https://..." style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
-                                </div>
-                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
-                                    <div>
-                                        <label style="font-size:11px;font-weight:600;">📊 Stock</label>
-                                        <input type="number" id="adminStock" placeholder="10" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
+                                    <div class="admin-form-group">
+                                        <label class="admin-label">📝 Descripción</label>
+                                        <input type="text" id="adminDescripcion" class="admin-input" placeholder="Descripción del producto">
                                     </div>
-                                    <div>
-                                        <label style="font-size:11px;font-weight:600;">⭐ Badge</label>
-                                        <input type="text" id="adminBadge" placeholder="⭐ Top" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
+                                    <div class="admin-form-group">
+                                        <label class="admin-label">📸 URL de imagen</label>
+                                        <input type="text" id="adminImagen" class="admin-input" placeholder="https://...">
                                     </div>
+                                    <div class="admin-form-row">
+                                        <div class="admin-form-group">
+                                            <label class="admin-label">📊 Stock</label>
+                                            <input type="number" id="adminStock" class="admin-input" placeholder="10">
+                                        </div>
+                                        <div class="admin-form-group">
+                                            <label class="admin-label">⭐ Badge</label>
+                                            <input type="text" id="adminBadge" class="admin-input" placeholder="Ej: ⭐ Top">
+                                        </div>
+                                    </div>
+                                    <div class="admin-form-group">
+                                        <label class="admin-label">📂 Categoría</label>
+                                        <select id="adminCategoria" class="admin-select">
+                                            <option value="aretes">📿 Aretes</option>
+                                            <option value="pestanas">👁️ Pestañas</option>
+                                            <option value="collares">📿 Collares</option>
+                                            <option value="maquillaje">💄 Maquillaje</option>
+                                            <option value="capilar">💈 Cuidado Capilar</option>
+                                        </select>
+                                    </div>
+                                    <button class="admin-btn admin-btn-primary admin-btn-full" onclick="guardarProducto()">✅ Guardar producto</button>
                                 </div>
-                                <div style="margin-bottom:10px;">
-                                    <label style="font-size:11px;font-weight:600;">📂 Categoría</label>
-                                    <select id="adminCategoria" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
-                                        <option value="aretes">📿 Aretes</option>
-                                        <option value="pestanas">👁️ Pestañas</option>
-                                        <option value="collares">📿 Collares</option>
-                                        <option value="maquillaje">💄 Maquillaje</option>
-                                        <option value="capilar">💈 Cuidado Capilar</option>
-                                    </select>
-                                </div>
-                                <button class="btn btn-gold" onclick="guardarProducto()" style="width:100%;padding:12px;margin-top:8px;">✅ Guardar Producto</button>
                             </div>
 
-                            <div id="tab-usuarios" class="admin-tab-content" style="display:none;">
-                                <div style="display:flex;gap:8px;margin-bottom:12px;">
-                                    <input type="text" id="adminBuscarUsuario" placeholder="🔍 Buscar por email o nombre..." oninput="filtrarUsuariosAdmin()" style="flex:1;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);font-size:12px;">
-                                    <button onclick="cargarUsuariosAdmin()" style="padding:10px 16px;border-radius:8px;border:none;background:#3498db;color:#fff;font-weight:700;cursor:pointer;font-size:12px;">🔄</button>
+                            <div id="tab-usuarios" class="admin-tab-content">
+                                <div class="admin-search-bar">
+                                    <input type="text" id="adminBuscarUsuario" class="admin-input" placeholder="🔍 Buscar por email o nombre..." oninput="filtrarUsuariosAdmin()">
+                                    <button class="admin-btn admin-btn-secondary" onclick="cargarUsuariosAdmin()">🔄</button>
                                 </div>
                                 <div id="adminUsuariosLista"></div>
                             </div>
 
-                            <div id="tab-stats" class="admin-tab-content" style="display:none;">
+                            <div id="tab-stats" class="admin-tab-content">
                                 <div id="adminStatsContent">
-                                    <p style="text-align:center;color:#999;font-size:12px;">Cargando estadísticas...</p>
+                                    <p style="text-align:center;color:rgba(255,255,255,0.3);font-size:12px;">Cargando estadísticas...</p>
                                 </div>
                             </div>
                         </div>
@@ -2526,32 +3018,28 @@
                 `;
                 document.body.appendChild(modal);
             }
-            modal.style.display = 'flex';
+            modal.classList.add('show');
             document.body.style.overflow = 'hidden';
             cambiarTabAdmin('dashboard');
-            cargarDashboardStats();
-            cargarProductosAdmin();
-            cargarUsuariosAdmin();
         }
 
         function cerrarPanelAdmin() {
             const modal = document.getElementById('adminModal');
             if (modal) {
-                modal.style.display = 'none';
+                modal.classList.remove('show');
                 document.body.style.overflow = '';
             }
         }
 
         function cambiarTabAdmin(tab) {
-            document.querySelectorAll('.admin-tab-content').forEach(el => el.style.display = 'none');
-            document.querySelectorAll('.admin-tab').forEach(el => {
+            adminTabActiva = tab;
+            document.querySelectorAll('.admin-tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.admin-premium-tab').forEach(el => {
                 const isActive = el.dataset.tab === tab;
-                el.style.background = isActive ? 'linear-gradient(135deg,#d4af37,#f5d76e)' : 'white';
-                el.style.color = isActive ? 'white' : '#6a4a6a';
-                el.style.boxShadow = isActive ? '0 4px 12px rgba(212,175,55,0.3)' : 'none';
+                el.classList.toggle('active', isActive);
             });
             const target = document.getElementById('tab-' + tab);
-            if (target) target.style.display = 'block';
+            if (target) target.classList.add('active');
 
             if (tab === 'dashboard') cargarDashboardStats();
             if (tab === 'productos') cargarProductosAdmin();
@@ -2559,6 +3047,9 @@
             if (tab === 'stats') cargarEstadisticas();
         }
 
+        // ============================================
+        // 📊 DASHBOARD
+        // ============================================
         async function cargarDashboardStats() {
             try {
                 const productosRef = window.firebaseDB.collection(window.db, "productos");
@@ -2576,50 +3067,59 @@
                 try {
                     const userSnap = await window.firebaseDB.getDocs(window.firebaseDB.collection(window.db, "usuarios"));
                     totalUsuarios = userSnap.size;
-                } catch(e) {}
+                } catch(e) { console.warn('⚠️ No se pudo cargar usuarios:', e); }
 
                 const html = `
-                    <div style="background:linear-gradient(135deg,#d4af37,#f5d76e);padding:16px;border-radius:12px;color:#fff;">
-                        <div style="font-size:11px;opacity:0.9;">📦 Productos</div>
-                        <div style="font-size:1.8rem;font-weight:800;">${totalProductos}</div>
+                    <div class="admin-stat-card">
+                        <span class="admin-stat-icon">📦</span>
+                        <div class="admin-stat-label">Productos</div>
+                        <div class="admin-stat-value">${totalProductos}</div>
+                        <div class="admin-stat-sub">En catálogo</div>
                     </div>
-                    <div style="background:linear-gradient(135deg,#27ae60,#2ecc71);padding:16px;border-radius:12px;color:#fff;">
-                        <div style="font-size:11px;opacity:0.9;">📊 Stock total</div>
-                        <div style="font-size:1.8rem;font-weight:800;">${stockTotal}</div>
+                    <div class="admin-stat-card">
+                        <span class="admin-stat-icon">📊</span>
+                        <div class="admin-stat-label">Stock total</div>
+                        <div class="admin-stat-value">${stockTotal}</div>
+                        <div class="admin-stat-sub">Unidades</div>
                     </div>
-                    <div style="background:linear-gradient(135deg,#3498db,#5dade2);padding:16px;border-radius:12px;color:#fff;">
-                        <div style="font-size:11px;opacity:0.9;">💰 Valor inventario</div>
-                        <div style="font-size:1.8rem;font-weight:800;">$${valorInventario.toFixed(2)}</div>
+                    <div class="admin-stat-card">
+                        <span class="admin-stat-icon">💰</span>
+                        <div class="admin-stat-label">Inventario</div>
+                        <div class="admin-stat-value">$${valorInventario.toFixed(0)}</div>
+                        <div class="admin-stat-sub">Valor total</div>
                     </div>
-                    <div style="background:linear-gradient(135deg,#9b59b6,#bb8fce);padding:16px;border-radius:12px;color:#fff;">
-                        <div style="font-size:11px;opacity:0.9;">👥 Usuarios</div>
-                        <div style="font-size:1.8rem;font-weight:800;">${totalUsuarios}</div>
+                    <div class="admin-stat-card">
+                        <span class="admin-stat-icon">👥</span>
+                        <div class="admin-stat-label">Usuarios</div>
+                        <div class="admin-stat-value">${totalUsuarios}</div>
+                        <div class="admin-stat-sub">Registrados</div>
                     </div>
-                    <div style="background:linear-gradient(135deg,#e74c3c,#ec7063);padding:16px;border-radius:12px;color:#fff;">
-                        <div style="font-size:11px;opacity:0.9;">❌ Agotados</div>
-                        <div style="font-size:1.8rem;font-weight:800;">${agotados}</div>
+                    <div class="admin-stat-card">
+                        <span class="admin-stat-icon">❌</span>
+                        <div class="admin-stat-label">Agotados</div>
+                        <div class="admin-stat-value">${agotados}</div>
+                        <div class="admin-stat-sub">Sin stock</div>
                     </div>
-                    <div style="background:linear-gradient(135deg,#e67e22,#f39c12);padding:16px;border-radius:12px;color:#fff;">
-                        <div style="font-size:11px;opacity:0.9;">⚠️ Stock bajo</div>
-                        <div style="font-size:1.8rem;font-weight:800;">${stockBajo}</div>
-                    </div>
-                    <div style="grid-column:1/-1;background:var(--gray-100);padding:14px;border-radius:12px;margin-top:8px;">
-                        <div style="font-size:11px;font-weight:700;color:var(--gray-600);margin-bottom:6px;">🚀 Acciones rápidas</div>
-                        <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                            <button onclick="cambiarTabAdmin('agregar')" style="padding:8px 14px;border-radius:8px;border:none;background:#d4af37;color:#fff;font-weight:700;cursor:pointer;font-size:11px;">➕ Agregar producto</button>
-                            <button onclick="cambiarTabAdmin('productos')" style="padding:8px 14px;border-radius:8px;border:none;background:#3498db;color:#fff;font-weight:700;cursor:pointer;font-size:11px;">📦 Ver productos</button>
-                            <button onclick="cambiarTabAdmin('usuarios')" style="padding:8px 14px;border-radius:8px;border:none;background:#9b59b6;color:#fff;font-weight:700;cursor:pointer;font-size:11px;">👥 Ver usuarios</button>
-                        </div>
+                    <div class="admin-stat-card">
+                        <span class="admin-stat-icon">⚠️</span>
+                        <div class="admin-stat-label">Stock bajo</div>
+                        <div class="admin-stat-value">${stockBajo}</div>
+                        <div class="admin-stat-sub">≤ 3 unidades</div>
                     </div>
                 `;
                 document.getElementById('dashboardStats').innerHTML = html;
             } catch (error) {
                 console.error('❌ Error dashboard:', error);
-                document.getElementById('dashboardStats').innerHTML = '<p style="color:#e74c3c;text-align:center;grid-column:1/-1;">❌ Error al cargar dashboard</p>';
             }
         }
 
+        // ============================================
+        // 📦 PRODUCTOS
+        // ============================================
         async function cargarProductosAdmin() {
+            const cont = document.getElementById('adminProductosLista');
+            if (!cont) return;
+            cont.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.3);padding:20px;font-size:12px;">⏳ Cargando productos...</p>';
             try {
                 const productosRef = window.firebaseDB.collection(window.db, "productos");
                 const querySnapshot = await window.firebaseDB.getDocs(productosRef);
@@ -2630,7 +3130,7 @@
                 renderizarListaProductosAdmin(adminProductosCache);
             } catch (error) {
                 console.error('❌ Error:', error);
-                document.getElementById('adminProductosLista').innerHTML = '<p style="color:#e74c3c;text-align:center;font-size:12px;">❌ Error al cargar productos</p>';
+                cont.innerHTML = '<p style="color:#ff6b6b;text-align:center;font-size:12px;">❌ Error al cargar productos</p>';
             }
         }
 
@@ -2647,32 +3147,32 @@
             const cont = document.getElementById('adminProductosLista');
             if (!cont) return;
             if (lista.length === 0) {
-                cont.innerHTML = '<p style="text-align:center;color:#999;font-size:12px;padding:20px;">No hay productos</p>';
+                cont.innerHTML = '<div class="admin-empty"><span class="admin-empty-icon">📦</span>No hay productos</div>';
                 return;
             }
-            let html = `<h4 style="font-size:13px;margin-bottom:8px;">📦 ${lista.length} producto(s)</h4>`;
+            let html = '';
             lista.forEach(p => {
                 const stock = parseInt(p.stock) || 0;
-                const stockColor = stock === 0 ? '#e74c3c' : (stock <= 3 ? '#e67e22' : '#27ae60');
-                const imgSrc = p.imagen || 'https://via.placeholder.com/50';
+                const stockClass = stock === 0 ? 'out' : (stock <= 3 ? 'low' : 'ok');
+                const imgSrc = p.imagen || 'https://via.placeholder.com/60';
                 html += `
-                    <div style="padding:10px;border:1px solid #eee;border-radius:10px;margin-bottom:8px;background:#fff;">
-                        <div style="display:flex;gap:10px;align-items:start;">
-                            <img src="${imgSrc}" alt="${p.nombre}" style="width:50px;height:50px;object-fit:cover;border-radius:8px;border:2px solid rgba(212,175,55,0.2);" onerror="this.src='https://via.placeholder.com/50';">
-                            <div style="flex:1;min-width:0;">
-                                <div style="font-weight:700;font-size:12px;">${p.nombre || 'Sin nombre'}</div>
-                                <div style="font-size:11px;color:#d4af37;font-weight:700;">$${parseFloat(p.precio || 0).toFixed(2)}</div>
-                                <div style="font-size:10px;color:#999;">${p.categoria || 'sin categoría'}</div>
+                    <div class="admin-product-item">
+                        <div class="admin-product-header">
+                            <img src="${imgSrc}" class="admin-product-img" onerror="this.src='https://via.placeholder.com/60';">
+                            <div class="admin-product-info">
+                                <div class="admin-product-name">${p.nombre || 'Sin nombre'}</div>
+                                <div class="admin-product-price">$${parseFloat(p.precio || 0).toFixed(2)}</div>
+                                <div class="admin-product-cat">${p.categoria || 'sin categoría'}</div>
                             </div>
-                            <div style="font-size:12px;color:${stockColor};font-weight:800;white-space:nowrap;">${stock} uds</div>
+                            <span class="admin-product-stock ${stockClass}">${stock} uds</span>
                         </div>
-                        <div style="display:flex;gap:4px;align-items:center;margin-top:8px;">
-                            <button onclick="cambiarStock('${p.id}', -1)" style="background:#e67e22;color:#fff;border:none;padding:5px 10px;border-radius:6px;cursor:pointer;font-weight:700;">➖</button>
-                            <input type="number" id="stock-${p.id}" value="${stock}" min="0" style="width:55px;padding:5px;border:1.5px solid rgba(212,175,55,0.3);border-radius:6px;font-size:11px;text-align:center;">
-                            <button onclick="cambiarStock('${p.id}', 1)" style="background:#27ae60;color:#fff;border:none;padding:5px 10px;border-radius:6px;cursor:pointer;font-weight:700;">➕</button>
-                            <button onclick="guardarStockManual('${p.id}')" style="background:#d4af37;color:#fff;border:none;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:11px;">💾</button>
-                            <button onclick="editarProducto('${p.id}')" style="background:#3498db;color:#fff;border:none;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:11px;margin-left:auto;">✏️</button>
-                            <button onclick="eliminarProducto('${p.id}')" style="background:#e74c3c;color:#fff;border:none;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:11px;">🗑️</button>
+                        <div class="admin-stock-controls">
+                            <button class="admin-icon-btn" onclick="cambiarStock('${p.id}', -1)" title="Restar 1">➖</button>
+                            <input type="number" id="stock-${p.id}" class="admin-stock-input" value="${stock}" min="0">
+                            <button class="admin-icon-btn" onclick="cambiarStock('${p.id}', 1)" title="Sumar 1">➕</button>
+                            <button class="admin-icon-btn" onclick="guardarStockManual('${p.id}')" title="Guardar stock">💾</button>
+                            <button class="admin-icon-btn info" onclick="editarProducto('${p.id}')" title="Editar producto" style="margin-left:auto;">✏️</button>
+                            <button class="admin-icon-btn danger" onclick="eliminarProducto('${p.id}')" title="Eliminar">🗑️</button>
                         </div>
                     </div>
                 `;
@@ -2726,59 +3226,69 @@
 
                 modal = document.createElement('div');
                 modal.id = 'editarProductoModal';
-                modal.className = 'modal-overlay';
-                modal.style.zIndex = '10000';
+                modal.className = 'admin-premium-overlay';
+                modal.style.zIndex = '10001';
                 modal.innerHTML = `
-                    <div class="modal-content" style="max-width:480px;">
-                        <button class="modal-close" onclick="document.getElementById('editarProductoModal').remove()">✕</button>
-                        <h3 style="font-family:var(--font-serif);font-size:1.3rem;margin-bottom:var(--space-md);">✏️ Editar producto</h3>
-                        <div style="margin-bottom:10px;">
-                            <label style="font-size:11px;font-weight:600;">📦 Nombre</label>
-                            <input type="text" id="editNombre" value="${(p.nombre || '').replace(/"/g, '&quot;')}" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
-                        </div>
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
-                            <div>
-                                <label style="font-size:11px;font-weight:600;">💰 Precio</label>
-                                <input type="number" step="0.01" id="editPrecio" value="${p.precio}" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
+                    <div class="admin-premium" style="max-width:520px;">
+                        <div class="admin-premium-header">
+                            <div class="admin-premium-title">
+                                <span class="admin-premium-crown">✏️</span>
+                                <div>
+                                    <h2>Editar producto</h2>
+                                    <p>${p.nombre}</p>
+                                </div>
                             </div>
-                            <div>
-                                <label style="font-size:11px;font-weight:600;">💸 Precio anterior</label>
-                                <input type="number" step="0.01" id="editPrecioOld" value="${p.precio_old || ''}" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
+                            <button class="admin-premium-close" onclick="document.getElementById('editarProductoModal').remove()">✕</button>
+                        </div>
+                        <div class="admin-premium-body">
+                            <div class="admin-form-group">
+                                <label class="admin-label">📦 Nombre</label>
+                                <input type="text" id="editNombre" class="admin-input" value="${(p.nombre || '').replace(/"/g, '&quot;')}">
                             </div>
-                        </div>
-                        <div style="margin-bottom:10px;">
-                            <label style="font-size:11px;font-weight:600;">📝 Descripción</label>
-                            <input type="text" id="editDescripcion" value="${(p.descripcion || '').replace(/"/g, '&quot;')}" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
-                        </div>
-                        <div style="margin-bottom:10px;">
-                            <label style="font-size:11px;font-weight:600;">📸 URL de imagen</label>
-                            <input type="text" id="editImagen" value="${(p.imagen || '').replace(/"/g, '&quot;')}" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
-                        </div>
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
-                            <div>
-                                <label style="font-size:11px;font-weight:600;">📊 Stock</label>
-                                <input type="number" id="editStock" value="${p.stock || 0}" min="0" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
+                            <div class="admin-form-row">
+                                <div class="admin-form-group">
+                                    <label class="admin-label">💰 Precio</label>
+                                    <input type="number" step="0.01" id="editPrecio" class="admin-input" value="${p.precio}">
+                                </div>
+                                <div class="admin-form-group">
+                                    <label class="admin-label">💸 Precio anterior</label>
+                                    <input type="number" step="0.01" id="editPrecioOld" class="admin-input" value="${p.precio_old || ''}">
+                                </div>
                             </div>
-                            <div>
-                                <label style="font-size:11px;font-weight:600;">⭐ Badge</label>
-                                <input type="text" id="editBadge" value="${(p.badge || '').replace(/"/g, '&quot;')}" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
+                            <div class="admin-form-group">
+                                <label class="admin-label">📝 Descripción</label>
+                                <input type="text" id="editDescripcion" class="admin-input" value="${(p.descripcion || '').replace(/"/g, '&quot;')}">
                             </div>
+                            <div class="admin-form-group">
+                                <label class="admin-label">📸 URL de imagen</label>
+                                <input type="text" id="editImagen" class="admin-input" value="${(p.imagen || '').replace(/"/g, '&quot;')}">
+                            </div>
+                            <div class="admin-form-row">
+                                <div class="admin-form-group">
+                                    <label class="admin-label">📊 Stock</label>
+                                    <input type="number" id="editStock" class="admin-input" value="${p.stock || 0}" min="0">
+                                </div>
+                                <div class="admin-form-group">
+                                    <label class="admin-label">⭐ Badge</label>
+                                    <input type="text" id="editBadge" class="admin-input" value="${(p.badge || '').replace(/"/g, '&quot;')}">
+                                </div>
+                            </div>
+                            <div class="admin-form-group">
+                                <label class="admin-label">📂 Categoría</label>
+                                <select id="editCategoria" class="admin-select">
+                                    <option value="aretes" ${p.categoria === 'aretes' ? 'selected' : ''}>📿 Aretes</option>
+                                    <option value="pestanas" ${p.categoria === 'pestanas' ? 'selected' : ''}>👁️ Pestañas</option>
+                                    <option value="collares" ${p.categoria === 'collares' ? 'selected' : ''}>📿 Collares</option>
+                                    <option value="maquillaje" ${p.categoria === 'maquillaje' ? 'selected' : ''}>💄 Maquillaje</option>
+                                    <option value="capilar" ${p.categoria === 'capilar' ? 'selected' : ''}>💈 Cuidado Capilar</option>
+                                </select>
+                            </div>
+                            <button class="admin-btn admin-btn-primary admin-btn-full" onclick="guardarEdicion('${id}')">✅ Guardar cambios</button>
                         </div>
-                        <div style="margin-bottom:10px;">
-                            <label style="font-size:11px;font-weight:600;">📂 Categoría</label>
-                            <select id="editCategoria" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.3);">
-                                <option value="aretes" ${p.categoria === 'aretes' ? 'selected' : ''}>📿 Aretes</option>
-                                <option value="pestanas" ${p.categoria === 'pestanas' ? 'selected' : ''}>👁️ Pestañas</option>
-                                <option value="collares" ${p.categoria === 'collares' ? 'selected' : ''}>📿 Collares</option>
-                                <option value="maquillaje" ${p.categoria === 'maquillaje' ? 'selected' : ''}>💄 Maquillaje</option>
-                                <option value="capilar" ${p.categoria === 'capilar' ? 'selected' : ''}>💈 Cuidado Capilar</option>
-                            </select>
-                        </div>
-                        <button class="btn btn-gold" onclick="guardarEdicion('${id}')" style="width:100%;padding:12px;margin-top:8px;">✅ Guardar cambios</button>
                     </div>
                 `;
                 document.body.appendChild(modal);
-                modal.style.display = 'flex';
+                modal.classList.add('show');
             } catch (error) {
                 console.error('❌ Error:', error);
             }
@@ -2794,17 +3304,9 @@
                 const stock = Math.max(0, parseInt(document.getElementById('editStock').value) || 0);
                 const badge = document.getElementById('editBadge').value.trim();
                 const categoria = document.getElementById('editCategoria').value;
-
-                if (!nombre || !precio) {
-                    mostrarNotificacion('⚠️ Nombre y precio son obligatorios', '⚠️');
-                    return;
-                }
-
+                if (!nombre || !precio) { mostrarNotificacion('⚠️ Nombre y precio son obligatorios', '⚠️'); return; }
                 const docRef = window.firebaseDB.doc(window.db, "productos", id);
-                await window.firebaseDB.updateDoc(docRef, {
-                    nombre, precio, precio_old: precioOld, descripcion, imagen, stock, badge, categoria
-                });
-
+                await window.firebaseDB.updateDoc(docRef, { nombre, precio, precio_old: precioOld, descripcion, imagen, stock, badge, categoria });
                 mostrarNotificacion('✅ Producto actualizado', '✅');
                 document.getElementById('editarProductoModal').remove();
                 cargarProductosAdmin();
@@ -2824,12 +3326,7 @@
             const stock = parseInt(document.getElementById('adminStock').value) || 0;
             const badge = document.getElementById('adminBadge').value.trim() || '✨ Nuevo';
             const categoria = document.getElementById('adminCategoria').value;
-
-            if (!nombre || !precio) {
-                mostrarNotificacion('⚠️ Completa nombre y precio', '⚠️');
-                return;
-            }
-
+            if (!nombre || !precio) { mostrarNotificacion('⚠️ Completa nombre y precio', '⚠️'); return; }
             try {
                 const nuevoId = Date.now();
                 await window.firebaseDB.setDoc(
@@ -2841,10 +3338,8 @@
                         stock, categoria, badge, emoji: '📿', compradores: 0
                     }
                 );
-
                 mostrarNotificacion('✅ Producto agregado', '✅');
                 lanzarConfetti();
-                
                 document.getElementById('adminNombre').value = '';
                 document.getElementById('adminPrecio').value = '';
                 document.getElementById('adminPrecioOld').value = '';
@@ -2852,7 +3347,6 @@
                 document.getElementById('adminImagen').value = '';
                 document.getElementById('adminStock').value = '';
                 document.getElementById('adminBadge').value = '';
-                
                 cargarProductosAdmin();
                 cargarDashboardStats();
             } catch (error) {
@@ -2873,7 +3367,13 @@
             }
         }
 
+        // ============================================
+        // 👥 USUARIOS
+        // ============================================
         async function cargarUsuariosAdmin() {
+            const cont = document.getElementById('adminUsuariosLista');
+            if (!cont) return;
+            cont.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.3);padding:20px;font-size:12px;">⏳ Cargando usuarios...</p>';
             try {
                 const usuariosRef = window.firebaseDB.collection(window.db, "usuarios");
                 const querySnapshot = await window.firebaseDB.getDocs(usuariosRef);
@@ -2881,10 +3381,18 @@
                 querySnapshot.forEach((doc) => {
                     adminUsuariosCache.push({ id: doc.id, ...doc.data() });
                 });
+                console.log('✅ Usuarios cargados:', adminUsuariosCache.length);
                 renderizarListaUsuariosAdmin(adminUsuariosCache);
             } catch (error) {
-                console.error('❌ Error:', error);
-                document.getElementById('adminUsuariosLista').innerHTML = '<p style="color:#e74c3c;text-align:center;font-size:12px;">❌ Error al cargar usuarios</p>';
+                console.error('❌ Error al cargar usuarios:', error);
+                cont.innerHTML = `
+                    <div style="background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.4);padding:16px;border-radius:10px;text-align:center;">
+                        <p style="font-weight:700;color:#fbbf24;font-size:13px;margin-bottom:8px;">⚠️ Error al cargar usuarios</p>
+                        <p style="color:#fbbf24;font-size:11px;margin-bottom:12px;">${error.message || 'Error de permisos'}</p>
+                        <p style="color:rgba(255,255,255,0.5);font-size:10px;margin-bottom:12px;">Verifica las reglas de Firestore</p>
+                        <button class="admin-btn admin-btn-primary admin-btn-sm" onclick="cargarUsuariosAdmin()">🔄 Reintentar</button>
+                    </div>
+                `;
             }
         }
 
@@ -2897,27 +3405,129 @@
             renderizarListaUsuariosAdmin(filtrados);
         }
 
+        function obtenerNivelUsuario(points) {
+            if (points >= 1000) return { nombre: 'Diamante', emoji: '💎', color: '#a78bfa', codigo: 'DIAMANTE20' };
+            if (points >= 500) return { nombre: 'Oro', emoji: '🥇', color: '#d4af37', codigo: 'ORO15' };
+            if (points >= 200) return { nombre: 'Plata', emoji: '🥈', color: '#94a3b8', codigo: 'PLATA10' };
+            if (points >= 50) return { nombre: 'Bronce', emoji: '🥉', color: '#cd7f32', codigo: 'BRONCE5' };
+            return { nombre: 'Visitante', emoji: '✨', color: '#666', codigo: null };
+        }
+
         function renderizarListaUsuariosAdmin(lista) {
             const cont = document.getElementById('adminUsuariosLista');
             if (!cont) return;
             if (lista.length === 0) {
-                cont.innerHTML = '<p style="text-align:center;color:#999;font-size:12px;padding:20px;">No hay usuarios</p>';
+                cont.innerHTML = '<div class="admin-empty"><span class="admin-empty-icon">👥</span>No hay usuarios</div>';
                 return;
             }
-            let html = `<h4 style="font-size:13px;margin-bottom:8px;">👥 ${lista.length} usuario(s)</h4>`;
+            let html = '';
             lista.forEach(u => {
-                const points = u.points || 0;
+                const points = parseInt(u.points) || 0;
+                const nivel = obtenerNivelUsuario(points);
+                const inicial = (u.name || u.email || '?').charAt(0).toUpperCase();
                 html += `
-                    <div style="padding:10px;border:1px solid #eee;border-radius:10px;margin-bottom:8px;background:#fff;">
-                        <div style="font-weight:700;font-size:12px;">👤 ${u.name || 'Sin nombre'}</div>
-                        <div style="font-size:11px;color:#666;">📧 ${u.email || 'sin email'}</div>
-                        <div style="font-size:11px;color:#d4af37;margin-top:3px;">⭐ ${points} puntos · ${u.level || '✨ Visitante'}</div>
+                    <div class="admin-user-item">
+                        <div class="admin-user-header">
+                            <div class="admin-user-avatar" style="background:${nivel.color};color:#fff;">${inicial}</div>
+                            <div class="admin-user-info">
+                                <div class="admin-user-name">👤 ${u.name || 'Sin nombre'}</div>
+                                <div class="admin-user-email">${u.email || 'sin email'}</div>
+                            </div>
+                            <div class="admin-user-badge">
+                                <div class="admin-user-level" style="color:${nivel.color};">${nivel.emoji} ${nivel.nombre}</div>
+                                <div class="admin-user-points">⭐ ${points}</div>
+                            </div>
+                        </div>
+                        <div class="admin-points-controls">
+                            <input type="number" id="puntos-${u.id}" class="admin-points-input" placeholder="Cantidad" min="0">
+                            <button class="admin-btn admin-btn-success admin-btn-sm" onclick="sumarPuntos('${u.id}')">➕ Sumar</button>
+                            <button class="admin-btn admin-btn-sm" style="background:rgba(230,126,34,0.15);border:1px solid rgba(230,126,34,0.4);color:#f39c12;" onclick="restarPuntos('${u.id}')">➖ Restar</button>
+                            <button class="admin-btn admin-btn-secondary admin-btn-sm" onclick="setPuntos('${u.id}')">💾 Set</button>
+                        </div>
                     </div>
                 `;
             });
             cont.innerHTML = html;
         }
 
+        async function sumarPuntos(uid) {
+            try {
+                const input = document.getElementById('puntos-' + uid);
+                const cantidad = parseInt(input.value);
+                if (!cantidad || cantidad <= 0) { mostrarNotificacion('⚠️ Escribe una cantidad válida', '⚠️'); return; }
+                const docRef = window.firebaseDB.doc(window.db, "usuarios", uid);
+                const docSnap = await window.firebaseDB.getDoc(docRef);
+                if (!docSnap.exists()) return;
+                const usuario = docSnap.data();
+                const actuales = parseInt(usuario.points) || 0;
+                const nuevos = actuales + cantidad;
+                const nivel = obtenerNivelUsuario(nuevos);
+                await window.firebaseDB.updateDoc(docRef, {
+                    points: nuevos,
+                    level: `${nivel.emoji} ${nivel.nombre}`
+                });
+                mostrarNotificacion(`✅ +${cantidad} pts → ${nuevos} total`, '⭐');
+                input.value = '';
+                cargarUsuariosAdmin();
+                cargarDashboardStats();
+            } catch (error) {
+                console.error('❌ Error:', error);
+                mostrarNotificacion('❌ Error al sumar puntos', '❌');
+            }
+        }
+
+        async function restarPuntos(uid) {
+            try {
+                const input = document.getElementById('puntos-' + uid);
+                const cantidad = parseInt(input.value);
+                if (!cantidad || cantidad <= 0) { mostrarNotificacion('⚠️ Escribe una cantidad válida', '⚠️'); return; }
+                const docRef = window.firebaseDB.doc(window.db, "usuarios", uid);
+                const docSnap = await window.firebaseDB.getDoc(docRef);
+                if (!docSnap.exists()) return;
+                const usuario = docSnap.data();
+                const actuales = parseInt(usuario.points) || 0;
+                const nuevos = Math.max(0, actuales - cantidad);
+                const nivel = obtenerNivelUsuario(nuevos);
+                await window.firebaseDB.updateDoc(docRef, {
+                    points: nuevos,
+                    level: `${nivel.emoji} ${nivel.nombre}`
+                });
+                mostrarNotificacion(`✅ -${cantidad} pts → ${nuevos} total`, '⭐');
+                input.value = '';
+                cargarUsuariosAdmin();
+                cargarDashboardStats();
+            } catch (error) {
+                console.error('❌ Error:', error);
+                mostrarNotificacion('❌ Error al restar puntos', '❌');
+            }
+        }
+
+        async function setPuntos(uid) {
+            try {
+                const input = document.getElementById('puntos-' + uid);
+                const cantidad = parseInt(input.value);
+                if (isNaN(cantidad) || cantidad < 0) { mostrarNotificacion('⚠️ Escribe una cantidad válida', '⚠️'); return; }
+                const docRef = window.firebaseDB.doc(window.db, "usuarios", uid);
+                const docSnap = await window.firebaseDB.getDoc(docRef);
+                if (!docSnap.exists()) return;
+                const nivel = obtenerNivelUsuario(cantidad);
+                await window.firebaseDB.updateDoc(docRef, {
+                    points: cantidad,
+                    level: `${nivel.emoji} ${nivel.nombre}`
+                });
+                mostrarNotificacion(`💾 Puntos actualizados: ${cantidad}`, '💾');
+                input.value = '';
+                cargarUsuariosAdmin();
+                cargarDashboardStats();
+            } catch (error) {
+                console.error('❌ Error:', error);
+                mostrarNotificacion('❌ Error al guardar puntos', '❌');
+            }
+        }
+
+        // ============================================
+        // 📈 ESTADÍSTICAS
+        // ============================================
         async function cargarEstadisticas() {
             try {
                 const productosRef = window.firebaseDB.collection(window.db, "productos");
@@ -2934,55 +3544,64 @@
                 const top5 = [...lista].sort((a, b) => (b.compradores || 0) - (a.compradores || 0)).slice(0, 5);
                 const stockBajo = lista.filter(p => (parseInt(p.stock) || 0) > 0 && (parseInt(p.stock) || 0) <= 3);
 
-                let html = '<div style="display:grid;gap:12px;">';
+                const catEmojis = { aretes: '📿', pestanas: '👁️', collares: '📿', maquillaje: '💄', capilar: '💈' };
 
-                html += '<div style="background:#fff;padding:14px;border-radius:12px;border:1px solid #eee;">';
-                html += '<div style="font-weight:700;font-size:13px;margin-bottom:8px;">📂 Productos por categoría</div>';
+                let html = '';
+
+                html += '<div class="admin-panel"><div class="admin-panel-title">📂 Productos por categoría</div>';
+                const maxCat = Math.max(...Object.values(porCategoria), 1);
                 for (const [cat, count] of Object.entries(porCategoria)) {
-                    html += `<div style="display:flex;justify-content:space-between;font-size:12px;padding:4px 0;"><span>${cat}</span><strong>${count}</strong></div>`;
+                    const pct = (count / maxCat) * 100;
+                    html += `
+                        <div style="margin-bottom:10px;">
+                            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                                <span style="color:#fff;font-size:11px;">${catEmojis[cat] || '📦'} ${cat}</span>
+                                <span style="color:#d4af37;font-weight:800;font-size:12px;">${count}</span>
+                            </div>
+                            <div style="height:6px;background:rgba(212,175,55,0.1);border-radius:3px;overflow:hidden;">
+                                <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,#d4af37,#f5d76e);border-radius:3px;transition:width 0.5s ease;"></div>
+                            </div>
+                        </div>
+                    `;
                 }
                 html += '</div>';
 
-                html += '<div style="background:#fff;padding:14px;border-radius:12px;border:1px solid #eee;">';
-                html += '<div style="font-weight:700;font-size:13px;margin-bottom:8px;">🏆 Top 5 más vendidos</div>';
-                top5.forEach((p, i) => {
-                    html += `<div style="display:flex;justify-content:space-between;font-size:12px;padding:4px 0;"><span>${i+1}. ${p.nombre}</span><strong>${p.compradores || 0} 👥</strong></div>`;
-                });
+                html += '<div class="admin-panel"><div class="admin-panel-title">🏆 Top 5 más vendidos</div>';
+                if (top5.length === 0) {
+                    html += '<p style="color:rgba(255,255,255,0.3);font-size:12px;">Sin datos</p>';
+                } else {
+                    top5.forEach((p, i) => {
+                        html += `
+                            <div class="admin-rank-item">
+                                <div class="admin-rank-num ${i === 0 ? 'gold' : ''}">${i + 1}</div>
+                                <div class="admin-rank-name">${p.nombre}</div>
+                                <div class="admin-rank-value">${p.compradores || 0} 👥</div>
+                            </div>
+                        `;
+                    });
+                }
                 html += '</div>';
 
                 if (stockBajo.length > 0) {
-                    html += '<div style="background:#fff3cd;padding:14px;border-radius:12px;border:1px solid #ffeaa7;">';
-                    html += '<div style="font-weight:700;font-size:13px;margin-bottom:8px;">⚠️ Productos con stock bajo</div>';
+                    html += '<div class="admin-panel" style="border-color:rgba(251,191,36,0.4);background:rgba(251,191,36,0.05);"><div class="admin-panel-title" style="color:#fbbf24;">⚠️ Stock bajo (≤ 3 uds)</div>';
                     stockBajo.forEach(p => {
-                        html += `<div style="display:flex;justify-content:space-between;font-size:12px;padding:4px 0;"><span>${p.nombre}</span><strong style="color:#e67e22;">${p.stock} uds</strong></div>`;
+                        html += `
+                            <div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0;border-bottom:1px solid rgba(251,191,36,0.1);">
+                                <span style="color:#fff;">${p.nombre}</span>
+                                <strong style="color:#fbbf24;">${p.stock} uds</strong>
+                            </div>
+                        `;
                     });
                     html += '</div>';
                 }
 
-                html += '</div>';
                 document.getElementById('adminStatsContent').innerHTML = html;
             } catch (error) {
                 console.error('❌ Error stats:', error);
             }
         }
 
-        function exportarProductosJSON() {
-            try {
-                const dataStr = JSON.stringify(adminProductosCache, null, 2);
-                const blob = new Blob([dataStr], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `paulina_productos_${Date.now()}.json`;
-                a.click();
-                URL.revokeObjectURL(url);
-                mostrarNotificacion('✅ Exportado', '📥');
-            } catch (error) {
-                console.error('❌ Error:', error);
-            }
-        }
-
-        // Hacer funciones globales
+        // Exponer funciones globalmente
         window.crearPanelAdmin = crearPanelAdmin;
         window.abrirPanelAdmin = abrirPanelAdmin;
         window.cerrarPanelAdmin = cerrarPanelAdmin;
@@ -2997,7 +3616,10 @@
         window.guardarEdicion = guardarEdicion;
         window.cargarUsuariosAdmin = cargarUsuariosAdmin;
         window.filtrarUsuariosAdmin = filtrarUsuariosAdmin;
-        window.exportarProductosJSON = exportarProductosJSON;
+        window.sumarPuntos = sumarPuntos;
+        window.restarPuntos = restarPuntos;
+        window.setPuntos = setPuntos;
+        window.obtenerNivelUsuario = obtenerNivelUsuario;
         window.showLoginModal = showLoginModal;
         window.closeLoginModal = closeLoginModal;
         window.showLoginForm = showLoginForm;
@@ -3010,7 +3632,7 @@
         window.mostrarNotificacion = mostrarNotificacion;
 
         // ============================================
-        // 👑 ADMIN ÚNICO — SOLO paulinabellezaperu@gmail.com
+        // 👑 ADMIN ÚNICO
         // ============================================
         const ADMIN_EMAIL = 'paulinabellezaperu@gmail.com';
 
@@ -3025,7 +3647,7 @@
                 crearPanelAdmin();
             } else {
                 if (btnExistente) btnExistente.remove();
-                console.log('ℹ️ Usuario normal (sin admin):', user.email);
+                console.log('ℹ️ Usuario normal:', user.email);
             }
         }
 
@@ -3066,8 +3688,8 @@
                 }
             }, 300);
 
-            console.log('✨ Paulina Accesorios 2026 - Ultra Premium ✨');
-            console.log('👑 Admin autorizado:', ADMIN_EMAIL);
+            console.log('✨ Paulina Accesorios 2026 - Premium ✨');
+            console.log('👑 Admin:', ADMIN_EMAIL);
         });
     </script>
 
