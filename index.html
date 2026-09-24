@@ -2169,7 +2169,7 @@ async function crearCupon() {
             renderizarListaProductosAdmin(f);
         }
 
-               function renderizarListaProductosAdmin(lista) {
+                       function renderizarListaProductosAdmin(lista) {
             const c = document.getElementById('adminProductosLista');
             if (!c) return;
             if (lista.length === 0) { c.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.3);padding:20px;">No hay productos</p>'; return; }
@@ -2200,7 +2200,8 @@ async function crearCupon() {
                             <input type="number" id="stock-${p.id}" class="admin-stock-input" value="${s}" min="0">
                             <button class="admin-icon-btn" onclick="cambiarStock('${p.id}', 1)">➕</button>
                             <button class="admin-icon-btn" onclick="guardarStockManual('${p.id}')">💾</button>
-                            <button class="admin-icon-btn" onclick="abrirModalDescuento('${p.id}')" style="background:rgba(74,222,128,0.15);border-color:rgba(74,222,128,0.4);color:#4ade80;" title="Aplicar descuento">💸</button>
+                            <button class="admin-icon-btn" onclick="abrirModalDescuento('${p.id}')" style="background:rgba(74,222,128,0.15);border-color:rgba(74,222,128,0.4);color:#4ade80;" title="Descuento">💸</button>
+                            <button class="admin-icon-btn" onclick="editarProducto('${p.id}')" style="background:rgba(93,173,226,0.15);border-color:rgba(93,173,226,0.4);color:#5dade2;" title="Editar">✏️</button>
                             <button class="admin-icon-btn danger" onclick="eliminarProducto('${p.id}')" style="margin-left:auto;">🗑️</button>
                         </div>
                     </div>
