@@ -664,6 +664,454 @@
                 max-width: none;
             }
         }
+                /* ========================================
+           📦 MODAL DE PRODUCTO DETALLADO
+           ======================================== */
+        .producto-modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .producto-modal-overlay.show {
+            display: flex;
+            animation: fadeInScale 0.3s ease;
+        }
+        .producto-modal {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: var(--shadow-2xl);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+        }
+        [data-theme="dark"] .producto-modal {
+            background: #1a0b1a;
+        }
+        .producto-modal-close {
+            position: absolute;
+            top: 16px; right: 16px;
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: var(--gold);
+            font-size: 1.3rem;
+            cursor: pointer;
+            z-index: 10;
+            transition: var(--transition-base);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .producto-modal-close:hover {
+            background: rgba(212, 175, 55, 0.25);
+            transform: rotate(90deg);
+        }
+        .producto-detalle {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+        .producto-detalle-img {
+            position: relative;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            background: var(--gray-100);
+            display: flex; align-items: center; justify-content: center;
+            min-height: 300px;
+        }
+        [data-theme="dark"] .producto-detalle-img {
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .producto-detalle-img img {
+            width: 100%;
+            height: 100%;
+            max-height: 400px;
+            object-fit: cover;
+        }
+        .producto-detalle-img .badges-grandes {
+            position: absolute;
+            top: 12px; left: 12px;
+            display: flex; flex-direction: column; gap: 6px;
+        }
+        .producto-detalle-img .badge-grande {
+            padding: 6px 14px;
+            border-radius: var(--radius-full);
+            font-size: 11px;
+            font-weight: 800;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: var(--shadow-md);
+        }
+        .producto-detalle-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .producto-detalle-categoria {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--gold);
+            background: rgba(212, 175, 55, 0.1);
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+            width: fit-content;
+        }
+        .producto-detalle-nombre {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--gray-800);
+            line-height: 1.1;
+            margin-bottom: 10px;
+        }
+        [data-theme="dark"] .producto-detalle-nombre {
+            color: #fff;
+        }
+        .producto-detalle-rating {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            font-size: 13px;
+            color: var(--gray-500);
+        }
+        .producto-detalle-rating .estrellas {
+            color: var(--gold);
+            font-size: 16px;
+        }
+        .producto-detalle-precio {
+            margin-bottom: 20px;
+        }
+        .producto-detalle-precio .precio-final {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--gold);
+        }
+        .producto-detalle-precio .precio-original {
+            font-size: 1rem;
+            color: var(--gray-400);
+            text-decoration: line-through;
+            margin-left: 10px;
+        }
+        .producto-detalle-precio .descuento-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #e53935, #ef5350);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 12px;
+            font-weight: 800;
+            margin-left: 10px;
+        }
+        .producto-detalle-desc {
+            font-size: 14px;
+            color: var(--gray-600);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        [data-theme="dark"] .producto-detalle-desc {
+            color: #aaa;
+        }
+        .producto-detalle-stock {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: var(--radius-full);
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            width: fit-content;
+        }
+        .producto-detalle-stock.ok {
+            background: rgba(39, 174, 96, 0.1);
+            color: #2e7d32;
+        }
+        .producto-detalle-stock.low {
+            background: rgba(230, 126, 34, 0.1);
+            color: #e67e22;
+        }
+        .producto-detalle-stock.out {
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+        }
+        .producto-detalle-acciones {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .producto-detalle-acciones .btn {
+            flex: 1;
+            min-width: 160px;
+        }
+
+        /* Relacionados */
+        .productos-relacionados {
+            background: rgba(212, 175, 55, 0.03);
+            border-top: 1px solid rgba(212, 175, 55, 0.1);
+            padding: 24px 30px 30px;
+        }
+        [data-theme="dark"] .productos-relacionados {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .productos-relacionados h3 {
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            color: var(--gold);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .productos-relacionados h3::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.3), transparent);
+        }
+        .relacionados-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+        .relacionado-card {
+            background: var(--white);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition-base);
+            border: 1px solid rgba(212, 175, 55, 0.08);
+        }
+        [data-theme="dark"] .relacionado-card {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .relacionado-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--gold);
+            box-shadow: var(--shadow-md);
+        }
+        .relacionado-card img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 8px;
+            border: 2px solid rgba(212, 175, 55, 0.15);
+        }
+        .relacionado-card .nombre {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        [data-theme="dark"] .relacionado-card .nombre {
+            color: #fff;
+        }
+        .relacionado-card .precio {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--gold);
+        }
+
+        /* Comentarios */
+        .comentarios-section {
+            padding: 24px 30px 30px;
+            border-top: 1px solid rgba(212, 175, 55, 0.1);
+            background: rgba(255, 255, 255, 0.5);
+        }
+        [data-theme="dark"] .comentarios-section {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        .comentarios-section h3 {
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            color: var(--gold);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .comentarios-section h3::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.3), transparent);
+        }
+        .comentario-form {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            align-items: flex-start;
+        }
+        .comentario-form textarea {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1.5px solid rgba(212, 175, 55, 0.2);
+            border-radius: var(--radius-md);
+            font-family: var(--font-sans);
+            font-size: 12px;
+            background: var(--gray-50);
+            color: var(--gray-800);
+            min-height: 50px;
+            resize: vertical;
+            outline: none;
+        }
+        [data-theme="dark"] .comentario-form textarea {
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+        }
+        .comentario-form textarea:focus {
+            border-color: var(--gold);
+        }
+        .comentario-form button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--radius-md);
+            background: var(--gold-gradient);
+            color: #1a0b1a;
+            font-weight: 800;
+            font-size: 11px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .comentario-form button:hover {
+            transform: translateY(-2px);
+        }
+        .comentario-form button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .comentario-item {
+            display: flex;
+            gap: 12px;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.08);
+        }
+        .comentario-item:last-child {
+            border-bottom: none;
+        }
+        .comentario-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--gold-gradient);
+            color: #1a0b1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .comentario-content {
+            flex: 1;
+            min-width: 0;
+        }
+        .comentario-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .comentario-nombre {
+            font-weight: 700;
+            font-size: 12px;
+            color: var(--gray-800);
+        }
+        [data-theme="dark"] .comentario-nombre {
+            color: #fff;
+        }
+        .comentario-fecha {
+            font-size: 10px;
+            color: var(--gray-400);
+        }
+        .comentario-texto {
+            font-size: 12px;
+            color: var(--gray-600);
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+        [data-theme="dark"] .comentario-texto {
+            color: #aaa;
+        }
+        .comentario-eliminar {
+            background: none;
+            border: none;
+            color: #e74c3c;
+            cursor: pointer;
+            font-size: 12px;
+            opacity: 0.6;
+            transition: var(--transition-base);
+            padding: 2px 6px;
+        }
+        .comentario-eliminar:hover {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+        .comentarios-vacio {
+            text-align: center;
+            padding: 20px;
+            color: var(--gray-400);
+            font-size: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .producto-detalle {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 20px;
+            }
+            .producto-detalle-img {
+                min-height: 220px;
+            }
+            .producto-detalle-nombre {
+                font-size: 1.5rem;
+            }
+            .producto-detalle-precio .precio-final {
+                font-size: 1.5rem;
+            }
+            .productos-relacionados {
+                padding: 20px;
+            }
+            .relacionados-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .relacionado-card img {
+                width: 55px;
+                height: 55px;
+            }
+            .comentarios-section {
+                padding: 20px;
+            }
+            .comentario-form {
+                flex-direction: column;
+            }
+            .comentario-form button {
+                width: 100%;
+            }
+        }
     </style>
 </head>
     <body>
@@ -917,6 +1365,14 @@
             <div id="wishlistItems"></div>
         </div>
     </div>
+            <!-- 📦 MODAL DE PRODUCTO DETALLADO -->
+    <div class="producto-modal-overlay" id="productoModal">
+        <div class="producto-modal">
+            <button class="producto-modal-close" onclick="cerrarProductoModal()">✕</button>
+            <div id="productoModalContent"></div>
+        </div>
+    </div>
+
 
     <!-- ⭐ REVIEW MODAL -->
     <div class="modal-overlay" id="reviewModal">
@@ -1087,6 +1543,231 @@
             if (points >= 50) return { nombre: 'Bronce', emoji: '🥉', color: '#cd7f32' };
             return { nombre: 'Visitante', emoji: '✨', color: '#666' };
         }
+                        // ============================================
+        // 📦 MODAL DE PRODUCTO DETALLADO
+        // ============================================
+        function abrirProductoModal(id) {
+            const p = productos.find(x => x.id === id);
+            if (!p) return;
+
+            const modal = document.getElementById('productoModal');
+            const content = document.getElementById('productoModalContent');
+            if (!modal || !content) return;
+
+            const desc = p.precio_old ? Math.round(((p.precio_old - p.precio) / p.precio_old) * 100) : 0;
+            const isLow = p.stock <= 3 && p.stock > 0;
+            const isOut = p.stock === 0;
+            const stockClass = isOut ? 'out' : (isLow ? 'low' : 'ok');
+            const stockText = isOut ? '❌ Agotado' : (isLow ? `⚠️ Últimas ${p.stock} unidades` : `✅ ${p.stock} disponibles`);
+
+            const catEmojis = { aretes: '📿 Aretes', pestanas: '👁️ Pestañas', collares: '📿 Collares', maquillaje: '💄 Maquillaje', capilar: '💈 Cuidado Capilar' };
+            const catNombre = catEmojis[p.categoria] || '📦 Producto';
+
+            const relacionados = productos
+                .filter(x => x.categoria === p.categoria && x.id !== p.id)
+                .sort((a, b) => (parseInt(b.compradores) || 0) - (parseInt(a.compradores) || 0))
+                .slice(0, 3);
+
+            let relacionadosHtml = '';
+            if (relacionados.length > 0) {
+                relacionadosHtml = `
+                    <div class="productos-relacionados">
+                        <h3>🎁 También te puede interesar</h3>
+                        <div class="relacionados-grid">
+                            ${relacionados.map(r => `
+                                <div class="relacionado-card" onclick="abrirProductoModal(${r.id})">
+                                    <img src="${r.imagen}" alt="${r.nombre}" onerror="this.src='https://via.placeholder.com/70';">
+                                    <div class="nombre">${r.nombre}</div>
+                                    <div class="precio">S/ ${parseFloat(r.precio).toFixed(2)}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            content.innerHTML = `
+                <div class="producto-detalle">
+                    <div class="producto-detalle-img">
+                        <img src="${p.imagen}" alt="${p.nombre}" onerror="this.src='https://via.placeholder.com/400';">
+                        ${p.badge ? `<div class="badges-grandes"><span class="badge-grande" style="background:var(--gold-gradient);">${p.badge}</span></div>` : ''}
+                    </div>
+                    <div class="producto-detalle-info">
+                        <span class="producto-detalle-categoria">${catNombre}</span>
+                        <h2 class="producto-detalle-nombre">${p.nombre}</h2>
+                        <div class="producto-detalle-rating">
+                            <span class="estrellas">★★★★★</span>
+                            <span>4.9 · ${p.compradores || 0} compradores</span>
+                        </div>
+                        <div class="producto-detalle-precio">
+                            <span class="precio-final">S/ ${parseFloat(p.precio).toFixed(2)}</span>
+                            ${p.precio_old ? `<span class="precio-original">S/ ${parseFloat(p.precio_old).toFixed(2)}</span>` : ''}
+                            ${desc > 0 ? `<span class="descuento-badge">-${desc}% OFF</span>` : ''}
+                        </div>
+                        <p class="producto-detalle-desc">${p.descripcion || 'Producto de calidad premium'}</p>
+                        <div class="producto-detalle-stock ${stockClass}">${stockText}</div>
+                        <div class="producto-detalle-acciones">
+                            <button class="btn btn-gold" onclick="addToCart(${p.id}); cerrarProductoModal();">
+                                🛒 Añadir al carrito
+                            </button>
+                            <button class="btn btn-outline-gold" onclick="cerrarProductoModal(); abrirResenas(${p.id});">
+                                ⭐ Ver reseñas
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                ${relacionadosHtml}
+                <div class="comentarios-section" id="comentarios-${p.id}">
+                    <h3>💬 Comentarios</h3>
+                    <div id="comentariosLista-${p.id}">
+                        <p style="text-align:center;color:#999;font-size:12px;padding:14px;">Cargando comentarios...</p>
+                    </div>
+                </div>
+            `;
+
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+
+            cargarComentariosProducto(p.id);
+        }
+
+        function cerrarProductoModal() {
+            const modal = document.getElementById('productoModal');
+            if (modal) {
+                modal.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // ============================================
+        // 💬 COMENTARIOS DE PRODUCTOS
+        // ============================================
+        async function cargarComentariosProducto(productId) {
+            const cont = document.getElementById('comentariosLista-' + productId);
+            if (!cont) return;
+
+            try {
+                const ref = window.firebaseDB.collection(window.db, "comentarios");
+                const q = window.firebaseDB.query(
+                    ref,
+                    window.firebaseDB.where("productoId", "==", productId)
+                );
+                const snap = await window.firebaseDB.getDocs(q);
+
+                const comentarios = [];
+                snap.forEach(doc => comentarios.push({ id: doc.id, ...doc.data() }));
+                comentarios.sort((a, b) => new Date(b.fecha || 0) - new Date(a.fecha || 0));
+
+                let formHtml = '';
+                if (window.currentUser && window.currentUser.id) {
+                    formHtml = `
+                        <div class="comentario-form">
+                            <textarea id="nuevoComentario-${productId}" placeholder="Escribe tu comentario..."></textarea>
+                            <button onclick="enviarComentario('${productId}')">📩 Enviar</button>
+                        </div>
+                    `;
+                } else {
+                    formHtml = `
+                        <div style="background:rgba(212,175,55,0.05);border:1px dashed rgba(212,175,55,0.3);border-radius:10px;padding:12px;text-align:center;margin-bottom:16px;font-size:11px;color:var(--gray-500);">
+                            🔒 <a href="#" onclick="cerrarProductoModal(); showLoginModal(); return false;" style="color:var(--gold);font-weight:700;text-decoration:none;">Inicia sesión</a> para comentar
+                        </div>
+                    `;
+                }
+
+                let comentariosHtml = '';
+                if (comentarios.length === 0) {
+                    comentariosHtml = '<div class="comentarios-vacio">💬 Sé la primera en comentar</div>';
+                } else {
+                    comentariosHtml = comentarios.map(c => {
+                        const inicial = (c.nombre || 'A').charAt(0).toUpperCase();
+                        const fecha = c.fecha ? new Date(c.fecha).toLocaleDateString('es-PE', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
+                        const esAdmin = window.currentUser && window.currentUser.email === 'paulinabellezaperu@gmail.com';
+                        const puedeEliminar = window.currentUser && (window.currentUser.id === c.usuarioId || esAdmin);
+                        
+                        return `
+                            <div class="comentario-item">
+                                <div class="comentario-avatar">${inicial}</div>
+                                <div class="comentario-content">
+                                    <div class="comentario-header">
+                                        <div>
+                                            <span class="comentario-nombre">${c.nombre || 'Anónimo'}</span>
+                                            ${esAdmin && c.usuarioId === window.currentUser.id ? '<span style="color:var(--gold);font-size:9px;margin-left:6px;">👑 Admin</span>' : ''}
+                                        </div>
+                                        <div style="display:flex;align-items:center;gap:8px;">
+                                            <span class="comentario-fecha">${fecha}</span>
+                                            ${puedeEliminar ? `<button class="comentario-eliminar" onclick="eliminarComentario('${c.id}', '${productId}')" title="Eliminar">🗑️</button>` : ''}
+                                        </div>
+                                    </div>
+                                    <div class="comentario-texto">${c.texto}</div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+
+                cont.innerHTML = formHtml + comentariosHtml;
+            } catch (error) {
+                console.warn('⚠️ Error cargando comentarios:', error);
+                cont.innerHTML = '<div class="comentarios-vacio">💬 Sé la primera en comentar</div>';
+            }
+        }
+
+        async function enviarComentario(productId) {
+            if (!window.currentUser || !window.currentUser.id) {
+                mostrarNotificacion('⚠️ Inicia sesión para comentar', '⚠️');
+                return;
+            }
+
+            const textarea = document.getElementById('nuevoComentario-' + productId);
+            if (!textarea) return;
+
+            const texto = textarea.value.trim();
+            if (!texto) {
+                mostrarNotificacion('⚠️ Escribe un comentario', '⚠️');
+                return;
+            }
+
+            if (texto.length > 500) {
+                mostrarNotificacion('⚠️ Máximo 500 caracteres', '⚠️');
+                return;
+            }
+
+            try {
+                await window.firebaseDB.addDoc(
+                    window.firebaseDB.collection(window.db, "comentarios"),
+                    {
+                        productoId,
+                        usuarioId: window.currentUser.id,
+                        nombre: window.currentUser.name || 'Anónimo',
+                        texto,
+                        fecha: new Date().toISOString()
+                    }
+                );
+
+                mostrarNotificacion('✅ ¡Comentario publicado!', '💬');
+                lanzarConfetti();
+                textarea.value = '';
+                cargarComentariosProducto(productId);
+            } catch (error) {
+                console.error('❌ Error:', error);
+                mostrarNotificacion('❌ Error al publicar', '❌');
+            }
+        }
+
+        async function eliminarComentario(comentarioId, productId) {
+            if (!confirm('¿Eliminar este comentario?')) return;
+            try {
+                await window.firebaseDB.deleteDoc(
+                    window.firebaseDB.doc(window.db, "comentarios", comentarioId)
+                );
+                mostrarNotificacion('✅ Comentario eliminado', '🗑️');
+                cargarComentariosProducto(productId);
+            } catch (error) {
+                console.error('❌ Error:', error);
+                mostrarNotificacion('❌ Error al eliminar', '❌');
+            }
+        }
+
         // ============================================
         // PRODUCTOS EN TIEMPO REAL
         // ============================================
@@ -1250,7 +1931,7 @@
                             ${disc ? `<span class="badge badge-discount">-${disc}%</span>` : ''}
                             ${low ? `<span class="badge badge-hot">🔥</span>` : ''}
                         </div>
-                        <div class="product-image" onclick="abrirResenas(${p.id})">
+                        <div class="product-image" onclick="abrirProductoModal(${product.id})">
                             <img src="${p.imagen}" alt="${p.nombre}" loading="lazy" decoding="async">
                         </div>
                         <h3 class="product-name">${p.nombre}</h3>
@@ -3270,6 +3951,11 @@ async function crearCupon() {
         window.filtrarProductosAdmin = filtrarProductosAdmin;
         window.cargarProductosAdmin = cargarProductosAdmin;
         window.eliminarProducto = eliminarProducto;
+        window.abrirProductoModal = abrirProductoModal;
+        window.cerrarProductoModal = cerrarProductoModal;
+        window.cargarComentariosProducto = cargarComentariosProducto;
+        window.enviarComentario = enviarComentario;
+        window.eliminarComentario = eliminarComentario;
         window.editarProducto = editarProducto;
         window.guardarEdicion = guardarEdicion;
         window.abrirModalDescuento = abrirModalDescuento;
