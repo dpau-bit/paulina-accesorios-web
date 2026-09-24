@@ -54,30 +54,33 @@
         window.firebaseDB = { doc, setDoc, getDoc, updateDoc, collection, getDocs, deleteDoc, onSnapshot, addDoc, query, where, orderBy, limit };
 
         onAuthStateChanged(auth, (user) => {
-            if (user) {
-                window.currentUser = {
-                    id: user.uid,
-                    name: user.displayName || user.email.split('@')[0],
-                    email: user.email,
-                    points: 0,
-                    level: '✨ Visitante',
-                    cuponesUsados: []
-                };
+    if (user) {
+        window.currentUser = {
+            id: user.uid,
+            name: user.displayName || user.email.split('@')[0],
+            email: user.email,
+            points: 0,
+            level: '✨ Visitante',
+            cuponesUsados: []
+        };
+        if (typeof updateUserUI === 'function') updateUserUI();
+        
+        getDoc(doc(db, "usuarios", user.uid)).then(docSnap => {
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                // 🆕 Garantizar que cuponesUsados siempre exista
+                if (!Array.isArray(data.cuponesUsados)) data.cuponesUsados = [];
+                window.currentUser = data;
                 if (typeof updateUserUI === 'function') updateUserUI();
-                getDoc(doc(db, "usuarios", user.uid)).then(docSnap => {
-                    if (docSnap.exists()) {
-                        window.currentUser = docSnap.data();
-                        if (typeof updateUserUI === 'function') updateUserUI();
-                    }
-                }).catch(err => console.warn('⚠️', err));
-            } else {
-                window.currentUser = null;
-                if (typeof updateUserUI === 'function') updateUserUI();
-                const adminBtn = document.getElementById('adminPanelBtn');
-                if (adminBtn) adminBtn.remove();
             }
-        });
-    </script>
+        }).catch(err => console.warn('⚠️', err));
+    } else {
+        window.currentUser = null;
+        if (typeof updateUserUI === 'function') updateUserUI();
+        const adminBtn = document.getElementById('adminPanelBtn');
+        if (adminBtn) adminBtn.remove();
+    }
+});
 
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -1466,6 +1469,9 @@
         // ESTADO GLOBAL
         // ============================================
         let productos = [];
+        let chatHistory = [];  // 💭 Memoria de conversación
+        let ultimoProductoMencionado = null;
+        let ultimaCategoriaPreguntada = null;
         let cart = [];
         let wishlist = [];
         let cuponesActivos = [];
@@ -1483,7 +1489,15 @@
         // ============================================
         // UTILIDADES
         // ============================================
-        function formatPrice(p) { return `S/ ${parseFloat(p || 0).toFixed(2)}`; }
+        function safeNumber(val, fallback = 0) {
+    const n = parseFloat(val);
+    return Number.isFinite(n) ? n : fallback;
+}
+function safeInt(val, fallback = 0) {
+    const n = parseInt(val);
+    return Number.isFinite(n) ? n : fallback;
+}
+function formatPrice(p) { return `S/ ${safeNumber(p, 0).toFixed(2)}`; }
 
         function mostrarNotificacion(mensaje, icono = '✅') {
             const n = document.getElementById('notification');
@@ -1860,34 +1874,37 @@
         // FILTROS
         // ============================================
         function aplicarFiltrosProductos(lista) {
-            const precio = document.getElementById('filterPrecio')?.value || 'todos';
-            const orden = document.getElementById('filterOrden')?.value || 'recientes';
-            const estado = document.getElementById('filterEstado')?.value || 'todos';
+    const precio = document.getElementById('filterPrecio')?.value || 'todos';
+    const orden = document.getElementById('filterOrden')?.value || 'recientes';
+    const estado = document.getElementById('filterEstado')?.value || 'todos';
 
-            let f = [...lista];
+    let f = [...lista];
 
-            if (categoriaActual !== 'todos') f = f.filter(p => p.categoria === categoriaActual);
+    if (categoriaActual !== 'todos') f = f.filter(p => p.categoria === categoriaActual);
 
-            if (precio !== 'todos') {
-                const [min, max] = precio.split('-').map(Number);
-                f = f.filter(p => {
-                    const pr = parseFloat(p.precio) || 0;
-                    return pr >= min && pr < max;
-                });
-            }
+    if (precio !== 'todos') {
+        const [min, max] = precio.split('-').map(Number);
+        f = f.filter(p => {
+            const pr = safeNumber(p.precio);
+            return pr >= min && pr < max;
+        });
+    }
 
-            if (estado === 'oferta') f = f.filter(p => p.precio_old && p.precio_old > p.precio);
-            else if (estado === 'disponible') f = f.filter(p => (parseInt(p.stock) || 0) > 0);
+    if (estado === 'oferta') f = f.filter(p => {
+        const po = safeNumber(p.precio_old), pn = safeNumber(p.precio);
+        return po > 0 && po > pn;
+    });
+    else if (estado === 'disponible') f = f.filter(p => safeInt(p.stock) > 0);
 
-            switch (orden) {
-                case 'precio-asc': f.sort((a, b) => (parseFloat(a.precio) || 0) - (parseFloat(b.precio) || 0)); break;
-                case 'precio-desc': f.sort((a, b) => (parseFloat(b.precio) || 0) - (parseFloat(a.precio) || 0)); break;
-                case 'vendidos': f.sort((a, b) => (parseInt(b.compradores) || 0) - (parseInt(a.compradores) || 0)); break;
-                default: f.sort((a, b) => (b.id || 0) - (a.id || 0)); break;
-            }
+    switch (orden) {
+        case 'precio-asc': f.sort((a, b) => safeNumber(a.precio) - safeNumber(b.precio)); break;
+        case 'precio-desc': f.sort((a, b) => safeNumber(b.precio) - safeNumber(a.precio)); break;
+        case 'vendidos': f.sort((a, b) => safeInt(b.compradores) - safeInt(a.compradores)); break;
+        default: f.sort((a, b) => safeInt(b.id) - safeInt(a.id)); break;
+    }
 
-            return f;
-        }
+    return f;
+}
 
         function actualizarFiltros() {
             const f = aplicarFiltrosProductos(productos);
@@ -1911,47 +1928,58 @@
         // RENDERIZAR PRODUCTOS
         // ============================================
         function renderizarProductos(products) {
-            const cont = document.getElementById('productGrid');
-            if (!cont) return;
-            if (products.length === 0) {
-                cont.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;"><span style="font-size:3rem;">🔍</span><h3>No encontramos productos</h3></div>`;
-                return;
-            }
-            let html = '';
-            products.forEach(p => {
-                const low = p.stock <= 3;
-                const disc = p.precio_old ? Math.round(((p.precio_old - p.precio) / p.precio_old) * 100) : null;
-                const inWish = wishlist.includes(p.id);
+    const cont = document.getElementById('productGrid');
+    if (!cont) return;
+    if (products.length === 0) {
+        cont.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;"><span style="font-size:3rem;">🔍</span><h3>No encontramos productos</h3></div>`;
+        return;
+    }
+    let html = '';
+    products.forEach(p => {
+        const stockNum = safeInt(p.stock);
+        const precioNum = safeNumber(p.precio);
+        const precioOldNum = safeNumber(p.precio_old);
+        const low = stockNum <= 3;
+        const disc = (precioOldNum > 0 && precioOldNum > precioNum)
+            ? Math.round(((precioOldNum - precioNum) / precioOldNum) * 100)
+            : null;
+        const inWish = wishlist.includes(p.id);
 
-                html += `
-                    <div class="product-card">
-                        <button class="btn-wishlist ${inWish ? 'active' : ''}" onclick="toggleWishlist(${p.id}, event)">${inWish ? '❤️' : '🤍'}</button>
-                        <div class="product-badges">
-                            ${p.badge ? `<span class="badge badge-sale">${p.badge}</span>` : ''}
-                            ${disc ? `<span class="badge badge-discount">-${disc}%</span>` : ''}
-                            ${low ? `<span class="badge badge-hot">🔥</span>` : ''}
-                        </div>
-                        <div class="product-image" onclick="abrirProductoModal(${p.id})">
-                            <img src="${p.imagen}" alt="${p.nombre}" loading="lazy" decoding="async">
-                        </div>
-                        <h3 class="product-name">${p.nombre}</h3>
-                        <p class="product-description">${p.descripcion}</p>
-                        <div class="stars-display">★★★★★</div>
-                        <div class="rating-info">👥 ${p.compradores || 0} compradores</div>
-                        <span class="product-stock ${low ? 'low-stock' : 'in-stock'}">${low ? `⚠️ Últimas ${p.stock}` : `✅ ${p.stock} disponibles`}</span>
-                        <span class="product-price">${formatPrice(p.precio)}${p.precio_old ? `<span class="old">${formatPrice(p.precio_old)}</span>` : ''}</span>
-                        <button class="btn-reviews" onclick="abrirResenas(${p.id})">⭐ Ver reseñas</button>
-                        <button class="btn-add" data-id="${p.id}" ${p.stock === 0 ? 'disabled' : ''}>${p.stock === 0 ? '❌ Agotado' : '🛒 Añadir al carrito'}</button>
-                    </div>
-                `;
-            });
-            cont.innerHTML = html;
-            cont.querySelectorAll('.btn-add').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    if (!this.disabled) addToCart(parseInt(this.dataset.id));
-                });
-            });
-        }
+        html += `
+            <div class="product-card">
+                <button class="btn-wishlist ${inWish ? 'active' : ''}" onclick="toggleWishlist(${p.id}, event)">${inWish ? '❤️' : '🤍'}</button>
+                <div class="product-badges">
+                    ${p.badge ? `<span class="badge badge-sale">${p.badge}</span>` : ''}
+                    ${disc ? `<span class="badge badge-discount">-${disc}%</span>` : ''}
+                    ${low && stockNum > 0 ? `<span class="badge badge-hot">🔥</span>` : ''}
+                </div>
+                <div class="product-image" onclick="abrirProductoModal(${p.id})">
+                    <img src="${p.imagen}" alt="${p.nombre}" loading="lazy" decoding="async">
+                </div>
+                <h3 class="product-name">${p.nombre}</h3>
+                <p class="product-description">${p.descripcion}</p>
+                <div class="stars-display">★★★★★</div>
+                <div class="rating-info">👥 ${safeInt(p.compradores)} compradores</div>
+                <span class="product-stock ${low ? 'low-stock' : 'in-stock'}">
+                    ${stockNum === 0 ? '❌ Agotado' : (low ? `⚠️ Últimas ${stockNum}` : `✅ ${stockNum} disponibles`)}
+                </span>
+                <span class="product-price">
+                    ${formatPrice(precioNum)}${precioOldNum > 0 ? `<span class="old">${formatPrice(precioOldNum)}</span>` : ''}
+                </span>
+                <button class="btn-reviews" onclick="abrirResenas(${p.id})">⭐ Ver reseñas</button>
+                <button class="btn-add" data-id="${p.id}" ${stockNum === 0 ? 'disabled' : ''}>
+                    ${stockNum === 0 ? '❌ Agotado' : '🛒 Añadir al carrito'}
+                </button>
+            </div>
+        `;
+    });
+    cont.innerHTML = html;
+    cont.querySelectorAll('.btn-add').forEach(btn => {
+        btn.addEventListener('click', function() {
+            if (!this.disabled) addToCart(parseInt(this.dataset.id));
+        });
+    });
+}
 
         // ============================================
         // CARRITO CON CUPONES
@@ -1971,20 +1999,38 @@
         }
 
         function addToCart(id) {
-            const p = productos.find(x => x.id === id);
-            if (!p) return;
-            const ex = cart.find(i => i.id === id);
-            if (ex) ex.quantity += 1;
-            else cart.push({ id: p.id, name: p.nombre, price: p.precio, quantity: 1, image: p.imagen });
-            guardarCarrito();
-            actualizarCarritoUI();
-            renderCart();
-            mostrarNotificacion(`✅ ${p.nombre} agregado`, '🛍️');
-            const cc = document.getElementById('cartCount');
-            cc.classList.add('bounce');
-            setTimeout(() => cc.classList.remove('bounce'), 300);
-            lanzarConfetti();
+    const p = productos.find(x => x.id === id);
+    if (!p) return;
+    const stockDisponible = safeInt(p.stock);
+    if (stockDisponible <= 0) {
+        mostrarNotificacion('❌ Producto agotado', '❌');
+        return;
+    }
+    const ex = cart.find(i => i.id === id);
+    if (ex) {
+        if (ex.quantity >= stockDisponible) {
+            mostrarNotificacion(`⚠️ Solo hay ${stockDisponible} unidades`, '⚠️');
+            return;
         }
+        ex.quantity += 1;
+    } else {
+        cart.push({
+            id: p.id,
+            name: p.nombre,
+            price: safeNumber(p.precio),
+            quantity: 1,
+            image: p.imagen
+        });
+    }
+    guardarCarrito();
+    actualizarCarritoUI();
+    renderCart();
+    mostrarNotificacion(`✅ ${p.nombre} agregado`, '🛍️');
+    const cc = document.getElementById('cartCount');
+    cc.classList.add('bounce');
+    setTimeout(() => cc.classList.remove('bounce'), 300);
+    lanzarConfetti();
+}
 
         function removeFromCart(idx) {
             cart.splice(idx, 1);
@@ -1994,14 +2040,14 @@
         }
 
         function calcularTotales() {
-            const subtotal = cart.reduce((s, i) => s + (i.price * i.quantity), 0);
-            let descuento = 0;
-            if (cuponAplicado) {
-                descuento = (subtotal * cuponAplicado.descuento) / 100;
-            }
-            const total = subtotal - descuento;
-            return { subtotal, descuento, total };
-        }
+    const subtotal = cart.reduce((s, i) => s + (safeNumber(i.price) * safeInt(i.quantity, 1)), 0);
+    let descuento = 0;
+    if (cuponAplicado && safeNumber(cuponAplicado.descuento) > 0) {
+        descuento = (subtotal * safeNumber(cuponAplicado.descuento)) / 100;
+    }
+    const total = Math.max(0, subtotal - descuento);
+    return { subtotal, descuento, total };
+}
 
         function actualizarCarritoUI() {
             const items = cart.reduce((s, i) => s + i.quantity, 0);
@@ -2086,24 +2132,33 @@
             }
 
             // Verificar cupones por nivel (BRONCE5, etc.)
-            const cuponNivel = CODIGOS_POR_NIVEL.find(c => c.code === codigo);
-            if (cuponNivel) {
-                const pts = parseInt(window.currentUser.points) || 0;
-                if (pts < cuponNivel.min) {
-                    msg.className = 'cupon-msg error';
-                    msg.textContent = `⚠️ Necesitas ${cuponNivel.min} pts para este código`;
-                    return;
-                }
-                cuponAplicado = { codigo: cuponNivel.code, descuento: parseInt(cuponNivel.code.match(/\d+/)[0]), descripcion: cuponNivel.desc, tipo: 'nivel' };
-                guardarCarrito();
-                mostrarCuponAplicado();
-                renderCart();
-                actualizarCarritoUI();
-                mostrarNotificacion(`✅ Cupón ${codigo} aplicado`, '🎟️');
-                lanzarConfetti();
-                input.value = '';
-                return;
-            }
+const cuponNivel = CODIGOS_POR_NIVEL.find(c => c.code === codigo);
+if (cuponNivel) {
+    const pts = parseInt(window.currentUser.points) || 0;
+    if (pts < cuponNivel.min) {
+        msg.className = 'cupon-msg error';
+        msg.textContent = `⚠️ Necesitas ${cuponNivel.min} pts para este código`;
+        return;
+    }
+
+    // 🆕 Verificar si ya lo usó antes
+    const cuponesUsados = window.currentUser.cuponesUsados || [];
+    if (cuponesUsados.includes(codigo)) {
+        msg.className = 'cupon-msg error';
+        msg.textContent = '❌ Ya usaste este cupón anteriormente';
+        return;
+    }
+
+    cuponAplicado = { codigo: cuponNivel.code, descuento: parseInt(cuponNivel.code.match(/\d+/)[0]), descripcion: cuponNivel.desc, tipo: 'nivel' };
+    guardarCarrito();
+    mostrarCuponAplicado();
+    renderCart();
+    actualizarCarritoUI();
+    mostrarNotificacion(`✅ Cupón ${codigo} aplicado`, '🎟️');
+    lanzarConfetti();
+    input.value = '';
+    return;
+}
 
             // Verificar cupones personalizados
             btn.disabled = true;
@@ -4596,17 +4651,18 @@ setTimeout(cargarCuponesDesdeFirestore, 1000);
                         }
 
                         // 2. Agregar cupón a cuponesUsados del cliente
-                        const userRef = window.firebaseDB.doc(window.db, "usuarios", window.currentUser.id);
-                        const userSnap = await window.firebaseDB.getDoc(userRef);
-                        if (userSnap.exists()) {
-                            const u = userSnap.data();
-                            const usados = u.cuponesUsados || [];
-                            if (!usados.includes(cuponAplicado.codigo)) {
-                                usados.push(cuponAplicado.codigo);
-                                await window.firebaseDB.updateDoc(userRef, { cuponesUsados: usados });
-                                window.currentUser.cuponesUsados = usados;
-                            }
-                        }
+const userRef = window.firebaseDB.doc(window.db, "usuarios", window.currentUser.id);
+const userSnap = await window.firebaseDB.getDoc(userRef);
+if (userSnap.exists()) {
+    const u = userSnap.data();
+    const usados = u.cuponesUsados || [];
+    if (!usados.includes(cuponAplicado.codigo)) {
+        usados.push(cuponAplicado.codigo);
+        await window.firebaseDB.updateDoc(userRef, { cuponesUsados: usados });
+        window.currentUser.cuponesUsados = usados;
+        console.log('✅ Cupón registrado como usado:', cuponAplicado.codigo);
+    }
+}
                     }
                 } catch (e) { console.warn('⚠️ No se pudo guardar:', e); }
 
