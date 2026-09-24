@@ -2688,27 +2688,202 @@
 
         function getAIResponse(message) {
             const msg = message.toLowerCase().trim();
-            for (const p of productos) {
-                const n = p.nombre.toLowerCase();
-                if (msg.includes(n) || msg.includes(n.split(' ')[0])) {
-                    return `🔍 <strong>${p.nombre}</strong><br>📝 ${p.descripcion}<br>💰 ${formatPrice(p.precio)}<br>📦 Stock: ${p.stock}`;
+
+            // 🔍 BUSCAR PRODUCTOS POR PUNTUACIÓN
+            const productosEncontrados = [];
+            
+            for (const producto of productos) {
+                const nombreLower = producto.nombre.toLowerCase();
+                const descLower = (producto.descripcion || '').toLowerCase();
+                const palabrasNombre = nombreLower.split(' ').filter(w => w.length > 2);
+                
+                let puntuacion = 0;
+                
+                if (msg.includes(nombreLower)) puntuacion += 100;
+                
+                palabrasNombre.forEach(palabra => {
+                    if (msg.includes(palabra)) puntuacion += 20;
+                });
+                
+                const palabrasDesc = descLower.split(' ').filter(w => w.length >= 4);
+                palabrasDesc.forEach(palabra => {
+                    if (msg.includes(palabra)) puntuacion += 5;
+                });
+                
+                if (puntuacion > 0) {
+                    productosEncontrados.push({ producto, puntuacion });
                 }
             }
-            for (const [k, v] of Object.entries(IA_KNOWLEDGE)) {
-                if (k !== 'default' && msg.includes(k)) return v;
+            
+            productosEncontrados.sort((a, b) => b.puntuacion - a.puntuacion);
+            
+            if (productosEncontrados.length > 0) {
+                const mejor = productosEncontrados[0].producto;
+                const tieneDesc = mejor.precio_old && mejor.precio_old > mejor.precio;
+                const descPct = tieneDesc ? Math.round(((mejor.precio_old - mejor.precio) / mejor.precio_old) * 100) : 0;
+                const stockText = mejor.stock > 0 ? `✅ ${mejor.stock} disponibles` : '❌ AGOTADO';
+                
+                let precioTexto = '';
+                if (tieneDesc) {
+                    precioTexto = `🔥 <strong>¡EN OFERTA!</strong> antes ${formatPrice(mejor.precio_old)} · ahora ${formatPrice(mejor.precio)} (-${descPct}%)`;
+                } else {
+                    precioTexto = `💰 Precio: ${formatPrice(mejor.precio)}`;
+                }
+                
+                const respuestas = [
+                    `¡Uy, excelente elección! 😍✨<br><br>🔍 <strong>${mejor.nombre}</strong><br>📝 ${mejor.descripcion}<br>${precioTexto}<br>📦 Stock: ${stockText}<br>⭐ ${mejor.badge || 'Producto destacado'}<br><br>¿Te gustaría agregarlo a tu carrito? 🛒💖`,
+                    `¡Mira qué lindo! 💖<br><br>🔍 <strong>${mejor.nombre}</strong><br>📝 ${mejor.descripcion}<br>${precioTexto}<br>📦 Stock: ${stockText}<br>⭐ ${mejor.badge || 'Producto destacado'}<br><br>¿Lo agregamos al carrito? 🛍️✨`,
+                    `¡Te va a encantar! 😍<br><br>🔍 <strong>${mejor.nombre}</strong><br>📝 ${mejor.descripcion}<br>${precioTexto}<br>📦 Stock: ${stockText}<br>⭐ ${mejor.badge || 'Producto destacado'}<br><br>¿Querés más detalles o lo agregamos? 🛒💫`
+                ];
+                
+                return respuestas[Math.floor(Math.random() * respuestas.length)];
             }
+
+            // 📦 AGOTADOS
+            if (msg.includes('agotado') || msg.includes('acabó') || msg.includes('no hay')) {
+                const agotados = productos.filter(p => p.stock <= 0);
+                if (agotados.length === 0) {
+                    return `¡Buenas noticias! 🎉 Todas nuestras cositas están disponibles ✨<br><br>¿Qué estás buscando? Te ayudo a encontrarlo 💖`;
+                } else {
+                    return `Uy, estos productos se agotaron por ahora 😢<br><br>${agotados.map(p => `❌ ${p.nombre}`).join('<br>')}<br><br>¿Querés que te recomiende algo similar? 💡`;
+                }
+            }
+
+            // 🔥 OFERTAS
+            const enOferta = productos.filter(p => p.precio_old && p.precio_old > p.precio);
+            if (msg.includes('oferta') || msg.includes('descuento') || msg.includes('promo') || msg.includes('rebaja') || msg.includes('barato')) {
+                if (enOferta.length === 0) {
+                    return `Uy, por ahora no tenemos ofertas activas 😢<br><br>Pero siempre tenemos envío gratis en compras mayores a S/50 🚚💖`;
+                }
+                let resp = `¡Uy, llegaste en el momento perfecto! 🎉🔥<br><br>Tenemos ${enOferta.length} producto(s) en OFERTA:<br><br>`;
+                enOferta.forEach(p => {
+                    const desc = Math.round(((p.precio_old - p.precio) / p.precio_old) * 100);
+                    resp += `✨ <strong>${p.nombre}</strong><br>   ${formatPrice(p.precio_old)} → ${formatPrice(p.precio)} (-${desc}% OFF)<br><br>`;
+                });
+                if (cuponesActivos.length > 0) {
+                    resp += `🎟️ Además tenemos cupones activos:<br>`;
+                    cuponesActivos.forEach(c => {
+                        resp += `• <strong>${c.codigo}</strong> → ${c.descuento}% OFF<br>`;
+                    });
+                }
+                resp += `<br>¿Te interesa alguno? 💖`;
+                return resp;
+            }
+
+            // 💬 SALUDOS
+            if (msg.includes('hola') || msg.includes('buenos días') || msg.includes('buenas tardes') || msg.includes('buenas noches') || msg.includes('hey') || msg.includes('hi')) {
+                const saludos = [
+                    `¡Hola! 👋✨ Soy <strong>Paulina AI</strong>, tu asistente personal.<br><br>¡Qué gusto tenerte por aquí! 💖 ¿En qué puedo ayudarte hoy?<br><br>Puedo mostrarte productos, ofertas, o simplemente charlar un ratito 🥰`,
+                    `¡Holaa! 🌸✨ Bienvenida a <strong>Paulina Accesorios</strong>.<br><br>Soy Paulina AI y estoy aquí para ayudarte 24/7 💖<br><br>¿Buscas algo en especial? 🛍️`,
+                    `¡Hey! 👋💖 Soy Paulina AI.<br><br>Me encanta cuando llegan clientas nuevas ✨<br><br>¿Te ayudo a encontrar algo lindo? Tengo ofertas hermosas hoy 🔥`
+                ];
+                return saludos[Math.floor(Math.random() * saludos.length)];
+            }
+
+            // 🙏 GRACIAS
+            if (msg.includes('gracias') || msg.includes('muchas gracias')) {
+                const gracias = [
+                    `¡De nada! 💖 Fue un placer ayudarte ✨<br><br>Si necesitas algo más, aquí estoy 🥰`,
+                    `¡Con mucho gusto! 💖✨<br><br>Vuelve cuando quieras 🛍️💫`
+                ];
+                return gracias[Math.floor(Math.random() * gracias.length)];
+            }
+
+            // 🎟️ CUPONES
+            if (msg.includes('cupón') || msg.includes('cupon') || msg.includes('cupones') || msg.includes('código') || msg.includes('codigo')) {
+                if (cuponesActivos.length === 0) {
+                    return `Uy, por ahora no hay cupones activos 😢<br><br>Pero suscribite a nuestras redes para enterarte 💖`;
+                }
+                let resp = `🎟️ <strong>Cupones activos:</strong><br><br>`;
+                cuponesActivos.forEach(c => {
+                    const usosRestantes = c.limiteTotal > 0 ? c.limiteTotal - (c.usosActuales || 0) : null;
+                    resp += `✨ <strong>${c.codigo}</strong> → ${c.descuento}% OFF<br>`;
+                    if (usosRestantes !== null) resp += `⚡ ${usosRestantes} usos restantes<br>`;
+                    resp += '<br>';
+                });
+                resp += `💡 Escribí el código en el carrito 🛒`;
+                return resp;
+            }
+
+            // 📦 ENVÍOS
+            if (msg.includes('envío') || msg.includes('envio') || msg.includes('llegar') || msg.includes('demora') || msg.includes('tarda')) {
+                return `📦 <strong>Información de envíos:</strong><br><br>🚚 <strong>Lima:</strong> 24-48 horas<br>🚚 <strong>Provincias:</strong> 2-4 días<br><br>✨ <strong>¡Envío GRATIS en compras mayores a S/50!</strong><br><br>📍 Enviamos a todo Perú 💖`;
+            }
+
+            // 💳 PAGOS
+            if (msg.includes('pago') || msg.includes('pagar') || msg.includes('yape') || msg.includes('plin')) {
+                return `💳 <strong>Formas de pago:</strong><br><br>✅ Yape<br>✅ Plin<br>✅ Transferencia bancaria<br>✅ Efectivo<br><br>💖 Coordinamos todo por WhatsApp ✨`;
+            }
+
+            // 📍 UBICACIÓN
+            if (msg.includes('ubicación') || msg.includes('dirección') || msg.includes('donde')) {
+                return `📍 <strong>Nuestra ubicación:</strong><br><br>Francisco Bardales 705<br>Yurimaguas, Perú 🇵🇪<br><br>🕐 Lun-Sáb: 9am - 8pm<br><br>💻 WhatsApp: +51 923 861 016 💖`;
+            }
+
+            // 🕐 HORARIO
+            if (msg.includes('horario') || msg.includes('abren') || msg.includes('cierran')) {
+                return `🕐 <strong>Nuestro horario:</strong><br><br>📅 Lunes a Sábado: 9am - 8pm<br>📅 Domingos: cerrado<br><br>💻 Pero mi chat está abierto 24/7 ✨`;
+            }
+
+            // 🧮 MATEMÁTICAS
             if (msg.includes('+')) {
-                const p = msg.split('+');
-                if (p.length === 2) {
-                    const a = parseFloat(p[0]), b = parseFloat(p[1]);
-                    if (!isNaN(a) && !isNaN(b)) return `🧮 ${a} + ${b} = ${a + b}`;
+                const parts = msg.split('+');
+                if (parts.length === 2) {
+                    const num1 = parseFloat(parts[0].trim());
+                    const num2 = parseFloat(parts[1].trim());
+                    if (!isNaN(num1) && !isNaN(num2)) return `🧮 ${num1} + ${num2} = <strong>${num1 + num2}</strong> ✨`;
                 }
             }
-            return IA_KNOWLEDGE.default;
+            if (msg.includes('-') && !msg.includes('+')) {
+                const parts = msg.split('-');
+                if (parts.length === 2) {
+                    const num1 = parseFloat(parts[0].trim());
+                    const num2 = parseFloat(parts[1].trim());
+                    if (!isNaN(num1) && !isNaN(num2)) return `🧮 ${num1} - ${num2} = <strong>${num1 - num2}</strong> ✨`;
+                }
+            }
+            if (msg.includes('*') || msg.includes('x')) {
+                const separator = msg.includes('*') ? '*' : 'x';
+                const parts = msg.split(separator);
+                if (parts.length === 2) {
+                    const num1 = parseFloat(parts[0].trim());
+                    const num2 = parseFloat(parts[1].trim());
+                    if (!isNaN(num1) && !isNaN(num2)) return `🧮 ${num1} × ${num2} = <strong>${num1 * num2}</strong> ✨`;
+                }
+            }
+            if (msg.includes('/')) {
+                const parts = msg.split('/');
+                if (parts.length === 2) {
+                    const num1 = parseFloat(parts[0].trim());
+                    const num2 = parseFloat(parts[1].trim());
+                    if (!isNaN(num1) && !isNaN(num2) && num2 !== 0) return `🧮 ${num1} ÷ ${num2} = <strong>${num1 / num2}</strong> ✨`;
+                }
+            }
+
+            // 😂 CHISTES
+            if (msg.includes('chiste') || msg.includes('chistes')) {
+                const chistes = [
+                    `😊 ¿Por qué las pestañas no van a la playa?<br><br>¡Porque les da miedo el agua salada y que se les corra el rímel! 😂💖`,
+                    `😂 ¿Qué le dice una pestaña a otra?<br><br>— ¡No te me pegues que me despeinas! 😂✨`,
+                    `😄 ¿Por qué los aretes son tan felices?<br><br>— ¡Porque siempre están colgados de la moda! 💫😊`
+                ];
+                return chistes[Math.floor(Math.random() * chistes.length)];
+            }
+
+            // 👋 DESPEDIDAS
+            if (msg.includes('chao') || msg.includes('adios') || msg.includes('bye')) {
+                return `¡Chaucito! 👋💖<br><br>Gracias por visitarnos ✨<br><br>Vuelve cuando quieras 🌸`;
+            }
+
+            // 🤔 RESPUESTAS GENÉRICAS
+            const respuestasGenericas = [
+                `¡Qué buena pregunta! 🤔✨<br><br>Puedo ayudarte con:<br>• 🛍️ Productos y precios<br>• 🎁 Ofertas y cupones<br>• 📦 Envíos y pagos<br>• 📍 Ubicación<br><br>¿Qué te gustaría saber? 💖`,
+                `¡Me encanta tu curiosidad! 🌟<br><br>Soy Paulina AI y estoy aquí para ayudarte 💖<br><br>¿Sobre qué querés saber? ✨`
+            ];
+            return respuestasGenericas[Math.floor(Math.random() * respuestasGenericas.length)];
         }
 
-                function actualizarIALocal() {
-            // 🔥 Limpiar claves viejas
+        function actualizarIALocal() {
             const clavesProductos = Object.keys(IA_KNOWLEDGE).filter(k => 
                 k.startsWith('producto_') || 
                 k.startsWith('tienen_') ||
@@ -2720,7 +2895,6 @@
             );
             clavesProductos.forEach(k => delete IA_KNOWLEDGE[k]);
 
-            // 📦 AGREGAR PRODUCTOS
             productos.forEach(p => {
                 const stockText = p.stock > 0 ? `✅ ${p.stock} disponibles` : `❌ AGOTADO`;
                 const tieneDesc = p.precio_old && p.precio_old > p.precio;
@@ -2730,19 +2904,16 @@
                     `🔍 <strong>${p.nombre}</strong>\n📝 ${p.descripcion}\n💰 Precio: ${formatPrice(p.precio)}${tieneDesc ? ` (antes ${formatPrice(p.precio_old)} · -${descPct}%)` : ''}\n📦 Stock: ${stockText}\n⭐ ${p.badge || 'Producto destacado'}\n\n¿Te gustaría agregarlo a tu carrito? 🛒`;
             });
 
-            // 🎟️ AGREGAR CUPONES ACTIVOS
             cuponesActivos.forEach(c => {
                 const usosRestantes = c.limiteTotal > 0 ? c.limiteTotal - (c.usosActuales || 0) : null;
                 IA_KNOWLEDGE[`cupon_${c.codigo.toLowerCase()}`] = 
                     `🎟️ <strong>Cupón ${c.codigo}</strong>\n💰 ${c.descuento}% OFF\n📝 ${c.descripcion || 'En toda la tienda'}\n${usosRestantes !== null ? `⚡ Solo ${usosRestantes} usos disponibles` : ''}\n\nUsalo en el carrito escribiendo <strong>${c.codigo}</strong> 🛒`;
             });
 
-            // 📊 GENERAR LISTA DE PRODUCTOS
             const disponibles = productos.filter(p => p.stock > 0);
             const agotados = productos.filter(p => p.stock <= 0);
             const enOferta = productos.filter(p => p.precio_old && p.precio_old > p.precio);
             
-            // Agrupar por categoría
             const porCategoria = {};
             productos.forEach(p => {
                 if (!porCategoria[p.categoria]) porCategoria[p.categoria] = [];
@@ -2783,7 +2954,6 @@
             IA_KNOWLEDGE['disponible'] = respProductos;
             IA_KNOWLEDGE['catálogo'] = respProductos;
 
-            // 🔥 RESPUESTA DE OFERTAS
             if (enOferta.length > 0) {
                 let respOfertas = `🔥 <strong>¡Tenemos ${enOferta.length} productos en OFERTA!</strong>\n\n`;
                 enOferta.forEach(p => {
@@ -2798,7 +2968,6 @@
                 }
                 respOfertas += '\n¿Te interesa alguno? 🛒';
                 IA_KNOWLEDGE['oferta'] = respOfertas;
-                IA_KNOWLEDGE['oferta'] = respOfertas;
                 IA_KNOWLEDGE['descuento'] = respOfertas;
                 IA_KNOWLEDGE['promoción'] = respOfertas;
                 IA_KNOWLEDGE['rebaja'] = respOfertas;
@@ -2808,7 +2977,6 @@
                 IA_KNOWLEDGE['promoción'] = IA_KNOWLEDGE['oferta'];
             }
 
-            // 🎟️ RESPUESTA DE CUPONES
             if (cuponesActivos.length > 0) {
                 let respCupones = `🎟️ <strong>Cupones activos:</strong>\n\n`;
                 cuponesActivos.forEach(c => {
@@ -2828,22 +2996,16 @@
                 IA_KNOWLEDGE['código'] = IA_KNOWLEDGE['cupón'];
             }
 
-            // 💰 BÚSQUEDA POR PRESUPUESTO
             const baratos = productos.filter(p => p.precio <= 25 && p.stock > 0);
-            const medios = productos.filter(p => p.precio > 25 && p.precio <= 45 && p.stock > 0);
-            const caros = productos.filter(p => p.precio > 45 && p.stock > 0);
-
             IA_KNOWLEDGE['barato'] = baratos.length > 0 
                 ? `💰 <strong>Productos baratos (menos de S/25):</strong>\n\n${baratos.map(p => `• ${p.nombre} - ${formatPrice(p.precio)}`).join('\n')}\n\n¿Te interesa? 🛒`
                 : '💰 No tenemos productos por menos de S/25 ahora.';
             
             IA_KNOWLEDGE['económico'] = IA_KNOWLEDGE['barato'];
 
-            // 📊 ESTADÍSTICAS
             IA_KNOWLEDGE['cuántos productos'] = `📊 Tenemos <strong>${productos.length}</strong> productos en total, <strong>${disponibles.length}</strong> disponibles${enOferta.length > 0 ? `, <strong>${enOferta.length}</strong> en oferta 🔥` : ''}.`;
             IA_KNOWLEDGE['estadísticas'] = IA_KNOWLEDGE['cuántos productos'];
 
-            // 💡 RECOMENDACIÓN
             IA_KNOWLEDGE['recomiéndame'] = enOferta.length > 0
                 ? `🔥 <strong>Mi recomendación:</strong>\n\n${enOferta.map(p => `• <strong>${p.nombre}</strong> - ${formatPrice(p.precio)} (¡antes ${formatPrice(p.precio_old)}!)`).join('\n')}\n\n¡Aprovecha los descuentos! 🛒`
                 : '✨ Te recomiendo ver nuestros productos más vendidos. ¿Qué categoría buscas? 📿 Aretes, 👁️ Pestañas, 📿 Collares, 💄 Maquillaje o 💈 Capilar';
@@ -2853,6 +3015,7 @@
 
             console.log('✅ IA actualizada:', productos.length, 'productos,', cuponesActivos.length, 'cupones');
         }
+
         function initChatAI() {
             const float = document.getElementById('chatFloatAI');
             const modal = document.getElementById('chatModalAI');
@@ -2901,75 +3064,75 @@
                 if (b) sendMsg(b.dataset.msg);
             });
         }
-async function crearCupon() {
-    const codigo = document.getElementById('cuponCodigo').value.trim().toUpperCase();
-    const descuento = parseInt(document.getElementById('cuponDescuento').value);
-    const descripcion = document.getElementById('cuponDescripcion').value.trim();
-    const fechaInicioRaw = document.getElementById('cuponFechaInicio').value.trim();
-    const fechaExpiracionRaw = document.getElementById('cuponFechaExpiracion').value.trim();
-    const limiteTotal = parseInt(document.getElementById('cuponLimite').value) || 0;
-    const mostrarAnuncio = document.getElementById('cuponAnuncio').checked;
 
-    if (!codigo) return mostrarNotificacion('⚠️ Falta el código', '⚠️');
-    if (!descuento || descuento < 1 || descuento > 100) return mostrarNotificacion('⚠️ Descuento inválido (1-100)', '⚠️');
+        async function crearCupon() {
+            const codigo = document.getElementById('cuponCodigo').value.trim().toUpperCase();
+            const descuento = parseInt(document.getElementById('cuponDescuento').value);
+            const descripcion = document.getElementById('cuponDescripcion').value.trim();
+            const fechaInicioRaw = document.getElementById('cuponFechaInicio').value.trim();
+            const fechaExpiracionRaw = document.getElementById('cuponFechaExpiracion').value.trim();
+            const limiteTotal = parseInt(document.getElementById('cuponLimite').value) || 0;
+            const mostrarAnuncio = document.getElementById('cuponAnuncio').checked;
 
-    // Convertir fechas de texto a ISO
-    let fechaInicio = null;
-    let fechaExpiracion = null;
+            if (!codigo) return mostrarNotificacion('⚠️ Falta el código', '⚠️');
+            if (!descuento || descuento < 1 || descuento > 100) return mostrarNotificacion('⚠️ Descuento inválido (1-100)', '⚠️');
 
-    if (fechaInicioRaw) {
-        const d = new Date(fechaInicioRaw + 'T00:00:00');
-        if (isNaN(d.getTime())) return mostrarNotificacion('⚠️ Fecha inicio inválida (usa AAAA-MM-DD)', '⚠️');
-        fechaInicio = d.toISOString();
-    }
-    if (fechaExpiracionRaw) {
-        const d = new Date(fechaExpiracionRaw + 'T23:59:59');
-        if (isNaN(d.getTime())) return mostrarNotificacion('⚠️ Fecha expiración inválida (usa AAAA-MM-DD)', '⚠️');
-        fechaExpiracion = d.toISOString();
-    }
-    if (fechaInicio && fechaExpiracion && new Date(fechaExpiracion) <= new Date(fechaInicio)) {
-        return mostrarNotificacion('⚠️ La expiración debe ser después del inicio', '⚠️');
-    }
+            let fechaInicio = null;
+            let fechaExpiracion = null;
 
-    try {
-        const check = await window.firebaseDB.getDocs(
-            window.firebaseDB.query(
-                window.firebaseDB.collection(window.db, "cupones"),
-                window.firebaseDB.where("codigo", "==", codigo)
-            )
-        );
-        if (!check.empty) return mostrarNotificacion('⚠️ Este código ya existe', '⚠️');
-
-        const nuevoId = Date.now();
-        await window.firebaseDB.setDoc(
-            window.firebaseDB.doc(window.db, "cupones", nuevoId.toString()),
-            {
-                id: nuevoId.toString(),
-                codigo,
-                descuento,
-                descripcion: descripcion || `${descuento}% OFF`,
-                fechaInicio,
-                fechaExpiracion,
-                limiteTotal,
-                usosActuales: 0,
-                mostrarAnuncio,
-                activo: true,
-                color: 'gold',
-                creadoPor: 'admin',
-                fechaCreacion: new Date().toISOString()
+            if (fechaInicioRaw) {
+                const d = new Date(fechaInicioRaw + 'T00:00:00');
+                if (isNaN(d.getTime())) return mostrarNotificacion('⚠️ Fecha inicio inválida (usa AAAA-MM-DD)', '⚠️');
+                fechaInicio = d.toISOString();
             }
-        );
+            if (fechaExpiracionRaw) {
+                const d = new Date(fechaExpiracionRaw + 'T23:59:59');
+                if (isNaN(d.getTime())) return mostrarNotificacion('⚠️ Fecha expiración inválida (usa AAAA-MM-DD)', '⚠️');
+                fechaExpiracion = d.toISOString();
+            }
+            if (fechaInicio && fechaExpiracion && new Date(fechaExpiracion) <= new Date(fechaInicio)) {
+                return mostrarNotificacion('⚠️ La expiración debe ser después del inicio', '⚠️');
+            }
 
-        mostrarNotificacion(`✅ Cupón ${codigo} creado`, '🎟️');
-        lanzarConfetti();
+            try {
+                const check = await window.firebaseDB.getDocs(
+                    window.firebaseDB.query(
+                        window.firebaseDB.collection(window.db, "cupones"),
+                        window.firebaseDB.where("codigo", "==", codigo)
+                    )
+                );
+                if (!check.empty) return mostrarNotificacion('⚠️ Este código ya existe', '⚠️');
 
-        ['cuponCodigo','cuponDescuento','cuponDescripcion','cuponFechaInicio','cuponFechaExpiracion','cuponLimite'].forEach(id => document.getElementById(id).value = '');
-        document.getElementById('cuponAnuncio').checked = true;
+                const nuevoId = Date.now();
+                await window.firebaseDB.setDoc(
+                    window.firebaseDB.doc(window.db, "cupones", nuevoId.toString()),
+                    {
+                        id: nuevoId.toString(),
+                        codigo,
+                        descuento,
+                        descripcion: descripcion || `${descuento}% OFF`,
+                        fechaInicio,
+                        fechaExpiracion,
+                        limiteTotal,
+                        usosActuales: 0,
+                        mostrarAnuncio,
+                        activo: true,
+                        color: 'gold',
+                        creadoPor: 'admin',
+                        fechaCreacion: new Date().toISOString()
+                    }
+                );
 
-        cargarCuponesAdmin();
-    } catch (e) { console.error('❌', e); mostrarNotificacion('❌ Error al crear', '❌'); }
-}
+                mostrarNotificacion(`✅ Cupón ${codigo} creado`, '🎟️');
+                lanzarConfetti();
 
+                ['cuponCodigo','cuponDescuento','cuponDescripcion','cuponFechaInicio','cuponFechaExpiracion','cuponLimite'].forEach(id => document.getElementById(id).value = '');
+                document.getElementById('cuponAnuncio').checked = true;
+
+                cargarCuponesAdmin();
+                actualizarIALocal();
+            } catch (e) { console.error('❌', e); mostrarNotificacion('❌ Error al crear', '❌'); }
+        }
         // PRODUCTOS
         async function cargarProductosAdmin() {
             const c = document.getElementById('adminProductosLista');
