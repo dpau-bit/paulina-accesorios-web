@@ -2233,7 +2233,140 @@ async function crearCupon() {
                 cargarDashboardStats();
             } catch (e) { console.error('❌', e); }
         }
+                        // ============================================
+        // 💸 APLICAR DESCUENTO A PRODUCTO
+        // ============================================
+        async function abrirModalDescuento(id) {
+            try {
+                const docRef = window.firebaseDB.doc(window.db, "productos", id);
+                const docSnap = await window.firebaseDB.getDoc(docRef);
+                if (!docSnap.exists()) return;
+                const p = docSnap.data();
 
+                const tieneDescuento = p.precio_old && p.precio_old > p.precio;
+                const porcentaje = tieneDescuento ? Math.round(((p.precio_old - p.precio) / p.precio_old) * 100) : 0;
+
+                let modal = document.getElementById('descuentoModal');
+                if (modal) modal.remove();
+
+                modal = document.createElement('div');
+                modal.id = 'descuentoModal';
+                modal.className = 'admin-premium-overlay';
+                modal.style.zIndex = '10001';
+                modal.innerHTML = `
+                    <div class="admin-premium" style="max-width:480px;">
+                        <div class="admin-premium-header">
+                            <div class="admin-premium-title">
+                                <span class="admin-premium-crown">💸</span>
+                                <div>
+                                    <h2>Descuento</h2>
+                                    <p>${p.nombre}</p>
+                                </div>
+                            </div>
+                            <button class="admin-premium-close" onclick="document.getElementById('descuentoModal').remove()">✕</button>
+                        </div>
+                        <div class="admin-premium-body">
+                            <div style="background:rgba(212,175,55,0.05);border:1px solid rgba(212,175,55,0.2);border-radius:12px;padding:16px;margin-bottom:20px;text-align:center;">
+                                <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:4px;">Precio actual</div>
+                                <div style="font-size:1.8rem;font-weight:900;color:#d4af37;font-family:var(--font-serif);">${formatPrice(p.precio)}</div>
+                                ${tieneDescuento ? `<div style="font-size:11px;color:#4ade80;margin-top:4px;">Descuento actual: ${porcentaje}% OFF</div>` : ''}
+                            </div>
+
+                            <div class="admin-form-group">
+                                <label class="admin-label">💸 Porcentaje de descuento (%)</label>
+                                <input type="number" id="descuentoPorcentaje" class="admin-input" placeholder="20" min="0" max="90" value="${porcentaje || ''}">
+                            </div>
+
+                            <div style="text-align:center;margin:16px 0;color:rgba(255,255,255,0.3);font-size:11px;">— O —</div>
+
+                            <div class="admin-form-group">
+                                <label class="admin-label">💰 Precio con descuento (S/)</label>
+                                <input type="number" id="descuentoPrecio" class="admin-input" placeholder="${(p.precio * 0.8).toFixed(2)}" step="0.01" min="0.01">
+                            </div>
+
+                            <button class="admin-btn admin-btn-primary admin-btn-full" onclick="guardarDescuento('${id}')" style="margin-top:16px;">💾 Guardar descuento</button>
+
+                            ${tieneDescuento ? `
+                            <button class="admin-btn admin-btn-danger admin-btn-full" onclick="quitarDescuento('${id}')" style="margin-top:8px;">🗑️ Quitar descuento</button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+                modal.classList.add('show');
+            } catch (error) {
+                console.error('❌ Error:', error);
+                mostrarNotificacion('❌ Error al abrir descuento', '❌');
+            }
+        }
+
+        async function guardarDescuento(id) {
+            try {
+                const porcentajeInput = document.getElementById('descuentoPorcentaje').value;
+                const precioInput = document.getElementById('descuentoPrecio').value;
+
+                const docRef = window.firebaseDB.doc(window.db, "productos", id);
+                const docSnap = await window.firebaseDB.getDoc(docRef);
+                if (!docSnap.exists()) return;
+                const p = docSnap.data();
+                const precioOriginal = parseFloat(p.precio_old || p.precio);
+
+                let nuevoPrecio;
+                let nuevoPrecioOld = precioOriginal;
+
+                if (porcentajeInput && parseInt(porcentajeInput) > 0) {
+                    const desc = parseInt(porcentajeInput);
+                    if (desc >= 100) return mostrarNotificacion('⚠️ El descuento no puede ser 100%', '⚠️');
+                    nuevoPrecio = precioOriginal * (1 - desc / 100);
+                } else if (precioInput && parseFloat(precioInput) > 0) {
+                    nuevoPrecio = parseFloat(precioInput);
+                    if (nuevoPrecio >= precioOriginal) return mostrarNotificacion('⚠️ El precio con descuento debe ser menor', '⚠️');
+                } else {
+                    return mostrarNotificacion('⚠️ Escribe un descuento', '⚠️');
+                }
+
+                nuevoPrecio = Math.round(nuevoPrecio * 100) / 100;
+
+                await window.firebaseDB.updateDoc(docRef, {
+                    precio: nuevoPrecio,
+                    precio_old: nuevoPrecioOld
+                });
+
+                mostrarNotificacion(`✅ Descuento aplicado: ${formatPrice(nuevoPrecio)}`, '💸');
+                lanzarConfetti();
+                document.getElementById('descuentoModal').remove();
+                cargarProductosAdmin();
+                actualizarIALocal();
+                if (typeof actualizarOfertasDinamicas === 'function') actualizarOfertasDinamicas();
+            } catch (error) {
+                console.error('❌ Error:', error);
+                mostrarNotificacion('❌ Error al guardar', '❌');
+            }
+        }
+
+        async function quitarDescuento(id) {
+            if (!confirm('¿Quitar el descuento a este producto?')) return;
+            try {
+                const docRef = window.firebaseDB.doc(window.db, "productos", id);
+                const docSnap = await window.firebaseDB.getDoc(docRef);
+                if (!docSnap.exists()) return;
+                const p = docSnap.data();
+                const precioOriginal = parseFloat(p.precio_old || p.precio);
+
+                await window.firebaseDB.updateDoc(docRef, {
+                    precio: precioOriginal,
+                    precio_old: null
+                });
+
+                mostrarNotificacion('✅ Descuento eliminado', '🗑️');
+                document.getElementById('descuentoModal').remove();
+                cargarProductosAdmin();
+                actualizarIALocal();
+                if (typeof actualizarOfertasDinamicas === 'function') actualizarOfertasDinamicas();
+            } catch (error) {
+                console.error('❌ Error:', error);
+            }
+        }
         async function eliminarProducto(id) {
             if (!confirm('¿Eliminar?')) return;
             try {
@@ -3013,6 +3146,9 @@ async function crearCupon() {
         window.filtrarProductosAdmin = filtrarProductosAdmin;
         window.cargarProductosAdmin = cargarProductosAdmin;
         window.eliminarProducto = eliminarProducto;
+        window.abrirModalDescuento = abrirModalDescuento;
+        window.guardarDescuento = guardarDescuento;
+        window.quitarDescuento = quitarDescuento;
         window.cambiarStock = cambiarStock;
         window.guardarStockManual = guardarStockManual;
         window.guardarProducto = guardarProducto;
