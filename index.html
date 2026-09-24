@@ -2506,7 +2506,11 @@ async function crearCupon() {
                 else if (periodoVentas === 'mes') desde = new Date(ahora.getFullYear(), ahora.getMonth(), 1);
                 else desde = new Date(0);
 
-                const pedidos = todos.filter(p => p.fecha && new Date(p.fecha) >= desde);
+                const pedidos = todos.filter(p => 
+    p.fecha && 
+    new Date(p.fecha) >= desde &&
+    p.estado !== 'cancelado'  // ← Excluir cancelados
+);
                 const totalV = pedidos.reduce((s, p) => s + (parseFloat(p.total) || 0), 0);
                 const numPed = pedidos.length;
                 const ticket = numPed > 0 ? totalV / numPed : 0;
