@@ -1092,30 +1092,49 @@
         // ============================================
         function cargarProductosDesdeFirestore() {
             try {
+                // 🚀 1. Mostrar productos AL INSTANTE (hardcoded o caché)
+                const cached = sessionStorage.getItem('paulina_productos_v2');
+                let iniciales = null;
+                
+                if (cached) {
+                    try { iniciales = JSON.parse(cached); } catch(e) {}
+                }
+                
+                if (!iniciales) {
+                    iniciales = [
+                        { id: 1, nombre: 'Aretes Bohemios', categoria: 'aretes', descripcion: 'Hechos a mano', precio: 25.00, precio_old: null, badge: '⭐ Top', emoji: '📿', stock: 15, compradores: 134, imagen: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=200&h=200&fit=crop&q=60' },
+                        { id: 2, nombre: 'Aretes de Perla Dorada', categoria: 'aretes', descripcion: 'Perlas naturales', precio: 38.00, precio_old: null, badge: '✨ Especial', emoji: '📿', stock: 8, compradores: 89, imagen: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=200&h=200&fit=crop&q=60' },
+                        { id: 3, nombre: 'Pestañas 5D Mega', categoria: 'pestanas', descripcion: 'Efecto volumen 5D', precio: 35.00, precio_old: 45.00, badge: '🔥 2x1', emoji: '👁️', stock: 4, compradores: 56, imagen: 'https://images.unsplash.com/photo-1583182337426-8c2b5b2db6ae?w=200&h=200&fit=crop&q=60' },
+                        { id: 4, nombre: 'Collar de Perla', categoria: 'collares', descripcion: 'Perlas con oro 18k', precio: 45.00, precio_old: null, badge: '💎 Premium', emoji: '📿', stock: 6, compradores: 45, imagen: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=200&h=200&fit=crop&q=60' },
+                        { id: 5, nombre: 'Collar Personalizado', categoria: 'collares', descripcion: 'Con iniciales', precio: 30.00, precio_old: null, badge: '🌟 Especial', emoji: '📿', stock: 10, compradores: 34, imagen: 'https://images.unsplash.com/photo-1589128777073-2395665fec4c?w=200&h=200&fit=crop&q=60' },
+                        { id: 6, nombre: 'Base Fit Me 220', categoria: 'maquillaje', descripcion: 'Cobertura media', precio: 43.89, precio_old: null, badge: '⭐ Top', emoji: '💄', stock: 12, compradores: 45, imagen: 'https://images.unsplash.com/photo-1583241803259-1fdc3d56cd49?w=200&h=200&fit=crop&q=60' },
+                        { id: 7, nombre: 'Shampoo Keratina', categoria: 'capilar', descripcion: 'Reparación capilar', precio: 26.66, precio_old: null, badge: '⭐ Top', emoji: '💈', stock: 15, compradores: 67, imagen: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=200&h=200&fit=crop&q=60' },
+                        { id: 8, nombre: 'Acondicionador Keratina', categoria: 'capilar', descripcion: 'Cabello dañado', precio: 26.66, precio_old: null, badge: '💖 Favorito', emoji: '💈', stock: 12, compradores: 54, imagen: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=200&h=200&fit=crop&q=60' }
+                    ];
+                }
+
+                productos = iniciales;
+                renderizarProductos(aplicarFiltrosProductos(productos));
+                actualizarIALocal();
+                if (typeof actualizarOfertasDinamicas === 'function') actualizarOfertasDinamicas();
+
+                // 🚀 2. Consultar Firestore en segundo plano
                 if (unsubscribeProductos) unsubscribeProductos();
                 const ref = window.firebaseDB.collection(window.db, "productos");
 
                 unsubscribeProductos = window.firebaseDB.onSnapshot(ref, (snap) => {
-                    productos = [];
-                    snap.forEach(doc => productos.push(doc.data()));
+                    const nuevos = [];
+                    snap.forEach(doc => nuevos.push(doc.data()));
 
-                    if (productos.length === 0) {
-                        productos = [
-                            { id: 1, nombre: 'Aretes Bohemios', categoria: 'aretes', descripcion: 'Hechos a mano', precio: 25.00, precio_old: null, badge: '⭐ Top', emoji: '📿', stock: 15, compradores: 134, imagen: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=200&h=200&fit=crop&q=60' },
-                            { id: 2, nombre: 'Aretes de Perla Dorada', categoria: 'aretes', descripcion: 'Perlas naturales', precio: 38.00, precio_old: null, badge: '✨ Especial', emoji: '📿', stock: 8, compradores: 89, imagen: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=200&h=200&fit=crop&q=60' },
-                            { id: 3, nombre: 'Pestañas 5D Mega', categoria: 'pestanas', descripcion: 'Efecto volumen 5D', precio: 35.00, precio_old: 45.00, badge: '🔥 2x1', emoji: '👁️', stock: 4, compradores: 56, imagen: 'https://images.unsplash.com/photo-1583182337426-8c2b5b2db6ae?w=200&h=200&fit=crop&q=60' },
-                            { id: 4, nombre: 'Collar de Perla', categoria: 'collares', descripcion: 'Perlas con oro 18k', precio: 45.00, precio_old: null, badge: '💎 Premium', emoji: '📿', stock: 6, compradores: 45, imagen: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=200&h=200&fit=crop&q=60' },
-                            { id: 5, nombre: 'Collar Personalizado', categoria: 'collares', descripcion: 'Con iniciales', precio: 30.00, precio_old: null, badge: '🌟 Especial', emoji: '📿', stock: 10, compradores: 34, imagen: 'https://images.unsplash.com/photo-1589128777073-2395665fec4c?w=200&h=200&fit=crop&q=60' },
-                            { id: 6, nombre: 'Base Fit Me 220', categoria: 'maquillaje', descripcion: 'Cobertura media', precio: 43.89, precio_old: null, badge: '⭐ Top', emoji: '💄', stock: 12, compradores: 45, imagen: 'https://images.unsplash.com/photo-1583241803259-1fdc3d56cd49?w=200&h=200&fit=crop&q=60' },
-                            { id: 7, nombre: 'Shampoo Keratina', categoria: 'capilar', descripcion: 'Reparación capilar', precio: 26.66, precio_old: null, badge: '⭐ Top', emoji: '💈', stock: 15, compradores: 67, imagen: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=200&h=200&fit=crop&q=60' },
-                            { id: 8, nombre: 'Acondicionador Keratina', categoria: 'capilar', descripcion: 'Cabello dañado', precio: 26.66, precio_old: null, badge: '💖 Favorito', emoji: '💈', stock: 12, compradores: 54, imagen: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=200&h=200&fit=crop&q=60' }
-                        ];
+                    if (nuevos.length > 0) {
+                        productos = nuevos;
+                        sessionStorage.setItem('paulina_productos_v2', JSON.stringify(productos));
+                        renderizarProductos(aplicarFiltrosProductos(productos));
+                        actualizarIALocal();
+                        if (typeof actualizarOfertasDinamicas === 'function') actualizarOfertasDinamicas();
                     }
 
-                    renderizarProductos(aplicarFiltrosProductos(productos));
-                    actualizarIALocal();
-                    if (typeof actualizarOfertasDinamicas === 'function') actualizarOfertasDinamicas();
-                    // Ranking se carga después para no bloquear
+                    // Ranking se carga después
                     setTimeout(cargarRanking, 1500);
                 }, (error) => console.error('❌ onSnapshot:', error));
             } catch (error) { console.error('❌', error); }
@@ -3167,6 +3186,12 @@ async function crearCupon() {
         // INIT
         // ============================================
         document.addEventListener('DOMContentLoaded', function() {
+                        // 🔝 SIEMPRE ir arriba al cargar la página
+            if (window.location.hash) {
+                history.replaceState(null, null, window.location.pathname);
+            }
+            window.scrollTo(0, 0);
+            
             cargarCarrito();
 cargarWishlist();
 cargarProductosDesdeFirestore();
