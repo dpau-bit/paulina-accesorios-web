@@ -2736,7 +2736,8 @@ const IA_MEMORY = {
     ultimaCategoria: null,
     ultimoTema: null,
     nombreUsuario: null,
-    contexto: {}
+    contexto: {},
+    productoPendiente: null
 };
 const MAX_MEMORIA = 12;
 const STOPWORDS = new Set(['de','la','el','los','las','un','una','unos','unas','y','o','que','con','sin','para','por','en','a','al','del','es','son','esta','estan','mi','tu','su','me','te','se','lo','le','mas','muy','pero','si','no','ya','como','cuando','donde','quien','cual','cuanto']);
@@ -2802,7 +2803,16 @@ function iaDetectarIntencion(msg) {
     if (/\b(cuanto stock|queda|unidades|disponibles)\b/.test(m)) intenciones.push({ tipo:'stock', peso:8 });
     if (/\b(punto|puntos|nivel|niveles|bronce|plata|oro|diamante|recompensa|mi cuenta)\b/.test(m)) intenciones.push({ tipo:'puntos', peso:8 });
     if (/\b(ayuda|ayudame|puedes hacer|que sabes|que puedes|opciones)\b/.test(m)) intenciones.push({ tipo:'ayuda', peso:6 });
-    if (/\b(agrega|añade|pon|mete|quiero comprar|lo quiero)\b/.test(m)) intenciones.push({ tipo:'agregar', peso:9 });
+    if (/\b(agrega|agregalo|agregala|agrego|añade|anadelo|anadela|pon|ponlo|ponla|mete|metelo|metela|quiero comprar|lo quiero|la quiero|ese|esa|ese mismo|esa misma|sumalo|sumala)\b/.test(m)) intenciones.push({ tipo:'agregar', peso:9 });
+
+    if (IA_MEMORY.productoPendiente) {
+        if (/\b(si|sii|siii|sip|claro|dale|ok|okay|okey|vale|porfa|porfavor|por favor|yes|yep|obvio|obviamente|quiero|si quiero|si porfa|si dale|va|esta bien|bueno|perfecto|de acuerdo|afirmativo|correcto|exacto|eso|eso mismo)\b/.test(m)) {
+            intenciones.push({ tipo:'confirmar_agregar', peso:15 });
+        }
+        if (/\b(no|nop|no gracias|nel|nunca|para nada|no porfa|no quiero|mejor no|despues|luego)\b/.test(m)) {
+            intenciones.push({ tipo:'rechazar_agregar', peso:15 });
+        }
+    }
     if (/\b(arete|aretes|aros|pestana|pestanas|pestanina|collares|collar|maquillaje|labial|base|shampoo|acondicionador|capilar)\b/.test(m)) intenciones.push({ tipo:'categoria', peso:7 });
     if (/\b(precio|precios|cuanto|cuesta|vale|valor)\b/.test(m)) intenciones.push({ tipo:'precio', peso:7 });
     if (/\b(producto|productos|catalogo|lista|tienen|venden|ofrecen|que hay)\b/.test(m)) intenciones.push({ tipo:'lista', peso:7 });
@@ -2850,6 +2860,13 @@ function iaRespuestaProducto(p, esConfirmacion = false) {
         ? `🔥 <strong>¡EN OFERTA!</strong> antes <s>${formatPrice(precioOld)}</s> · ahora <strong>${formatPrice(precio)}</strong> (-${descPct}%)`
         : `💰 Precio: <strong>${formatPrice(precio)}</strong>`;
     const intro = esConfirmacion ? `¡Sí${nombre}! 😊 Es este:` : (tieneDesc ? `¡Uy${nombre}, excelente elección! 😍✨` : `¡Mira qué lindo${nombre}! 💖`);
+
+    if (stock > 0) {
+        IA_MEMORY.productoPendiente = p;
+    } else {
+        IA_MEMORY.productoPendiente = null;
+    }
+
     return `${intro}<br><br>🔍 <strong>${p.nombre}</strong><br>📝 ${p.descripcion || 'Producto premium'}<br>${precioTexto}<br>📦 Stock: ${stockText}<br>⭐ ${p.badge || 'Producto destacado'}<br><br>${stock > 0 ? '¿Lo agregamos al carrito? 🛒💖' : '¿Quieres que te recomiende algo similar? 💡'}`;
 }
 function iaRespuestaSaludo() {
@@ -2930,6 +2947,7 @@ function iaRespuestaMasBarato() {
     const ordenados = [...disponibles].sort((a, b) => safeNumber(a.precio) - safeNumber(b.precio));
     const barato = ordenados[0];
     IA_MEMORY.ultimoProducto = barato;
+    IA_MEMORY.productoPendiente = barato;
     IA_MEMORY.contexto.ultimosProductos = ordenados.slice(0, 5);
     return `¡Buena pregunta! 💰<br><br>El producto más económico es:<br><br>🔍 <strong>${barato.nombre}</strong><br>💵 Precio: <strong>${formatPrice(barato.precio)}</strong><br>📦 Stock: ${safeInt(barato.stock)} unidades<br><br>¿Te lo agrego al carrito? 🛒💖`;
 }
@@ -2940,6 +2958,7 @@ function iaRespuestaMasCaro() {
     const ordenados = [...disponibles].sort((a, b) => safeNumber(b.precio) - safeNumber(a.precio));
     const caro = ordenados[0];
     IA_MEMORY.ultimoProducto = caro;
+    IA_MEMORY.productoPendiente = caro;
     IA_MEMORY.contexto.ultimosProductos = ordenados.slice(0, 5);
     return `¡El más premium! 💎<br><br>🔍 <strong>${caro.nombre}</strong><br>💵 Precio: <strong>${formatPrice(caro.precio)}</strong><br>📦 Stock: ${safeInt(caro.stock)} unidades<br>⭐ ${caro.badge || 'Premium'}<br><br>¿Te interesa? 🛒✨`;
 }
@@ -2948,6 +2967,7 @@ function iaRespuestaMasVendido() {
     const ordenados = [...productos].sort((a, b) => safeInt(b.compradores) - safeInt(a.compradores));
     const top = ordenados[0];
     IA_MEMORY.ultimoProducto = top;
+    IA_MEMORY.productoPendiente = top;
     IA_MEMORY.contexto.ultimosProductos = ordenados.slice(0, 5);
     return `🏆 <strong>El más vendido:</strong><br><br>🔍 <strong>${top.nombre}</strong><br>💰 ${formatPrice(top.precio)}<br>👥 ${safeInt(top.compradores)} compradores<br>📦 Stock: ${safeInt(top.stock)}<br><br>¡Es favorito de nuestras clientas! 💖`;
 }
@@ -3011,15 +3031,61 @@ function iaRespuestaPuntos() {
     const nivel = obtenerNivelCompleto(pts);
     return `⭐ <strong>${window.currentUser.name || 'Hola'}</strong><br><br>Puntos: <strong>${pts}</strong> ${nivel.emoji}<br>Nivel: <strong>${nivel.nombre}</strong><br>${nivel.next ? `🎯 Te faltan <strong>${nivel.next - pts}</strong> pts para subir` : '💎 ¡Nivel máximo!'}<br><br>💖 ¡Sigue comprando para más recompensas!`;
 }
+
+// 🆕 CONFIRMAR agregar
+function iaRespuestaConfirmarAgregar() {
+    const p = IA_MEMORY.productoPendiente;
+    if (!p) {
+        return `¿Qué producto quieres que agregue? 🤔<br><br>Dime el nombre y lo agrego 🛒💖`;
+    }
+    if (safeInt(p.stock) <= 0) {
+        IA_MEMORY.productoPendiente = null;
+        return `Uy 😢 <strong>${p.nombre}</strong> se agotó por ahora.<br><br>¿Quieres que te recomiende algo similar? 💡`;
+    }
+    if (typeof addToCart === 'function') addToCart(p.id);
+    const nombre = IA_MEMORY.nombreUsuario ? ` ${IA_MEMORY.nombreUsuario}` : '';
+    IA_MEMORY.productoPendiente = null;
+    const respuestas = [
+        `✅ ¡Listo${nombre}! Agregué <strong>${p.nombre}</strong> al carrito 🛒<br><br>💰 Precio: ${formatPrice(p.precio)}<br><br>¡Gracias por tu compra! 💖 ¿Deseas algo más? ✨`,
+        `🎉 ¡Perfecto${nombre}! <strong>${p.nombre}</strong> está en tu carrito 🛒<br><br>💰 ${formatPrice(p.precio)}<br><br>¡Gracias por elegirnos! 💖 ¿Algo más? 🌸`,
+        `✨ ¡Hecho${nombre}! Agregué <strong>${p.nombre}</strong> a tu carrito 🛒<br><br>💰 ${formatPrice(p.precio)}<br><br>¡Gracias por tu compra! 🥰 ¿Te ayudo con algo más? 💖`
+    ];
+    return respuestas[Math.floor(Math.random() * respuestas.length)];
+}
+
+// 🆕 RECHAZAR agregar
+function iaRespuestaRechazarAgregar() {
+    const p = IA_MEMORY.productoPendiente;
+    IA_MEMORY.productoPendiente = null;
+    const nombre = IA_MEMORY.nombreUsuario ? ` ${IA_MEMORY.nombreUsuario}` : '';
+    const pNombre = p ? p.nombre : 'ese producto';
+    const respuestas = [
+        `¡Sin problema${nombre}! 😊 No lo agregué.<br><br>¿Quieres ver otras opciones o necesitas algo más? 💖`,
+        `¡Ok${nombre}! 👍 Dejé <strong>${pNombre}</strong> fuera del carrito.<br><br>¿Te muestro otros productos similares? 🛍️✨`,
+        `¡Perfecto${nombre}! 💖 Sin agregarlo.<br><br>¿Busco algo diferente para ti? 🌸`
+    ];
+    return respuestas[Math.floor(Math.random() * respuestas.length)];
+}
+
 function iaRespuestaAgregar(msg) {
-    const matchProducto = iaBuscarProducto(msg);
+    let matchProducto = iaBuscarProducto(msg);
+    if (!matchProducto || !matchProducto.producto) {
+        const ref = iaResolverReferencia(msg);
+        if (ref) {
+            matchProducto = { producto: ref, score: 100 };
+        } else if (IA_MEMORY.ultimoProducto) {
+            matchProducto = { producto: IA_MEMORY.ultimoProducto, score: 100 };
+        }
+    }
     if (matchProducto && matchProducto.producto) {
         const p = matchProducto.producto;
         if (safeInt(p.stock) <= 0) {
             return `Uy 😢 <strong>${p.nombre}</strong> está agotado por ahora.<br><br>¿Quieres que te recomiende algo similar? 💡`;
         }
         if (typeof addToCart === 'function') addToCart(p.id);
-        return `✅ ¡Listo! Agregué <strong>${p.nombre}</strong> al carrito 🛒<br><br>💰 Precio: ${formatPrice(p.precio)}<br><br>¿Quieres algo más? 💖`;
+        const nombre = IA_MEMORY.nombreUsuario ? ` ${IA_MEMORY.nombreUsuario}` : '';
+        IA_MEMORY.productoPendiente = null;
+        return `✅ ¡Listo${nombre}! Agregué <strong>${p.nombre}</strong> al carrito 🛒<br><br>💰 Precio: ${formatPrice(p.precio)}<br><br>¡Gracias por tu compra! 💖 ¿Deseas algo más? ✨`;
     }
     return `Dime cuál producto quieres agregar 🤔<br><br>Ejemplo: <em>"agrega los aretes bohemios"</em> 🛒`;
 }
@@ -3090,8 +3156,9 @@ function iaRespuestaPrecio() {
 function iaRespuestaAyuda() {
     return `💖 <strong>Puedo ayudarte con:</strong><br><br>🛍️ Productos y catálogo<br>💰 Precios y ofertas<br>🎟️ Cupones activos<br>📦 Envíos y pagos<br>📍 Ubicación y horarios<br>⭐ Puntos y niveles<br>🎁 Recomendaciones<br>⚖️ Comparar productos<br>💬 Y mucho más ✨<br><br>¿Qué te gustaría saber? 💖`;
 }
+
 // ============================================
-// 🚀 ROUTER FINAL - IA v2 + IA v1        
+// 🚀 ROUTER FINAL - IA v2 + IA v1
 // ============================================
 
 function getAIResponseV2(message) {
@@ -3133,6 +3200,8 @@ function getAIResponseV2(message) {
         case 'puntos': return iaRespuestaPuntos();
         case 'ayuda': return iaRespuestaAyuda();
         case 'agregar': return iaRespuestaAgregar(msg);
+        case 'confirmar_agregar': return iaRespuestaConfirmarAgregar();
+        case 'rechazar_agregar': return iaRespuestaRechazarAgregar();
         case 'categoria': return iaRespuestaCategoria(msgNorm);
         case 'agotados': return iaRespuestaAgotados();
         case 'lista': return iaRespuestaLista();
@@ -3161,529 +3230,6 @@ function getAIResponse(message) {
     }
     return '🤔 Mmm... no entendí bien. ¿Me lo reformulas? 💖';
 }
-
-        // ============================================
-        // IA
-        // ============================================
-        const IA_KNOWLEDGE = {
-            'productos': '🛍️ Tenemos aretes, pestañas, collares, maquillaje, shampoo y acondicionador.',
-            'precio': '💰 Precios desde S/25 hasta S/65.',
-            'envío': '📦 Envíos a todo Perú. Lima: 24-48h, provincias: 2-4 días.',
-            'pago': '💳 Yape, Plin, transferencia, efectivo.',
-            'ubicación': '📍 Francisco Bardales 705, Yurimaguas.',
-            'horario': '🕐 Lun-Sáb 9am-8pm.',
-            'hola': '👋 ¡Hola! Soy Paulina AI. ¿Cómo puedo ayudarte? ✨',
-            'gracias': '🙌 ¡De nada! 💖',
-            'default': '🤖 Puedo ayudarte con productos, precios, envíos, pagos o cultura general. ✨'
-        };
-
-        function getAIResponseV1(message) {
-            const msg = message.toLowerCase().trim();
-
-            // 🔍 BUSCAR PRODUCTOS POR PUNTUACIÓN
-            const productosEncontrados = [];
-            
-            for (const producto of productos) {
-                const nombreLower = producto.nombre.toLowerCase();
-                const descLower = (producto.descripcion || '').toLowerCase();
-                const palabrasNombre = nombreLower.split(' ').filter(w => w.length > 2);
-                
-                let puntuacion = 0;
-                
-                if (msg.includes(nombreLower)) puntuacion += 100;
-                
-                palabrasNombre.forEach(palabra => {
-                    if (msg.includes(palabra)) puntuacion += 20;
-                });
-                
-                const palabrasDesc = descLower.split(' ').filter(w => w.length >= 4);
-                palabrasDesc.forEach(palabra => {
-                    if (msg.includes(palabra)) puntuacion += 5;
-                });
-                
-                if (puntuacion > 0) {
-                    productosEncontrados.push({ producto, puntuacion });
-                }
-            }
-            
-            productosEncontrados.sort((a, b) => b.puntuacion - a.puntuacion);
-            
-            if (productosEncontrados.length > 0) {
-                const mejor = productosEncontrados[0].producto;
-                const tieneDesc = mejor.precio_old && mejor.precio_old > mejor.precio;
-                const descPct = tieneDesc ? Math.round(((mejor.precio_old - mejor.precio) / mejor.precio_old) * 100) : 0;
-                const stockText = mejor.stock > 0 ? `✅ ${mejor.stock} disponibles` : '❌ AGOTADO';
-                
-                let precioTexto = '';
-                if (tieneDesc) {
-                    precioTexto = `🔥 <strong>¡EN OFERTA!</strong> antes ${formatPrice(mejor.precio_old)} · ahora ${formatPrice(mejor.precio)} (-${descPct}%)`;
-                } else {
-                    precioTexto = `💰 Precio: ${formatPrice(mejor.precio)}`;
-                }
-                
-                const respuestas = [
-                    `¡Uy, excelente elección! 😍✨<br><br>🔍 <strong>${mejor.nombre}</strong><br>📝 ${mejor.descripcion}<br>${precioTexto}<br>📦 Stock: ${stockText}<br>⭐ ${mejor.badge || 'Producto destacado'}<br><br>¿Te gustaría agregarlo a tu carrito? 🛒💖`,
-                    `¡Mira qué lindo! 💖<br><br>🔍 <strong>${mejor.nombre}</strong><br>📝 ${mejor.descripcion}<br>${precioTexto}<br>📦 Stock: ${stockText}<br>⭐ ${mejor.badge || 'Producto destacado'}<br><br>¿Lo agregamos al carrito? 🛍️✨`,
-                    `¡Te va a encantar! 😍<br><br>🔍 <strong>${mejor.nombre}</strong><br>📝 ${mejor.descripcion}<br>${precioTexto}<br>📦 Stock: ${stockText}<br>⭐ ${mejor.badge || 'Producto destacado'}<br><br>¿Querés más detalles o lo agregamos? 🛒💫`
-                ];
-                
-                return respuestas[Math.floor(Math.random() * respuestas.length)];
-            }
-
-            // 📦 AGOTADOS
-            if (msg.includes('agotado') || msg.includes('acabó') || msg.includes('no hay')) {
-                const agotados = productos.filter(p => p.stock <= 0);
-                if (agotados.length === 0) {
-                    return `¡Buenas noticias! 🎉 Todas nuestras cositas están disponibles ✨<br><br>¿Qué estás buscando? Te ayudo a encontrarlo 💖`;
-                } else {
-                    return `Uy, estos productos se agotaron por ahora 😢<br><br>${agotados.map(p => `❌ ${p.nombre}`).join('<br>')}<br><br>¿Querés que te recomiende algo similar? 💡`;
-                }
-            }
-
-            // 🔥 OFERTAS
-            const enOferta = productos.filter(p => p.precio_old && p.precio_old > p.precio);
-            if (msg.includes('oferta') || msg.includes('descuento') || msg.includes('promo') || msg.includes('rebaja') || msg.includes('barato')) {
-                if (enOferta.length === 0) {
-                    return `Uy, por ahora no tenemos ofertas activas 😢<br><br>Pero siempre tenemos envío gratis en compras mayores a S/50 🚚💖`;
-                }
-                let resp = `¡Uy, llegaste en el momento perfecto! 🎉🔥<br><br>Tenemos ${enOferta.length} producto(s) en OFERTA:<br><br>`;
-                enOferta.forEach(p => {
-                    const desc = Math.round(((p.precio_old - p.precio) / p.precio_old) * 100);
-                    resp += `✨ <strong>${p.nombre}</strong><br>   ${formatPrice(p.precio_old)} → ${formatPrice(p.precio)} (-${desc}% OFF)<br><br>`;
-                });
-                if (cuponesActivos.length > 0) {
-                    resp += `🎟️ Además tenemos cupones activos:<br>`;
-                    cuponesActivos.forEach(c => {
-                        resp += `• <strong>${c.codigo}</strong> → ${c.descuento}% OFF<br>`;
-                    });
-                }
-                resp += `<br>¿Te interesa alguno? 💖`;
-                return resp;
-            }
-
-            // 💬 SALUDOS
-            if (msg.includes('hola') || msg.includes('buenos días') || msg.includes('buenas tardes') || msg.includes('buenas noches') || msg.includes('hey') || msg.includes('hi')) {
-                const saludos = [
-                    `¡Hola! 👋✨ Soy <strong>Paulina AI</strong>, tu asistente personal.<br><br>¡Qué gusto tenerte por aquí! 💖 ¿En qué puedo ayudarte hoy?<br><br>Puedo mostrarte productos, ofertas, o simplemente charlar un ratito 🥰`,
-                    `¡Holaa! 🌸✨ Bienvenida a <strong>Paulina Accesorios</strong>.<br><br>Soy Paulina AI y estoy aquí para ayudarte 24/7 💖<br><br>¿Buscas algo en especial? 🛍️`,
-                    `¡Hey! 👋💖 Soy Paulina AI.<br><br>Me encanta cuando llegan clientas nuevas ✨<br><br>¿Te ayudo a encontrar algo lindo? Tengo ofertas hermosas hoy 🔥`
-                ];
-                return saludos[Math.floor(Math.random() * saludos.length)];
-            }
-
-            // 🙏 GRACIAS
-            if (msg.includes('gracias') || msg.includes('muchas gracias')) {
-                const gracias = [
-                    `¡De nada! 💖 Fue un placer ayudarte ✨<br><br>Si necesitas algo más, aquí estoy 🥰`,
-                    `¡Con mucho gusto! 💖✨<br><br>Vuelve cuando quieras 🛍️💫`
-                ];
-                return gracias[Math.floor(Math.random() * gracias.length)];
-            }
-
-            // 🎟️ CUPONES
-            if (msg.includes('cupón') || msg.includes('cupon') || msg.includes('cupones') || msg.includes('código') || msg.includes('codigo')) {
-                if (cuponesActivos.length === 0) {
-                    return `Uy, por ahora no hay cupones activos 😢<br><br>Pero suscribite a nuestras redes para enterarte 💖`;
-                }
-                let resp = `🎟️ <strong>Cupones activos:</strong><br><br>`;
-                cuponesActivos.forEach(c => {
-                    const usosRestantes = c.limiteTotal > 0 ? c.limiteTotal - (c.usosActuales || 0) : null;
-                    resp += `✨ <strong>${c.codigo}</strong> → ${c.descuento}% OFF<br>`;
-                    if (usosRestantes !== null) resp += `⚡ ${usosRestantes} usos restantes<br>`;
-                    resp += '<br>';
-                });
-                resp += `💡 Escribí el código en el carrito 🛒`;
-                return resp;
-            }
-
-            // 📦 ENVÍOS
-            if (msg.includes('envío') || msg.includes('envio') || msg.includes('llegar') || msg.includes('demora') || msg.includes('tarda')) {
-                return `📦 <strong>Información de envíos:</strong><br><br>🚚 <strong>Lima:</strong> 24-48 horas<br>🚚 <strong>Provincias:</strong> 2-4 días<br><br>✨ <strong>¡Envío GRATIS en compras mayores a S/50!</strong><br><br>📍 Enviamos a todo Perú 💖`;
-            }
-
-            // 💳 PAGOS
-            if (msg.includes('pago') || msg.includes('pagar') || msg.includes('yape') || msg.includes('plin')) {
-                return `💳 <strong>Formas de pago:</strong><br><br>✅ Yape<br>✅ Plin<br>✅ Transferencia bancaria<br>✅ Efectivo<br><br>💖 Coordinamos todo por WhatsApp ✨`;
-            }
-
-            // 📍 UBICACIÓN
-            if (msg.includes('ubicación') || msg.includes('dirección') || msg.includes('donde')) {
-                return `📍 <strong>Nuestra ubicación:</strong><br><br>Francisco Bardales 705<br>Yurimaguas, Perú 🇵🇪<br><br>🕐 Lun-Sáb: 9am - 8pm<br><br>💻 WhatsApp: +51 923 861 016 💖`;
-            }
-
-            // 🕐 HORARIO
-            if (msg.includes('horario') || msg.includes('abren') || msg.includes('cierran')) {
-                return `🕐 <strong>Nuestro horario:</strong><br><br>📅 Lunes a Sábado: 9am - 8pm<br>📅 Domingos: cerrado<br><br>💻 Pero mi chat está abierto 24/7 ✨`;
-            }
-
-            // 🧮 MATEMÁTICAS
-            if (msg.includes('+')) {
-                const parts = msg.split('+');
-                if (parts.length === 2) {
-                    const num1 = parseFloat(parts[0].trim());
-                    const num2 = parseFloat(parts[1].trim());
-                    if (!isNaN(num1) && !isNaN(num2)) return `🧮 ${num1} + ${num2} = <strong>${num1 + num2}</strong> ✨`;
-                }
-            }
-            if (msg.includes('-') && !msg.includes('+')) {
-                const parts = msg.split('-');
-                if (parts.length === 2) {
-                    const num1 = parseFloat(parts[0].trim());
-                    const num2 = parseFloat(parts[1].trim());
-                    if (!isNaN(num1) && !isNaN(num2)) return `🧮 ${num1} - ${num2} = <strong>${num1 - num2}</strong> ✨`;
-                }
-            }
-            if (msg.includes('*') || msg.includes('x')) {
-                const separator = msg.includes('*') ? '*' : 'x';
-                const parts = msg.split(separator);
-                if (parts.length === 2) {
-                    const num1 = parseFloat(parts[0].trim());
-                    const num2 = parseFloat(parts[1].trim());
-                    if (!isNaN(num1) && !isNaN(num2)) return `🧮 ${num1} × ${num2} = <strong>${num1 * num2}</strong> ✨`;
-                }
-            }
-            if (msg.includes('/')) {
-                const parts = msg.split('/');
-                if (parts.length === 2) {
-                    const num1 = parseFloat(parts[0].trim());
-                    const num2 = parseFloat(parts[1].trim());
-                    if (!isNaN(num1) && !isNaN(num2) && num2 !== 0) return `🧮 ${num1} ÷ ${num2} = <strong>${num1 / num2}</strong> ✨`;
-                }
-            }
-
-            // 😂 CHISTES
-            if (msg.includes('chiste') || msg.includes('chistes')) {
-                const chistes = [
-                    `😊 ¿Por qué las pestañas no van a la playa?<br><br>¡Porque les da miedo el agua salada y que se les corra el rímel! 😂💖`,
-                    `😂 ¿Qué le dice una pestaña a otra?<br><br>— ¡No te me pegues que me despeinas! 😂✨`,
-                    `😄 ¿Por qué los aretes son tan felices?<br><br>— ¡Porque siempre están colgados de la moda! 💫😊`
-                ];
-                return chistes[Math.floor(Math.random() * chistes.length)];
-            }
-
-            // 👋 DESPEDIDAS
-            if (msg.includes('chao') || msg.includes('adios') || msg.includes('bye')) {
-                return `¡Chaucito! 👋💖<br><br>Gracias por visitarnos ✨<br><br>Vuelve cuando quieras 🌸`;
-            }
-
-            // 🤔 RESPUESTAS GENÉRICAS
-            const respuestasGenericas = [
-                `¡Qué buena pregunta! 🤔✨<br><br>Puedo ayudarte con:<br>• 🛍️ Productos y precios<br>• 🎁 Ofertas y cupones<br>• 📦 Envíos y pagos<br>• 📍 Ubicación<br><br>¿Qué te gustaría saber? 💖`,
-                `¡Me encanta tu curiosidad! 🌟<br><br>Soy Paulina AI y estoy aquí para ayudarte 💖<br><br>¿Sobre qué querés saber? ✨`
-            ];
-            return respuestasGenericas[Math.floor(Math.random() * respuestasGenericas.length)];
-        }
-
-        function actualizarIALocal() {
-            const clavesProductos = Object.keys(IA_KNOWLEDGE).filter(k => 
-                k.startsWith('producto_') || 
-                k.startsWith('tienen_') ||
-                k.startsWith('hay_') ||
-                k.startsWith('disponible_') ||
-                k.startsWith('oferta_') ||
-                k.startsWith('cupon_') ||
-                k.startsWith('descuento_')
-            );
-            clavesProductos.forEach(k => delete IA_KNOWLEDGE[k]);
-
-            productos.forEach(p => {
-                const stockText = p.stock > 0 ? `✅ ${p.stock} disponibles` : `❌ AGOTADO`;
-                const tieneDesc = p.precio_old && p.precio_old > p.precio;
-                const descPct = tieneDesc ? Math.round(((p.precio_old - p.precio) / p.precio_old) * 100) : 0;
-                
-                IA_KNOWLEDGE[`producto_${p.nombre.toLowerCase()}`] = 
-                    `🔍 <strong>${p.nombre}</strong>\n📝 ${p.descripcion}\n💰 Precio: ${formatPrice(p.precio)}${tieneDesc ? ` (antes ${formatPrice(p.precio_old)} · -${descPct}%)` : ''}\n📦 Stock: ${stockText}\n⭐ ${p.badge || 'Producto destacado'}\n\n¿Te gustaría agregarlo a tu carrito? 🛒`;
-            });
-
-            cuponesActivos.forEach(c => {
-                const usosRestantes = c.limiteTotal > 0 ? c.limiteTotal - (c.usosActuales || 0) : null;
-                IA_KNOWLEDGE[`cupon_${c.codigo.toLowerCase()}`] = 
-                    `🎟️ <strong>Cupón ${c.codigo}</strong>\n💰 ${c.descuento}% OFF\n📝 ${c.descripcion || 'En toda la tienda'}\n${usosRestantes !== null ? `⚡ Solo ${usosRestantes} usos disponibles` : ''}\n\nUsalo en el carrito escribiendo <strong>${c.codigo}</strong> 🛒`;
-            });
-
-            const disponibles = productos.filter(p => p.stock > 0);
-            const agotados = productos.filter(p => p.stock <= 0);
-            const enOferta = productos.filter(p => p.precio_old && p.precio_old > p.precio);
-            
-            const porCategoria = {};
-            productos.forEach(p => {
-                if (!porCategoria[p.categoria]) porCategoria[p.categoria] = [];
-                porCategoria[p.categoria].push(p);
-            });
-
-            const catEmojis = { 
-                aretes: '📿 Aretes', 
-                pestanas: '👁️ Pestañas', 
-                collares: '📿 Collares', 
-                maquillaje: '💄 Maquillaje', 
-                capilar: '💈 Cuidado Capilar' 
-            };
-
-            let respProductos = `🛍️ <strong>Nuestros productos (${productos.length}):</strong>\n\n`;
-            
-            Object.keys(porCategoria).forEach(cat => {
-                const prods = porCategoria[cat];
-                respProductos += `<strong>${catEmojis[cat] || cat}</strong>\n`;
-                prods.forEach(p => {
-                    const enOferta = p.precio_old && p.precio_old > p.precio;
-                    respProductos += `• ${p.nombre} - ${formatPrice(p.precio)}${enOferta ? ' 🔥' : ''}\n`;
-                });
-                respProductos += '\n';
-            });
-
-            if (enOferta.length > 0) {
-                respProductos += `🔥 <strong>¡${enOferta.length} producto(s) en OFERTA!</strong>\n`;
-            }
-            if (agotados.length > 0) {
-                respProductos += `❌ ${agotados.length} producto(s) agotado(s)\n`;
-            }
-            respProductos += '\n¿Qué producto te interesa? ✨';
-
-            IA_KNOWLEDGE['productos'] = respProductos;
-            IA_KNOWLEDGE['tienen'] = respProductos;
-            IA_KNOWLEDGE['lista'] = respProductos;
-            IA_KNOWLEDGE['disponible'] = respProductos;
-            IA_KNOWLEDGE['catálogo'] = respProductos;
-
-            if (enOferta.length > 0) {
-                let respOfertas = `🔥 <strong>¡Tenemos ${enOferta.length} productos en OFERTA!</strong>\n\n`;
-                enOferta.forEach(p => {
-                    const desc = Math.round(((p.precio_old - p.precio) / p.precio_old) * 100);
-                    respOfertas += `• <strong>${p.nombre}</strong>\n  ${formatPrice(p.precio_old)} → ${formatPrice(p.precio)} (-${desc}%)\n`;
-                });
-                if (cuponesActivos.length > 0) {
-                    respOfertas += `\n🎟️ <strong>Cupones activos:</strong>\n`;
-                    cuponesActivos.forEach(c => {
-                        respOfertas += `• ${c.codigo} → ${c.descuento}% OFF\n`;
-                    });
-                }
-                respOfertas += '\n¿Te interesa alguno? 🛒';
-                IA_KNOWLEDGE['oferta'] = respOfertas;
-                IA_KNOWLEDGE['descuento'] = respOfertas;
-                IA_KNOWLEDGE['promoción'] = respOfertas;
-                IA_KNOWLEDGE['rebaja'] = respOfertas;
-            } else {
-                IA_KNOWLEDGE['oferta'] = '😢 Por ahora no tenemos productos en oferta. Pero siempre tenemos envío gratis en compras mayores a S/50 🚚';
-                IA_KNOWLEDGE['descuento'] = IA_KNOWLEDGE['oferta'];
-                IA_KNOWLEDGE['promoción'] = IA_KNOWLEDGE['oferta'];
-            }
-
-            if (cuponesActivos.length > 0) {
-                let respCupones = `🎟️ <strong>Cupones activos:</strong>\n\n`;
-                cuponesActivos.forEach(c => {
-                    const usosRestantes = c.limiteTotal > 0 ? c.limiteTotal - (c.usosActuales || 0) : null;
-                    respCupones += `<strong>${c.codigo}</strong> → ${c.descuento}% OFF\n`;
-                    respCupones += `📝 ${c.descripcion || 'En toda la tienda'}\n`;
-                    if (usosRestantes !== null) respCupones += `⚡ ${usosRestantes} usos restantes\n`;
-                    respCupones += '\n';
-                });
-                respCupones += 'Usalo en el carrito escribiendo el código 🛒';
-                IA_KNOWLEDGE['cupón'] = respCupones;
-                IA_KNOWLEDGE['cupones'] = respCupones;
-                IA_KNOWLEDGE['código'] = respCupones;
-            } else {
-                IA_KNOWLEDGE['cupón'] = '😢 Por ahora no hay cupones activos. ¡Vuelve pronto! ✨';
-                IA_KNOWLEDGE['cupones'] = IA_KNOWLEDGE['cupón'];
-                IA_KNOWLEDGE['código'] = IA_KNOWLEDGE['cupón'];
-            }
-
-            const baratos = productos.filter(p => p.precio <= 25 && p.stock > 0);
-            IA_KNOWLEDGE['barato'] = baratos.length > 0 
-                ? `💰 <strong>Productos baratos (menos de S/25):</strong>\n\n${baratos.map(p => `• ${p.nombre} - ${formatPrice(p.precio)}`).join('\n')}\n\n¿Te interesa? 🛒`
-                : '💰 No tenemos productos por menos de S/25 ahora.';
-            
-            IA_KNOWLEDGE['económico'] = IA_KNOWLEDGE['barato'];
-
-            IA_KNOWLEDGE['cuántos productos'] = `📊 Tenemos <strong>${productos.length}</strong> productos en total, <strong>${disponibles.length}</strong> disponibles${enOferta.length > 0 ? `, <strong>${enOferta.length}</strong> en oferta 🔥` : ''}.`;
-            IA_KNOWLEDGE['estadísticas'] = IA_KNOWLEDGE['cuántos productos'];
-
-            IA_KNOWLEDGE['recomiéndame'] = enOferta.length > 0
-                ? `🔥 <strong>Mi recomendación:</strong>\n\n${enOferta.map(p => `• <strong>${p.nombre}</strong> - ${formatPrice(p.precio)} (¡antes ${formatPrice(p.precio_old)}!)`).join('\n')}\n\n¡Aprovecha los descuentos! 🛒`
-                : '✨ Te recomiendo ver nuestros productos más vendidos. ¿Qué categoría buscas? 📿 Aretes, 👁️ Pestañas, 📿 Collares, 💄 Maquillaje o 💈 Capilar';
-
-            IA_KNOWLEDGE['recomendación'] = IA_KNOWLEDGE['recomiéndame'];
-            IA_KNOWLEDGE['sugerencia'] = IA_KNOWLEDGE['recomiéndame'];
-
-            console.log('✅ IA actualizada:', productos.length, 'productos,', cuponesActivos.length, 'cupones');
-        }
-
-        function initChatAI() {
-            const float = document.getElementById('chatFloatAI');
-            const modal = document.getElementById('chatModalAI');
-            const close = document.getElementById('chatCloseAI');
-            const input = document.getElementById('chatInputAI');
-            const send = document.getElementById('chatSendAI');
-            const msgs = document.getElementById('chatMessagesAI');
-            const opts = document.getElementById('chatOptionsAI');
-
-            float.addEventListener('click', () => {
-                modal.classList.toggle('open');
-                if (modal.classList.contains('open')) input.focus();
-            });
-            close.addEventListener('click', () => modal.classList.remove('open'));
-
-            function sendMsg(text) {
-                if (!text.trim()) return;
-                const now = new Date();
-                const time = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
-                const um = document.createElement('div');
-                um.className = 'chat-message-ai user';
-                um.innerHTML = `${text} <span class="msg-time">${time}</span>`;
-                msgs.appendChild(um);
-                msgs.scrollTop = msgs.scrollHeight;
-                input.value = '';
-                send.disabled = true;
-                const td = document.createElement('div');
-                td.className = 'chat-message-ai bot';
-                td.innerHTML = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
-                msgs.appendChild(td);
-                msgs.scrollTop = msgs.scrollHeight;
-                setTimeout(() => {
-                    td.remove();
-                    const bm = document.createElement('div');
-                    bm.className = 'chat-message-ai bot';
-                    bm.innerHTML = `${getAIResponse(text)} <span class="msg-time">${time}</span>`;
-                    msgs.appendChild(bm);
-                    msgs.scrollTop = msgs.scrollHeight;
-                    send.disabled = false;
-                }, 400 + Math.random() * 600);
-            }
-            send.addEventListener('click', () => sendMsg(input.value));
-            input.addEventListener('keyup', e => { if (e.key === 'Enter') sendMsg(input.value); });
-            opts.addEventListener('click', e => {
-                const b = e.target.closest('.chat-opt');
-                if (b) sendMsg(b.dataset.msg);
-            });
-        }
-
-        async function crearCupon() {
-            const codigo = document.getElementById('cuponCodigo').value.trim().toUpperCase();
-            const descuento = parseInt(document.getElementById('cuponDescuento').value);
-            const descripcion = document.getElementById('cuponDescripcion').value.trim();
-            const fechaInicioRaw = document.getElementById('cuponFechaInicio').value.trim();
-            const fechaExpiracionRaw = document.getElementById('cuponFechaExpiracion').value.trim();
-            const limiteTotal = parseInt(document.getElementById('cuponLimite').value) || 0;
-            const mostrarAnuncio = document.getElementById('cuponAnuncio').checked;
-
-            if (!codigo) return mostrarNotificacion('⚠️ Falta el código', '⚠️');
-            if (!descuento || descuento < 1 || descuento > 100) return mostrarNotificacion('⚠️ Descuento inválido (1-100)', '⚠️');
-
-            let fechaInicio = null;
-            let fechaExpiracion = null;
-
-            if (fechaInicioRaw) {
-                const d = new Date(fechaInicioRaw + 'T00:00:00');
-                if (isNaN(d.getTime())) return mostrarNotificacion('⚠️ Fecha inicio inválida (usa AAAA-MM-DD)', '⚠️');
-                fechaInicio = d.toISOString();
-            }
-            if (fechaExpiracionRaw) {
-                const d = new Date(fechaExpiracionRaw + 'T23:59:59');
-                if (isNaN(d.getTime())) return mostrarNotificacion('⚠️ Fecha expiración inválida (usa AAAA-MM-DD)', '⚠️');
-                fechaExpiracion = d.toISOString();
-            }
-            if (fechaInicio && fechaExpiracion && new Date(fechaExpiracion) <= new Date(fechaInicio)) {
-                return mostrarNotificacion('⚠️ La expiración debe ser después del inicio', '⚠️');
-            }
-
-            try {
-                const check = await window.firebaseDB.getDocs(
-                    window.firebaseDB.query(
-                        window.firebaseDB.collection(window.db, "cupones"),
-                        window.firebaseDB.where("codigo", "==", codigo)
-                    )
-                );
-                if (!check.empty) return mostrarNotificacion('⚠️ Este código ya existe', '⚠️');
-
-                const nuevoId = Date.now();
-                await window.firebaseDB.setDoc(
-                    window.firebaseDB.doc(window.db, "cupones", nuevoId.toString()),
-                    {
-                        id: nuevoId.toString(),
-                        codigo,
-                        descuento,
-                        descripcion: descripcion || `${descuento}% OFF`,
-                        fechaInicio,
-                        fechaExpiracion,
-                        limiteTotal,
-                        usosActuales: 0,
-                        mostrarAnuncio,
-                        activo: true,
-                        color: 'gold',
-                        creadoPor: 'admin',
-                        fechaCreacion: new Date().toISOString()
-                    }
-                );
-
-                mostrarNotificacion(`✅ Cupón ${codigo} creado`, '🎟️');
-                lanzarConfetti();
-
-                ['cuponCodigo','cuponDescuento','cuponDescripcion','cuponFechaInicio','cuponFechaExpiracion','cuponLimite'].forEach(id => document.getElementById(id).value = '');
-                document.getElementById('cuponAnuncio').checked = true;
-
-                cargarCuponesAdmin();
-                actualizarIALocal();
-            } catch (e) { console.error('❌', e); mostrarNotificacion('❌ Error al crear', '❌'); }
-        }
-        // PRODUCTOS
-        async function cargarProductosAdmin() {
-            const c = document.getElementById('adminProductosLista');
-            if (!c) return;
-            c.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.3);padding:20px;">⏳...</p>';
-            try {
-                const snap = await window.firebaseDB.getDocs(window.firebaseDB.collection(window.db, "productos"));
-                adminProductosCache = [];
-                snap.forEach(d => adminProductosCache.push({ id: d.id, ...d.data() }));
-                renderizarListaProductosAdmin(adminProductosCache);
-            } catch (e) { c.innerHTML = '<p style="color:#ff6b6b;text-align:center;">❌ Error</p>'; }
-        }
-
-        function filtrarProductosAdmin() {
-            const q = (document.getElementById('adminBuscarProducto')?.value || '').toLowerCase().trim();
-            if (!q) return renderizarListaProductosAdmin(adminProductosCache);
-            const f = adminProductosCache.filter(p => (p.nombre || '').toLowerCase().includes(q) || (p.categoria || '').toLowerCase().includes(q));
-            renderizarListaProductosAdmin(f);
-        }
-
-                       function renderizarListaProductosAdmin(lista) {
-            const c = document.getElementById('adminProductosLista');
-            if (!c) return;
-            if (lista.length === 0) { c.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.3);padding:20px;">No hay productos</p>'; return; }
-            let html = '';
-            lista.forEach(p => {
-                const s = parseInt(p.stock) || 0;
-                const cls = s === 0 ? 'out' : (s <= 3 ? 'low' : 'ok');
-                const tieneDescuento = p.precio_old && p.precio_old > p.precio;
-                const porcentaje = tieneDescuento ? Math.round(((p.precio_old - p.precio) / p.precio_old) * 100) : 0;
-                html += `
-                    <div class="admin-product-item">
-                        <div class="admin-product-header">
-                            <img src="${p.imagen || 'https://via.placeholder.com/60'}" class="admin-product-img" onerror="this.src='https://via.placeholder.com/60';">
-                            <div class="admin-product-info">
-                                <div class="admin-product-name">
-                                    ${p.nombre || 'Sin nombre'}
-                                    ${tieneDescuento ? `<span style="color:#4ade80;font-size:10px;font-weight:800;margin-left:6px;">-${porcentaje}%</span>` : ''}
-                                </div>
-                                <div class="admin-product-price">
-                                    ${formatPrice(p.precio)}
-                                    ${tieneDescuento ? `<span style="color:rgba(255,255,255,0.4);text-decoration:line-through;font-size:11px;margin-left:6px;">${formatPrice(p.precio_old)}</span>` : ''}
-                                </div>
-                            </div>
-                            <span class="admin-product-stock ${cls}">${s} uds</span>
-                        </div>
-                        <div class="admin-stock-controls">
-                            <button class="admin-icon-btn" onclick="cambiarStock('${p.id}', -1)">➖</button>
-                            <input type="number" id="stock-${p.id}" class="admin-stock-input" value="${s}" min="0">
-                            <button class="admin-icon-btn" onclick="cambiarStock('${p.id}', 1)">➕</button>
-                            <button class="admin-icon-btn" onclick="guardarStockManual('${p.id}')">💾</button>
-                            <button class="admin-icon-btn" onclick="abrirModalDescuento('${p.id}')" style="background:rgba(74,222,128,0.15);border-color:rgba(74,222,128,0.4);color:#4ade80;" title="Descuento">💸</button>
-                            <button class="admin-icon-btn" onclick="editarProducto('${p.id}')" style="background:rgba(93,173,226,0.15);border-color:rgba(93,173,226,0.4);color:#5dade2;" title="Editar">✏️</button>
-                            <button class="admin-icon-btn danger" onclick="eliminarProducto('${p.id}')" style="margin-left:auto;">🗑️</button>
-                        </div>
-                    </div>
-                `;
-            });
-            c.innerHTML = html;
-        }
         async function cambiarStock(id, delta) {
             try {
                 const ref = window.firebaseDB.doc(window.db, "productos", id);
