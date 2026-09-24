@@ -3222,12 +3222,7 @@ function getAIResponse(message) {
     } catch (e) {
         console.warn('⚠️ IA v2 falló:', e);
     }
-    try {
-        const respuestaV1 = getAIResponseV1(message);
-        if (respuestaV1 && respuestaV1.trim() !== '') return respuestaV1;
-    } catch (e) {
-        console.warn('⚠️ IA v1 falló:', e);
-    }
+    
     return '🤔 Mmm... no entendí bien. ¿Me lo reformulas? 💖';
 }
 // ============================================
