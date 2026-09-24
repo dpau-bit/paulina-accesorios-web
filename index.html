@@ -2707,12 +2707,152 @@
             return IA_KNOWLEDGE.default;
         }
 
-        function actualizarIALocal() {
-            productos.forEach(p => {
-                IA_KNOWLEDGE[`producto_${p.nombre.toLowerCase()}`] = `🔍 ${p.nombre} - ${formatPrice(p.precio)}`;
-            });
-        }
+                function actualizarIALocal() {
+            // 🔥 Limpiar claves viejas
+            const clavesProductos = Object.keys(IA_KNOWLEDGE).filter(k => 
+                k.startsWith('producto_') || 
+                k.startsWith('tienen_') ||
+                k.startsWith('hay_') ||
+                k.startsWith('disponible_') ||
+                k.startsWith('oferta_') ||
+                k.startsWith('cupon_') ||
+                k.startsWith('descuento_')
+            );
+            clavesProductos.forEach(k => delete IA_KNOWLEDGE[k]);
 
+            // 📦 AGREGAR PRODUCTOS
+            productos.forEach(p => {
+                const stockText = p.stock > 0 ? `✅ ${p.stock} disponibles` : `❌ AGOTADO`;
+                const tieneDesc = p.precio_old && p.precio_old > p.precio;
+                const descPct = tieneDesc ? Math.round(((p.precio_old - p.precio) / p.precio_old) * 100) : 0;
+                
+                IA_KNOWLEDGE[`producto_${p.nombre.toLowerCase()}`] = 
+                    `🔍 <strong>${p.nombre}</strong>\n📝 ${p.descripcion}\n💰 Precio: ${formatPrice(p.precio)}${tieneDesc ? ` (antes ${formatPrice(p.precio_old)} · -${descPct}%)` : ''}\n📦 Stock: ${stockText}\n⭐ ${p.badge || 'Producto destacado'}\n\n¿Te gustaría agregarlo a tu carrito? 🛒`;
+            });
+
+            // 🎟️ AGREGAR CUPONES ACTIVOS
+            cuponesActivos.forEach(c => {
+                const usosRestantes = c.limiteTotal > 0 ? c.limiteTotal - (c.usosActuales || 0) : null;
+                IA_KNOWLEDGE[`cupon_${c.codigo.toLowerCase()}`] = 
+                    `🎟️ <strong>Cupón ${c.codigo}</strong>\n💰 ${c.descuento}% OFF\n📝 ${c.descripcion || 'En toda la tienda'}\n${usosRestantes !== null ? `⚡ Solo ${usosRestantes} usos disponibles` : ''}\n\nUsalo en el carrito escribiendo <strong>${c.codigo}</strong> 🛒`;
+            });
+
+            // 📊 GENERAR LISTA DE PRODUCTOS
+            const disponibles = productos.filter(p => p.stock > 0);
+            const agotados = productos.filter(p => p.stock <= 0);
+            const enOferta = productos.filter(p => p.precio_old && p.precio_old > p.precio);
+            
+            // Agrupar por categoría
+            const porCategoria = {};
+            productos.forEach(p => {
+                if (!porCategoria[p.categoria]) porCategoria[p.categoria] = [];
+                porCategoria[p.categoria].push(p);
+            });
+
+            const catEmojis = { 
+                aretes: '📿 Aretes', 
+                pestanas: '👁️ Pestañas', 
+                collares: '📿 Collares', 
+                maquillaje: '💄 Maquillaje', 
+                capilar: '💈 Cuidado Capilar' 
+            };
+
+            let respProductos = `🛍️ <strong>Nuestros productos (${productos.length}):</strong>\n\n`;
+            
+            Object.keys(porCategoria).forEach(cat => {
+                const prods = porCategoria[cat];
+                respProductos += `<strong>${catEmojis[cat] || cat}</strong>\n`;
+                prods.forEach(p => {
+                    const enOferta = p.precio_old && p.precio_old > p.precio;
+                    respProductos += `• ${p.nombre} - ${formatPrice(p.precio)}${enOferta ? ' 🔥' : ''}\n`;
+                });
+                respProductos += '\n';
+            });
+
+            if (enOferta.length > 0) {
+                respProductos += `🔥 <strong>¡${enOferta.length} producto(s) en OFERTA!</strong>\n`;
+            }
+            if (agotados.length > 0) {
+                respProductos += `❌ ${agotados.length} producto(s) agotado(s)\n`;
+            }
+            respProductos += '\n¿Qué producto te interesa? ✨';
+
+            IA_KNOWLEDGE['productos'] = respProductos;
+            IA_KNOWLEDGE['tienen'] = respProductos;
+            IA_KNOWLEDGE['lista'] = respProductos;
+            IA_KNOWLEDGE['disponible'] = respProductos;
+            IA_KNOWLEDGE['catálogo'] = respProductos;
+
+            // 🔥 RESPUESTA DE OFERTAS
+            if (enOferta.length > 0) {
+                let respOfertas = `🔥 <strong>¡Tenemos ${enOferta.length} productos en OFERTA!</strong>\n\n`;
+                enOferta.forEach(p => {
+                    const desc = Math.round(((p.precio_old - p.precio) / p.precio_old) * 100);
+                    respOfertas += `• <strong>${p.nombre}</strong>\n  ${formatPrice(p.precio_old)} → ${formatPrice(p.precio)} (-${desc}%)\n`;
+                });
+                if (cuponesActivos.length > 0) {
+                    respOfertas += `\n🎟️ <strong>Cupones activos:</strong>\n`;
+                    cuponesActivos.forEach(c => {
+                        respOfertas += `• ${c.codigo} → ${c.descuento}% OFF\n`;
+                    });
+                }
+                respOfertas += '\n¿Te interesa alguno? 🛒';
+                IA_KNOWLEDGE['oferta'] = respOfertas;
+                IA_KNOWLEDGE['oferta'] = respOfertas;
+                IA_KNOWLEDGE['descuento'] = respOfertas;
+                IA_KNOWLEDGE['promoción'] = respOfertas;
+                IA_KNOWLEDGE['rebaja'] = respOfertas;
+            } else {
+                IA_KNOWLEDGE['oferta'] = '😢 Por ahora no tenemos productos en oferta. Pero siempre tenemos envío gratis en compras mayores a S/50 🚚';
+                IA_KNOWLEDGE['descuento'] = IA_KNOWLEDGE['oferta'];
+                IA_KNOWLEDGE['promoción'] = IA_KNOWLEDGE['oferta'];
+            }
+
+            // 🎟️ RESPUESTA DE CUPONES
+            if (cuponesActivos.length > 0) {
+                let respCupones = `🎟️ <strong>Cupones activos:</strong>\n\n`;
+                cuponesActivos.forEach(c => {
+                    const usosRestantes = c.limiteTotal > 0 ? c.limiteTotal - (c.usosActuales || 0) : null;
+                    respCupones += `<strong>${c.codigo}</strong> → ${c.descuento}% OFF\n`;
+                    respCupones += `📝 ${c.descripcion || 'En toda la tienda'}\n`;
+                    if (usosRestantes !== null) respCupones += `⚡ ${usosRestantes} usos restantes\n`;
+                    respCupones += '\n';
+                });
+                respCupones += 'Usalo en el carrito escribiendo el código 🛒';
+                IA_KNOWLEDGE['cupón'] = respCupones;
+                IA_KNOWLEDGE['cupones'] = respCupones;
+                IA_KNOWLEDGE['código'] = respCupones;
+            } else {
+                IA_KNOWLEDGE['cupón'] = '😢 Por ahora no hay cupones activos. ¡Vuelve pronto! ✨';
+                IA_KNOWLEDGE['cupones'] = IA_KNOWLEDGE['cupón'];
+                IA_KNOWLEDGE['código'] = IA_KNOWLEDGE['cupón'];
+            }
+
+            // 💰 BÚSQUEDA POR PRESUPUESTO
+            const baratos = productos.filter(p => p.precio <= 25 && p.stock > 0);
+            const medios = productos.filter(p => p.precio > 25 && p.precio <= 45 && p.stock > 0);
+            const caros = productos.filter(p => p.precio > 45 && p.stock > 0);
+
+            IA_KNOWLEDGE['barato'] = baratos.length > 0 
+                ? `💰 <strong>Productos baratos (menos de S/25):</strong>\n\n${baratos.map(p => `• ${p.nombre} - ${formatPrice(p.precio)}`).join('\n')}\n\n¿Te interesa? 🛒`
+                : '💰 No tenemos productos por menos de S/25 ahora.';
+            
+            IA_KNOWLEDGE['económico'] = IA_KNOWLEDGE['barato'];
+
+            // 📊 ESTADÍSTICAS
+            IA_KNOWLEDGE['cuántos productos'] = `📊 Tenemos <strong>${productos.length}</strong> productos en total, <strong>${disponibles.length}</strong> disponibles${enOferta.length > 0 ? `, <strong>${enOferta.length}</strong> en oferta 🔥` : ''}.`;
+            IA_KNOWLEDGE['estadísticas'] = IA_KNOWLEDGE['cuántos productos'];
+
+            // 💡 RECOMENDACIÓN
+            IA_KNOWLEDGE['recomiéndame'] = enOferta.length > 0
+                ? `🔥 <strong>Mi recomendación:</strong>\n\n${enOferta.map(p => `• <strong>${p.nombre}</strong> - ${formatPrice(p.precio)} (¡antes ${formatPrice(p.precio_old)}!)`).join('\n')}\n\n¡Aprovecha los descuentos! 🛒`
+                : '✨ Te recomiendo ver nuestros productos más vendidos. ¿Qué categoría buscas? 📿 Aretes, 👁️ Pestañas, 📿 Collares, 💄 Maquillaje o 💈 Capilar';
+
+            IA_KNOWLEDGE['recomendación'] = IA_KNOWLEDGE['recomiéndame'];
+            IA_KNOWLEDGE['sugerencia'] = IA_KNOWLEDGE['recomiéndame'];
+
+            console.log('✅ IA actualizada:', productos.length, 'productos,', cuponesActivos.length, 'cupones');
+        }
         function initChatAI() {
             const float = document.getElementById('chatFloatAI');
             const modal = document.getElementById('chatModalAI');
@@ -3172,13 +3312,15 @@ async function crearCupon() {
             }
         }
 
-        async function eliminarProducto(id) {
+                async function eliminarProducto(id) {
             if (!confirm('¿Eliminar?')) return;
             try {
                 await window.firebaseDB.deleteDoc(window.firebaseDB.doc(window.db, "productos", id));
                 mostrarNotificacion('✅ Eliminado', '🗑️');
                 cargarProductosAdmin();
                 cargarDashboardStats();
+                actualizarIALocal();
+                if (typeof actualizarOfertasDinamicas === 'function') actualizarOfertasDinamicas();
             } catch (e) { console.error('❌', e); }
         }
 
@@ -3210,6 +3352,8 @@ async function crearCupon() {
                 ['adminNombre','adminPrecio','adminPrecioOld','adminDescripcion','adminImagen','adminStock','adminBadge'].forEach(id => document.getElementById(id).value = '');
                 cargarProductosAdmin();
                 cargarDashboardStats();
+                actualizarIALocal();
+                if (typeof actualizarOfertasDinamicas === 'function') actualizarOfertasDinamicas();
             } catch (e) { console.error('❌', e); }
         }
 
@@ -3326,31 +3470,32 @@ async function crearCupon() {
                 document.getElementById('cuponAnuncio').checked = true;
 
                 cargarCuponesAdmin();
+                actualizarIALocal();
             } catch (e) { console.error('❌', e); mostrarNotificacion('❌ Error al crear', '❌'); }
-        }
-
-        async function toggleCuponActivo(id, activo) {
+               async function toggleCuponActivo(id, activo) {
             try {
                 await window.firebaseDB.updateDoc(window.firebaseDB.doc(window.db, "cupones", id), { activo });
                 mostrarNotificacion(activo ? '▶️ Activado' : '⏸️ Pausado', '🎟️');
                 cargarCuponesAdmin();
+                actualizarIALocal();
             } catch (e) { console.error('❌', e); }
         }
 
-        async function toggleAnuncioCupon(id, anunciar) {
+               async function toggleAnuncioCupon(id, anunciar) {
             try {
                 await window.firebaseDB.updateDoc(window.firebaseDB.doc(window.db, "cupones", id), { mostrarAnuncio: anunciar });
                 mostrarNotificacion(anunciar ? '📢 Anunciando' : '🔇 Ocultado', '📢');
                 cargarCuponesAdmin();
+                actualizarIALocal();
             } catch (e) { console.error('❌', e); }
         }
-
-        async function eliminarCupon(id) {
+                async function eliminarCupon(id) {
             if (!confirm('¿Eliminar este cupón?')) return;
             try {
                 await window.firebaseDB.deleteDoc(window.firebaseDB.doc(window.db, "cupones", id));
                 mostrarNotificacion('✅ Cupón eliminado', '🗑️');
                 cargarCuponesAdmin();
+                actualizarIALocal();
             } catch (e) { console.error('❌', e); }
         }
 
