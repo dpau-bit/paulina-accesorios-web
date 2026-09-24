@@ -2169,7 +2169,7 @@ async function crearCupon() {
             renderizarListaProductosAdmin(f);
         }
 
-        function renderizarListaProductosAdmin(lista) {
+               function renderizarListaProductosAdmin(lista) {
             const c = document.getElementById('adminProductosLista');
             if (!c) return;
             if (lista.length === 0) { c.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.3);padding:20px;">No hay productos</p>'; return; }
@@ -2177,13 +2177,21 @@ async function crearCupon() {
             lista.forEach(p => {
                 const s = parseInt(p.stock) || 0;
                 const cls = s === 0 ? 'out' : (s <= 3 ? 'low' : 'ok');
+                const tieneDescuento = p.precio_old && p.precio_old > p.precio;
+                const porcentaje = tieneDescuento ? Math.round(((p.precio_old - p.precio) / p.precio_old) * 100) : 0;
                 html += `
                     <div class="admin-product-item">
                         <div class="admin-product-header">
                             <img src="${p.imagen || 'https://via.placeholder.com/60'}" class="admin-product-img" onerror="this.src='https://via.placeholder.com/60';">
                             <div class="admin-product-info">
-                                <div class="admin-product-name">${p.nombre || 'Sin nombre'}</div>
-                                <div class="admin-product-price">${formatPrice(p.precio)}</div>
+                                <div class="admin-product-name">
+                                    ${p.nombre || 'Sin nombre'}
+                                    ${tieneDescuento ? `<span style="color:#4ade80;font-size:10px;font-weight:800;margin-left:6px;">-${porcentaje}%</span>` : ''}
+                                </div>
+                                <div class="admin-product-price">
+                                    ${formatPrice(p.precio)}
+                                    ${tieneDescuento ? `<span style="color:rgba(255,255,255,0.4);text-decoration:line-through;font-size:11px;margin-left:6px;">${formatPrice(p.precio_old)}</span>` : ''}
+                                </div>
                             </div>
                             <span class="admin-product-stock ${cls}">${s} uds</span>
                         </div>
@@ -2192,6 +2200,7 @@ async function crearCupon() {
                             <input type="number" id="stock-${p.id}" class="admin-stock-input" value="${s}" min="0">
                             <button class="admin-icon-btn" onclick="cambiarStock('${p.id}', 1)">➕</button>
                             <button class="admin-icon-btn" onclick="guardarStockManual('${p.id}')">💾</button>
+                            <button class="admin-icon-btn" onclick="abrirModalDescuento('${p.id}')" style="background:rgba(74,222,128,0.15);border-color:rgba(74,222,128,0.4);color:#4ade80;" title="Aplicar descuento">💸</button>
                             <button class="admin-icon-btn danger" onclick="eliminarProducto('${p.id}')" style="margin-left:auto;">🗑️</button>
                         </div>
                     </div>
@@ -2199,7 +2208,6 @@ async function crearCupon() {
             });
             c.innerHTML = html;
         }
-
         async function cambiarStock(id, delta) {
             try {
                 const ref = window.firebaseDB.doc(window.db, "productos", id);
