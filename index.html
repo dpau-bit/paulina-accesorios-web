@@ -2050,7 +2050,7 @@ function formatPrice(p) { return `S/ ${safeNumber(p, 0).toFixed(2)}`; }
 }
 
         function actualizarCarritoUI() {
-            const items = cart.reduce((s, i) => s + i.quantity, 0);
+            const items = cart.reduce((s, i) => s + safeInt(i.quantity, 1), 0);
             const { total } = calcularTotales();
             document.getElementById('cartCount').textContent = items;
             document.getElementById('fcCount').textContent = items;
@@ -2073,7 +2073,7 @@ function formatPrice(p) { return `S/ ${safeNumber(p, 0).toFixed(2)}`; }
 
             let html = '';
             cart.forEach((item, i) => {
-                const sub = item.price * item.quantity;
+                const sub = safeNumber(item.price) * safeInt(item.quantity, 1);
                 html += `
                     <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #eee;">
                         <div>
@@ -4672,7 +4672,7 @@ if (userSnap.exists()) {
                 }
                 msg += '📦 Pedido:%0A%0A';
                 cart.forEach(i => {
-                    const sub = i.price * i.quantity;
+                    const sub = safeNumber(i.price) * safeInt(i.quantity, 1);
                     msg += `✅ ${i.name} x ${i.quantity} = ${formatPrice(sub)}%0A`;
                 });
                 if (cuponAplicado) {
