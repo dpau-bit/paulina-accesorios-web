@@ -9,7 +9,9 @@
     <meta name="description" content="Paulina Accesorios - Tienda de aretes, extensiones de pestañas y accesorios de belleza. Envíos a todo Perú." />
     <meta name="theme-color" content="#c2185b" />
 
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 
     <script type="module">
@@ -813,23 +815,23 @@
         // PARTÍCULAS
         // ============================================
         particlesJS('particles-js', {
-            particles: {
-                number: { value: 30, density: { enable: true, value_area: 800 } },
-                color: { value: ['#d4af37', '#f5d76e', '#c2185b', '#f06292'] },
-                shape: { type: 'circle' },
-                opacity: { value: 0.3, random: true },
-                size: { value: 3, random: true },
-                line_linked: { enable: true, distance: 150, color: '#d4af37', opacity: 0.1, width: 1 },
-                move: { enable: true, speed: 1 }
-            },
-            interactivity: {
-                events: {
-                    onhover: { enable: true, mode: 'bubble' },
-                    onclick: { enable: true, mode: 'push' }
-                }
-            },
-            retina_detect: true
-        });
+    particles: {
+        number: { value: 15, density: { enable: true, value_area: 1200 } },
+        color: { value: ['#d4af37', '#f5d76e'] },
+        shape: { type: 'circle' },
+        opacity: { value: 0.3 },
+        size: { value: 2 },
+        line_linked: { enable: false },
+        move: { enable: true, speed: 0.5 }
+    },
+    interactivity: {
+        events: {
+            onhover: { enable: false },
+            onclick: { enable: false }
+        }
+    },
+    retina_detect: false
+});
 
         // ============================================
         // ESTADO GLOBAL
@@ -939,8 +941,9 @@
                     }
 
                     renderizarProductos(aplicarFiltrosProductos(productos));
-                    actualizarIALocal();
-                    cargarRanking();
+actualizarIALocal();
+// Ranking se carga después para no bloquear
+setTimeout(cargarRanking, 1500);
                 }, (error) => console.error('❌ onSnapshot:', error));
             } catch (error) { console.error('❌', error); }
         }
@@ -1083,7 +1086,7 @@
                             ${low ? `<span class="badge badge-hot">🔥</span>` : ''}
                         </div>
                         <div class="product-image" onclick="abrirResenas(${p.id})">
-                            <img src="${p.imagen}" alt="${p.nombre}" loading="lazy">
+                            <img src="${p.imagen}" alt="${p.nombre}" loading="lazy" decoding="async">
                         </div>
                         <h3 class="product-name">${p.nombre}</h3>
                         <p class="product-description">${p.descripcion}</p>
@@ -2630,9 +2633,10 @@ async function crearCupon() {
         // ============================================
         document.addEventListener('DOMContentLoaded', function() {
             cargarCarrito();
-            cargarWishlist();
-            cargarProductosDesdeFirestore();
-            cargarCuponesDesdeFirestore();
+cargarWishlist();
+cargarProductosDesdeFirestore();
+// Cupones se cargan después para no bloquear la carga inicial
+setTimeout(cargarCuponesDesdeFirestore, 1000);
 
             let v = parseInt(localStorage.getItem('paulina_visits')) || 0;
             v++; localStorage.setItem('paulina_visits', v);
@@ -2677,7 +2681,13 @@ async function crearCupon() {
                 else nb.classList.remove('navbar-scrolled');
             });
 
-            setTimeout(() => document.getElementById('preloader').classList.add('hidden'), 500);
+            if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('preloader').classList.add('hidden');
+    });
+} else {
+    document.getElementById('preloader').classList.add('hidden');
+}
 
             document.querySelectorAll('.category-pills .pill').forEach(p => {
                 p.addEventListener('click', function() {
