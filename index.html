@@ -497,6 +497,173 @@
             .chat-float-ai { width: 48px; height: 48px; font-size: 1.3rem; bottom: 16px; left: 16px; }
             .cupon-banner { top: auto; bottom: 90px; left: 12px; right: 12px; max-width: none; }
         }
+                /* ========================================
+           🔥 OFERTAS DINÁMICAS + BANNER FLOTANTE
+           ======================================== */
+        .oferta-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            transition: var(--transition-base);
+            position: relative;
+            overflow: hidden;
+        }
+        [data-theme="dark"] .oferta-card {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .oferta-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--gold);
+        }
+        .oferta-card .oferta-icon {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .oferta-card h3 {
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            margin: 6px 0;
+            color: var(--gray-800);
+        }
+        .oferta-card p {
+            color: var(--gray-500);
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+        .oferta-card .precio-viejo {
+            color: var(--gray-400);
+            text-decoration: line-through;
+            font-size: 14px;
+            margin-right: 8px;
+        }
+        .oferta-card .precio-nuevo {
+            color: var(--gold);
+            font-weight: 900;
+            font-size: 1.4rem;
+            font-family: var(--font-serif);
+        }
+        .oferta-card .descuento-badge {
+            background: linear-gradient(135deg, #e53935, #ef5350);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 10px;
+            font-weight: 800;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+        .oferta-card .cupon-codigo {
+            font-family: 'Courier New', monospace;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--gold);
+            letter-spacing: 3px;
+            background: rgba(212, 175, 55, 0.1);
+            padding: 8px 16px;
+            border-radius: var(--radius-md);
+            display: inline-block;
+            margin: 8px 0;
+            border: 2px dashed var(--gold);
+        }
+        .oferta-card.sin-oferta {
+            opacity: 0.6;
+        }
+        .oferta-card.sin-oferta h3 {
+            color: var(--gray-500);
+            font-size: 1rem;
+        }
+
+        /* Banner flotante */
+        .cupon-flotante {
+            position: fixed;
+            top: 90px;
+            right: 20px;
+            max-width: 320px;
+            background: var(--gold-gradient);
+            color: #1a0b1a;
+            padding: 16px 20px;
+            border-radius: 16px;
+            box-shadow: 0 12px 40px rgba(212, 175, 55, 0.4);
+            z-index: 900;
+            transform: translateX(400px);
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+        }
+        .cupon-flotante.show {
+            transform: translateX(0);
+        }
+        .cupon-flotante .cerrar-cupon {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            font-size: 18px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: var(--transition-base);
+            font-weight: 700;
+        }
+        .cupon-flotante .cerrar-cupon:hover {
+            opacity: 1;
+            transform: rotate(90deg);
+        }
+        .cupon-flotante .etiqueta {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0.8;
+            margin-bottom: 4px;
+        }
+        .cupon-flotante .codigo-grande {
+            font-family: 'Courier New', monospace;
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            margin: 6px 0;
+        }
+        .cupon-flotante .descripcion {
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+        .cupon-flotante .info-uso {
+            font-size: 10px;
+            opacity: 0.8;
+            font-weight: 600;
+        }
+        .cupon-flotante .btn-copiar-flotante {
+            background: rgba(26, 11, 26, 0.9);
+            color: var(--gold);
+            border: none;
+            padding: 8px 16px;
+            border-radius: var(--radius-full);
+            font-weight: 800;
+            font-size: 11px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: var(--transition-base);
+            width: 100%;
+        }
+        .cupon-flotante .btn-copiar-flotante:hover {
+            background: #1a0b1a;
+            transform: scale(1.03);
+        }
+
+        @media (max-width: 768px) {
+            .cupon-flotante {
+                top: auto;
+                bottom: 90px;
+                left: 12px;
+                right: 12px;
+                max-width: none;
+            }
+        }
     </style>
 </head>
     <body>
@@ -646,29 +813,33 @@
             <span class="section-tag">🔥 Ofertas 2026</span>
             <h2 class="section-title">Promociones <span class="accent">especiales</span></h2>
         </div>
+
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:var(--space-lg);">
-            <div style="background:var(--white);border-radius:var(--radius-lg);padding:var(--space-lg);text-align:center;box-shadow:var(--shadow-md);">
-                <span style="font-size:3rem;">🔥</span>
-                <h3 style="font-family:var(--font-serif);margin:6px 0;font-size:1.2rem;">2x1 en Pestañas 5D</h3>
-                <p style="color:var(--gray-500);font-size:12px;">Lleva 2 pares por el precio de 1</p>
-                <p style="font-size:1.3rem;font-weight:800;color:var(--gold);margin:6px 0;">S/35</p>
-                <a href="#productos" class="btn btn-gold btn-sm">Ver productos</a>
+            
+            <!-- 🔥 PRODUCTO EN OFERTA (dinámico) -->
+            <div class="oferta-card" id="ofertaProducto">
+                <span class="oferta-icon">🔥</span>
+                <h3>Cargando...</h3>
+                <p>Esperando ofertas...</p>
             </div>
-            <div style="background:var(--white);border-radius:var(--radius-lg);padding:var(--space-lg);text-align:center;box-shadow:var(--shadow-md);">
-                <span style="font-size:3rem;">🎉</span>
-                <h3 style="font-family:var(--font-serif);margin:6px 0;font-size:1.2rem;">10% OFF</h3>
-                <p style="color:var(--gray-500);font-size:12px;">Usa el código PAULINA10</p>
-                <button class="btn btn-gold btn-sm" onclick="navigator.clipboard.writeText('PAULINA10').then(()=>mostrarNotificacion('✅ Copiado','📋'))">Copiar código</button>
+
+            <!-- 🎟️ CUPÓN ACTIVO (dinámico) -->
+            <div class="oferta-card" id="ofertaCupon">
+                <span class="oferta-icon">🎟️</span>
+                <h3>Cargando...</h3>
+                <p>Esperando cupones...</p>
             </div>
-            <div style="background:var(--white);border-radius:var(--radius-lg);padding:var(--space-lg);text-align:center;box-shadow:var(--shadow-md);">
-                <span style="font-size:3rem;">🚚</span>
-                <h3 style="font-family:var(--font-serif);margin:6px 0;font-size:1.2rem;">Envío gratis</h3>
-                <p style="color:var(--gray-500);font-size:12px;">En compras mayores a S/50</p>
+
+            <!-- 🚚 ENVÍO GRATIS (fijo) -->
+            <div class="oferta-card">
+                <span class="oferta-icon">🚚</span>
+                <h3>Envío gratis</h3>
+                <p>En compras mayores a S/50</p>
                 <a href="#productos" class="btn btn-gold btn-sm">Comprar ahora</a>
             </div>
+
         </div>
     </section>
-
     <section class="section" id="contacto">
         <div class="section-header">
             <span class="section-tag">📩 Contacto</span>
@@ -917,40 +1088,7 @@
             return { nombre: 'Visitante', emoji: '✨', color: '#666' };
         }
 
-        // ============================================
-        // PRODUCTOS EN TIEMPO REAL
-        // ============================================
-        function cargarProductosDesdeFirestore() {
-            try {
-                if (unsubscribeProductos) unsubscribeProductos();
-                const ref = window.firebaseDB.collection(window.db, "productos");
-
-                unsubscribeProductos = window.firebaseDB.onSnapshot(ref, (snap) => {
-                    productos = [];
-                    snap.forEach(doc => productos.push(doc.data()));
-
-                    if (productos.length === 0) {
-                        productos = [
-                            { id: 1, nombre: 'Aretes Bohemios', categoria: 'aretes', descripcion: 'Hechos a mano', precio: 25.00, precio_old: null, badge: '⭐ Top', emoji: '📿', stock: 15, compradores: 134, imagen: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=200&h=200&fit=crop&q=60' },
-                            { id: 2, nombre: 'Aretes de Perla Dorada', categoria: 'aretes', descripcion: 'Perlas naturales', precio: 38.00, precio_old: null, badge: '✨ Especial', emoji: '📿', stock: 8, compradores: 89, imagen: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=200&h=200&fit=crop&q=60' },
-                            { id: 3, nombre: 'Pestañas 5D Mega', categoria: 'pestanas', descripcion: 'Efecto volumen 5D', precio: 35.00, precio_old: 45.00, badge: '🔥 2x1', emoji: '👁️', stock: 4, compradores: 56, imagen: 'https://images.unsplash.com/photo-1583182337426-8c2b5b2db6ae?w=200&h=200&fit=crop&q=60' },
-                            { id: 4, nombre: 'Collar de Perla', categoria: 'collares', descripcion: 'Perlas con oro 18k', precio: 45.00, precio_old: null, badge: '💎 Premium', emoji: '📿', stock: 6, compradores: 45, imagen: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=200&h=200&fit=crop&q=60' },
-                            { id: 5, nombre: 'Collar Personalizado', categoria: 'collares', descripcion: 'Con iniciales', precio: 30.00, precio_old: null, badge: '🌟 Especial', emoji: '📿', stock: 10, compradores: 34, imagen: 'https://images.unsplash.com/photo-1589128777073-2395665fec4c?w=200&h=200&fit=crop&q=60' },
-                            { id: 6, nombre: 'Base Fit Me 220', categoria: 'maquillaje', descripcion: 'Cobertura media', precio: 43.89, precio_old: null, badge: '⭐ Top', emoji: '💄', stock: 12, compradores: 45, imagen: 'https://images.unsplash.com/photo-1583241803259-1fdc3d56cd49?w=200&h=200&fit=crop&q=60' },
-                            { id: 7, nombre: 'Shampoo Keratina', categoria: 'capilar', descripcion: 'Reparación capilar', precio: 26.66, precio_old: null, badge: '⭐ Top', emoji: '💈', stock: 15, compradores: 67, imagen: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=200&h=200&fit=crop&q=60' },
-                            { id: 8, nombre: 'Acondicionador Keratina', categoria: 'capilar', descripcion: 'Cabello dañado', precio: 26.66, precio_old: null, badge: '💖 Favorito', emoji: '💈', stock: 12, compradores: 54, imagen: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=200&h=200&fit=crop&q=60' }
-                        ];
-                    }
-
-                    renderizarProductos(aplicarFiltrosProductos(productos));
-actualizarIALocal();
-// Ranking se carga después para no bloquear
-setTimeout(cargarRanking, 1500);
-                }, (error) => console.error('❌ onSnapshot:', error));
-            } catch (error) { console.error('❌', error); }
-        }
-
-        // ============================================
+                // ============================================
         // CUPONES EN TIEMPO REAL
         // ============================================
         function cargarCuponesDesdeFirestore() {
@@ -966,6 +1104,8 @@ setTimeout(cargarRanking, 1500);
                     });
 
                     mostrarBannerCupon();
+                    if (typeof actualizarOfertasDinamicas === 'function') actualizarOfertasDinamicas();
+                    if (typeof mostrarBannerFlotante === 'function') mostrarBannerFlotante();
                 }, (error) => console.warn('⚠️ cupones:', error));
             } catch (error) { console.error('❌', error); }
         }
@@ -980,38 +1120,9 @@ setTimeout(cargarRanking, 1500);
         }
 
         function mostrarBannerCupon() {
-            let banner = document.getElementById('cuponBanner');
-            if (banner) banner.remove();
-
-            const conAnuncio = cuponesActivos.filter(c => c.mostrarAnuncio);
-            if (conAnuncio.length === 0) return;
-
-            const c = conAnuncio[0];
-            const usosRestantes = c.limiteTotal > 0 ? c.limiteTotal - (c.usosActuales || 0) : null;
-
-            banner = document.createElement('div');
-            banner.id = 'cuponBanner';
-            banner.className = 'cupon-banner';
-            banner.innerHTML = `
-                <span class="close-banner" onclick="this.parentElement.remove()">✕</span>
-                <div style="font-size:10px;font-weight:700;letter-spacing:2px;opacity:0.8;">🎁 CUPÓN ESPECIAL</div>
-                <div class="cupon-code">${c.codigo}</div>
-                <div class="cupon-desc">${c.descripcion || `${c.descuento}% OFF en toda la tienda`}</div>
-                ${usosRestantes !== null ? `<div class="cupon-uso">⚡ Solo ${usosRestantes} usos disponibles</div>` : ''}
-                ${c.fechaExpiracion ? `<div class="cupon-uso">📅 Expira: ${new Date(c.fechaExpiracion).toLocaleDateString('es-PE')}</div>` : ''}
-            `;
-            banner.onclick = (e) => {
-                if (e.target.classList.contains('close-banner')) return;
-                navigator.clipboard.writeText(c.codigo).then(() => {
-                    mostrarNotificacion(`✅ ${c.codigo} copiado`, '🎟️');
-                    lanzarConfetti();
-                    banner.remove();
-                });
-            };
-            document.body.appendChild(banner);
-            setTimeout(() => banner.classList.add('show'), 1500);
+            // ✅ DESACTIVADO: usamos mostrarBannerFlotante()
+            return;
         }
-
         // ============================================
         // FILTROS
         // ============================================
@@ -2874,7 +2985,151 @@ async function crearCupon() {
         window.toggleCuponInput = toggleCuponInput;
         window.aplicarCupon = aplicarCupon;
         window.quitarCupon = quitarCupon;
+        // ============================================
+        // 🔥 OFERTAS DINÁMICAS + BANNER FLOTANTE
+        // ============================================
+        function actualizarOfertasDinamicas() {
+            // 🔥 CUADRO 1: PRODUCTO EN OFERTA (aleatorio)
+            const ofertaProducto = document.getElementById('ofertaProducto');
+            if (ofertaProducto) {
+                const productosEnOferta = productos.filter(p => p.precio_old && p.precio_old > p.precio);
+                
+                if (productosEnOferta.length > 0) {
+                    const p = productosEnOferta[Math.floor(Math.random() * productosEnOferta.length)];
+                    const desc = Math.round(((p.precio_old - p.precio) / p.precio_old) * 100);
+                    
+                    ofertaProducto.classList.remove('sin-oferta');
+                    ofertaProducto.innerHTML = `
+                        <span class="oferta-icon">🔥</span>
+                        <span class="descuento-badge">-${desc}% OFF</span>
+                        <h3>${p.nombre}</h3>
+                        <p>
+                            <span class="precio-viejo">S/ ${parseFloat(p.precio_old).toFixed(2)}</span>
+                            <span class="precio-nuevo">S/ ${parseFloat(p.precio).toFixed(2)}</span>
+                        </p>
+                        <a href="#productos" class="btn btn-gold btn-sm" onclick="aplicarFiltroOferta(event)">Ver ofertas</a>
+                    `;
+                } else {
+                    ofertaProducto.classList.add('sin-oferta');
+                    ofertaProducto.innerHTML = `
+                        <span class="oferta-icon">🔥</span>
+                        <h3>Sin ofertas activas</h3>
+                        <p>Vuelve pronto ✨</p>
+                    `;
+                }
+            }
 
+            // 🎟️ CUADRO 2: CUPÓN ACTIVO (aleatorio)
+            const ofertaCupon = document.getElementById('ofertaCupon');
+            if (ofertaCupon) {
+                if (cuponesActivos.length > 0) {
+                    const c = cuponesActivos[Math.floor(Math.random() * cuponesActivos.length)];
+                    const usosRestantes = c.limiteTotal > 0 ? c.limiteTotal - (c.usosActuales || 0) : null;
+                    
+                    ofertaCupon.classList.remove('sin-oferta');
+                    ofertaCupon.innerHTML = `
+                        <span class="oferta-icon">🎟️</span>
+                        <h3>${c.descuento}% OFF</h3>
+                        <p>${c.descripcion || 'En toda la tienda'}</p>
+                        <div class="cupon-codigo">${c.codigo}</div>
+                        ${usosRestantes !== null ? `<p style="font-size:10px;color:var(--primary);font-weight:700;">⚡ Solo ${usosRestantes} usos</p>` : ''}
+                        <button class="btn btn-gold btn-sm" onclick="copiarCodigo('${c.codigo}')">📋 Copiar código</button>
+                    `;
+                } else {
+                    ofertaCupon.classList.add('sin-oferta');
+                    ofertaCupon.innerHTML = `
+                        <span class="oferta-icon">🎟️</span>
+                        <h3>Sin cupones activos</h3>
+                        <p>Vuelve pronto ✨</p>
+                    `;
+                }
+            }
+        }
+
+        // Función auxiliar para filtrar ofertas
+        function aplicarFiltroOferta(e) {
+            e.preventDefault();
+            const filtroEstado = document.getElementById('filterEstado');
+            if (filtroEstado) {
+                filtroEstado.value = 'oferta';
+                actualizarFiltros();
+                document.getElementById('productos').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // ============================================
+        // 📢 BANNER FLOTANTE DE CUPONES
+        // ============================================
+        let cuponFlotanteCerrado = false;
+
+        function mostrarBannerFlotante() {
+            // Si el usuario ya lo cerró, no molestar
+            if (cuponFlotanteCerrado) return;
+            
+            // Si no hay cupones activos, no mostrar nada
+            if (cuponesActivos.length === 0) {
+                const banner = document.getElementById('cuponFlotante');
+                if (banner) banner.remove();
+                return;
+            }
+
+            // Elegir un cupón aleatorio
+            const c = cuponesActivos[Math.floor(Math.random() * cuponesActivos.length)];
+            const usosRestantes = c.limiteTotal > 0 ? c.limiteTotal - (c.usosActuales || 0) : null;
+            const fechaExpira = c.fechaExpiracion ? new Date(c.fechaExpiracion).toLocaleDateString('es-PE') : null;
+
+            // Si ya existe, eliminar
+            let banner = document.getElementById('cuponFlotante');
+            if (banner) banner.remove();
+
+            // Crear el banner
+            banner = document.createElement('div');
+            banner.id = 'cuponFlotante';
+            banner.className = 'cupon-flotante';
+            banner.innerHTML = `
+                <span class="cerrar-cupon" onclick="cerrarCuponFlotante(event)">✕</span>
+                <div class="etiqueta">🎁 CUPÓN ESPECIAL</div>
+                <div class="codigo-grande">${c.codigo}</div>
+                <div class="descripcion">${c.descripcion || `${c.descuento}% OFF en toda la tienda`}</div>
+                ${usosRestantes !== null ? `<div class="info-uso">⚡ Solo ${usosRestantes} usos disponibles</div>` : ''}
+                ${fechaExpira ? `<div class="info-uso">📅 Válido hasta: ${fechaExpira}</div>` : ''}
+                <button class="btn-copiar-flotante" onclick="copiarCodigoFlotante('${c.codigo}', event)">📋 Copiar código</button>
+            `;
+            
+            document.body.appendChild(banner);
+
+            // Mostrar con animación después de 2 segundos
+            setTimeout(() => {
+                if (!cuponFlotanteCerrado) banner.classList.add('show');
+            }, 2000);
+        }
+
+        function cerrarCuponFlotante(e) {
+            if (e) e.stopPropagation();
+            cuponFlotanteCerrado = true;
+            const banner = document.getElementById('cuponFlotante');
+            if (banner) {
+                banner.classList.remove('show');
+                setTimeout(() => banner.remove(), 500);
+            }
+        }
+
+        function copiarCodigoFlotante(codigo, e) {
+            if (e) e.stopPropagation();
+            navigator.clipboard.writeText(codigo).then(() => {
+                mostrarNotificacion(`✅ ${codigo} copiado`, '🎟️');
+                lanzarConfetti();
+            }).catch(() => {
+                mostrarNotificacion(`🎟️ ${codigo}`, '🎟️');
+            });
+        }
+
+        // Exponer al window
+        window.actualizarOfertasDinamicas = actualizarOfertasDinamicas;
+        window.aplicarFiltroOferta = aplicarFiltroOferta;
+        window.mostrarBannerFlotante = mostrarBannerFlotante;
+        window.cerrarCuponFlotante = cerrarCuponFlotante;
+        window.copiarCodigoFlotante = copiarCodigoFlotante;
         // ============================================
         // INIT
         // ============================================
