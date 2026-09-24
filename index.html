@@ -11,6 +11,8 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 
@@ -816,13 +818,13 @@
         // ============================================
         particlesJS('particles-js', {
     particles: {
-        number: { value: 15, density: { enable: true, value_area: 1200 } },
+        number: { value: 12, density: { enable: true, value_area: 1500 } },
         color: { value: ['#d4af37', '#f5d76e'] },
         shape: { type: 'circle' },
         opacity: { value: 0.3 },
         size: { value: 2 },
         line_linked: { enable: false },
-        move: { enable: true, speed: 0.5 }
+        move: { enable: true, speed: 0.4 }
     },
     interactivity: {
         events: {
@@ -2586,6 +2588,247 @@ async function crearCupon() {
                 });
                 document.getElementById('ventasTopProductos').innerHTML = topHtml;
             } catch (e) { console.error('❌ ventas:', e); }
+        }
+                    // ============================================
+        // 👑 PANEL ADMIN
+        // ============================================
+        function crearPanelAdmin() {
+            if (document.getElementById('adminPanelBtn')) return;
+            const btn = document.createElement('button');
+            btn.id = 'adminPanelBtn';
+            btn.innerHTML = '👑 Admin';
+            btn.onclick = abrirPanelAdmin;
+            document.body.appendChild(btn);
+        }
+
+        function abrirPanelAdmin() {
+            let modal = document.getElementById('adminModal');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'adminModal';
+                modal.className = 'admin-premium-overlay';
+                modal.innerHTML = `
+                    <div class="admin-premium">
+                        <div class="admin-premium-header">
+                            <div class="admin-premium-title">
+                                <span class="admin-premium-crown">👑</span>
+                                <div>
+                                    <h2>Panel de Control</h2>
+                                    <p>Paulina Accesorios · Admin</p>
+                                </div>
+                            </div>
+                            <button class="admin-premium-close" onclick="cerrarPanelAdmin()">✕</button>
+                        </div>
+
+                        <div class="admin-premium-tabs">
+                            <button class="admin-premium-tab active" data-tab="dashboard" onclick="cambiarTabAdmin('dashboard')">📊 Inicio</button>
+                            <button class="admin-premium-tab" data-tab="productos" onclick="cambiarTabAdmin('productos')">📦 Productos</button>
+                            <button class="admin-premium-tab" data-tab="agregar" onclick="cambiarTabAdmin('agregar')">➕ Agregar</button>
+                            <button class="admin-premium-tab" data-tab="cupones" onclick="cambiarTabAdmin('cupones')">🎟️ Cupones</button>
+                            <button class="admin-premium-tab" data-tab="pedidos" onclick="cambiarTabAdmin('pedidos')">📋 Pedidos</button>
+                            <button class="admin-premium-tab" data-tab="ventas" onclick="cambiarTabAdmin('ventas')">💰 Ventas</button>
+                            <button class="admin-premium-tab" data-tab="usuarios" onclick="cambiarTabAdmin('usuarios')">👥 Usuarios</button>
+                            <button class="admin-premium-tab" data-tab="stats" onclick="cambiarTabAdmin('stats')">📈 Stats</button>
+                        </div>
+
+                        <div class="admin-premium-body">
+                            <div id="tab-dashboard" class="admin-tab-content active">
+                                <div id="dashboardStats" class="admin-stats-grid">
+                                    <p style="text-align:center;color:rgba(255,255,255,0.3);font-size:12px;grid-column:1/-1;">Cargando...</p>
+                                </div>
+                            </div>
+
+                            <div id="tab-productos" class="admin-tab-content">
+                                <div class="admin-search-bar">
+                                    <input type="text" id="adminBuscarProducto" class="admin-input" placeholder="🔍 Buscar..." oninput="filtrarProductosAdmin()">
+                                    <button class="admin-btn admin-btn-secondary" onclick="cargarProductosAdmin()">🔄</button>
+                                </div>
+                                <div id="adminProductosLista"></div>
+                            </div>
+
+                            <div id="tab-agregar" class="admin-tab-content">
+                                <div class="admin-panel">
+                                    <div class="admin-panel-title">➕ Nuevo producto</div>
+                                    <div class="admin-form-group">
+                                        <label class="admin-label">📦 Nombre *</label>
+                                        <input type="text" id="adminNombre" class="admin-input">
+                                    </div>
+                                    <div class="admin-form-row">
+                                        <div class="admin-form-group">
+                                            <label class="admin-label">💰 Precio *</label>
+                                            <input type="number" id="adminPrecio" class="admin-input" step="0.01">
+                                        </div>
+                                        <div class="admin-form-group">
+                                            <label class="admin-label">💸 Precio anterior</label>
+                                            <input type="number" id="adminPrecioOld" class="admin-input" step="0.01">
+                                        </div>
+                                    </div>
+                                    <div class="admin-form-group">
+                                        <label class="admin-label">📝 Descripción</label>
+                                        <input type="text" id="adminDescripcion" class="admin-input">
+                                    </div>
+                                    <div class="admin-form-group">
+                                        <label class="admin-label">📸 URL imagen</label>
+                                        <input type="text" id="adminImagen" class="admin-input" placeholder="https://...">
+                                    </div>
+                                    <div class="admin-form-row">
+                                        <div class="admin-form-group">
+                                            <label class="admin-label">📊 Stock</label>
+                                            <input type="number" id="adminStock" class="admin-input">
+                                        </div>
+                                        <div class="admin-form-group">
+                                            <label class="admin-label">⭐ Badge</label>
+                                            <input type="text" id="adminBadge" class="admin-input" placeholder="⭐ Top">
+                                        </div>
+                                    </div>
+                                    <div class="admin-form-group">
+                                        <label class="admin-label">📂 Categoría</label>
+                                        <select id="adminCategoria" class="admin-select">
+                                            <option value="aretes">📿 Aretes</option>
+                                            <option value="pestanas">👁️ Pestañas</option>
+                                            <option value="collares">📿 Collares</option>
+                                            <option value="maquillaje">💄 Maquillaje</option>
+                                            <option value="capilar">💈 Cuidado Capilar</option>
+                                        </select>
+                                    </div>
+                                    <button class="admin-btn admin-btn-primary admin-btn-full" onclick="guardarProducto()">✅ Guardar</button>
+                                </div>
+                            </div>
+
+                            <div id="tab-cupones" class="admin-tab-content">
+                                <div class="admin-panel">
+                                    <div class="admin-panel-title">🎟️ Crear cupón</div>
+                                    <div class="admin-form-row">
+                                        <div class="admin-form-group">
+                                            <label class="admin-label">Código *</label>
+                                            <input type="text" id="cuponCodigo" class="admin-input" placeholder="VERANO25" oninput="this.value=this.value.toUpperCase()">
+                                        </div>
+                                        <div class="admin-form-group">
+                                            <label class="admin-label">Descuento % *</label>
+                                            <input type="number" id="cuponDescuento" class="admin-input" placeholder="25" min="1" max="100">
+                                        </div>
+                                    </div>
+                                    <div class="admin-form-group">
+                                        <label class="admin-label">Descripción</label>
+                                        <input type="text" id="cuponDescripcion" class="admin-input" placeholder="25% OFF en toda la tienda">
+                                    </div>
+                                    <div class="admin-form-row">
+                                        <div class="admin-form-group">
+                                            <label class="admin-label">📅 Fecha inicio</label>
+                                            <input type="text" id="cuponFechaInicio" class="admin-input" placeholder="2026-01-01">
+                                            <small style="font-size:9px;color:rgba(255,255,255,0.4);display:block;margin-top:4px;">Formato: AAAA-MM-DD · Vacío = sin inicio</small>
+                                        </div>
+                                        <div class="admin-form-group">
+                                            <label class="admin-label">📅 Fecha expiración</label>
+                                            <input type="text" id="cuponFechaExpiracion" class="admin-input" placeholder="2026-12-31">
+                                            <small style="font-size:9px;color:rgba(255,255,255,0.4);display:block;margin-top:4px;">Formato: AAAA-MM-DD · Vacío = sin expiración</small>
+                                        </div>
+                                    </div>
+                                    <div class="admin-form-group">
+                                        <label class="admin-label">Límite total de usos (0 = ilimitado)</label>
+                                        <input type="number" id="cuponLimite" class="admin-input" placeholder="100" min="0">
+                                    </div>
+                                    <div class="admin-form-group">
+                                        <label class="admin-label">
+                                            <input type="checkbox" id="cuponAnuncio" checked> 📢 Mostrar anuncio en la web
+                                        </label>
+                                    </div>
+                                    <button class="admin-btn admin-btn-primary admin-btn-full" onclick="crearCupon()">🎟️ Crear cupón</button>
+                                </div>
+                                <div id="adminCuponesLista"></div>
+                            </div>
+
+                            <div id="tab-pedidos" class="admin-tab-content">
+                                <div class="admin-search-bar">
+                                    <input type="text" id="adminBuscarPedido" class="admin-input" placeholder="🔍 Buscar cliente..." oninput="filtrarPedidosAdmin()">
+                                    <button class="admin-btn admin-btn-secondary" onclick="cargarPedidosAdmin()">🔄</button>
+                                </div>
+                                <div id="adminPedidosLista"></div>
+                            </div>
+
+                            <div id="tab-ventas" class="admin-tab-content">
+                                <div class="admin-panel">
+                                    <div class="admin-panel-title">📊 Resumen de ventas</div>
+                                    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px;">
+                                        <button class="admin-btn admin-btn-secondary admin-btn-sm" onclick="cambiarPeriodoVentas('dia', this)">📅 Día</button>
+                                        <button class="admin-btn admin-btn-secondary admin-btn-sm" onclick="cambiarPeriodoVentas('semana', this)">📅 Semana</button>
+                                        <button class="admin-btn admin-btn-primary admin-btn-sm" onclick="cambiarPeriodoVentas('mes', this)">📅 Mes</button>
+                                        <button class="admin-btn admin-btn-secondary admin-btn-sm" onclick="cambiarPeriodoVentas('todo', this)">📅 Todo</button>
+                                    </div>
+                                    <div id="ventasResumen"></div>
+                                </div>
+                                <div class="admin-panel">
+                                    <div class="admin-panel-title">🏆 Top productos</div>
+                                    <div id="ventasTopProductos"></div>
+                                </div>
+                            </div>
+
+                            <div id="tab-usuarios" class="admin-tab-content">
+                                <div class="admin-search-bar">
+                                    <input type="text" id="adminBuscarUsuario" class="admin-input" placeholder="🔍 Buscar usuario..." oninput="filtrarUsuariosAdmin()">
+                                    <button class="admin-btn admin-btn-secondary" onclick="cargarUsuariosAdmin()">🔄</button>
+                                </div>
+                                <div id="adminUsuariosLista"></div>
+                            </div>
+
+                            <div id="tab-stats" class="admin-tab-content">
+                                <div id="adminStatsContent"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+            }
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+            cambiarTabAdmin('dashboard');
+        }
+
+        function cerrarPanelAdmin() {
+            const m = document.getElementById('adminModal');
+            if (m) { m.classList.remove('show'); document.body.style.overflow = ''; }
+        }
+
+        function cambiarTabAdmin(tab) {
+            document.querySelectorAll('.admin-tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.admin-premium-tab').forEach(el => el.classList.toggle('active', el.dataset.tab === tab));
+            const t = document.getElementById('tab-' + tab);
+            if (t) t.classList.add('active');
+            if (tab === 'dashboard') cargarDashboardStats();
+            if (tab === 'productos') cargarProductosAdmin();
+            if (tab === 'usuarios') cargarUsuariosAdmin();
+            if (tab === 'stats') cargarEstadisticas();
+            if (tab === 'pedidos') cargarPedidosAdmin();
+            if (tab === 'ventas') cargarVentas();
+            if (tab === 'cupones') cargarCuponesAdmin();
+        }
+
+        // DASHBOARD
+        async function cargarDashboardStats() {
+            try {
+                const snap = await window.firebaseDB.getDocs(window.firebaseDB.collection(window.db, "productos"));
+                const lista = [];
+                snap.forEach(d => lista.push(d.data()));
+                const tP = lista.length;
+                const sT = lista.reduce((s, p) => s + (parseInt(p.stock) || 0), 0);
+                const vI = lista.reduce((s, p) => s + ((parseFloat(p.precio) || 0) * (parseInt(p.stock) || 0)), 0);
+                const ag = lista.filter(p => (parseInt(p.stock) || 0) === 0).length;
+                const sb = lista.filter(p => (parseInt(p.stock) || 0) > 0 && (parseInt(p.stock) || 0) <= 3).length;
+                let tU = 0;
+                try {
+                    const uS = await window.firebaseDB.getDocs(window.firebaseDB.collection(window.db, "usuarios"));
+                    tU = uS.size;
+                } catch(e) {}
+
+                document.getElementById('dashboardStats').innerHTML = `
+                    <div class="admin-stat-card"><span class="admin-stat-icon">📦</span><div class="admin-stat-label">Productos</div><div class="admin-stat-value">${tP}</div></div>
+                    <div class="admin-stat-card"><span class="admin-stat-icon">📊</span><div class="admin-stat-label">Stock</div><div class="admin-stat-value">${sT}</div></div>
+                    <div class="admin-stat-card"><span class="admin-stat-icon">💰</span><div class="admin-stat-label">Inventario</div><div class="admin-stat-value">S/${vI.toFixed(0)}</div></div>
+                    <div class="admin-stat-card"><span class="admin-stat-icon">👥</span><div class="admin-stat-label">Usuarios</div><div class="admin-stat-value">${tU}</div></div>
+                    <div class="admin-stat-card"><span class="admin-stat-icon">❌</span><div class="admin-stat-label">Agotados</div><div class="admin-stat-value">${ag}</div></div>
+                    <div class="admin-stat-card"><span class="admin-stat-icon">⚠️</span><div class="admin-stat-label">Stock bajo</div><div class="admin-stat-value">${sb}</div></div>
+                `;
+            } catch (e) { console.error('❌', e); }
         }
 
         // EXPONER GLOBALES
