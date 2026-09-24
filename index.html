@@ -3469,10 +3469,11 @@ async function crearCupon() {
                 ['cuponCodigo','cuponDescuento','cuponDescripcion','cuponFechaInicio','cuponFechaExpiracion','cuponLimite'].forEach(id => document.getElementById(id).value = '');
                 document.getElementById('cuponAnuncio').checked = true;
 
-                cargarCuponesAdmin();
+                                cargarCuponesAdmin();
                 actualizarIALocal();
-            } catch (e) { console.error('❌', e); mostrarNotificacion('❌ Error al crear', '❌'); }
-               async function toggleCuponActivo(id, activo) {
+                } catch (e) { console.error('❌', e); mostrarNotificacion('❌ Error al crear', '❌'); }
+        }
+        async function toggleCuponActivo(id, activo) {
             try {
                 await window.firebaseDB.updateDoc(window.firebaseDB.doc(window.db, "cupones", id), { activo });
                 mostrarNotificacion(activo ? '▶️ Activado' : '⏸️ Pausado', '🎟️');
