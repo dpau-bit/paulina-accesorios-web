@@ -3185,12 +3185,21 @@ async function crearCupon() {
         // ============================================
         // INIT
         // ============================================
-        document.addEventListener('DOMContentLoaded', function() {
-                        // 🔝 SIEMPRE ir arriba al cargar la página
+                document.addEventListener('DOMContentLoaded', function() {
+            // 🔝 SIEMPRE ir arriba al cargar la página
             if (window.location.hash) {
                 history.replaceState(null, null, window.location.pathname);
             }
-            window.scrollTo(0, 0);
+            // Forzar scroll al top (después de un pequeño delay)
+            setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: 'instant' });
+            }, 50);
+            // Y también después de que cargue todo
+            window.addEventListener('load', function() {
+                setTimeout(() => {
+                    window.scrollTo({ top: 0, behavior: 'instant' });
+                }, 100);
+            });
             
             cargarCarrito();
 cargarWishlist();
