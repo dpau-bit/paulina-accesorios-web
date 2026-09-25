@@ -637,6 +637,226 @@
     width: 20px;
     border-radius: 3px;
 }
+        /* ========================================
+   ✨ ANIMACIONES AVANZADAS
+   ======================================== */
+
+/* 🎬 1. Productos aparecen con fade-up escalonado */
+.product-card {
+    animation: cardFadeIn 0.6s ease-out backwards;
+}
+.product-card:nth-child(1) { animation-delay: 0.05s; }
+.product-card:nth-child(2) { animation-delay: 0.10s; }
+.product-card:nth-child(3) { animation-delay: 0.15s; }
+.product-card:nth-child(4) { animation-delay: 0.20s; }
+.product-card:nth-child(5) { animation-delay: 0.25s; }
+.product-card:nth-child(6) { animation-delay: 0.30s; }
+.product-card:nth-child(7) { animation-delay: 0.35s; }
+.product-card:nth-child(8) { animation-delay: 0.40s; }
+.product-card:nth-child(n+9) { animation-delay: 0.45s; }
+
+@keyframes cardFadeIn {
+    from { opacity: 0; transform: translateY(30px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* 🎬 2. Botones con efecto ripple al hacer clic */
+.btn, .btn-add, .btn-gold, .btn-primary, .admin-btn {
+    position: relative;
+    overflow: hidden;
+}
+.btn::after, .btn-add::after, .btn-gold::after, .btn-primary::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+.btn:active::after, .btn-add:active::after, .btn-gold:active::after, .btn-primary:active::after {
+    width: 300px;
+    height: 300px;
+    transition: width 0s, height 0s;
+}
+
+/* 🎬 3. Hero con entrada suave */
+.hero-description {
+    animation: fadeInUp 1.2s ease-out 0.3s both;
+}
+.hero-stats .stat {
+    animation: fadeInUp 0.8s ease-out backwards;
+}
+.hero-stats .stat:nth-child(1) { animation-delay: 0.5s; }
+.hero-stats .stat:nth-child(2) { animation-delay: 0.6s; }
+.hero-stats .stat:nth-child(3) { animation-delay: 0.7s; }
+.hero-stats .stat:nth-child(4) { animation-delay: 0.8s; }
+
+/* 🎬 4. Badges con pulse */
+.badge-hot, .badge-discount, .badge-sale {
+    animation: badgePulse 2s ease-in-out infinite;
+}
+@keyframes badgePulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.5);
+    }
+    50% {
+        transform: scale(1.08);
+        box-shadow: 0 0 0 8px rgba(229, 57, 53, 0);
+    }
+}
+
+/* 🎬 5. Imagen de producto con zoom */
+.product-image img {
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.product-image:hover img {
+    transform: scale(1.15) rotate(2deg);
+}
+
+/* 🎬 6. Notificaciones con bounce */
+.notification.show {
+    animation: notifBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes notifBounce {
+    0% { transform: translateX(120%); }
+    60% { transform: translateX(-10px); }
+    80% { transform: translateX(5px); }
+    100% { transform: translateX(0); }
+}
+
+/* 🎬 7. Icono wishlist latiendo */
+.btn-wishlist.active {
+    animation: heartPulse 0.8s ease-in-out infinite;
+}
+@keyframes heartPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+}
+
+/* 🎬 8. Logo con brillo */
+.logo {
+    animation: logoShine 5s ease-in-out infinite;
+}
+@keyframes logoShine {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.2); }
+}
+
+/* 🎬 9. Pills activos con glow */
+.category-pills .pill.active {
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+    animation: pillGlow 2s ease-in-out infinite;
+}
+@keyframes pillGlow {
+    0%, 100% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.5); }
+    50% { box-shadow: 0 0 30px rgba(212, 175, 55, 0.8); }
+}
+
+/* 🎬 10. Chat IA con entrada suave */
+.chat-modal-ai.open {
+    animation: chatOpen 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes chatOpen {
+    from { opacity: 0; transform: translateY(30px) scale(0.9); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* 🎬 11. Mensajes de chat deslizando */
+.chat-message-ai {
+    animation: chatMsgSlide 0.35s ease-out;
+}
+@keyframes chatMsgSlide {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 🎬 12. WhatsApp con pulse */
+.whatsapp-float {
+    animation: waPulse 2.5s ease-in-out infinite;
+}
+@keyframes waPulse {
+    0%, 100% { box-shadow: 0 6px 30px rgba(37, 211, 102, 0.3); }
+    50% { box-shadow: 0 6px 40px rgba(37, 211, 102, 0.6); }
+}
+
+/* 🎬 13. Botones flotantes con hover */
+.user-float-btn:hover,
+.chat-float-ai:hover,
+.whatsapp-float:hover {
+    animation: floatHover 0.4s ease forwards;
+}
+@keyframes floatHover {
+    to { transform: scale(1.15) rotate(-8deg); }
+}
+
+/* 🎬 14. Modales con pop */
+.modal-overlay.show > div,
+.producto-modal-overlay.show .producto-modal {
+    animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes modalPop {
+    0% { opacity: 0; transform: scale(0.85) translateY(20px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* 🎬 15. Cupones con shake para llamar la atención */
+.cupon-flotante.show {
+    animation: cuponShake 0.6s ease-in-out 2s;
+}
+@keyframes cuponShake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-8px) rotate(-2deg); }
+    40% { transform: translateX(8px) rotate(2deg); }
+    60% { transform: translateX(-5px) rotate(-1deg); }
+    80% { transform: translateX(5px) rotate(1deg); }
+}
+
+/* 🎬 16. Preloader con logo flotante */
+.preloader-logo {
+    animation: shimmerGold 2s ease-in-out infinite, preloaderFloat 2s ease-in-out infinite;
+}
+@keyframes preloaderFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* 🎬 17. Ofertas con entrada escalonada */
+.oferta-card {
+    animation: ofertaSlide 0.7s ease-out backwards;
+}
+.oferta-card:nth-child(1) { animation-delay: 0.1s; }
+.oferta-card:nth-child(2) { animation-delay: 0.25s; }
+.oferta-card:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes ofertaSlide {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 🎬 18. Card de producto al hacer hover más premium */
+.product-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: var(--shadow-2xl);
+}
+
+/* 🎬 19. Transición suave en imágenes de producto modal */
+.producto-detalle-img img {
+    transition: transform 0.6s ease;
+}
+.producto-detalle-img:hover img {
+    transform: scale(1.05);
+}
+
+/* 🎬 20. Efecto shine en botones gold */
+.btn-gold {
+    background-size: 200% 200%;
+    animation: shimmerGold 3s ease-in-out infinite;
+}
 
         /* Banner flotante */
         .cupon-flotante {
