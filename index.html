@@ -2195,9 +2195,8 @@ function initChatAI() {
                         if (esCuponValido(c)) cuponesActivos.push(c);
                     });
 
-                    mostrarBannerCupon();
+        
                     if (typeof actualizarOfertasDinamicas === 'function') actualizarOfertasDinamicas();
-                    if (typeof mostrarBannerFlotante === 'function') mostrarBannerFlotante();
                 }, (error) => console.warn('⚠️ cupones:', error));
             } catch (error) { console.error('❌', error); }
         }
@@ -2210,11 +2209,7 @@ function initChatAI() {
             if (c.limiteTotal > 0 && (c.usosActuales || 0) >= c.limiteTotal) return false;
             return true;
         }
-
-        function mostrarBannerCupon() {
-            // ✅ DESACTIVADO: usamos mostrarBannerFlotante()
-            return;
-        }
+                
         // ============================================
         // FILTROS
         // ============================================
@@ -4935,88 +4930,8 @@ function rotarCuponOferta() {
 }
 
 // ============================================
-// 📢 BANNER FLOTANTE DE CUPONES
-// ============================================
-let cuponFlotanteCerrado = false;
-
-function mostrarBannerFlotante() {
-    if (cuponFlotanteCerrado) return;
-
-    const validos = obtenerCuponesValidos();
-    const codigoEnOferta = cuponEnOfertaActual?.codigo;
-    const disponiblesParaBanner = validos.filter(c => c.codigo !== codigoEnOferta);
-
-    if (disponiblesParaBanner.length === 0) {
-        const banner = document.getElementById('cuponFlotante');
-        if (banner) banner.remove();
-        return;
-    }
-
-    const c = disponiblesParaBanner[Math.floor(Math.random() * disponiblesParaBanner.length)];
-    const usosRestantes = c.limiteTotal > 0 ? c.limiteTotal - (c.usosActuales || 0) : null;
-    const fechaExpira = c.fechaExpiracion ? new Date(c.fechaExpiracion).toLocaleDateString('es-PE') : null;
-
-    let banner = document.getElementById('cuponFlotante');
-    if (banner) banner.remove();
-
-    banner = document.createElement('div');
-    banner.id = 'cuponFlotante';
-    banner.className = 'cupon-flotante';
-    banner.dataset.codigo = c.codigo;
-    banner.innerHTML = `
-        <span class="cerrar-cupon" onclick="cerrarCuponFlotante(event)">✕</span>
-        <div class="etiqueta">🎁 CUPÓN ESPECIAL</div>
-        <div class="codigo-grande">${c.codigo}</div>
-        <div class="descripcion">${c.descripcion || `${c.descuento}% OFF en toda la tienda`}</div>
-        ${usosRestantes !== null ? `<div class="info-uso">⚡ Solo ${usosRestantes} usos disponibles</div>` : ''}
-        ${fechaExpira ? `<div class="info-uso">📅 Válido hasta: ${fechaExpira}</div>` : ''}
-        <button class="btn-copiar-flotante" onclick="copiarCodigoFlotante('${c.codigo}', event)">📋 Copiar código</button>
-    `;
-
-    document.body.appendChild(banner);
-
-    setTimeout(() => {
-        if (!cuponFlotanteCerrado) banner.classList.add('show');
-    }, 2000);
-}
-
-function actualizarBannerFlotante() {
-    if (cuponFlotanteCerrado) return;
-    const banner = document.getElementById('cuponFlotante');
-    if (banner) {
-        banner.classList.remove('show');
-        setTimeout(() => banner.remove(), 300);
-    }
-    setTimeout(() => mostrarBannerFlotante(), 500);
-}
-
-function cerrarCuponFlotante(e) {
-    if (e) e.stopPropagation();
-    cuponFlotanteCerrado = true;
-    const banner = document.getElementById('cuponFlotante');
-    if (banner) {
-        banner.classList.remove('show');
-        setTimeout(() => banner.remove(), 500);
-    }
-}
-
-function copiarCodigoFlotante(codigo, e) {
-    if (e) e.stopPropagation();
-    navigator.clipboard.writeText(codigo).then(() => {
-        mostrarNotificacion(`✅ ${codigo} copiado`, '🎟️');
-        lanzarConfetti();
-    }).catch(() => {
-        mostrarNotificacion(`🎟️ ${codigo}`, '🎟️');
-    });
-}
-
-// ============================================
 // 🌐 EXPONER AL WINDOW
 // ============================================
-window.mostrarBannerFlotante = mostrarBannerFlotante;
-window.cerrarCuponFlotante = cerrarCuponFlotante;
-window.copiarCodigoFlotante = copiarCodigoFlotante;
-window.actualizarOfertasDinamicas = actualizarOfertasDinamicas;
 window.aplicarFiltroOferta = aplicarFiltroOferta;
 window.rotarProductoOferta = rotarProductoOferta;
 window.rotarCuponOferta = rotarCuponOferta;
