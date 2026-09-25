@@ -5228,12 +5228,18 @@ if (userSnap.exists()) {
             });
 
             initChatAI();
+
+// 🔄 Limpiar intervals previos (por si se recarga la página sin refrescar)
+if (window.__intervalRotarProd) clearInterval(window.__intervalRotarProd);
+if (window.__intervalRotarCup) clearInterval(window.__intervalRotarCup);
+if (window.__intervalReRender) clearInterval(window.__intervalReRender);
+
 // 🔄 Auto-rotar ofertas cada 3 segundos
-setInterval(() => rotarProductoOferta(), 3000);
-setInterval(() => rotarCuponOferta(), 3000);
+window.__intervalRotarProd = setInterval(() => rotarProductoOferta(), 3000);
+window.__intervalRotarCup = setInterval(() => rotarCuponOferta(), 3000);
 
 // 🔄 Re-renderizar cada 30s por si algún cupón expiró o se agotó
-setInterval(() => {
+window.__intervalReRender = setInterval(() => {
     renderizarProductoOferta();
     renderizarCuponOferta();
 }, 30000);
