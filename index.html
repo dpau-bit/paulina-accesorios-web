@@ -4525,77 +4525,172 @@ function renderizarListaProductosAdmin(lista) {
         window.toggleCuponInput = toggleCuponInput;
         window.aplicarCupon = aplicarCupon;
         window.quitarCupon = quitarCupon;
-        // ============================================
-        // 🔥 OFERTAS DINÁMICAS + BANNER FLOTANTE
-        // ============================================
-        function actualizarOfertasDinamicas() {
-            // 🔥 CUADRO 1: PRODUCTO EN OFERTA (aleatorio)
-            const ofertaProducto = document.getElementById('ofertaProducto');
-            if (ofertaProducto) {
-                const productosEnOferta = productos.filter(p => p.precio_old && p.precio_old > p.precio);
-                
-                if (productosEnOferta.length > 0) {
-                    const p = productosEnOferta[Math.floor(Math.random() * productosEnOferta.length)];
-                    const desc = Math.round(((p.precio_old - p.precio) / p.precio_old) * 100);
-                    
-                    ofertaProducto.classList.remove('sin-oferta');
-                    ofertaProducto.innerHTML = `
-                        <span class="oferta-icon">🔥</span>
-                        <span class="descuento-badge">-${desc}% OFF</span>
-                        <h3>${p.nombre}</h3>
-                        <p>
-                            <span class="precio-viejo">S/ ${parseFloat(p.precio_old).toFixed(2)}</span>
-                            <span class="precio-nuevo">S/ ${parseFloat(p.precio).toFixed(2)}</span>
-                        </p>
-                        <a href="#productos" class="btn btn-gold btn-sm" onclick="aplicarFiltroOferta(event)">Ver ofertas</a>
-                    `;
-                } else {
-                    ofertaProducto.classList.add('sin-oferta');
-                    ofertaProducto.innerHTML = `
-                        <span class="oferta-icon">🔥</span>
-                        <h3>Sin ofertas activas</h3>
-                        <p>Vuelve pronto ✨</p>
-                    `;
-                }
-            }
+// ============================================
+// 🔄 ROTACIÓN AUTOMÁTICA DE OFERTAS Y CUPONES
+// ============================================
+let indexProductoOferta = 0;
+let indexCuponOferta = 0;
+let intervalRotacionOfertas = null;
+let cuponMostradoAbajo = null;
 
-            // 🎟️ CUADRO 2: CUPÓN ACTIVO (aleatorio)
-            const ofertaCupon = document.getElementById('ofertaCupon');
-            if (ofertaCupon) {
-                if (cuponesActivos.length > 0) {
-                    const c = cuponesActivos[Math.floor(Math.random() * cuponesActivos.length)];
-                    const usosRestantes = c.limiteTotal > 0 ? c.limiteTotal - (c.usosActuales || 0) : null;
-                    
-                    ofertaCupon.classList.remove('sin-oferta');
-                    ofertaCupon.innerHTML = `
-                        <span class="oferta-icon">🎟️</span>
-                        <h3>${c.descuento}% OFF</h3>
-                        <p>${c.descripcion || 'En toda la tienda'}</p>
-                        <div class="cupon-codigo">${c.codigo}</div>
-                        ${usosRestantes !== null ? `<p style="font-size:10px;color:var(--primary);font-weight:700;">⚡ Solo ${usosRestantes} usos</p>` : ''}
-                        <button class="btn btn-gold btn-sm" onclick="copiarCodigo('${c.codigo}')">📋 Copiar código</button>
-                    `;
-                } else {
-                    ofertaCupon.classList.add('sin-oferta');
-                    ofertaCupon.innerHTML = `
-                        <span class="oferta-icon">🎟️</span>
-                        <h3>Sin cupones activos</h3>
-                        <p>Vuelve pronto ✨</p>
-                    `;
-                }
-            }
-        }
+function obtenerProductosEnOferta() {
+    return productos.filter(p => p.precio_old && p.precio_old > p.precio && safeInt(p.stock) > 0);
+}
 
-        // Función auxiliar para filtrar ofertas
-        function aplicarFiltroOferta(e) {
-            e.preventDefault();
-            const filtroEstado = document.getElementById('filterEstado');
-            if (filtroEstado) {
-                filtroEstado.value = 'oferta';
-                actualizarFiltros();
-                document.getElementById('productos').scrollIntoView({ behavior: 'smooth' });
-            }
-        }
+function obtenerCuponesValidos() {
+    return cuponesActivos.filter(c => {
+        if (!c.activo) return false;
+        const ahora = new Date();
+        if (c.fechaInicio && new Date(c.fechaInicio) > ahora) return false;
+        if (c.fechaExpiracion && new Date(c.fechaExpiracion) < ahora) return false;
+        if (c.limiteTotal > 0 && (c.usosActuales || 0) >= c.limiteTotal) return false;
+        return true;
+    });
+}
+
+function actualizarOfertasDinamicas() {
+    if (intervalRotacionOfertas) {
+        clearInterval(intervalRotacionOfertas);
+        intervalRotacionOfertas = null;
+    }
+
+    renderizarProductoOferta();
+    renderizarCuponOferta();
+
+    intervalRotacionOfertas = setInterval(() => {
+        rotarProductoOferta();
+        rotarCuponOferta();
+    }, 3000);
+}
+
+function renderizarProductoOferta() {
+    const el = document.getElementById('ofertaProducto');
+    if (!el) return;
+
+    const enOferta = obtenerProductosEnOferta();
+
+    if (enOferta.length === 0) {
+        el.classList.add('sin-oferta');
+        el.innerHTML = `
+            <span class="oferta-icon">🔥</span>
+            <h3>Sin ofertas activas</h3>
+            <p>Vuelve pronto ✨</p>
+        `;
+        return;
+    }
+
+    if (indexProductoOferta >= enOferta.length) indexProductoOferta = 0;
+    const p = enOferta[indexProductoOferta];
+    const desc = Math.round(((p.precio_old - p.precio) / p.precio_old) * 100);
+
+    const dots = enOferta.length > 1
+        ? `<div class="rotation-dots">${enOferta.map((_, i) => `<span class="dot ${i === indexProductoOferta ? 'active' : ''}"></span>`).join('')}</div>`
+        : '';
+
+    el.classList.remove('sin-oferta');
+    el.innerHTML = `
+        <span class="oferta-icon">🔥</span>
+        <span class="descuento-badge">-${desc}% OFF</span>
+        <h3>${p.nombre}</h3>
+        <p>
+            <span class="precio-viejo">S/ ${parseFloat(p.precio_old).toFixed(2)}</span>
+            <span class="precio-nuevo">S/ ${parseFloat(p.precio).toFixed(2)}</span>
+        </p>
+        <a href="#productos" class="btn btn-gold btn-sm" onclick="aplicarFiltroOferta(event)">Ver ofertas</a>
+        ${dots}
+    `;
+}
+
+function rotarProductoOferta() {
+    const el = document.getElementById('ofertaProducto');
+    if (!el) return;
+
+    const enOferta = obtenerProductosEnOferta();
+    if (enOferta.length <= 1) return;
+
+    el.classList.add('rotating-out');
+    setTimeout(() => {
+        el.classList.remove('rotating-out');
+        indexProductoOferta = (indexProductoOferta + 1) % enOferta.length;
+        renderizarProductoOferta();
+        el.classList.add('rotating-in');
+        setTimeout(() => el.classList.remove('rotating-in'), 600);
+    }, 450);
+}
+
+function renderizarCuponOferta() {
+    const el = document.getElementById('ofertaCupon');
+    if (!el) return;
+
+    const validos = obtenerCuponesValidos();
+
+    if (validos.length === 0) {
+        el.classList.add('sin-oferta');
+        el.innerHTML = `
+            <span class="oferta-icon">🎟️</span>
+            <h3>Sin cupones activos</h3>
+            <p>Vuelve pronto ✨</p>
+        `;
+        cuponMostradoAbajo = null;
+        window.cuponYaAnunciadoEnOfertas = null;
+        if (typeof mostrarBannerFlotante === 'function') mostrarBannerFlotante();
+        return;
+    }
+
+    if (indexCuponOferta >= validos.length) indexCuponOferta = 0;
+    const c = validos[indexCuponOferta];
+
+    cuponMostradoAbajo = c.codigo;
+    window.cuponYaAnunciadoEnOfertas = c.codigo;
+
+    const usosRestantes = c.limiteTotal > 0 ? c.limiteTotal - (c.usosActuales || 0) : null;
+
+    const dots = validos.length > 1
+        ? `<div class="rotation-dots">${validos.map((_, i) => `<span class="dot ${i === indexCuponOferta ? 'active' : ''}"></span>`).join('')}</div>`
+        : '';
+
+    el.classList.remove('sin-oferta');
+    el.innerHTML = `
+        <span class="oferta-icon">🎟️</span>
+        <h3>${c.descuento}% OFF</h3>
+        <p>${c.descripcion || 'En toda la tienda'}</p>
+        <div class="cupon-codigo">${c.codigo}</div>
+        ${usosRestantes !== null ? `<p style="font-size:10px;color:var(--primary);font-weight:700;">⚡ Solo ${usosRestantes} usos</p>` : ''}
+        <button class="btn btn-gold btn-sm" onclick="copiarCodigo('${c.codigo}')">📋 Copiar código</button>
+        ${dots}
+    `;
+
+    if (typeof mostrarBannerFlotante === 'function') {
+        setTimeout(() => mostrarBannerFlotante(), 500);
+    }
+}
+
+function rotarCuponOferta() {
+    const el = document.getElementById('ofertaCupon');
+    if (!el) return;
+
+    const validos = obtenerCuponesValidos();
+    if (validos.length <= 1) return;
+
+    el.classList.add('rotating-out');
+    setTimeout(() => {
+        el.classList.remove('rotating-out');
+        indexCuponOferta = (indexCuponOferta + 1) % validos.length;
+        renderizarCuponOferta();
+        el.classList.add('rotating-in');
+        setTimeout(() => el.classList.remove('rotating-in'), 600);
+    }, 450);
+}
+
+function aplicarFiltroOferta(e) {
+    e.preventDefault();
+    const filtroEstado = document.getElementById('filterEstado');
+    if (filtroEstado) {
+        filtroEstado.value = 'oferta';
+        actualizarFiltros();
+        document.getElementById('productos').scrollIntoView({ behavior: 'smooth' });
+    }
+}
 
         // ============================================
         // 📢 BANNER FLOTANTE DE CUPONES
