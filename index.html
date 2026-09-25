@@ -4745,6 +4745,104 @@ function renderizarListaProductosAdmin(lista) {
         window.toggleCuponInput = toggleCuponInput;
         window.aplicarCupon = aplicarCupon;
         window.quitarCupon = quitarCupon;
+// ============================================
+// 🔥 OFERTAS DINÁMICAS
+// ============================================
+let indexCuponOferta = 0;
+let indexProductoOferta = 0;
+
+function obtenerCuponesValidos() {
+    return cuponesActivos.filter(c => {
+        if (!c.activo) return false;
+        const ahora = new Date();
+        if (c.fechaInicio && new Date(c.fechaInicio) > ahora) return false;
+        if (c.fechaExpiracion && new Date(c.fechaExpiracion) < ahora) return false;
+        if (c.limiteTotal > 0 && (c.usosActuales || 0) >= c.limiteTotal) return false;
+        return true;
+    });
+}
+
+function obtenerProductosOferta() {
+    return productos.filter(p => {
+        const po = safeNumber(p.precio_old);
+        const pn = safeNumber(p.precio);
+        return po > 0 && po > pn && safeInt(p.stock) > 0;
+    });
+}
+
+function renderizarProductoOferta() {
+    const el = document.getElementById('ofertaProducto');
+    if (!el) return;
+
+    const ofertas = obtenerProductosOferta();
+    if (ofertas.length === 0) {
+        el.classList.add('sin-oferta');
+        el.innerHTML = `
+            <span class="oferta-icon">😢</span>
+            <h3>Sin ofertas por ahora</h3>
+            <p>Vuelve pronto para más promociones</p>
+        `;
+        return;
+    }
+
+    el.classList.remove('sin-oferta');
+    const p = ofertas[indexProductoOferta % ofertas.length];
+    const desc = p.precio_old ? Math.round(((p.precio_old - p.precio) / p.precio_old) * 100) : 0;
+
+    el.innerHTML = `
+        <span class="oferta-icon">🔥</span>
+        <div class="descuento-badge">-${desc}% OFF</div>
+        <h3>${p.nombre}</h3>
+        <p>${p.descripcion || 'Producto en oferta'}</p>
+        <div style="margin:8px 0;">
+            <span class="precio-viejo">S/ ${parseFloat(p.precio_old).toFixed(2)}</span>
+            <span class="precio-nuevo">S/ ${parseFloat(p.precio).toFixed(2)}</span>
+        </div>
+        <button class="btn btn-gold btn-sm" onclick="addToCart(${p.id})">🛒 Comprar ahora</button>
+    `;
+}
+
+function renderizarCuponOferta() {
+    const el = document.getElementById('ofertaCupon');
+    if (!el) return;
+
+    const validos = obtenerCuponesValidos();
+    if (validos.length === 0) {
+        el.classList.add('sin-oferta');
+        el.innerHTML = `
+            <span class="oferta-icon">🎟️</span>
+            <h3>Sin cupones activos</h3>
+            <p>Vuelve pronto para más promociones</p>
+        `;
+        return;
+    }
+
+    el.classList.remove('sin-oferta');
+    const c = validos[indexCuponOferta % validos.length];
+    const usosRestantes = c.limiteTotal > 0 ? c.limiteTotal - (c.usosActuales || 0) : null;
+
+    el.innerHTML = `
+        <span class="oferta-icon">🎟️</span>
+        <h3>Cupón especial</h3>
+        <p>${c.descripcion || `${c.descuento}% OFF`}</p>
+        <div class="cupon-codigo">${c.codigo}</div>
+        <div style="font-size:10px;color:var(--gray-500);margin-top:6px;">
+            ${usosRestantes !== null ? `⚡ ${usosRestantes} usos disponibles` : ''}
+        </div>
+        <button class="btn btn-gold btn-sm" onclick="copiarCodigo('${c.codigo}')" style="margin-top:8px;">📋 Copiar código</button>
+    `;
+}
+
+function actualizarOfertasDinamicas() {
+    renderizarProductoOferta();
+    renderizarCuponOferta();
+}
+
+function aplicarFiltroOferta() {
+    document.getElementById('filterEstado').value = 'oferta';
+    actualizarFiltros();
+}
+
 function rotarCuponOferta() {
     // 🛑 Bloquear si ya está rotando
     if (window.__rotandoCup) return;
@@ -4852,11 +4950,11 @@ function rotarCuponOferta() {
         }
 
         // Exponer al window
-        window.actualizarOfertasDinamicas = actualizarOfertasDinamicas;
-        window.aplicarFiltroOferta = aplicarFiltroOferta;
         window.mostrarBannerFlotante = mostrarBannerFlotante;
         window.cerrarCuponFlotante = cerrarCuponFlotante;
         window.copiarCodigoFlotante = copiarCodigoFlotante;
+        window.actualizarOfertasDinamicas = actualizarOfertasDinamicas;
+        window.aplicarFiltroOferta = aplicarFiltroOferta;
         // ============================================
         // INIT
         // ============================================
