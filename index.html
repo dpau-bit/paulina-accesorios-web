@@ -4751,6 +4751,15 @@ function renderizarListaProductosAdmin(lista) {
 let indexCuponOferta = 0;
 let indexProductoOferta = 0;
 
+// 🎟️ Cupón que se está mostrando AHORA en la sección Ofertas
+let cuponEnOfertaActual = null;
+
+// 🔥 Producto que se está mostrando AHORA en la sección Ofertas
+let productoEnOfertaActual = null;
+
+// ============================================
+// 🧠 FILTRAR VÁLIDOS
+// ============================================
 function obtenerCuponesValidos() {
     return cuponesActivos.filter(c => {
         if (!c.activo) return false;
@@ -4770,12 +4779,16 @@ function obtenerProductosOferta() {
     });
 }
 
+// ============================================
+// 🔥 RENDER PRODUCTO OFERTA
+// ============================================
 function renderizarProductoOferta() {
     const el = document.getElementById('ofertaProducto');
     if (!el) return;
 
     const ofertas = obtenerProductosOferta();
     if (ofertas.length === 0) {
+        productoEnOfertaActual = null;
         el.classList.add('sin-oferta');
         el.innerHTML = `
             <span class="oferta-icon">😢</span>
@@ -4787,6 +4800,7 @@ function renderizarProductoOferta() {
 
     el.classList.remove('sin-oferta');
     const p = ofertas[indexProductoOferta % ofertas.length];
+    productoEnOfertaActual = p;
     const desc = p.precio_old ? Math.round(((p.precio_old - p.precio) / p.precio_old) * 100) : 0;
 
     el.innerHTML = `
@@ -4802,23 +4816,33 @@ function renderizarProductoOferta() {
     `;
 }
 
+// ============================================
+// 🎟️ RENDER CUPÓN OFERTA
+// ============================================
 function renderizarCuponOferta() {
     const el = document.getElementById('ofertaCupon');
     if (!el) return;
 
     const validos = obtenerCuponesValidos();
+
     if (validos.length === 0) {
+        cuponEnOfertaActual = null;
         el.classList.add('sin-oferta');
         el.innerHTML = `
-            <span class="oferta-icon">🎟️</span>
+            <span class="oferta-icon">😢</span>
             <h3>Sin cupones activos</h3>
             <p>Vuelve pronto para más promociones</p>
         `;
         return;
     }
 
+    if (cuponEnOfertaActual && !validos.find(c => c.codigo === cuponEnOfertaActual.codigo)) {
+        indexCuponOferta = 0;
+    }
+
     el.classList.remove('sin-oferta');
     const c = validos[indexCuponOferta % validos.length];
+    cuponEnOfertaActual = c;
     const usosRestantes = c.limiteTotal > 0 ? c.limiteTotal - (c.usosActuales || 0) : null;
 
     el.innerHTML = `
@@ -4831,8 +4855,15 @@ function renderizarCuponOferta() {
         </div>
         <button class="btn btn-gold btn-sm" onclick="copiarCodigo('${c.codigo}')" style="margin-top:8px;">📋 Copiar código</button>
     `;
+
+    if (typeof actualizarBannerFlotante === 'function') {
+        actualizarBannerFlotante();
+    }
 }
 
+// ============================================
+// 🔄 ACTUALIZAR TODO
+// ============================================
 function actualizarOfertasDinamicas() {
     renderizarProductoOferta();
     renderizarCuponOferta();
@@ -4843,8 +4874,40 @@ function aplicarFiltroOferta() {
     actualizarFiltros();
 }
 
+// ============================================
+// 🔄 ROTAR PRODUCTO
+// ============================================
+function rotarProductoOferta() {
+    if (window.__rotandoProd) return;
+
+    const el = document.getElementById('ofertaProducto');
+    if (!el) return;
+
+    const ofertas = obtenerProductosOferta();
+    if (ofertas.length <= 1) return;
+
+    window.__rotandoProd = true;
+
+    el.classList.add('rotating-out');
+
+    setTimeout(() => {
+        el.classList.remove('rotating-out');
+        indexProductoOferta = (indexProductoOferta + 1) % ofertas.length;
+        renderizarProductoOferta();
+
+        el.classList.add('rotating-in');
+
+        setTimeout(() => {
+            el.classList.remove('rotating-in');
+            window.__rotandoProd = false;
+        }, 600);
+    }, 450);
+}
+
+// ============================================
+// 🔄 ROTAR CUPÓN
+// ============================================
 function rotarCuponOferta() {
-    // 🛑 Bloquear si ya está rotando
     if (window.__rotandoCup) return;
 
     const el = document.getElementById('ofertaCupon');
@@ -4853,16 +4916,12 @@ function rotarCuponOferta() {
     const validos = obtenerCuponesValidos();
     if (validos.length <= 1) return;
 
-    // 🆕 Registrar inicio
     window.__rotandoCup = true;
-    const tiempoInicio = Date.now();
 
     el.classList.add('rotating-out');
 
     setTimeout(() => {
         el.classList.remove('rotating-out');
-
-        // 🆕 Avanzar 1 sola posición
         indexCuponOferta = (indexCuponOferta + 1) % validos.length;
         renderizarCuponOferta();
 
@@ -4870,91 +4929,98 @@ function rotarCuponOferta() {
 
         setTimeout(() => {
             el.classList.remove('rotating-in');
-
-            // 🆕 Anti-duplicado: esperar mínimo 2s antes de permitir otra
-            const tiempoTotal = Date.now() - tiempoInicio;
-            const esperaMinima = Math.max(0, 2000 - tiempoTotal);
-
-            setTimeout(() => {
-                window.__rotandoCup = false;
-            }, esperaMinima);
+            window.__rotandoCup = false;
         }, 600);
     }, 450);
 }
 
-        // ============================================
-        // 📢 BANNER FLOTANTE DE CUPONES
-        // ============================================
-        let cuponFlotanteCerrado = false;
+// ============================================
+// 📢 BANNER FLOTANTE DE CUPONES
+// ============================================
+let cuponFlotanteCerrado = false;
 
-        function mostrarBannerFlotante() {
-            // Si el usuario ya lo cerró, no molestar
-            if (cuponFlotanteCerrado) return;
-            
-            // Si no hay cupones activos, no mostrar nada
-            if (cuponesActivos.length === 0) {
-                const banner = document.getElementById('cuponFlotante');
-                if (banner) banner.remove();
-                return;
-            }
+function mostrarBannerFlotante() {
+    if (cuponFlotanteCerrado) return;
 
-            // Elegir un cupón aleatorio
-            const c = cuponesActivos[Math.floor(Math.random() * cuponesActivos.length)];
-            const usosRestantes = c.limiteTotal > 0 ? c.limiteTotal - (c.usosActuales || 0) : null;
-            const fechaExpira = c.fechaExpiracion ? new Date(c.fechaExpiracion).toLocaleDateString('es-PE') : null;
+    const validos = obtenerCuponesValidos();
+    const codigoEnOferta = cuponEnOfertaActual?.codigo;
+    const disponiblesParaBanner = validos.filter(c => c.codigo !== codigoEnOferta);
 
-            // Si ya existe, eliminar
-            let banner = document.getElementById('cuponFlotante');
-            if (banner) banner.remove();
+    if (disponiblesParaBanner.length === 0) {
+        const banner = document.getElementById('cuponFlotante');
+        if (banner) banner.remove();
+        return;
+    }
 
-            // Crear el banner
-            banner = document.createElement('div');
-            banner.id = 'cuponFlotante';
-            banner.className = 'cupon-flotante';
-            banner.innerHTML = `
-                <span class="cerrar-cupon" onclick="cerrarCuponFlotante(event)">✕</span>
-                <div class="etiqueta">🎁 CUPÓN ESPECIAL</div>
-                <div class="codigo-grande">${c.codigo}</div>
-                <div class="descripcion">${c.descripcion || `${c.descuento}% OFF en toda la tienda`}</div>
-                ${usosRestantes !== null ? `<div class="info-uso">⚡ Solo ${usosRestantes} usos disponibles</div>` : ''}
-                ${fechaExpira ? `<div class="info-uso">📅 Válido hasta: ${fechaExpira}</div>` : ''}
-                <button class="btn-copiar-flotante" onclick="copiarCodigoFlotante('${c.codigo}', event)">📋 Copiar código</button>
-            `;
-            
-            document.body.appendChild(banner);
+    const c = disponiblesParaBanner[Math.floor(Math.random() * disponiblesParaBanner.length)];
+    const usosRestantes = c.limiteTotal > 0 ? c.limiteTotal - (c.usosActuales || 0) : null;
+    const fechaExpira = c.fechaExpiracion ? new Date(c.fechaExpiracion).toLocaleDateString('es-PE') : null;
 
-            // Mostrar con animación después de 2 segundos
-            setTimeout(() => {
-                if (!cuponFlotanteCerrado) banner.classList.add('show');
-            }, 2000);
-        }
+    let banner = document.getElementById('cuponFlotante');
+    if (banner) banner.remove();
 
-        function cerrarCuponFlotante(e) {
-            if (e) e.stopPropagation();
-            cuponFlotanteCerrado = true;
-            const banner = document.getElementById('cuponFlotante');
-            if (banner) {
-                banner.classList.remove('show');
-                setTimeout(() => banner.remove(), 500);
-            }
-        }
+    banner = document.createElement('div');
+    banner.id = 'cuponFlotante';
+    banner.className = 'cupon-flotante';
+    banner.dataset.codigo = c.codigo;
+    banner.innerHTML = `
+        <span class="cerrar-cupon" onclick="cerrarCuponFlotante(event)">✕</span>
+        <div class="etiqueta">🎁 CUPÓN ESPECIAL</div>
+        <div class="codigo-grande">${c.codigo}</div>
+        <div class="descripcion">${c.descripcion || `${c.descuento}% OFF en toda la tienda`}</div>
+        ${usosRestantes !== null ? `<div class="info-uso">⚡ Solo ${usosRestantes} usos disponibles</div>` : ''}
+        ${fechaExpira ? `<div class="info-uso">📅 Válido hasta: ${fechaExpira}</div>` : ''}
+        <button class="btn-copiar-flotante" onclick="copiarCodigoFlotante('${c.codigo}', event)">📋 Copiar código</button>
+    `;
 
-        function copiarCodigoFlotante(codigo, e) {
-            if (e) e.stopPropagation();
-            navigator.clipboard.writeText(codigo).then(() => {
-                mostrarNotificacion(`✅ ${codigo} copiado`, '🎟️');
-                lanzarConfetti();
-            }).catch(() => {
-                mostrarNotificacion(`🎟️ ${codigo}`, '🎟️');
-            });
-        }
+    document.body.appendChild(banner);
 
-        // Exponer al window
-        window.mostrarBannerFlotante = mostrarBannerFlotante;
-        window.cerrarCuponFlotante = cerrarCuponFlotante;
-        window.copiarCodigoFlotante = copiarCodigoFlotante;
-        window.actualizarOfertasDinamicas = actualizarOfertasDinamicas;
-        window.aplicarFiltroOferta = aplicarFiltroOferta;
+    setTimeout(() => {
+        if (!cuponFlotanteCerrado) banner.classList.add('show');
+    }, 2000);
+}
+
+function actualizarBannerFlotante() {
+    if (cuponFlotanteCerrado) return;
+    const banner = document.getElementById('cuponFlotante');
+    if (banner) {
+        banner.classList.remove('show');
+        setTimeout(() => banner.remove(), 300);
+    }
+    setTimeout(() => mostrarBannerFlotante(), 500);
+}
+
+function cerrarCuponFlotante(e) {
+    if (e) e.stopPropagation();
+    cuponFlotanteCerrado = true;
+    const banner = document.getElementById('cuponFlotante');
+    if (banner) {
+        banner.classList.remove('show');
+        setTimeout(() => banner.remove(), 500);
+    }
+}
+
+function copiarCodigoFlotante(codigo, e) {
+    if (e) e.stopPropagation();
+    navigator.clipboard.writeText(codigo).then(() => {
+        mostrarNotificacion(`✅ ${codigo} copiado`, '🎟️');
+        lanzarConfetti();
+    }).catch(() => {
+        mostrarNotificacion(`🎟️ ${codigo}`, '🎟️');
+    });
+}
+
+// ============================================
+// 🌐 EXPONER AL WINDOW
+// ============================================
+window.mostrarBannerFlotante = mostrarBannerFlotante;
+window.cerrarCuponFlotante = cerrarCuponFlotante;
+window.copiarCodigoFlotante = copiarCodigoFlotante;
+window.actualizarOfertasDinamicas = actualizarOfertasDinamicas;
+window.aplicarFiltroOferta = aplicarFiltroOferta;
+window.rotarProductoOferta = rotarProductoOferta;
+window.rotarCuponOferta = rotarCuponOferta;
+window.actualizarBannerFlotante = actualizarBannerFlotante;
         // ============================================
         // INIT
         // ============================================
@@ -5162,6 +5228,15 @@ if (userSnap.exists()) {
             });
 
             initChatAI();
+// 🔄 Auto-rotar ofertas cada 3 segundos
+setInterval(() => rotarProductoOferta(), 3000);
+setInterval(() => rotarCuponOferta(), 3000);
+
+// 🔄 Re-renderizar cada 30s por si algún cupón expiró o se agotó
+setInterval(() => {
+    renderizarProductoOferta();
+    renderizarCuponOferta();
+}, 30000);
 
             if (window.auth) {
                 window.auth.onAuthStateChanged(user => {
