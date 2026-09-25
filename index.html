@@ -1786,6 +1786,74 @@ function formatPrice(p) { return `S/ ${safeNumber(p, 0).toFixed(2)}`; }
         // ============================================
         // PRODUCTOS EN TIEMPO REAL
         // ============================================
+          function actualizarIALocal() {
+    console.log('✅ IA actualizada:', productos.length, 'productos,', cuponesActivos.length, 'cupones');
+}
+
+function initChatAI() {
+    const float = document.getElementById('chatFloatAI');
+    const modal = document.getElementById('chatModalAI');
+    const close = document.getElementById('chatCloseAI');
+    const input = document.getElementById('chatInputAI');
+    const send = document.getElementById('chatSendAI');
+    const msgs = document.getElementById('chatMessagesAI');
+    const opts = document.getElementById('chatOptionsAI');
+
+    if (!float || !modal || !close || !input || !send || !msgs || !opts) {
+        console.warn('⚠️ Chat IA: elementos no encontrados');
+        return;
+    }
+
+    float.addEventListener('click', () => {
+        modal.classList.toggle('open');
+        if (modal.classList.contains('open')) input.focus();
+    });
+    close.addEventListener('click', () => modal.classList.remove('open'));
+
+    function sendMsg(text) {
+        if (!text || !text.trim()) return;
+        const now = new Date();
+        const time = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+
+        const um = document.createElement('div');
+        um.className = 'chat-message-ai user';
+        um.innerHTML = `${text} <span class="msg-time">${time}</span>`;
+        msgs.appendChild(um);
+        msgs.scrollTop = msgs.scrollHeight;
+        input.value = '';
+        send.disabled = true;
+
+        const td = document.createElement('div');
+        td.className = 'chat-message-ai bot';
+        td.innerHTML = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
+        msgs.appendChild(td);
+        msgs.scrollTop = msgs.scrollHeight;
+
+        setTimeout(() => {
+            td.remove();
+            const bm = document.createElement('div');
+            bm.className = 'chat-message-ai bot';
+            let respuesta = '🤔 No entendí. ¿Me lo reformulas?';
+            try {
+                respuesta = getAIResponse(text) || respuesta;
+            } catch (e) {
+                console.warn('⚠️ Error IA:', e);
+            }
+            bm.innerHTML = `${respuesta} <span class="msg-time">${time}</span>`;
+            msgs.appendChild(bm);
+            msgs.scrollTop = msgs.scrollHeight;
+            send.disabled = false;
+        }, 400 + Math.random() * 600);
+    }
+
+    send.addEventListener('click', () => sendMsg(input.value));
+    input.addEventListener('keyup', e => { if (e.key === 'Enter') sendMsg(input.value); });
+    opts.addEventListener('click', e => {
+        const b = e.target.closest('.chat-opt');
+        if (b) sendMsg(b.dataset.msg);
+    });
+}
+
         function cargarProductosDesdeFirestore() {
             try {
                 // 🚀 1. Mostrar productos AL INSTANTE (hardcoded o caché)
