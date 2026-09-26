@@ -6481,13 +6481,28 @@ window.__intervalReRender = setInterval(() => {
 }, 30000);
 
             if (window.auth) {
-                window.auth.onAuthStateChanged(user => {
-                    const btn = document.getElementById('adminPanelBtn');
-                    if (user && user.email === 'paulinabellezaperu@gmail.com') {
-                        if (!btn) crearPanelAdmin();
-                    } else if (btn) btn.remove();
-                });
+    window.auth.onAuthStateChanged(async user => {
+        const btn = document.getElementById('adminPanelBtn');
+        if (!user) {
+            if (btn) btn.remove();
+            return;
+        }
+        // 🔍 Consultar colección admins/ en Firestore
+        try {
+            const adminDoc = await window.firebaseDB.getDoc(
+                window.firebaseDB.doc(window.db, "admins", user.uid)
+            );
+            if (adminDoc.exists()) {
+                if (!btn) crearPanelAdmin();
+            } else {
+                if (btn) btn.remove();
             }
+        } catch (e) {
+            console.warn('⚠️ Error verificando admin:', e);
+            if (btn) btn.remove();
+        }
+    });
+}
 
             document.addEventListener('keydown', e => {
                 if (e.key === 'Escape') {
