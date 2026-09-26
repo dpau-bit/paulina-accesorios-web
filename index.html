@@ -3592,15 +3592,29 @@ if (cuponNivel) {
         }
 
         async function loginUser(email, password) {
-            try {
-                await window.firebaseAuth.signInWithEmailAndPassword(window.auth, email, password);
-                mostrarNotificacion('✅ ¡Bienvenida! 👋', '👋');
-                return true;
-            } catch (error) {
-                mostrarNotificacion('❌ Correo o contraseña incorrectos', '❌');
-                return false;
-            }
+    try {
+        await window.firebaseAuth.signInWithEmailAndPassword(window.auth, email, password);
+        mostrarNotificacion('✅ ¡Bienvenida! 👋', '👋');
+        
+        // 🆕 Forzar actualización inmediata del UI
+        if (typeof updateUserUI === 'function') {
+            // Esperar un tick a que Firebase ponga el user
+            setTimeout(() => {
+                if (window.currentUser && typeof updateUserUI === 'function') {
+                    updateUserUI();
+                }
+            }, 100);
         }
+        return true;
+    } catch (error) {
+        let msg = '❌ Correo o contraseña incorrectos';
+        if (error.code === 'auth/too-many-requests') msg = '⚠️ Demasiados intentos. Espera 15 min';
+        else if (error.code === 'auth/invalid-email') msg = '⚠️ Email inválido';
+        mostrarNotificacion(msg, '❌');
+        console.error('❌ Login error:', error.code, error.message);
+        return false;
+    }
+}
 
         async function logoutUser() {
             await window.firebaseAuth.signOut(window.auth);
@@ -6037,6 +6051,20 @@ function cambiarTabAdmin(tab) {
         window.quitarImagenAdmin = quitarImagenAdmin;
         window.quitarImagenEdit = quitarImagenEdit;
         window.handleLogin = handleLogin;
+        window.handleRegister = handleRegister;
+        window.loginUser = loginUser;
+        window.registerUser = registerUser;
+        window.logoutUser = logoutUser;
+        window.showLoginForm = showLoginForm;
+        window.showRegisterForm = showRegisterForm;
+        window.resetPassword = resetPassword;
+        window.handleRegister = handleRegister;
+        window.loginUser = loginUser;
+        window.registerUser = registerUser;
+        window.logoutUser = logoutUser;
+        window.showLoginForm = showLoginForm;
+        window.showRegisterForm = showRegisterForm;
+        window.resetPassword = resetPassword;
         window.handleRegister = handleRegister;
         window.loginUser = loginUser;
         window.registerUser = registerUser;
