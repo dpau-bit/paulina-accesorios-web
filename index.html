@@ -5558,6 +5558,14 @@ function abrirPanelAdmin() {
         cambiarTabAdmin('dashboard');
     }, 1800);   // ⬅️ Espera 1.8s antes de abrir el panel
 }
+                
+function cerrarPanelAdmin() {
+    const m = document.getElementById('adminModal');
+    if (m) {
+        m.classList.remove('show');
+        document.body.style.overflow = '';
+    }
+}
         // DASHBOARD
         async function cargarDashboardStats() {
             try {
