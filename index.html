@@ -5566,6 +5566,20 @@ function cerrarPanelAdmin() {
         document.body.style.overflow = '';
     }
 }
+                
+function cambiarTabAdmin(tab) {
+    document.querySelectorAll('.admin-tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.admin-premium-tab').forEach(el => el.classList.toggle('active', el.dataset.tab === tab));
+    const t = document.getElementById('tab-' + tab);
+    if (t) t.classList.add('active');
+    if (tab === 'dashboard') cargarDashboardStats();
+    if (tab === 'productos') cargarProductosAdmin();
+    if (tab === 'usuarios') cargarUsuariosAdmin();
+    if (tab === 'stats') cargarEstadisticas();
+    if (tab === 'pedidos') cargarPedidosAdmin();
+    if (tab === 'ventas') cargarVentas();
+    if (tab === 'cupones') cargarCuponesAdmin();
+}
         // DASHBOARD
         async function cargarDashboardStats() {
             try {
