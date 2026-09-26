@@ -400,6 +400,134 @@
         .admin-input, .admin-select { width: 100%; padding: 11px 14px; background: rgba(0, 0, 0, 0.4); border: 1.5px solid rgba(212, 175, 55, 0.2); border-radius: 10px; color: #fff; font-size: 12px; outline: none; }
         .admin-input:focus, .admin-select:focus { border-color: var(--gold); }
         .admin-input::placeholder { color: rgba(255, 255, 255, 0.25); }
+        /* 📸 Estilos para subir imagen */
+.admin-file-upload {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.admin-file-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 20px;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.05));
+    border: 2px dashed rgba(212, 175, 55, 0.4);
+    border-radius: 12px;
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: var(--font-sans);
+}
+
+.admin-file-btn:hover {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.25), rgba(212, 175, 55, 0.1));
+    border-color: var(--gold);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(212, 175, 55, 0.2);
+}
+
+.admin-file-btn:active {
+    transform: scale(0.98);
+}
+
+.admin-file-btn input[type="file"] {
+    display: none;
+}
+
+.admin-image-preview {
+    position: relative;
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid rgba(212, 175, 55, 0.4);
+    aspect-ratio: 1;
+    background: rgba(0, 0, 0, 0.3);
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.admin-image-preview.show {
+    display: flex;
+    animation: previewPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes previewPop {
+    from { opacity: 0; transform: scale(0.5); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.admin-image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.admin-image-preview .remove-image {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(231, 76, 60, 0.9);
+    border: none;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-weight: 700;
+}
+
+.admin-image-preview .remove-image:hover {
+    background: #e74c3c;
+    transform: scale(1.15) rotate(90deg);
+}
+
+.admin-upload-progress {
+    display: none;
+    margin-top: 10px;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.admin-upload-progress.show {
+    display: block;
+}
+
+.admin-upload-progress-fill {
+    height: 100%;
+    background: var(--gold-gradient);
+    width: 0%;
+    transition: width 0.3s ease;
+    border-radius: 3px;
+}
+
+.admin-upload-status {
+    font-size: 10px;
+    color: rgba(212, 175, 55, 0.8);
+    text-align: center;
+    margin-top: 6px;
+    font-weight: 600;
+    display: none;
+}
+
+.admin-upload-status.show {
+    display: block;
+}
         .admin-select option { background: #1a0b1a; color: #fff; }
         .admin-label { display: block; font-size: 10px; font-weight: 700; color: rgba(212, 175, 55, 0.8); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
         .admin-form-group { margin-bottom: 14px; }
@@ -4103,9 +4231,24 @@ function renderizarListaProductosAdmin(lista) {
                                 <input type="text" id="editDescripcion" class="admin-input" value="${(p.descripcion || '').replace(/"/g, '&quot;')}">
                             </div>
                             <div class="admin-form-group">
-                                <label class="admin-label">📸 URL imagen</label>
-                                <input type="text" id="editImagen" class="admin-input" value="${(p.imagen || '').replace(/"/g, '&quot;')}">
-                            </div>
+    <label class="admin-label">📸 Imagen del producto</label>
+    <div class="admin-file-upload">
+        <label for="adminImagenFile" class="admin-file-btn">
+            <span style="font-size: 1.2rem;">📁</span>
+            <span id="adminImagenLabel">Elegir imagen de mi galería</span>
+            <input type="file" id="adminImagenFile" accept="image/*" onchange="subirImagenAdmin(event)">
+        </label>
+        <input type="hidden" id="adminImagen" value="">
+        <div class="admin-image-preview" id="adminImagenPreview">
+            <img id="adminImagenPreviewImg" src="" alt="Vista previa">
+            <button class="remove-image" type="button" onclick="quitarImagenAdmin()">✕</button>
+        </div>
+        <div class="admin-upload-progress" id="adminUploadProgress">
+            <div class="admin-upload-progress-fill" id="adminUploadProgressFill"></div>
+        </div>
+        <div class="admin-upload-status" id="adminUploadStatus"></div>
+    </div>
+</div>
                             <div class="admin-form-row">
                                 <div class="admin-form-group">
                                     <label class="admin-label">📊 Stock</label>
@@ -4792,9 +4935,24 @@ function renderizarListaProductosAdmin(lista) {
                                         <input type="text" id="adminDescripcion" class="admin-input">
                                     </div>
                                     <div class="admin-form-group">
-                                        <label class="admin-label">📸 URL imagen</label>
-                                        <input type="text" id="adminImagen" class="admin-input" placeholder="https://...">
-                                    </div>
+    <label class="admin-label">📸 Imagen del producto</label>
+    <div class="admin-file-upload">
+        <label for="editImagenFile" class="admin-file-btn">
+            <span style="font-size: 1.2rem;">📁</span>
+            <span id="editImagenLabel">Cambiar imagen</span>
+            <input type="file" id="editImagenFile" accept="image/*" onchange="subirImagenEdit(event)">
+        </label>
+        <input type="hidden" id="editImagen" value="${(p.imagen || '').replace(/"/g, '&quot;')}">
+        <div class="admin-image-preview ${p.imagen ? 'show' : ''}" id="editImagenPreview">
+            <img id="editImagenPreviewImg" src="${p.imagen || ''}" alt="Vista previa" onerror="this.parentElement.classList.remove('show')">
+            <button class="remove-image" type="button" onclick="quitarImagenEdit()">✕</button>
+        </div>
+        <div class="admin-upload-progress" id="editUploadProgress">
+            <div class="admin-upload-progress-fill" id="editUploadProgressFill"></div>
+        </div>
+        <div class="admin-upload-status" id="editUploadStatus"></div>
+    </div>
+</div>
                                     <div class="admin-form-row">
                                         <div class="admin-form-group">
                                             <label class="admin-label">📊 Stock</label>
