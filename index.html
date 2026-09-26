@@ -151,21 +151,6 @@
             0%, 100% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
             50% { box-shadow: 0 0 30px rgba(212, 175, 55, 0.6); }
         }
-        /* 🚀 Desactivar animaciones pesadas cuando el panel está abierto */
-body.admin-open .free-shipping,
-body.admin-open .logo,
-body.admin-open .whatsapp-float,
-body.admin-open .chat-float-ai,
-body.admin-open .user-float-btn,
-body.admin-open #adminPanelBtn,
-body.admin-open .btn-gold,
-body.admin-open .oferta-card {
-    animation: none !important;
-}
-
-body.admin-open #particles-js {
-    display: none !important;
-}
         @keyframes heartBeat { 0%, 100% { transform: scale(1); } 25% { transform: scale(1.3); } 50% { transform: scale(1); } 75% { transform: scale(1.2); } }
         @keyframes typing { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } }
         @keyframes gradientBG { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
@@ -179,6 +164,7 @@ body.admin-open #particles-js {
         .free-shipping { background: var(--gold-gradient); color: #fff; text-align: center; padding: 6px var(--space-md); font-weight: 700; font-size: 11px; position: sticky; top: 0; z-index: var(--z-sticky); box-shadow: 0 2px 20px rgba(212, 175, 55, 0.15); background-size: 200% 200%; animation: shimmerGold 3s ease-in-out infinite; }
         .free-shipping .highlight { font-weight: 800; text-decoration: underline; text-underline-offset: 2px; }
 
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 0 4%; background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(20px); position: sticky; top: 0; z-index: var(--z-sticky); border-bottom: 1px solid rgba(212, 175, 55, 0.06); min-height: 64px; box-shadow: var(--shadow-xs); flex-wrap: wrap; }
         [data-theme="dark"] .navbar { background: rgba(18, 18, 18, 0.92); }
         .navbar-scrolled { box-shadow: var(--shadow-md); }
         .navbar-left { display: flex; align-items: center; gap: var(--space-lg); }
@@ -222,6 +208,7 @@ body.admin-open #particles-js {
         .hamburger.active span:nth-child(2) { opacity: 0; }
         .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(4px, -4px); }
 
+        .mobile-menu { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(30px); z-index: var(--z-overlay); flex-direction: column; align-items: center; justify-content: center; gap: var(--space-lg); }
         [data-theme="dark"] .mobile-menu { background: rgba(18, 18, 18, 0.98); }
         .mobile-menu.open { display: flex; animation: fadeInScale 0.3s ease; }
         .mobile-menu a { font-size: 1.5rem; text-decoration: none; color: var(--gray-800); font-weight: 600; font-family: var(--font-serif); }
@@ -377,252 +364,21 @@ body.admin-open #particles-js {
         .notification { position: fixed; top: 78px; right: 20px; background: var(--white); padding: 12px 20px; border-radius: var(--radius-md); box-shadow: var(--shadow-lg); border-left: 4px solid var(--gold); transform: translateX(120%); transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 1000; font-weight: 600; font-size: 12px; display: flex; align-items: center; gap: 8px; max-width: 90%; }
         .notification.show { transform: translateX(0); }
 
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); z-index: 10000; display: none; align-items: center; justify-content: center; padding: 20px; }
         .modal-overlay.show { display: flex; animation: fadeInScale 0.3s ease; }
 
         .confetti-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
         .confetti { position: absolute; border-radius: 2px; animation: confettiFall linear forwards; }
 
         /* PANEL ADMIN */
-        .admin-premium-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 10000;
+        .admin-premium-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(12px); z-index: 10000; display: none; align-items: center; justify-content: center; padding: 20px; }
         .admin-premium-overlay.show { display: flex; }
-        .admin-premium { width: 100%; max-width: 1100px; max-height: 94vh; background: linear-gradient(180deg, #0a050a 0%, #1a0b1a 100%); border-radius: 24px; overflow: hidden; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7); display: flex; flex-direction: column; will-change: transform; }
+        .admin-premium { width: 100%; max-width: 1100px; max-height: 94vh; background: linear-gradient(180deg, #0a050a 0%, #1a0b1a 100%); border-radius: 24px; overflow: hidden; box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.2), 0 20px 80px rgba(0, 0, 0, 0.8); display: flex; flex-direction: column; }
         .admin-premium-header { background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(194, 24, 91, 0.1)); padding: 24px 32px; border-bottom: 1px solid rgba(212, 175, 55, 0.15); display: flex; justify-content: space-between; align-items: center; }
         .admin-premium-title { display: flex; align-items: center; gap: 14px; }
         .admin-premium-crown { font-size: 2.2rem; animation: pulse 2.5s ease-in-out infinite; }
         .admin-premium-title h2 { font-family: var(--font-serif); font-size: 1.5rem; background: var(--gold-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; }
         .admin-premium-title p { font-size: 10px; color: rgba(212, 175, 55, 0.6); letter-spacing: 3px; text-transform: uppercase; font-weight: 600; }
-        /* ⚡ THE ROYAL PRIME - Entrada épica premium */
-.prime-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
-    z-index: 99999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-}
-
-.prime-container.active {
-    animation: bgDarken 2.5s ease-out forwards;
-}
-
-@keyframes bgDarken {
-    0% { background: rgba(0, 0, 0, 0); }
-    30% { background: rgba(0, 0, 0, 0.85); }
-    100% { background: rgba(0, 0, 0, 0.85); }
-}
-
-/* 👑 CORONA CENTRAL */
-.prime-crown {
-    position: absolute;
-    font-size: 10rem;
-    opacity: 0;
-    transform: scale(0) rotate(-180deg);
-    z-index: 10;
-    filter: 
-        drop-shadow(0 0 20px #d4af37)
-        drop-shadow(0 0 40px #f5d76e)
-        drop-shadow(0 0 80px #d4af37);
-    color: #d4af37;
-    text-shadow: 0 0 30px #f5d76e, 0 0 60px #d4af37;
-}
-
-.prime-container.active .prime-crown {
-    animation: crownPrime 2.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
-@keyframes crownPrime {
-    0% { opacity: 0; transform: scale(0) rotate(-180deg); }
-    12% { opacity: 1; transform: scale(1.5) rotate(15deg); }
-    20% { opacity: 1; transform: scale(1.2) rotate(-10deg); }
-    28% { opacity: 1; transform: scale(1.4) rotate(5deg); }
-    35% { opacity: 1; transform: scale(1.3) rotate(0deg); }
-    60% { opacity: 1; transform: scale(1.5) rotate(0deg); }
-    85% { opacity: 1; transform: scale(1.5) rotate(0deg); }
-    100% { opacity: 0; transform: scale(3) rotate(0deg); }
-}
-
-/* ⚡ ANILLO DE LUZ */
-.prime-ring {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    border: 4px solid #d4af37;
-    transform: translate(-50%, -50%) scale(0);
-    opacity: 0;
-    z-index: 5;
-    box-shadow: 
-        0 0 40px #d4af37,
-        0 0 80px #f5d76e,
-        inset 0 0 40px #d4af37;
-}
-
-.prime-container.active .prime-ring {
-    animation: ringExpand 1.5s ease-out 0.6s forwards;
-}
-
-@keyframes ringExpand {
-    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; border-width: 8px; }
-    30% { transform: translate(-50%, -50%) scale(3); opacity: 1; border-width: 4px; }
-    100% { transform: translate(-50%, -50%) scale(15); opacity: 0; border-width: 1px; }
-}
-
-/* 🌟 RAYOS GIRANDO */
-.prime-rays {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 150vmax;
-    height: 150vmax;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    z-index: 3;
-    opacity: 0;
-    background: conic-gradient(
-        from 0deg,
-        transparent 0deg,
-        rgba(212, 175, 55, 0.8) 8deg,
-        transparent 16deg,
-        transparent 30deg,
-        rgba(245, 215, 110, 0.7) 38deg,
-        transparent 46deg,
-        transparent 70deg,
-        rgba(212, 175, 55, 0.6) 78deg,
-        transparent 86deg,
-        transparent 110deg,
-        rgba(245, 215, 110, 0.8) 118deg,
-        transparent 126deg,
-        transparent 150deg,
-        rgba(212, 175, 55, 0.7) 158deg,
-        transparent 166deg,
-        transparent 190deg,
-        rgba(245, 215, 110, 0.6) 198deg,
-        transparent 206deg,
-        transparent 230deg,
-        rgba(212, 175, 55, 0.8) 238deg,
-        transparent 246deg,
-        transparent 270deg,
-        rgba(245, 215, 110, 0.7) 278deg,
-        transparent 286deg,
-        transparent 310deg,
-        rgba(212, 175, 55, 0.6) 318deg,
-        transparent 326deg,
-        transparent 350deg
-    );
-}
-
-.prime-container.active .prime-rays {
-    animation: raysSpin 2.5s ease-out forwards;
-}
-
-@keyframes raysSpin {
-    0% { transform: translate(-50%, -50%) rotate(0deg) scale(0.2); opacity: 0; }
-    20% { opacity: 1; }
-    60% { transform: translate(-50%, -50%) rotate(180deg) scale(0.8); opacity: 0.6; }
-    100% { transform: translate(-50%, -50%) rotate(360deg) scale(1.5); opacity: 0; }
-}
-
-/* 💎 PARTÍCULAS DE DIAMANTE */
-.prime-sparkles {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    z-index: 8;
-}
-
-.prime-sparkle {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    background: radial-gradient(circle, #fff 0%, #f5d76e 40%, #d4af37 70%, transparent 100%);
-    border-radius: 50%;
-    opacity: 0;
-    box-shadow: 0 0 10px #f5d76e, 0 0 20px #d4af37;
-}
-
-.prime-container.active .prime-sparkle {
-    animation: sparkleShoot 1.8s cubic-bezier(0.2, 0.8, 0.4, 1) 0.5s forwards;
-}
-
-@keyframes sparkleShoot {
-    0% { opacity: 0; transform: translate(0, 0) scale(0); }
-    20% { opacity: 1; transform: translate(0, 0) scale(1.5); }
-    100% { opacity: 0; transform: translate(var(--x), var(--y)) scale(0); }
-}
-
-/* 🌈 FLASH DORADO FINAL */
-.prime-flash {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle, #f5d76e 0%, #d4af37 40%, #b8952a 70%, transparent 100%);
-    opacity: 0;
-    z-index: 15;
-    pointer-events: none;
-}
-
-.prime-container.active .prime-flash {
-    animation: flashBurst 0.8s ease-out 1.4s forwards;
-}
-
-@keyframes flashBurst {
-    0% { opacity: 0; }
-    40% { opacity: 0.9; }
-    100% { opacity: 0; }
-}
-
-/* 🎬 PANEL ADMIN aparece con zoom */
-.admin-premium-overlay.show .admin-premium {
-    animation: adminRoyalEntrance 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 1.8s both;
-    will-change: transform, opacity;
-}
-
-@keyframes adminRoyalEntrance {
-    0% { opacity: 0; transform: scale(0.3) rotate(-5deg); }
-    60% { opacity: 1; transform: scale(1.05) rotate(2deg); }
-    100% { opacity: 1; transform: scale(1) rotate(0deg); }
-}
-
-/* 👑 Corona del panel rebotando */
-.admin-premium-overlay.show .admin-premium-crown {
-    animation: crownBounceRoyal 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 2.1s both;
-}
-
-@keyframes crownBounceRoyal {
-    0% { opacity: 0; transform: scale(0) rotate(-180deg); }
-    70% { opacity: 1; transform: scale(1.4) rotate(15deg); }
-    100% { opacity: 1; transform: scale(1) rotate(0deg); }
-}
-
-/* 🎬 Tabs apareciendo en cascada */
-.admin-premium-overlay.show .admin-premium-tab {
-    animation: tabRoyalIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
-}
-
-.admin-premium-overlay.show .admin-premium-tab:nth-child(1) { animation-delay: 2.3s; }
-.admin-premium-overlay.show .admin-premium-tab:nth-child(2) { animation-delay: 2.35s; }
-.admin-premium-overlay.show .admin-premium-tab:nth-child(3) { animation-delay: 2.4s; }
-.admin-premium-overlay.show .admin-premium-tab:nth-child(4) { animation-delay: 2.45s; }
-.admin-premium-overlay.show .admin-premium-tab:nth-child(5) { animation-delay: 2.5s; }
-.admin-premium-overlay.show .admin-premium-tab:nth-child(6) { animation-delay: 2.55s; }
-.admin-premium-overlay.show .admin-premium-tab:nth-child(7) { animation-delay: 2.6s; }
-.admin-premium-overlay.show .admin-premium-tab:nth-child(8) { animation-delay: 2.65s; }
-
-@keyframes tabRoyalIn {
-    from { opacity: 0; transform: translateY(25px) scale(0.8); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
-}
         .admin-premium-close { background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.3); color: var(--gold); width: 40px; height: 40px; border-radius: 50%; font-size: 1.3rem; cursor: pointer; }
         .admin-premium-close:hover { background: rgba(212, 175, 55, 0.2); transform: rotate(90deg); }
         .admin-premium-tabs { display: flex; padding: 16px 24px; gap: 6px; background: rgba(0, 0, 0, 0.3); border-bottom: 1px solid rgba(212, 175, 55, 0.1); overflow-x: auto; }
@@ -630,7 +386,7 @@ body.admin-open #particles-js {
         .admin-premium-tab { padding: 10px 18px; border-radius: 12px; border: 1px solid rgba(212, 175, 55, 0.15); background: rgba(212, 175, 55, 0.03); color: rgba(212, 175, 55, 0.7); font-weight: 700; font-size: 11px; cursor: pointer; white-space: nowrap; font-family: var(--font-sans); }
         .admin-premium-tab:hover { background: rgba(212, 175, 55, 0.1); color: var(--gold); }
         .admin-premium-tab.active { background: var(--gold-gradient); color: #1a0b1a; border-color: transparent; }
-        .admin-premium-body { flex: 1; overflow-y: auto; padding: 24px 32px 32px; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+        .admin-premium-body { flex: 1; overflow-y: auto; padding: 24px 32px 32px; }
         .admin-tab-content { display: none; }
         .admin-tab-content.active { display: block; animation: fadeInUp 0.3s ease; }
         .admin-stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 24px; }
@@ -1377,6 +1133,7 @@ body.admin-open #particles-js {
             top: 0; left: 0;
             width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
             z-index: 10000;
             display: none;
             align-items: center;
@@ -2339,8 +2096,7 @@ function formatPrice(p) { return `S/ ${safeNumber(p, 0).toFixed(2)}`; }
                     </div>
                 </div>
             `;
-            
-            document.body.classList.add('admin-open');
+
             modal.classList.add('show');
             document.body.style.overflow = 'hidden';
 
@@ -5113,257 +4869,208 @@ function crearPanelAdmin() {
 }
 
 function abrirPanelAdmin() {
-    // ⚡ Crear contenedor del ROYAL PRIME
-    const primeContainer = document.createElement('div');
-    primeContainer.className = 'prime-container';
-    
-    // 💎 Crear 12 partículas de diamante en diferentes direcciones
-    let sparklesHTML = '';
-    const numSparkles = 6;
-    for (let i = 0; i < numSparkles; i++) {
-        const angle = (360 / numSparkles) * i;
-        const distance = 200 + Math.random() * 150;
-        const x = Math.cos(angle * Math.PI / 180) * distance;
-        const y = Math.sin(angle * Math.PI / 180) * distance;
-        sparklesHTML += `<div class="prime-sparkle" style="--x: ${x}px; --y: ${y}px;"></div>`;
-    }
-    
-    primeContainer.innerHTML = `
-        <div class="prime-rays"></div>
-        <div class="prime-ring"></div>
-        <div class="prime-sparkles">${sparklesHTML}</div>
-        <div class="prime-crown">👑</div>
-        <div class="prime-flash"></div>
-    `;
-    document.body.appendChild(primeContainer);
-    
-    // Activar animación
-    requestAnimationFrame(() => {
-        primeContainer.classList.add('active');
-    });
-    
-    // Eliminar después de la animación (2.5s)
-    setTimeout(() => {
-        primeContainer.remove();
-    }, 3000);
-    
-        // 🚀 Pausar partículas y animaciones de fondo
-    if (window.pJSDom && window.pJSDom[0] && window.pJSDom[0].pJS) {
-        window.pJSDom[0].pJS.particles.move.enable = false;
-        if (window.pJSDom[0].pJS.fn && window.pJSDom[0].pJS.fn.particlesRefresh) {
-            cancelAnimationFrame(window.pJSDom[0].pJS.fn.drawAnimFrame);
-        }
-    }
-    
-    // Esperar 1.8s para que se vea el Prime épico, luego abrir el panel
-    setTimeout(() => {
-        let modal = document.getElementById('adminModal');
-        if (!modal) {
-            modal = document.createElement('div');
-            modal.id = 'adminModal';
-            modal.className = 'admin-premium-overlay';
-            modal.innerHTML = `
-                <div class="admin-premium">
-                    <div class="admin-premium-header">
-                        <div class="admin-premium-title">
-                            <span class="admin-premium-crown">👑</span>
-                            <div>
-                                <h2>Panel de Control</h2>
-                                <p>Paulina Accesorios · Admin</p>
-                            </div>
+    let modal = document.getElementById('adminModal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'adminModal';
+        modal.className = 'admin-premium-overlay';
+        modal.innerHTML = `
+            <div class="admin-premium">
+                <div class="admin-premium-header">
+                    <div class="admin-premium-title">
+                        <span class="admin-premium-crown">👑</span>
+                        <div>
+                            <h2>Panel de Control</h2>
+                            <p>Paulina Accesorios · Admin</p>
                         </div>
-                        <button class="admin-premium-close" onclick="cerrarPanelAdmin()">✕</button>
+                    </div>
+                    <button class="admin-premium-close" onclick="cerrarPanelAdmin()">✕</button>
+                </div>
+
+                <div class="admin-premium-tabs">
+                    <button class="admin-premium-tab active" data-tab="dashboard" onclick="cambiarTabAdmin('dashboard')">📊 Inicio</button>
+                    <button class="admin-premium-tab" data-tab="productos" onclick="cambiarTabAdmin('productos')">📦 Productos</button>
+                    <button class="admin-premium-tab" data-tab="agregar" onclick="cambiarTabAdmin('agregar')">➕ Agregar</button>
+                    <button class="admin-premium-tab" data-tab="cupones" onclick="cambiarTabAdmin('cupones')">🎟️ Cupones</button>
+                    <button class="admin-premium-tab" data-tab="pedidos" onclick="cambiarTabAdmin('pedidos')">📋 Pedidos</button>
+                    <button class="admin-premium-tab" data-tab="ventas" onclick="cambiarTabAdmin('ventas')">💰 Ventas</button>
+                    <button class="admin-premium-tab" data-tab="usuarios" onclick="cambiarTabAdmin('usuarios')">👥 Usuarios</button>
+                    <button class="admin-premium-tab" data-tab="stats" onclick="cambiarTabAdmin('stats')">📈 Stats</button>
+                </div>
+
+                <div class="admin-premium-body">
+                    <div id="tab-dashboard" class="admin-tab-content active">
+                        <div id="dashboardStats" class="admin-stats-grid">
+                            <p style="text-align:center;color:rgba(255,255,255,0.3);font-size:12px;grid-column:1/-1;">Cargando...</p>
+                        </div>
                     </div>
 
-                    <div class="admin-premium-tabs">
-                        <button class="admin-premium-tab active" data-tab="dashboard" onclick="cambiarTabAdmin('dashboard')">📊 Inicio</button>
-                        <button class="admin-premium-tab" data-tab="productos" onclick="cambiarTabAdmin('productos')">📦 Productos</button>
-                        <button class="admin-premium-tab" data-tab="agregar" onclick="cambiarTabAdmin('agregar')">➕ Agregar</button>
-                        <button class="admin-premium-tab" data-tab="cupones" onclick="cambiarTabAdmin('cupones')">🎟️ Cupones</button>
-                        <button class="admin-premium-tab" data-tab="pedidos" onclick="cambiarTabAdmin('pedidos')">📋 Pedidos</button>
-                        <button class="admin-premium-tab" data-tab="ventas" onclick="cambiarTabAdmin('ventas')">💰 Ventas</button>
-                        <button class="admin-premium-tab" data-tab="usuarios" onclick="cambiarTabAdmin('usuarios')">👥 Usuarios</button>
-                        <button class="admin-premium-tab" data-tab="stats" onclick="cambiarTabAdmin('stats')">📈 Stats</button>
+                    <div id="tab-productos" class="admin-tab-content">
+                        <div class="admin-search-bar">
+                            <input type="text" id="adminBuscarProducto" class="admin-input" placeholder="🔍 Buscar..." oninput="filtrarProductosAdmin()">
+                            <button class="admin-btn admin-btn-secondary" onclick="cargarProductosAdmin()">🔄</button>
+                        </div>
+                        <div id="adminProductosLista"></div>
                     </div>
 
-                    <div class="admin-premium-body">
-                        <div id="tab-dashboard" class="admin-tab-content active">
-                            <div id="dashboardStats" class="admin-stats-grid">
-                                <p style="text-align:center;color:rgba(255,255,255,0.3);font-size:12px;grid-column:1/-1;">Cargando...</p>
+                    <div id="tab-agregar" class="admin-tab-content">
+                        <div class="admin-panel">
+                            <div class="admin-panel-title">➕ Nuevo producto</div>
+                            <div class="admin-form-group">
+                                <label class="admin-label">📦 Nombre *</label>
+                                <input type="text" id="adminNombre" class="admin-input">
                             </div>
-                        </div>
-
-                        <div id="tab-productos" class="admin-tab-content">
-                            <div class="admin-search-bar">
-                                <input type="text" id="adminBuscarProducto" class="admin-input" placeholder="🔍 Buscar..." oninput="filtrarProductosAdmin()">
-                                <button class="admin-btn admin-btn-secondary" onclick="cargarProductosAdmin()">🔄</button>
+                            <div class="admin-form-row">
+                                <div class="admin-form-group">
+                                    <label class="admin-label">💰 Precio *</label>
+                                    <input type="number" id="adminPrecio" class="admin-input" step="0.01">
+                                </div>
+                                <div class="admin-form-group">
+                                    <label class="admin-label">💸 Precio anterior</label>
+                                    <input type="number" id="adminPrecioOld" class="admin-input" step="0.01">
+                                </div>
                             </div>
-                            <div id="adminProductosLista"></div>
-                        </div>
-
-                        <div id="tab-agregar" class="admin-tab-content">
-                            <div class="admin-panel">
-                                <div class="admin-panel-title">➕ Nuevo producto</div>
-                                <div class="admin-form-group">
-                                    <label class="admin-label">📦 Nombre *</label>
-                                    <input type="text" id="adminNombre" class="admin-input">
-                                </div>
-                                <div class="admin-form-row">
-                                    <div class="admin-form-group">
-                                        <label class="admin-label">💰 Precio *</label>
-                                        <input type="number" id="adminPrecio" class="admin-input" step="0.01">
-                                    </div>
-                                    <div class="admin-form-group">
-                                        <label class="admin-label">💸 Precio anterior</label>
-                                        <input type="number" id="adminPrecioOld" class="admin-input" step="0.01">
-                                    </div>
-                                </div>
-                                <div class="admin-form-group">
-                                    <label class="admin-label">📝 Descripción</label>
-                                    <input type="text" id="adminDescripcion" class="admin-input">
-                                </div>
-                                <div class="admin-form-group">
-                                    <label class="admin-label">📸 Imagen del producto</label>
-                                    <div class="admin-file-upload">
-                                        <label for="adminImagenFile" class="admin-file-btn">
-                                            <span style="font-size: 1.2rem;">📁</span>
-                                            <span id="adminImagenLabel">Elegir imagen de mi galería</span>
-                                            <input type="file" id="adminImagenFile" accept="image/*" onchange="subirImagenAdmin(event)">
-                                        </label>
-                                        <input type="hidden" id="adminImagen" value="">
-                                        <div class="admin-image-preview" id="adminImagenPreview">
-                                            <img id="adminImagenPreviewImg" src="" alt="Vista previa">
-                                            <button class="remove-image" type="button" onclick="quitarImagenAdmin()">✕</button>
-                                        </div>
-                                        <div class="admin-upload-progress" id="adminUploadProgress">
-                                            <div class="admin-upload-progress-fill" id="adminUploadProgressFill"></div>
-                                        </div>
-                                        <div class="admin-upload-status" id="adminUploadStatus"></div>
-                                    </div>
-                                </div>
-                                <div class="admin-form-row">
-                                    <div class="admin-form-group">
-                                        <label class="admin-label">📊 Stock</label>
-                                        <input type="number" id="adminStock" class="admin-input">
-                                    </div>
-                                    <div class="admin-form-group">
-                                        <label class="admin-label">⭐ Badge</label>
-                                        <input type="text" id="adminBadge" class="admin-input" placeholder="⭐ Top">
-                                    </div>
-                                </div>
-                                <div class="admin-form-group">
-                                    <label class="admin-label">📂 Categoría</label>
-                                    <select id="adminCategoria" class="admin-select">
-                                        <option value="aretes">📿 Aretes</option>
-                                        <option value="pestanas">👁️ Pestañas</option>
-                                        <option value="collares">📿 Collares</option>
-                                        <option value="maquillaje">💄 Maquillaje</option>
-                                        <option value="capilar">💈 Cuidado Capilar</option>
-                                    </select>
-                                </div>
-                                <button class="admin-btn admin-btn-primary admin-btn-full" onclick="guardarProducto()">✅ Guardar</button>
+                            <div class="admin-form-group">
+                                <label class="admin-label">📝 Descripción</label>
+                                <input type="text" id="adminDescripcion" class="admin-input">
                             </div>
-                        </div>
-
-                        <div id="tab-cupones" class="admin-tab-content">
-                            <div class="admin-panel">
-                                <div class="admin-panel-title">🎟️ Crear cupón</div>
-                                <div class="admin-form-row">
-                                    <div class="admin-form-group">
-                                        <label class="admin-label">Código *</label>
-                                        <input type="text" id="cuponCodigo" class="admin-input" placeholder="VERANO25" oninput="this.value=this.value.toUpperCase()">
-                                    </div>
-                                    <div class="admin-form-group">
-                                        <label class="admin-label">Descuento % *</label>
-                                        <input type="number" id="cuponDescuento" class="admin-input" placeholder="25" min="1" max="100">
-                                    </div>
-                                </div>
-                                <div class="admin-form-group">
-                                    <label class="admin-label">Descripción</label>
-                                    <input type="text" id="cuponDescripcion" class="admin-input" placeholder="25% OFF en toda la tienda">
-                                </div>
-                                <div class="admin-form-row">
-                                    <div class="admin-form-group">
-                                        <label class="admin-label">📅 Fecha inicio</label>
-                                        <input type="text" id="cuponFechaInicio" class="admin-input" placeholder="2026-01-01">
-                                        <small style="font-size:9px;color:rgba(255,255,255,0.4);display:block;margin-top:4px;">Formato: AAAA-MM-DD · Vacío = sin inicio</small>
-                                    </div>
-                                    <div class="admin-form-group">
-                                        <label class="admin-label">📅 Fecha expiración</label>
-                                        <input type="text" id="cuponFechaExpiracion" class="admin-input" placeholder="2026-12-31">
-                                        <small style="font-size:9px;color:rgba(255,255,255,0.4);display:block;margin-top:4px;">Formato: AAAA-MM-DD · Vacío = sin expiración</small>
-                                    </div>
-                                </div>
-                                <div class="admin-form-group">
-                                    <label class="admin-label">Límite total de usos (0 = ilimitado)</label>
-                                    <input type="number" id="cuponLimite" class="admin-input" placeholder="100" min="0">
-                                </div>
-                                <div class="admin-form-group">
-                                    <label class="admin-label">
-                                        <input type="checkbox" id="cuponAnuncio" checked> 📢 Mostrar anuncio en la web
+                            <div class="admin-form-group">
+                                <label class="admin-label">📸 Imagen del producto</label>
+                                <div class="admin-file-upload">
+                                    <label for="adminImagenFile" class="admin-file-btn">
+                                        <span style="font-size: 1.2rem;">📁</span>
+                                        <span id="adminImagenLabel">Elegir imagen de mi galería</span>
+                                        <input type="file" id="adminImagenFile" accept="image/*" onchange="subirImagenAdmin(event)">
                                     </label>
+                                    <input type="hidden" id="adminImagen" value="">
+                                    <div class="admin-image-preview" id="adminImagenPreview">
+                                        <img id="adminImagenPreviewImg" src="" alt="Vista previa">
+                                        <button class="remove-image" type="button" onclick="quitarImagenAdmin()">✕</button>
+                                    </div>
+                                    <div class="admin-upload-progress" id="adminUploadProgress">
+                                        <div class="admin-upload-progress-fill" id="adminUploadProgressFill"></div>
+                                    </div>
+                                    <div class="admin-upload-status" id="adminUploadStatus"></div>
                                 </div>
-                                <button class="admin-btn admin-btn-primary admin-btn-full" onclick="crearCupon()">🎟️ Crear cupón</button>
                             </div>
-                            <div id="adminCuponesLista"></div>
-                        </div>
-
-                        <div id="tab-pedidos" class="admin-tab-content">
-                            <div class="admin-search-bar">
-                                <input type="text" id="adminBuscarPedido" class="admin-input" placeholder="🔍 Buscar cliente..." oninput="filtrarPedidosAdmin()">
-                                <button class="admin-btn admin-btn-secondary" onclick="cargarPedidosAdmin()">🔄</button>
-                            </div>
-                            <div id="adminPedidosLista"></div>
-                        </div>
-
-                        <div id="tab-ventas" class="admin-tab-content">
-                            <div class="admin-panel">
-                                <div class="admin-panel-title">📊 Resumen de ventas</div>
-                                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px;">
-                                    <button class="admin-btn admin-btn-secondary admin-btn-sm" onclick="cambiarPeriodoVentas('dia', this)">📅 Día</button>
-                                    <button class="admin-btn admin-btn-secondary admin-btn-sm" onclick="cambiarPeriodoVentas('semana', this)">📅 Semana</button>
-                                    <button class="admin-btn admin-btn-primary admin-btn-sm" onclick="cambiarPeriodoVentas('mes', this)">📅 Mes</button>
-                                    <button class="admin-btn admin-btn-secondary admin-btn-sm" onclick="cambiarPeriodoVentas('todo', this)">📅 Todo</button>
+                            <div class="admin-form-row">
+                                <div class="admin-form-group">
+                                    <label class="admin-label">📊 Stock</label>
+                                    <input type="number" id="adminStock" class="admin-input">
                                 </div>
-                                <div id="ventasResumen"></div>
+                                <div class="admin-form-group">
+                                    <label class="admin-label">⭐ Badge</label>
+                                    <input type="text" id="adminBadge" class="admin-input" placeholder="⭐ Top">
+                                </div>
                             </div>
-                            <div class="admin-panel">
-                                <div class="admin-panel-title">🏆 Top productos</div>
-                                <div id="ventasTopProductos"></div>
+                            <div class="admin-form-group">
+                                <label class="admin-label">📂 Categoría</label>
+                                <select id="adminCategoria" class="admin-select">
+                                    <option value="aretes">📿 Aretes</option>
+                                    <option value="pestanas">👁️ Pestañas</option>
+                                    <option value="collares">📿 Collares</option>
+                                    <option value="maquillaje">💄 Maquillaje</option>
+                                    <option value="capilar">💈 Cuidado Capilar</option>
+                                </select>
                             </div>
+                            <button class="admin-btn admin-btn-primary admin-btn-full" onclick="guardarProducto()">✅ Guardar</button>
                         </div>
+                    </div>
 
-                        <div id="tab-usuarios" class="admin-tab-content">
-                            <div class="admin-search-bar">
-                                <input type="text" id="adminBuscarUsuario" class="admin-input" placeholder="🔍 Buscar usuario..." oninput="filtrarUsuariosAdmin()">
-                                <button class="admin-btn admin-btn-secondary" onclick="cargarUsuariosAdmin()">🔄</button>
+                    <div id="tab-cupones" class="admin-tab-content">
+                        <div class="admin-panel">
+                            <div class="admin-panel-title">🎟️ Crear cupón</div>
+                            <div class="admin-form-row">
+                                <div class="admin-form-group">
+                                    <label class="admin-label">Código *</label>
+                                    <input type="text" id="cuponCodigo" class="admin-input" placeholder="VERANO25" oninput="this.value=this.value.toUpperCase()">
+                                </div>
+                                <div class="admin-form-group">
+                                    <label class="admin-label">Descuento % *</label>
+                                    <input type="number" id="cuponDescuento" class="admin-input" placeholder="25" min="1" max="100">
+                                </div>
                             </div>
-                            <div id="adminUsuariosLista"></div>
+                            <div class="admin-form-group">
+                                <label class="admin-label">Descripción</label>
+                                <input type="text" id="cuponDescripcion" class="admin-input" placeholder="25% OFF en toda la tienda">
+                            </div>
+                            <div class="admin-form-row">
+                                <div class="admin-form-group">
+                                    <label class="admin-label">📅 Fecha inicio</label>
+                                    <input type="text" id="cuponFechaInicio" class="admin-input" placeholder="2026-01-01">
+                                    <small style="font-size:9px;color:rgba(255,255,255,0.4);display:block;margin-top:4px;">Formato: AAAA-MM-DD · Vacío = sin inicio</small>
+                                </div>
+                                <div class="admin-form-group">
+                                    <label class="admin-label">📅 Fecha expiración</label>
+                                    <input type="text" id="cuponFechaExpiracion" class="admin-input" placeholder="2026-12-31">
+                                    <small style="font-size:9px;color:rgba(255,255,255,0.4);display:block;margin-top:4px;">Formato: AAAA-MM-DD · Vacío = sin expiración</small>
+                                </div>
+                            </div>
+                            <div class="admin-form-group">
+                                <label class="admin-label">Límite total de usos (0 = ilimitado)</label>
+                                <input type="number" id="cuponLimite" class="admin-input" placeholder="100" min="0">
+                            </div>
+                            <div class="admin-form-group">
+                                <label class="admin-label">
+                                    <input type="checkbox" id="cuponAnuncio" checked> 📢 Mostrar anuncio en la web
+                                </label>
+                            </div>
+                            <button class="admin-btn admin-btn-primary admin-btn-full" onclick="crearCupon()">🎟️ Crear cupón</button>
                         </div>
+                        <div id="adminCuponesLista"></div>
+                    </div>
 
-                        <div id="tab-stats" class="admin-tab-content">
-                            <div id="adminStatsContent"></div>
+                    <div id="tab-pedidos" class="admin-tab-content">
+                        <div class="admin-search-bar">
+                            <input type="text" id="adminBuscarPedido" class="admin-input" placeholder="🔍 Buscar cliente..." oninput="filtrarPedidosAdmin()">
+                            <button class="admin-btn admin-btn-secondary" onclick="cargarPedidosAdmin()">🔄</button>
                         </div>
+                        <div id="adminPedidosLista"></div>
+                    </div>
+
+                    <div id="tab-ventas" class="admin-tab-content">
+                        <div class="admin-panel">
+                            <div class="admin-panel-title">📊 Resumen de ventas</div>
+                            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px;">
+                                <button class="admin-btn admin-btn-secondary admin-btn-sm" onclick="cambiarPeriodoVentas('dia', this)">📅 Día</button>
+                                <button class="admin-btn admin-btn-secondary admin-btn-sm" onclick="cambiarPeriodoVentas('semana', this)">📅 Semana</button>
+                                <button class="admin-btn admin-btn-primary admin-btn-sm" onclick="cambiarPeriodoVentas('mes', this)">📅 Mes</button>
+                                <button class="admin-btn admin-btn-secondary admin-btn-sm" onclick="cambiarPeriodoVentas('todo', this)">📅 Todo</button>
+                            </div>
+                            <div id="ventasResumen"></div>
+                        </div>
+                        <div class="admin-panel">
+                            <div class="admin-panel-title">🏆 Top productos</div>
+                            <div id="ventasTopProductos"></div>
+                        </div>
+                    </div>
+
+                    <div id="tab-usuarios" class="admin-tab-content">
+                        <div class="admin-search-bar">
+                            <input type="text" id="adminBuscarUsuario" class="admin-input" placeholder="🔍 Buscar usuario..." oninput="filtrarUsuariosAdmin()">
+                            <button class="admin-btn admin-btn-secondary" onclick="cargarUsuariosAdmin()">🔄</button>
+                        </div>
+                        <div id="adminUsuariosLista"></div>
+                    </div>
+
+                    <div id="tab-stats" class="admin-tab-content">
+                        <div id="adminStatsContent"></div>
                     </div>
                 </div>
-            `;
-            document.body.appendChild(modal);
-        }
-        modal.classList.add('show');
-        document.body.style.overflow = 'hidden';
-        cambiarTabAdmin('dashboard');
-    }, 1800);
+            </div>
+        `;
+        document.body.appendChild(modal);
+    }
+    modal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+    cambiarTabAdmin('dashboard');
 }
+
 function cerrarPanelAdmin() {
     const m = document.getElementById('adminModal');
     if (m) { m.classList.remove('show'); document.body.style.overflow = ''; }
-    document.body.classList.remove('admin-open');
-        // 🚀 Reanudar partículas
-    if (window.pJSDom && window.pJSDom[0] && window.pJSDom[0].pJS) {
-        window.pJSDom[0].pJS.particles.move.enable = true;
-        window.pJSDom[0].pJS.fn.particlesRefresh();
-    }
 }
+
 function cambiarTabAdmin(tab) {
     document.querySelectorAll('.admin-tab-content').forEach(el => el.classList.remove('active'));
     document.querySelectorAll('.admin-premium-tab').forEach(el => el.classList.toggle('active', el.dataset.tab === tab));
