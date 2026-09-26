@@ -582,60 +582,21 @@
             font-size: 1rem;
         }
         
-/* 🎬 Animaciones de rotación tipo carrusel vertical */
-.oferta-card.rotating-out {
-    animation: ofertaSlideUp 0.45s ease-in forwards;
+/* 🎬 Animación solo del contenido interno */
+.oferta-card .card-content {
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    width: 100%;
 }
 
-.oferta-card.rotating-in {
-    animation: ofertaSlideUpIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+.oferta-card .card-content.fade-out {
+    opacity: 0;
+    transform: translateY(-15px);
 }
 
-@keyframes ofertaSlideUp {
-    0% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-    100% {
-        opacity: 0;
-        transform: translateY(-100%) scale(0.85);
-    }
-}
-
-@keyframes ofertaSlideUpIn {
-    0% {
-        opacity: 0;
-        transform: translateY(100%) scale(0.85);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-/* Indicador de rotación (puntitos) */
-.oferta-card .rotation-dots {
-    position: absolute;
-    bottom: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 5px;
-    z-index: 5;
-}
-
-.oferta-card .rotation-dots .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: rgba(212, 175, 55, 0.3);
-    transition: all 0.3s ease;
-}
-
-.oferta-card .rotation-dots .dot.active {
-    background: var(--gold);
-    width: 20px;
-    border-radius: 3px;
+.oferta-card .card-content.fade-in {
+    opacity: 0;
+    transform: translateY(15px);
+    transition: none;
 }
         /* ========================================
    ✨ ANIMACIONES AVANZADAS
@@ -823,19 +784,6 @@
 @keyframes preloaderFloat {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-10px); }
-}
-
-/* 🎬 17. Ofertas con entrada escalonada */
-.oferta-card {
-    animation: ofertaSlide 0.7s ease-out backwards;
-}
-.oferta-card:nth-child(1) { animation-delay: 0.1s; }
-.oferta-card:nth-child(2) { animation-delay: 0.25s; }
-.oferta-card:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes ofertaSlide {
-    from { opacity: 0; transform: translateY(40px); }
-    to { opacity: 1; transform: translateY(0); }
 }
 
 /* 🎬 18. Card de producto al hacer hover más premium */
@@ -4781,11 +4729,18 @@ function renderizarProductoOferta() {
     const el = document.getElementById('ofertaProducto');
     if (!el) return;
 
+    // 🆕 Asegurar que exista el wrapper de contenido
+    let content = el.querySelector('.card-content');
+    if (!content) {
+        el.innerHTML = '<div class="card-content"></div>';
+        content = el.querySelector('.card-content');
+    }
+
     const ofertas = obtenerProductosOferta();
     if (ofertas.length === 0) {
         productoEnOfertaActual = null;
         el.classList.add('sin-oferta');
-        el.innerHTML = `
+        content.innerHTML = `
             <span class="oferta-icon">😢</span>
             <h3>Sin ofertas por ahora</h3>
             <p>Vuelve pronto para más promociones</p>
@@ -4798,7 +4753,7 @@ function renderizarProductoOferta() {
     productoEnOfertaActual = p;
     const desc = p.precio_old ? Math.round(((p.precio_old - p.precio) / p.precio_old) * 100) : 0;
 
-    el.innerHTML = `
+    content.innerHTML = `
         <span class="oferta-icon">🔥</span>
         <div class="descuento-badge">-${desc}% OFF</div>
         <h3>${p.nombre}</h3>
@@ -4818,12 +4773,19 @@ function renderizarCuponOferta() {
     const el = document.getElementById('ofertaCupon');
     if (!el) return;
 
+    // 🆕 Asegurar que exista el wrapper de contenido
+    let content = el.querySelector('.card-content');
+    if (!content) {
+        el.innerHTML = '<div class="card-content"></div>';
+        content = el.querySelector('.card-content');
+    }
+
     const validos = obtenerCuponesValidos();
 
     if (validos.length === 0) {
         cuponEnOfertaActual = null;
         el.classList.add('sin-oferta');
-        el.innerHTML = `
+        content.innerHTML = `
             <span class="oferta-icon">😢</span>
             <h3>Sin cupones activos</h3>
             <p>Vuelve pronto para más promociones</p>
@@ -4840,7 +4802,7 @@ function renderizarCuponOferta() {
     cuponEnOfertaActual = c;
     const usosRestantes = c.limiteTotal > 0 ? c.limiteTotal - (c.usosActuales || 0) : null;
 
-    el.innerHTML = `
+    content.innerHTML = `
         <span class="oferta-icon">🎟️</span>
         <h3>Cupón especial</h3>
         <p>${c.descripcion || `${c.descuento}% OFF`}</p>
@@ -4850,10 +4812,6 @@ function renderizarCuponOferta() {
         </div>
         <button class="btn btn-gold btn-sm" onclick="copiarCodigo('${c.codigo}')" style="margin-top:8px;">📋 Copiar código</button>
     `;
-
-    if (typeof actualizarBannerFlotante === 'function') {
-        actualizarBannerFlotante();
-    }
 }
 
 // ============================================
@@ -4870,7 +4828,7 @@ function aplicarFiltroOferta() {
 }
 
 // ============================================
-// 🔄 ROTAR PRODUCTO
+// 🔄 ROTAR PRODUCTO (solo contenido interno)
 // ============================================
 function rotarProductoOferta() {
     if (window.__rotandoProd) return;
@@ -4883,22 +4841,40 @@ function rotarProductoOferta() {
 
     window.__rotandoProd = true;
 
-    el.classList.add('rotating-out');
+    const content = el.querySelector('.card-content');
+    if (!content) {
+        window.__rotandoProd = false;
+        return;
+    }
+
+    // 1. Fade out del contenido actual
+    content.classList.add('fade-out');
 
     setTimeout(() => {
-        el.classList.remove('rotating-out');
+        // 2. Avanzar índice y renderizar nuevo contenido
         indexProductoOferta = (indexProductoOferta + 1) % ofertas.length;
         renderizarProductoOferta();
 
-        el.classList.add('rotating-in');
+        const newContent = el.querySelector('.card-content');
+        if (newContent) {
+            // 3. Preparar fade in
+            newContent.classList.add('fade-in');
 
-        setTimeout(() => {
-            el.classList.remove('rotating-in');
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    newContent.classList.remove('fade-in');
+                });
+            });
+
+            setTimeout(() => {
+                newContent.classList.remove('fade-out');
+                window.__rotandoProd = false;
+            }, 400);
+        } else {
             window.__rotandoProd = false;
-        }, 600);
-    }, 450);
+        }
+    }, 350);
 }
-
 // ============================================
 // 🔄 ROTAR CUPÓN
 // ============================================
@@ -4913,20 +4889,39 @@ function rotarCuponOferta() {
 
     window.__rotandoCup = true;
 
-    el.classList.add('rotating-out');
+    const content = el.querySelector('.card-content');
+    if (!content) {
+        window.__rotandoCup = false;
+        return;
+    }
+
+    // 1. Fade out
+    content.classList.add('fade-out');
 
     setTimeout(() => {
-        el.classList.remove('rotating-out');
+        // 2. Avanzar índice y renderizar
         indexCuponOferta = (indexCuponOferta + 1) % validos.length;
         renderizarCuponOferta();
 
-        el.classList.add('rotating-in');
+        const newContent = el.querySelector('.card-content');
+        if (newContent) {
+            // 3. Fade in
+            newContent.classList.add('fade-in');
 
-        setTimeout(() => {
-            el.classList.remove('rotating-in');
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    newContent.classList.remove('fade-in');
+                });
+            });
+
+            setTimeout(() => {
+                newContent.classList.remove('fade-out');
+                window.__rotandoCup = false;
+            }, 400);
+        } else {
             window.__rotandoCup = false;
-        }, 600);
-    }, 450);
+        }
+    }, 350);
 }
 
 // ============================================
