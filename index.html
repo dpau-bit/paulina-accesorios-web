@@ -5363,6 +5363,7 @@ function cerrarPanelAdmin() {
         window.pJSDom[0].pJS.particles.move.enable = true;
         window.pJSDom[0].pJS.fn.particlesRefresh();
     }
+}
 function cambiarTabAdmin(tab) {
     document.querySelectorAll('.admin-tab-content').forEach(el => el.classList.remove('active'));
     document.querySelectorAll('.admin-premium-tab').forEach(el => el.classList.toggle('active', el.dataset.tab === tab));
