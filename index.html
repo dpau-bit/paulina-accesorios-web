@@ -2293,7 +2293,9 @@ body.shake-active {
         </div>
         <div class="footer-bottom">&copy; 2026 Paulina Accesorios · Hecho con 💖 para mujeres que brillan · 🇵🇪 Perú</div>
     </footer>
-            <script>
+            <script type="module">
+        // ============================================
+        // PARTÍCULAS
         // ============================================
         // PARTÍCULAS
         // ============================================
@@ -5252,209 +5254,330 @@ function renderizarListaProductosAdmin(lista) {
 // ============================================
 // ⚡ THE ROYAL PRIME - Efecto de entrada
 // ============================================
-function iniciarPrime() {
-    const primeContainer = document.createElement('div');
-    primeContainer.className = 'prime-container';
+async function iniciarPrime() {
+    const THREE = await import('https://unpkg.com/three@0.160.0/build/three.module.js');
+    const { EffectComposer } = await import('https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/EffectComposer.js');
+    const { RenderPass } = await import('https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/RenderPass.js');
+    const { UnrealBloomPass } = await import('https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/UnrealBloomPass.js');
+    const { ShaderPass } = await import('https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/ShaderPass.js');
+    const { RGBShiftShader } = await import('https://unpkg.com/three@0.160.0/examples/jsm/shaders/RGBShiftShader.js');
+    const { FilmPass } = await import('https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/FilmPass.js');
+    const { BokehPass } = await import('https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/BokehPass.js');
+    const { RoomEnvironment } = await import('https://unpkg.com/three@0.160.0/examples/jsm/environments/RoomEnvironment.js');
     
-    // 💎 24 partículas estrella
-    let sparklesHTML = '';
-    const numSparkles = 24;
-    for (let i = 0; i < numSparkles; i++) {
-        const angle = (360 / numSparkles) * i + Math.random() * 15;
-        const distance = 300 + Math.random() * 250;
-        const x = Math.cos(angle * Math.PI / 180) * distance;
-        const y = Math.sin(angle * Math.PI / 180) * distance;
-        sparklesHTML += `<div class="prime-sparkle" style="--x: ${x}px; --y: ${y}px;"></div>`;
-    }
+    // 🎨 Canvas
+    const canvas = document.createElement('canvas');
+    canvas.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:99999;pointer-events:none;';
+    document.body.appendChild(canvas);
     
-    // ✨ 24 rayos de luz
-    let raysHTML = '';
-    const numRays = 24;
-    for (let i = 0; i < numRays; i++) {
-        const rot = (360 / numRays) * i;
-        raysHTML += `<div class="prime-ray" style="--rot: ${rot}deg;"></div>`;
-    }
+    // 🎥 Escena + cámara + renderer
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x000000);
+    scene.fog = new THREE.FogExp2(0x000000, 0.02);
     
-    // 👑 CORONA SVG MEGA DETALLADA
-    const crownSVG = `
-        <svg viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
-            <defs>
-                <radialGradient id="crownGlow" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stop-color="#fff5b8" stop-opacity="1"/>
-                    <stop offset="40%" stop-color="#d4af37" stop-opacity="0.8"/>
-                    <stop offset="100%" stop-color="#8a6914" stop-opacity="0"/>
-                </radialGradient>
-                <linearGradient id="goldMain" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#ffffff"/>
-                    <stop offset="15%" stop-color="#fff5b8"/>
-                    <stop offset="35%" stop-color="#f5d76e"/>
-                    <stop offset="55%" stop-color="#d4af37"/>
-                    <stop offset="75%" stop-color="#f5d76e"/>
-                    <stop offset="100%" stop-color="#8a6914"/>
-                </linearGradient>
-                <linearGradient id="goldDark" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stop-color="#f5d76e"/>
-                    <stop offset="30%" stop-color="#d4af37"/>
-                    <stop offset="70%" stop-color="#8a6914"/>
-                    <stop offset="100%" stop-color="#5c4a0e"/>
-                </linearGradient>
-                <linearGradient id="goldShine" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#8a6914"/>
-                    <stop offset="40%" stop-color="#ffffff"/>
-                    <stop offset="60%" stop-color="#ffffff"/>
-                    <stop offset="100%" stop-color="#8a6914"/>
-                </linearGradient>
-                <linearGradient id="ruby" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#ff8a9b"/>
-                    <stop offset="30%" stop-color="#f06292"/>
-                    <stop offset="60%" stop-color="#c2185b"/>
-                    <stop offset="100%" stop-color="#6d0630"/>
-                </linearGradient>
-                <linearGradient id="diamond" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#ffffff"/>
-                    <stop offset="50%" stop-color="#e0f7ff"/>
-                    <stop offset="100%" stop-color="#80deea"/>
-                </linearGradient>
-                <filter id="crownGlowFilter">
-                    <feGaussianBlur stdDeviation="8" result="blur"/>
-                    <feMerge>
-                        <feMergeNode in="blur"/>
-                        <feMergeNode in="SourceGraphic"/>
-                    </feMerge>
-                </filter>
-                <filter id="innerShadow">
-                    <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/>
-                    <feOffset dx="2" dy="2" result="offsetBlur"/>
-                    <feComposite in="SourceGraphic" in2="offsetBlur" operator="over"/>
-                </filter>
-            </defs>
-            
-            <!-- Resplandor de fondo -->
-            <ellipse cx="250" cy="200" rx="230" ry="180" fill="url(#crownGlow)" opacity="0.5"/>
-            
-            <g filter="url(#crownGlowFilter)">
-                <!-- Base inferior oscura -->
-                <path d="M 75 290 L 60 340 L 440 340 L 425 290 Z" 
-                      fill="url(#goldDark)" 
-                      stroke="#5c4a0e" 
-                      stroke-width="3"/>
-                
-                <!-- Anillo decorativo base -->
-                <rect x="75" y="290" width="350" height="20" rx="5"
-                      fill="url(#goldMain)" 
-                      stroke="#5c4a0e" 
-                      stroke-width="3"/>
-                
-                <!-- Línea de brillo en la base -->
-                <rect x="85" y="295" width="330" height="4" rx="2"
-                      fill="url(#goldShine)" opacity="0.9"/>
-                
-                <!-- Puntas principales de la corona -->
-                <path d="M 75 290 L 50 100 L 110 200 L 250 50 L 390 200 L 450 100 L 425 290 Z" 
-                      fill="url(#goldMain)" 
-                      stroke="#5c4a0e" 
-                      stroke-width="4"
-                      stroke-linejoin="round"/>
-                
-                <!-- Sombra interna para dar profundidad -->
-                <path d="M 75 290 L 90 140 L 120 210 L 250 80 L 380 210 L 410 140 L 425 290 Z" 
-                      fill="url(#goldDark)" 
-                      opacity="0.5"/>
-                
-                <!-- Línea de brillo diagonal -->
-                <path d="M 75 290 L 50 100 L 110 200 L 250 50" 
-                      fill="none" 
-                      stroke="url(#goldShine)" 
-                      stroke-width="3" 
-                      opacity="0.8"/>
-                
-                <!-- Círculos en las puntas superiores -->
-                <circle cx="50" cy="100" r="24" fill="url(#goldMain)" stroke="#5c4a0e" stroke-width="4"/>
-                <circle cx="50" cy="100" r="12" fill="#fff5b8"/>
-                <circle cx="50" cy="100" r="6" fill="#ffffff"/>
-                
-                <circle cx="250" cy="50" r="30" fill="url(#goldMain)" stroke="#5c4a0e" stroke-width="4"/>
-                <circle cx="250" cy="50" r="15" fill="#fff5b8"/>
-                <circle cx="250" cy="50" r="7" fill="#ffffff"/>
-                
-                <circle cx="450" cy="100" r="24" fill="url(#goldMain)" stroke="#5c4a0e" stroke-width="4"/>
-                <circle cx="450" cy="100" r="12" fill="#fff5b8"/>
-                <circle cx="450" cy="100" r="6" fill="#ffffff"/>
-                
-                <!-- Rubíes centrales grandes -->
-                <ellipse cx="125" cy="245" rx="20" ry="26" fill="url(#ruby)" stroke="#5c4a0e" stroke-width="3"/>
-                <ellipse cx="125" cy="245" rx="8" ry="10" fill="#ff8a9b"/>
-                <circle cx="120" cy="238" r="3" fill="#ffffff" opacity="0.9"/>
-                
-                <ellipse cx="250" cy="245" rx="26" ry="32" fill="url(#ruby)" stroke="#5c4a0e" stroke-width="3"/>
-                <ellipse cx="250" cy="245" rx="11" ry="14" fill="#ff8a9b"/>
-                <circle cx="244" cy="237" r="4" fill="#ffffff" opacity="0.9"/>
-                
-                <ellipse cx="375" cy="245" rx="20" ry="26" fill="url(#ruby)" stroke="#5c4a0e" stroke-width="3"/>
-                <ellipse cx="375" cy="245" rx="8" ry="10" fill="#ff8a9b"/>
-                <circle cx="370" cy="238" r="3" fill="#ffffff" opacity="0.9"/>
-                
-                <!-- Diamantes pequeños -->
-                <path d="M 180 200 L 188 192 L 196 200 L 188 208 Z" fill="url(#diamond)" stroke="#5c4a0e" stroke-width="1"/>
-                <path d="M 304 200 L 312 192 L 320 200 L 312 208 Z" fill="url(#diamond)" stroke="#5c4a0e" stroke-width="1"/>
-                <path d="M 150 220 L 156 214 L 162 220 L 156 226 Z" fill="url(#diamond)"/>
-                <path d="M 338 220 L 344 214 L 350 220 L 344 226 Z" fill="url(#diamond)"/>
-                
-                <!-- Perlas decorativas -->
-                <circle cx="175" cy="270" r="8" fill="url(#goldMain)" stroke="#5c4a0e" stroke-width="2"/>
-                <circle cx="175" cy="270" r="3" fill="#ffffff"/>
-                <circle cx="325" cy="270" r="8" fill="url(#goldMain)" stroke="#5c4a0e" stroke-width="2"/>
-                <circle cx="325" cy="270" r="3" fill="#ffffff"/>
-                <circle cx="210" cy="285" r="6" fill="url(#goldMain)" stroke="#5c4a0e" stroke-width="2"/>
-                <circle cx="210" cy="285" r="2" fill="#ffffff"/>
-                <circle cx="290" cy="285" r="6" fill="url(#goldMain)" stroke="#5c4a0e" stroke-width="2"/>
-                <circle cx="290" cy="285" r="2" fill="#ffffff"/>
-                
-                <!-- Brillos blancos -->
-                <ellipse cx="250" cy="100" rx="12" ry="6" fill="#ffffff" opacity="0.9"/>
-                <ellipse cx="150" cy="230" rx="6" ry="3" fill="#ffffff" opacity="0.8"/>
-                <ellipse cx="350" cy="230" rx="6" ry="3" fill="#ffffff" opacity="0.8"/>
-                
-                <!-- Destellos estrella -->
-                <path d="M 250 100 L 252 108 L 260 110 L 252 112 L 250 120 L 248 112 L 240 110 L 248 108 Z" fill="#ffffff" opacity="0.9"/>
-                <path d="M 125 245 L 126 250 L 131 251 L 126 252 L 125 257 L 124 252 L 119 251 L 124 250 Z" fill="#ffffff"/>
-                <path d="M 375 245 L 376 250 L 381 251 L 376 252 L 375 257 L 374 252 L 369 251 L 374 250 Z" fill="#ffffff"/>
-            </g>
-        </svg>
-    `;
+    const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 100);
+    camera.position.set(0, 0, 8);
     
-    primeContainer.innerHTML = `
-        <div class="prime-rays-real">${raysHTML}</div>
-        <div class="prime-rings">
-            <div class="prime-ring-circle"></div>
-            <div class="prime-ring-circle"></div>
-            <div class="prime-ring-circle"></div>
-        </div>
-        <div class="prime-sparkles">${sparklesHTML}</div>
-        <div class="prime-crown">${crownSVG}</div>
-        <div class="prime-flash"></div>
-    `;
-    document.body.appendChild(primeContainer);
-    
-    requestAnimationFrame(() => {
-        primeContainer.classList.add('active');
+    const renderer = new THREE.WebGLRenderer({ 
+        canvas, 
+        antialias: true,
+        powerPreference: 'high-performance',
+        alpha: false
     });
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.2;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     
-    // 🎬 Screen shake cuando aparece la corona (t=0.5s)
-    setTimeout(() => {
-        document.body.classList.add('shake-active');
-        setTimeout(() => document.body.classList.remove('shake-active'), 600);
-    }, 500);
+    // 🌍 Environment HDRI realista
+    const pmremGenerator = new THREE.PMREMGenerator(renderer);
+    pmremGenerator.compileEquirectangularShader();
+    const envTexture = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
+    scene.environment = envTexture;
     
-    // 🎬 Screen shake fuerte cuando hace flash (t=1.7s)
-    setTimeout(() => {
-        document.body.classList.add('shake-active');
-        setTimeout(() => document.body.classList.remove('shake-active'), 600);
-    }, 1700);
+    // 💡 Iluminación cinematográfica
+    const keyLight = new THREE.DirectionalLight(0xffffff, 5);
+    keyLight.position.set(5, 8, 6);
+    keyLight.castShadow = true;
+    keyLight.shadow.mapSize.set(2048, 2048);
+    scene.add(keyLight);
     
-    setTimeout(() => {
-        primeContainer.remove();
-    }, 3500);
+    const fillLight = new THREE.DirectionalLight(0xa0c0ff, 2);
+    fillLight.position.set(-6, 2, 4);
+    scene.add(fillLight);
+    
+    const rimLight = new THREE.DirectionalLight(0xd4af37, 4);
+    rimLight.position.set(0, 5, -8);
+    scene.add(rimLight);
+    
+    const pinkLight = new THREE.PointLight(0xc2185b, 8, 20);
+    pinkLight.position.set(3, -3, 3);
+    scene.add(pinkLight);
+    
+    const goldLight = new THREE.PointLight(0xffd700, 10, 15);
+    goldLight.position.set(-2, 4, 2);
+    scene.add(goldLight);
+    
+    // 👑 Crear la corona 3D
+    const crown = crearCoronaUltraRealista(THREE);
+    scene.add(crown);
+    
+    // ✨ Post-processing nivel cine
+    const composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+    
+    const bloomPass = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 2.0, 0.8, 0.1);
+    composer.addPass(bloomPass);
+    
+    const rgbShiftPass = new ShaderPass(RGBShiftShader);
+    rgbShiftPass.uniforms['amount'].value = 0.0015;
+    composer.addPass(rgbShiftPass);
+    
+    const filmPass = new FilmPass(0.35, 0.025, 648);
+    filmPass.renderToScreen = false;
+    composer.addPass(filmPass);
+    
+    const bokehPass = new BokehPass(scene, camera, {
+        focus: 1.0, aperture: 0.0001, maxblur: 0.01,
+        width: innerWidth, height: innerHeight
+    });
+    composer.addPass(bokehPass);
+    
+    // 📳 Screen shake
+    function shake(intensity = 20, duration = 800) {
+        const start = Date.now();
+        function loop() {
+            const elapsed = Date.now() - start;
+            if (elapsed > duration) { document.body.style.transform = ''; return; }
+            const progress = 1 - (elapsed / duration);
+            const decay = Math.pow(progress, 2);
+            const amp = intensity * decay;
+            document.body.style.transform = `translate(${(Math.random() - 0.5) * amp * 2}px, ${(Math.random() - 0.5) * amp * 2}px) rotate(${(Math.random() - 0.5) * amp * 0.08}deg)`;
+            requestAnimationFrame(loop);
+        }
+        loop();
+    }
+    
+    const clock = new THREE.Clock();
+    let t = 0;
+    let fragments = [];
+    let exploded = false;
+    let explodedTime = 0;
+    let cameraShake = 0;
+    let timeSlowdown = 1;
+    
+    function animate() {
+        const rawDt = Math.min(clock.getDelta(), 0.05);
+        const dt = rawDt * timeSlowdown;
+        t += dt;
+        
+        if (t < 1.5) {
+            const p = t / 1.5;
+            const eased = easeOutExpo(p);
+            camera.position.z = 12 - p * 4;
+            camera.position.y = Math.sin(p * Math.PI) * 0.5;
+            crown.scale.setScalar(eased * 1.1);
+            crown.rotation.y = p * Math.PI * 8;
+            crown.rotation.x = 0.2 + Math.sin(p * Math.PI * 2) * 0.15;
+            bloomPass.strength = 0.8 + p * 1.8;
+            rgbShiftPass.uniforms['amount'].value = 0.001 + p * 0.005;
+        } else if (t < 1.8) {
+            crown.rotation.y += dt * 2.5;
+            crown.rotation.x += dt * 0.5;
+            bloomPass.strength = 2.8;
+            cameraShake = 0.5;
+        } else if (t >= 1.8 && !exploded) {
+            exploded = true;
+            explodedTime = t;
+            shake(25, 900);
+            cameraShake = 2.0;
+            scene.remove(crown);
+            fragments = crearFragmentosUltraRealistas(THREE, crown, scene);
+            
+            const flash1 = document.createElement('div');
+            flash1.style.cssText = 'position:fixed;inset:0;background:radial-gradient(circle,#ffffff,#f5d76e 30%,transparent 60%);z-index:100000;pointer-events:none;opacity:1;transition:opacity 0.15s ease;';
+            document.body.appendChild(flash1);
+            setTimeout(() => flash1.style.opacity = '0', 30);
+            setTimeout(() => flash1.remove(), 300);
+            
+            setTimeout(() => {
+                const flash2 = document.createElement('div');
+                flash2.style.cssText = 'position:fixed;inset:0;background:radial-gradient(circle,#f5d76e,#d4af37 40%,transparent 70%);z-index:100000;pointer-events:none;opacity:1;transition:opacity 0.6s ease;';
+                document.body.appendChild(flash2);
+                setTimeout(() => flash2.style.opacity = '0', 50);
+                setTimeout(() => flash2.remove(), 700);
+            }, 150);
+            
+            timeSlowdown = 0.3;
+            setTimeout(() => timeSlowdown = 1, 600);
+        }
+        
+        if (exploded) {
+            const elapsed = t - explodedTime;
+            fragments.forEach(f => {
+                f.velocity.y -= 4 * dt;
+                f.velocity.multiplyScalar(Math.pow(0.96, dt * 60));
+                f.mesh.position.add(f.velocity.clone().multiplyScalar(dt));
+                f.mesh.rotation.x += f.rotationSpeed.x * dt;
+                f.mesh.rotation.y += f.rotationSpeed.y * dt;
+                f.mesh.rotation.z += f.rotationSpeed.z * dt;
+                if (f.mesh.position.y < -4 && f.velocity.y < 0) {
+                    f.velocity.y *= -0.4;
+                    f.mesh.position.y = -4;
+                }
+                if (elapsed > 0.5) {
+                    f.mesh.material.opacity = Math.max(0, 1 - (elapsed - 0.5) / 1.2);
+                    f.mesh.material.transparent = true;
+                }
+                if (elapsed > 0.8) {
+                    f.mesh.scale.setScalar(Math.max(0, 1 - (elapsed - 0.8) / 1));
+                }
+            });
+            bloomPass.strength = Math.max(0, 3.5 - elapsed * 1.2);
+            rgbShiftPass.uniforms['amount'].value = Math.max(0, 0.006 - elapsed * 0.003);
+            bokehPass.uniforms['maxblur'].value = 0.01 + elapsed * 0.02;
+            if (cameraShake > 0) {
+                camera.position.x = (Math.random() - 0.5) * cameraShake;
+                camera.position.y = (Math.random() - 0.5) * cameraShake;
+                cameraShake *= 0.92;
+                if (cameraShake < 0.01) cameraShake = 0;
+            }
+        }
+        
+        composer.render();
+        if (t < 3.5) requestAnimationFrame(animate);
+        else {
+            canvas.style.transition = 'opacity 0.6s ease';
+            canvas.style.opacity = '0';
+            setTimeout(() => {
+                canvas.remove();
+                pmremGenerator.dispose();
+                envTexture.dispose();
+                renderer.dispose();
+            }, 700);
+        }
+    }
+    animate();
+}
+
+function crearCoronaUltraRealista(THREE) {
+    const group = new THREE.Group();
+    const oroPulido = new THREE.MeshPhysicalMaterial({ color: 0xd4af37, metalness: 1.0, roughness: 0.08, envMapIntensity: 2.5, clearcoat: 1.0, clearcoatRoughness: 0.05 });
+    const oroMate = new THREE.MeshPhysicalMaterial({ color: 0xb8952a, metalness: 1.0, roughness: 0.35, envMapIntensity: 2.0 });
+    const rubi = new THREE.MeshPhysicalMaterial({ color: 0xc2185b, metalness: 0.0, roughness: 0.02, transmission: 0.95, thickness: 0.8, ior: 2.4, envMapIntensity: 4.0, clearcoat: 1.0, clearcoatRoughness: 0.0, attenuationColor: new THREE.Color(0xff0066), attenuationDistance: 0.5 });
+    const diamante = new THREE.MeshPhysicalMaterial({ color: 0xffffff, metalness: 0.0, roughness: 0.0, transmission: 1.0, thickness: 0.5, ior: 2.42, envMapIntensity: 5.0, clearcoat: 1.0, clearcoatRoughness: 0.0, dispersion: 0.05 });
+    
+    const base = new THREE.Mesh(new THREE.TorusGeometry(1.8, 0.15, 32, 96), oroPulido);
+    base.rotation.x = Math.PI / 2; base.position.y = -0.7; base.castShadow = true;
+    group.add(base);
+    
+    const anilloSup = new THREE.Mesh(new THREE.TorusGeometry(1.8, 0.08, 24, 96), oroMate);
+    anilloSup.rotation.x = Math.PI / 2; anilloSup.position.y = -0.5;
+    group.add(anilloSup);
+    
+    for (let i = 0; i < 8; i++) {
+        const angle = (i / 8) * Math.PI * 2;
+        const x = Math.cos(angle) * 1.8, z = Math.sin(angle) * 1.8;
+        const altura = i % 2 === 0 ? 1.7 : 1.2;
+        const grosor = i % 2 === 0 ? 0.22 : 0.18;
+        const punta = new THREE.Mesh(new THREE.ConeGeometry(grosor, altura, 20), oroPulido);
+        punta.position.set(x, altura / 2 - 0.7, z); punta.castShadow = true;
+        group.add(punta);
+        const bola = new THREE.Mesh(new THREE.SphereGeometry(0.18, 32, 32), oroPulido);
+        bola.position.set(x, altura - 0.7, z); bola.castShadow = true;
+        group.add(bola);
+        const diam = new THREE.Mesh(new THREE.OctahedronGeometry(0.1, 1), diamante);
+        diam.position.set(x, altura - 0.7, z);
+        group.add(diam);
+    }
+    
+    for (let i = 0; i < 8; i++) {
+        const angle = (i / 8) * Math.PI * 2 + Math.PI / 8;
+        const x = Math.cos(angle) * 1.8, z = Math.sin(angle) * 1.8;
+        const rubiMesh = new THREE.Mesh(new THREE.OctahedronGeometry(0.18, 0), rubi);
+        rubiMesh.position.set(x, -0.35, z);
+        rubiMesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+        group.add(rubiMesh);
+    }
+    
+    const diamond = new THREE.Mesh(new THREE.OctahedronGeometry(0.45, 1), diamante);
+    diamond.position.set(0, 1.6, 0); diamond.castShadow = true;
+    group.add(diamond);
+    
+    for (let i = 0; i < 4; i++) {
+        const angle = (i / 4) * Math.PI * 2 + Math.PI / 4;
+        const dMesh = new THREE.Mesh(new THREE.OctahedronGeometry(0.12, 0), diamante);
+        dMesh.position.set(Math.cos(angle) * 0.5, 1.4, Math.sin(angle) * 0.5);
+        group.add(dMesh);
+    }
+    
+    for (let i = 0; i < 24; i++) {
+        const angle = (i / 24) * Math.PI * 2;
+        const adorno = new THREE.Mesh(new THREE.SphereGeometry(0.06, 16, 16), oroMate);
+        adorno.position.set(Math.cos(angle) * 1.8, -0.6, Math.sin(angle) * 1.8);
+        group.add(adorno);
+    }
+    
+    for (let i = 0; i < 12; i++) {
+        const angle = (i / 12) * Math.PI * 2 + Math.PI / 12;
+        const dMesh = new THREE.Mesh(new THREE.SphereGeometry(0.04, 12, 12), diamante);
+        dMesh.position.set(Math.cos(angle) * 1.8, -0.45, Math.sin(angle) * 1.8);
+        group.add(dMesh);
+    }
+    
+    group.rotation.x = 0.2;
+    return group;
+}
+
+function crearFragmentosUltraRealistas(THREE, crown, scene) {
+    const fragments = [];
+    const materiales = [
+        new THREE.MeshPhysicalMaterial({ color: 0xd4af37, metalness: 1, roughness: 0.08, envMapIntensity: 2.5, clearcoat: 1 }),
+        new THREE.MeshPhysicalMaterial({ color: 0xf5d76e, metalness: 1, roughness: 0.15, envMapIntensity: 2.5 }),
+        new THREE.MeshPhysicalMaterial({ color: 0xffffff, metalness: 0, roughness: 0.0, transmission: 1, thickness: 0.3, ior: 2.42, envMapIntensity: 4 }),
+        new THREE.MeshPhysicalMaterial({ color: 0xc2185b, metalness: 0, roughness: 0.02, transmission: 0.95, thickness: 0.4, ior: 2.4, envMapIntensity: 3, attenuationColor: new THREE.Color(0xff0066), attenuationDistance: 0.5 })
+    ];
+    
+    for (let i = 0; i < 150; i++) {
+        const tamaño = 0.04 + Math.random() * 0.12;
+        let geom;
+        const tipo = Math.random();
+        if (tipo < 0.4) geom = new THREE.IcosahedronGeometry(tamaño, 0);
+        else if (tipo < 0.65) geom = new THREE.TetrahedronGeometry(tamaño, 0);
+        else if (tipo < 0.85) geom = new THREE.OctahedronGeometry(tamaño, 0);
+        else geom = new THREE.DodecahedronGeometry(tamaño, 0);
+        
+        const material = materiales[Math.floor(Math.random() * materiales.length)].clone();
+        material.transparent = true;
+        material.opacity = 1;
+        
+        const mesh = new THREE.Mesh(geom, material);
+        mesh.position.set((Math.random() - 0.5) * 1.5, (Math.random() - 0.5) * 1.5 + 0.5, (Math.random() - 0.5) * 1.5);
+        mesh.castShadow = true;
+        scene.add(mesh);
+        
+        const speed = 4 + Math.random() * 8;
+        const angle1 = Math.random() * Math.PI * 2;
+        const angle2 = (Math.random() - 0.5) * Math.PI;
+        const velocity = new THREE.Vector3(
+            Math.cos(angle1) * Math.cos(angle2) * speed,
+            Math.sin(angle2) * speed + 3,
+            Math.sin(angle1) * Math.cos(angle2) * speed
+        );
+        
+        fragments.push({
+            mesh, velocity,
+            rotationSpeed: new THREE.Vector3((Math.random() - 0.5) * 25, (Math.random() - 0.5) * 25, (Math.random() - 0.5) * 25)
+        });
+    }
+    return fragments;
+}
+
+function easeOutExpo(x) {
+    return x === 1 ? 1 : 1 - Math.pow(2, -10 * x);
 }
 // ============================================
 // 👑 PANEL ADMIN
@@ -5470,7 +5593,9 @@ function crearPanelAdmin() {
 
 function abrirPanelAdmin() {
     // ⚡ Primero la animación Prime
-    iniciarPrime();
+    iniciarPrime().then(() => {
+        // ... pero esperamos con setTimeout de todas formas
+    });
     
     // ⏱️ Esperar 1.8s para que se vea la animación completa
     setTimeout(() => {
