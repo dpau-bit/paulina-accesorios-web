@@ -3617,6 +3617,217 @@ function getAIResponse(message) {
     
     return '🤔 Mmm... no entendí bien. ¿Me lo reformulas? 💖';
 }
+
+    // ============================================
+// 📸 SUBIR IMÁGENES A IMGBB
+// ============================================
+const IMGBB_API_KEY = '83a5551cf1fb7002cc6be75d10b5de1f';
+
+async function subirImagenAdmin(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+        mostrarNotificacion('⚠️ Solo imágenes permitidas', '⚠️');
+        return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+        mostrarNotificacion('⚠️ Imagen muy grande (máx 5MB)', '⚠️');
+        return;
+    }
+
+    const preview = document.getElementById('adminImagenPreview');
+    const previewImg = document.getElementById('adminImagenPreviewImg');
+    const progress = document.getElementById('adminUploadProgress');
+    const progressFill = document.getElementById('adminUploadProgressFill');
+    const status = document.getElementById('adminUploadStatus');
+    const label = document.getElementById('adminImagenLabel');
+    const inputHidden = document.getElementById('adminImagen');
+
+    // Vista previa local instantánea
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        previewImg.src = e.target.result;
+        preview.classList.add('show');
+    };
+    reader.readAsDataURL(file);
+
+    progress.classList.add('show');
+    status.classList.add('show');
+    status.textContent = '⏳ Subiendo imagen...';
+    status.style.color = 'rgba(212, 175, 55, 0.8)';
+    progressFill.style.width = '30%';
+    label.textContent = '📤 Subiendo...';
+
+    try {
+        // Convertir a base64
+        const base64 = await fileToBase64(file);
+        const base64SinPrefijo = base64.split(',')[1];
+
+        progressFill.style.width = '50%';
+
+        // Subir a ImgBB
+        const formData = new FormData();
+        formData.append('key', IMGBB_API_KEY);
+        formData.append('image', base64SinPrefijo);
+        formData.append('name', 'producto_' + Date.now());
+
+        const response = await fetch('https://api.imgbb.com/1/upload', {
+            method: 'POST',
+            body: formData
+        });
+
+        progressFill.style.width = '80%';
+
+        const data = await response.json();
+
+        if (!data.success) {
+            throw new Error(data.error?.message || 'Error al subir');
+        }
+
+        const imageUrl = data.data.url;
+
+        progressFill.style.width = '100%';
+        status.textContent = '✅ Imagen subida correctamente';
+        status.style.color = '#4ade80';
+        label.textContent = '✅ Imagen lista';
+
+        inputHidden.value = imageUrl;
+
+        mostrarNotificacion('✅ Imagen subida', '📸');
+        lanzarConfetti();
+
+        setTimeout(() => {
+            progress.classList.remove('show');
+            progressFill.style.width = '0%';
+        }, 1500);
+
+    } catch (error) {
+        console.error('❌ Error subiendo imagen:', error);
+        mostrarNotificacion('❌ Error al subir imagen', '❌');
+        status.textContent = '❌ Error al subir';
+        status.style.color = '#ff6b6b';
+        label.textContent = '📁 Reintentar';
+        progressFill.style.width = '0%';
+        setTimeout(() => progress.classList.remove('show'), 2000);
+    }
+}
+
+async function subirImagenEdit(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+        mostrarNotificacion('⚠️ Solo imágenes permitidas', '⚠️');
+        return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+        mostrarNotificacion('⚠️ Imagen muy grande (máx 5MB)', '⚠️');
+        return;
+    }
+
+    const preview = document.getElementById('editImagenPreview');
+    const previewImg = document.getElementById('editImagenPreviewImg');
+    const progress = document.getElementById('editUploadProgress');
+    const progressFill = document.getElementById('editUploadProgressFill');
+    const status = document.getElementById('editUploadStatus');
+    const label = document.getElementById('editImagenLabel');
+    const inputHidden = document.getElementById('editImagen');
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        previewImg.src = e.target.result;
+        preview.classList.add('show');
+    };
+    reader.readAsDataURL(file);
+
+    progress.classList.add('show');
+    status.classList.add('show');
+    status.textContent = '⏳ Subiendo imagen...';
+    status.style.color = 'rgba(212, 175, 55, 0.8)';
+    progressFill.style.width = '30%';
+    label.textContent = '📤 Subiendo...';
+
+    try {
+        const base64 = await fileToBase64(file);
+        const base64SinPrefijo = base64.split(',')[1];
+
+        progressFill.style.width = '50%';
+
+        const formData = new FormData();
+        formData.append('key', IMGBB_API_KEY);
+        formData.append('image', base64SinPrefijo);
+        formData.append('name', 'producto_' + Date.now());
+
+        const response = await fetch('https://api.imgbb.com/1/upload', {
+            method: 'POST',
+            body: formData
+        });
+
+        progressFill.style.width = '80%';
+
+        const data = await response.json();
+
+        if (!data.success) {
+            throw new Error(data.error?.message || 'Error al subir');
+        }
+
+        const imageUrl = data.data.url;
+
+        progressFill.style.width = '100%';
+        status.textContent = '✅ Imagen subida correctamente';
+        status.style.color = '#4ade80';
+        label.textContent = '✅ Imagen lista';
+
+        inputHidden.value = imageUrl;
+
+        mostrarNotificacion('✅ Imagen subida', '📸');
+        lanzarConfetti();
+
+        setTimeout(() => {
+            progress.classList.remove('show');
+            progressFill.style.width = '0%';
+        }, 1500);
+
+    } catch (error) {
+        console.error('❌ Error subiendo imagen:', error);
+        mostrarNotificacion('❌ Error al subir imagen', '❌');
+        status.textContent = '❌ Error al subir';
+        status.style.color = '#ff6b6b';
+        label.textContent = '📁 Reintentar';
+        progressFill.style.width = '0%';
+        setTimeout(() => progress.classList.remove('show'), 2000);
+    }
+}
+
+function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+}
+
+function quitarImagenAdmin() {
+    document.getElementById('adminImagen').value = '';
+    document.getElementById('adminImagenPreview').classList.remove('show');
+    document.getElementById('adminImagenPreviewImg').src = '';
+    document.getElementById('adminImagenFile').value = '';
+    document.getElementById('adminImagenLabel').textContent = 'Elegir imagen de mi galería';
+    mostrarNotificacion('🗑️ Imagen removida', '🗑️');
+}
+
+function quitarImagenEdit() {
+    document.getElementById('editImagen').value = '';
+    document.getElementById('editImagenPreview').classList.remove('show');
+    document.getElementById('editImagenPreviewImg').src = '';
+    document.getElementById('editImagenFile').value = '';
+    document.getElementById('editImagenLabel').textContent = 'Cambiar imagen';
+    mostrarNotificacion('🗑️ Imagen removida', '🗑️');
+}
 // ============================================
 // 📦 ADMIN - PRODUCTOS
 // ============================================
@@ -4793,6 +5004,10 @@ function renderizarListaProductosAdmin(lista) {
         window.toggleCuponInput = toggleCuponInput;
         window.aplicarCupon = aplicarCupon;
         window.quitarCupon = quitarCupon;
+        window.subirImagenAdmin = subirImagenAdmin;
+        window.subirImagenEdit = subirImagenEdit;
+        window.quitarImagenAdmin = quitarImagenAdmin;
+        window.quitarImagenEdit = quitarImagenEdit;
 // ============================================
 // 🔥 OFERTAS DINÁMICAS
 // ============================================
