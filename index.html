@@ -514,6 +514,7 @@
             transition: var(--transition-base);
             position: relative;
             overflow: hidden;
+            perspective: 1000px; 
         }
         [data-theme="dark"] .oferta-card {
             background: rgba(255, 255, 255, 0.02);
@@ -582,20 +583,24 @@
             font-size: 1rem;
         }
         
-/* 🎬 Animación solo del contenido interno */
+/* 🎬 Animación flip 3D solo del contenido interno */
 .oferta-card .card-content {
-    transition: opacity 0.35s ease, transform 0.35s ease;
+    transition: opacity 0.4s ease, transform 0.4s ease;
     width: 100%;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
 }
 
 .oferta-card .card-content.fade-out {
     opacity: 0;
-    transform: translateY(-15px);
+    transform: rotateX(90deg) scale(0.9);
+    transform-origin: center top;
 }
 
 .oferta-card .card-content.fade-in {
     opacity: 0;
-    transform: translateY(15px);
+    transform: rotateX(-90deg) scale(0.9);
+    transform-origin: center bottom;
     transition: none;
 }
         /* ========================================
