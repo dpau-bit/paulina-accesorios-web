@@ -54,6 +54,14 @@
         window.firebaseDB = { doc, setDoc, getDoc, updateDoc, collection, getDocs, deleteDoc, onSnapshot, addDoc, query, where, orderBy, limit };
 
         onAuthStateChanged(auth, (user) => {
+    const aplicarUI = (intentos = 0) => {
+        if (typeof updateUserUI === 'function') {
+            updateUserUI();
+        } else if (intentos < 25) {
+            setTimeout(() => aplicarUI(intentos + 1), 150);
+        }
+    };
+
     if (user) {
         window.currentUser = {
             id: user.uid,
@@ -63,23 +71,22 @@
             level: '✨ Visitante',
             cuponesUsados: []
         };
-        if (typeof updateUserUI === 'function') updateUserUI();
-        
+        aplicarUI();
+
         getDoc(doc(db, "usuarios", user.uid)).then(docSnap => {
             if (docSnap.exists()) {
                 const data = docSnap.data();
-                // 🆕 Garantizar que cuponesUsados siempre exista
                 if (!Array.isArray(data.cuponesUsados)) data.cuponesUsados = [];
                 window.currentUser = data;
-                if (typeof updateUserUI === 'function') updateUserUI();
+                aplicarUI();
             }
         }).catch(err => console.warn('⚠️', err));
     } else {
         window.currentUser = null;
-        if (typeof updateUserUI === 'function') updateUserUI();
+        aplicarUI();
         const adminBtn = document.getElementById('adminPanelBtn');
         if (adminBtn) adminBtn.remove();
-        }
+    }
 });
     </script>
 
@@ -978,7 +985,9 @@ body.shake-active {
 
         #adminPanelBtn { position: fixed; bottom: 100px; right: 20px; background: linear-gradient(135deg, #0a050a, #1a0b1a); color: #d4af37; border: 2px solid #d4af37; border-radius: 50px; padding: 14px 24px; font-weight: 800; font-size: 13px; cursor: pointer; z-index: 9999; animation: premiumPulse 2.5s ease-in-out infinite; }
 
-        .user-float-btn { position: fixed; bottom: 92px; left: 24px; background: var(--gold-gradient); color: #fff; width: 56px; height: 56px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; border: none; z-index: 50; }
+        .user-float-btn { position: fixed; bottom: 92px; left: 24px; background: var(--gold-gradient); color: #fff; width: 56px; height: 56px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; border: none; z-index: 55; box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4); }
+        .user-float-btn.visible { display: flex; }
+        .user-float-btn:hover { transform: scale(1.08) rotate(-5deg); }
         .user-float-btn.visible { display: flex; }
         .user-float-btn:hover { transform: scale(1.08) rotate(-5deg); }
 
@@ -2246,7 +2255,10 @@ body.shake-active {
     <div class="floating-cart" id="floatingCart"><span>🛍️</span><span id="fcCount">0</span><span id="fcTotal">S/ 0.00</span></div>
     <a href="https://wa.me/51923861016" class="whatsapp-float" target="_blank">💬</a>
     <button class="chat-float-ai" id="chatFloatAI">🤖<span class="chat-badge">IA</span></button>
-    <button class="user-float-btn" id="userFloatBtn" onclick="abrirMiCuenta()">⭐<span style="position:absolute;top:-3px;right:-3px;background:var(--primary);color:#fff;border-radius:50%;width:20px;height:20px;font-size:8px;display:flex;align-items:center;justify-content:center;font-weight:700;" id="userFloatBadge">✨</span></button>
+    <button class="user-float-btn" id="userFloatBtn" onclick="abrirMiCuenta()" style="position:relative;">
+    <span style="font-size:1.6rem;">⭐</span>
+    <span id="userFloatBadge" style="position:absolute;top:-4px;right:-4px;background:var(--primary);color:#fff;border-radius:50%;width:22px;height:22px;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:700;border:2px solid #fff;box-shadow:0 2px 8px rgba(194,24,91,0.4);">✨</span>
+</button>
 
     <div class="chat-modal-ai" id="chatModalAI">
         <div class="chat-header-ai"><span>🤖 Asistente IA</span><button class="chat-close" id="chatCloseAI">✕</button></div>
