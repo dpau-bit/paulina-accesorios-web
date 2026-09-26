@@ -988,8 +988,6 @@ body.shake-active {
         .user-float-btn { position: fixed; bottom: 92px; left: 24px; background: var(--gold-gradient); color: #fff; width: 56px; height: 56px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; border: none; z-index: 55; box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4); }
         .user-float-btn.visible { display: flex; }
         .user-float-btn:hover { transform: scale(1.08) rotate(-5deg); }
-        .user-float-btn.visible { display: flex; }
-        .user-float-btn:hover { transform: scale(1.08) rotate(-5deg); }
 
         .chat-float-ai { position: fixed; bottom: 24px; left: 24px; background: var(--gold-gradient); color: #fff; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; cursor: pointer; border: none; z-index: 50; }
         .chat-float-ai:hover { transform: scale(1.08) rotate(-5deg); }
@@ -3622,11 +3620,17 @@ if (cuponNivel) {
                         <button onclick="document.getElementById('loginModal').classList.remove('show')" style="position:absolute;top:12px;right:16px;font-size:1.5rem;background:none;border:none;cursor:pointer;">✕</button>
                         <h3 style="font-family:var(--font-serif);font-size:1.4rem;margin-bottom:var(--space-md);">🔑 Iniciar sesión</h3>
                         <div id="loginForm">
-                            <input type="email" id="loginEmail" placeholder="tu@email.com" style="width:100%;padding:10px;border-radius:var(--radius-md);border:1.5px solid rgba(212,175,55,0.1);margin-bottom:10px;font-size:12px;">
-                            <input type="password" id="loginPassword" placeholder="Contraseña" style="width:100%;padding:10px;border-radius:var(--radius-md);border:1.5px solid rgba(212,175,55,0.1);margin-bottom:12px;font-size:12px;">
-                            <button class="btn btn-gold" onclick="handleLogin()" style="width:100%;padding:10px;">Iniciar sesión</button>
-                            <p style="text-align:center;margin-top:10px;font-size:12px;">¿No tienes cuenta? <a href="#" onclick="showRegisterForm(event)" style="color:var(--gold);">Regístrate</a></p>
-                        </div>
+    <input type="email" id="loginEmail" placeholder="tu@email.com" style="width:100%;padding:10px;border-radius:var(--radius-md);border:1.5px solid rgba(212,175,55,0.1);margin-bottom:10px;font-size:12px;">
+    <input type="password" id="loginPassword" placeholder="Contraseña" style="width:100%;padding:10px;border-radius:var(--radius-md);border:1.5px solid rgba(212,175,55,0.1);margin-bottom:12px;font-size:12px;">
+    <button class="btn btn-gold" onclick="handleLogin()" style="width:100%;padding:10px;">Iniciar sesión</button>
+    
+    <!-- 🆕 NUEVO -->
+    <p style="text-align:center;margin-top:10px;font-size:11px;">
+        <a href="#" onclick="resetPassword(event)" style="color:var(--gold);">¿Olvidaste tu contraseña?</a>
+    </p>
+    
+    <p style="text-align:center;margin-top:10px;font-size:12px;">¿No tienes cuenta? <a href="#" onclick="showRegisterForm(event)" style="color:var(--gold);">Regístrate</a></p>
+</div>
                         <div id="registerForm" style="display:none;">
                             <input type="text" id="registerName" placeholder="Tu nombre" style="width:100%;padding:10px;border-radius:var(--radius-md);border:1.5px solid rgba(212,175,55,0.1);margin-bottom:10px;font-size:12px;">
                             <input type="email" id="registerEmail" placeholder="tu@email.com" style="width:100%;padding:10px;border-radius:var(--radius-md);border:1.5px solid rgba(212,175,55,0.1);margin-bottom:10px;font-size:12px;">
@@ -3650,6 +3654,35 @@ if (cuponNivel) {
             const password = document.getElementById('loginPassword').value;
             if (await loginUser(email, password)) document.getElementById('loginModal').classList.remove('show');
         }
+                async function resetPassword(e) {
+    if (e) e.preventDefault();
+    const email = document.getElementById('loginEmail')?.value?.trim();
+    
+    if (!email) {
+        mostrarNotificacion('⚠️ Escribe tu email arriba primero', '⚠️');
+        document.getElementById('loginEmail')?.focus();
+        return;
+    }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        mostrarNotificacion('⚠️ Email inválido', '⚠️');
+        return;
+    }
+    
+    try {
+        await window.firebaseAuth.sendPasswordResetEmail(window.auth, email);
+        mostrarNotificacion(`✅ Correo enviado a ${email}`, '📧');
+        alert(`✅ Te enviamos un correo a ${email} con el enlace para restablecer tu contraseña.\n\nRevisa también la carpeta SPAM.`);
+    } catch (error) {
+        console.error('❌ Error:', error);
+        let msg = '❌ Error al enviar';
+        if (error.code === 'auth/user-not-found') msg = '⚠️ No existe una cuenta con ese email';
+        else if (error.code === 'auth/invalid-email') msg = '⚠️ Email inválido';
+        else if (error.code === 'auth/too-many-requests') msg = '⚠️ Demasiados intentos. Espera 15 min';
+        mostrarNotificacion(msg, '❌');
+    }
+}
 
         async function handleRegister() {
             const n = document.getElementById('registerName').value;
@@ -6003,6 +6036,14 @@ function cambiarTabAdmin(tab) {
         window.subirImagenEdit = subirImagenEdit;
         window.quitarImagenAdmin = quitarImagenAdmin;
         window.quitarImagenEdit = quitarImagenEdit;
+        window.handleLogin = handleLogin;
+        window.handleRegister = handleRegister;
+        window.loginUser = loginUser;
+        window.registerUser = registerUser;
+        window.logoutUser = logoutUser;
+        window.showLoginForm = showLoginForm;
+        window.showRegisterForm = showRegisterForm;
+        window.resetPassword = resetPassword;
 // ============================================
 // 🔥 OFERTAS DINÁMICAS
 // ============================================
