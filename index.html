@@ -6195,17 +6195,36 @@ function crearEfectoPrime() {
 }
 
 function abrirPanelAdmin() {
-    // ⚡ 1. Efecto visual PRIMERO (CSS puro, instantáneo)
-    crearEfectoPrime();
+    // 🎬 Efecto cinemático SOLO la primera vez por sesión
+    const yaVioIntro = sessionStorage.getItem('paulina_intro_admin_visto');
     
-    // ⏱️ Esperar 1.8s para que se vea la animación completa
-    setTimeout(() => {
-        let modal = document.getElementById('adminModal');
-        if (!modal) {
-            modal = document.createElement('div');
-            modal.id = 'adminModal';
-            modal.className = 'admin-premium-overlay';
-            modal.innerHTML = `
+    if (!yaVioIntro) {
+        // Primera vez: reproducir intro cinematográfica
+        sessionStorage.setItem('paulina_intro_admin_visto', 'true');
+        
+        // Ejecutar intro (Promise que resuelve a los 3s)
+        iniciarIntroCinematica().then(() => {
+            abrirPanelAdminContenido();
+        }).catch(err => {
+            console.warn('⚠️ Error en intro, abriendo panel directo:', err);
+            abrirPanelAdminContenido();
+        });
+    } else {
+        // Ya vio la intro: efecto Prime rápido y panel
+        crearEfectoPrime();
+        setTimeout(() => {
+            abrirPanelAdminContenido();
+        }, 1500);
+    }
+}
+
+function abrirPanelAdminContenido() {
+    let modal = document.getElementById('adminModal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'adminModal';
+        modal.className = 'admin-premium-overlay';
+        modal.innerHTML = `
                 <div class="admin-premium">
                     <div class="admin-premium-header">
                         <div class="admin-premium-title">
@@ -6395,8 +6414,8 @@ function abrirPanelAdmin() {
         modal.classList.add('show');
         document.body.style.overflow = 'hidden';
         cambiarTabAdmin('dashboard');
-    }, 3000);   // ⬅️ Espera 1.8s antes de abrir el panel
 }
+                
                 
 function cerrarPanelAdmin() {
     const m = document.getElementById('adminModal');
