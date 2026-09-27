@@ -6558,9 +6558,12 @@ window.__intervalReRender = setInterval(() => {
         }
         // 🔍 Consultar colección admins/ en Firestore
         try {
-            const adminDoc = await window.firebaseDB.getDoc(
-                window.firebaseDB.doc(window.db, "admins", user.uid)
-            );
+            // Esperar 500ms por si el token aún no está listo
+await new Promise(r => setTimeout(r, 500));
+
+const adminDoc = await window.firebaseDB.getDoc(
+    window.firebaseDB.doc(window.db, "admins", user.uid)
+);
             if (adminDoc.exists()) {
                 if (!btn) crearPanelAdmin();
             } else {
