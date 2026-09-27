@@ -3591,31 +3591,26 @@ if (cuponNivel) {
             }
         }
 
-        async function loginUser(email, password) {
+async function loginUser(email, password) {
     try {
         await window.firebaseAuth.signInWithEmailAndPassword(window.auth, email, password);
         mostrarNotificacion('✅ ¡Bienvenida! 👋', '👋');
         
-        // 🆕 Forzar actualización inmediata del UI
-        if (typeof updateUserUI === 'function') {
-            // Esperar un tick a que Firebase ponga el user
-            setTimeout(() => {
-                if (window.currentUser && typeof updateUserUI === 'function') {
-                    updateUserUI();
-                }
-            }, 100);
-        }
+        // 🆕 Forzar actualización inmediata y diferida
+        setTimeout(() => { if (typeof updateUserUI === 'function') updateUserUI(); }, 100);
+        setTimeout(() => { if (typeof updateUserUI === 'function') updateUserUI(); }, 500);
+        setTimeout(() => { if (typeof updateUserUI === 'function') updateUserUI(); }, 1500);
+        
         return true;
     } catch (error) {
         let msg = '❌ Correo o contraseña incorrectos';
-        if (error.code === 'auth/too-many-requests') msg = '⚠️ Demasiados intentos. Espera 15 min';
+        if (error.code === 'auth/too-many-requests') msg = '⚠️ Demasiados intentos';
         else if (error.code === 'auth/invalid-email') msg = '⚠️ Email inválido';
         mostrarNotificacion(msg, '❌');
         console.error('❌ Login error:', error.code, error.message);
         return false;
     }
 }
-
         async function logoutUser() {
             await window.firebaseAuth.signOut(window.auth);
             window.currentUser = null;
@@ -6594,6 +6589,10 @@ const adminDoc = await window.firebaseDB.getDoc(
                 mostrarCuponAplicado();
                 renderCart();
             }
+    // 🆕 Refuerzo para que el UI se actualice al cargar
+setTimeout(() => { if (typeof updateUserUI === 'function') updateUserUI(); }, 500);
+setTimeout(() => { if (typeof updateUserUI === 'function') updateUserUI(); }, 1500);
+setTimeout(() => { if (typeof updateUserUI === 'function') updateUserUI(); }, 3000);
 
             console.log('✨ Paulina Accesorios 2026 - Premium ✨');
             console.log('👑 Admin:', 'paulinabellezaperu@gmail.com');
