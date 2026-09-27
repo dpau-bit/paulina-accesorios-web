@@ -5334,12 +5334,14 @@ function renderizarListaProductosAdmin(lista) {
 // ============================================
 // 🎬 THE CROWN PROTOCOL V3 - CINEMATIC EDITION
 // ============================================
+// ============================================
+// 🎬 THE CROWN PROTOCOL V4 - CINEMATIC EDITION
+// ============================================
 async function iniciarIntroCinematica() {
-    // 🎵 1. SONIDO ÉPICO (Web Audio API - sin archivos)
+    // 🎵 1. SONIDO ÉPICO (Web Audio API)
     try {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         
-        // Función helper para crear sonidos
         const playTone = (freq, duration, type = 'sine', gainVal = 0.15, delay = 0) => {
             setTimeout(() => {
                 const osc = audioCtx.createOscillator();
@@ -5356,57 +5358,57 @@ async function iniciarIntroCinematica() {
             }, delay);
         };
         
-        // Whoosh inicial (barrido de frecuencia)
+        // Whoosh inicial
         const whooshOsc = audioCtx.createOscillator();
         const whooshGain = audioCtx.createGain();
         whooshOsc.type = 'sawtooth';
-        whooshOsc.frequency.setValueAtTime(100, audioCtx.currentTime);
-        whooshOsc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.6);
+        whooshOsc.frequency.setValueAtTime(80, audioCtx.currentTime);
+        whooshOsc.frequency.exponentialRampToValueAtTime(1800, audioCtx.currentTime + 0.8);
         whooshGain.gain.setValueAtTime(0, audioCtx.currentTime);
-        whooshGain.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 0.1);
-        whooshGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.2);
+        whooshGain.gain.linearRampToValueAtTime(0.12, audioCtx.currentTime + 0.15);
+        whooshGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.5);
         whooshOsc.connect(whooshGain);
         whooshGain.connect(audioCtx.destination);
         whooshOsc.start(audioCtx.currentTime);
-        whooshOsc.stop(audioCtx.currentTime + 1.3);
+        whooshOsc.stop(audioCtx.currentTime + 1.5);
         
-        // Impacto grave (al momento del flash)
-        playTone(60, 1.5, 'sine', 0.25, 1700);
-        playTone(80, 1.2, 'triangle', 0.15, 1700);
+        // Impacto grave en el flash
+        playTone(55, 1.8, 'sine', 0.28, 1700);
+        playTone(75, 1.4, 'triangle', 0.18, 1700);
+        playTone(110, 1.0, 'sine', 0.1, 1750);
         
-        // Brillos cristalinos (al desvanecer)
-        playTone(1200, 0.4, 'sine', 0.08, 2000);
-        playTone(1600, 0.5, 'sine', 0.06, 2200);
-        playTone(2000, 0.6, 'sine', 0.04, 2400);
+        // Brillos cristalinos al desvanecer
+        playTone(1400, 0.5, 'sine', 0.09, 2100);
+        playTone(1800, 0.6, 'sine', 0.07, 2300);
+        playTone(2200, 0.7, 'sine', 0.05, 2500);
+        playTone(2800, 0.8, 'sine', 0.03, 2700);
     } catch (e) {
         console.warn('⚠️ Audio no disponible:', e);
     }
     
-    // 🎬 2. IMPORTAR THREE.JS DINÁMICAMENTE
+    // 🎬 2. IMPORTAR THREE.JS + POST-PROCESSING
     const THREE = await import('https://unpkg.com/three@0.160.0/build/three.module.js');
     const { EffectComposer } = await import('https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/EffectComposer.js');
     const { RenderPass } = await import('https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/RenderPass.js');
     const { UnrealBloomPass } = await import('https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/UnrealBloomPass.js');
-    const { RoomEnvironment } = await import('https://unpkg.com/three@0.160.0/examples/jsm/environments/RoomEnvironment.js');
+    const { RGBELoader } = await import('https://unpkg.com/three@0.160.0/examples/jsm/loaders/RGBELoader.js');
     
-    // 🎨 3. CANVAS A PANTALLA COMPLETA
+    // 🎨 3. CANVAS
     const canvas = document.createElement('canvas');
     canvas.id = 'cinematicCanvas';
-    canvas.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:99999;pointer-events:none;opacity:0;transition:opacity 0.3s ease;';
+    canvas.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:99999;pointer-events:none;opacity:0;transition:opacity 0.4s ease;';
     document.body.appendChild(canvas);
-    
-    // Fade in del canvas
     requestAnimationFrame(() => canvas.style.opacity = '1');
     
-    // 🎥 4. ESCENA 3D
+    // 🎥 4. ESCENA
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x000000);
-    scene.fog = new THREE.FogExp2(0x000000, 0.025);
+    scene.fog = new THREE.FogExp2(0x000000, 0.02);
     
     const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
     camera.position.set(0, 0, 10);
     
-    // 🖼️ 5. RENDERER
+    // 🖼️ 5. RENDERER CON SOMBRAS DE ALTA CALIDAD
     const renderer = new THREE.WebGLRenderer({ 
         canvas, 
         antialias: true,
@@ -5416,50 +5418,87 @@ async function iniciarIntroCinematica() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.3;
+    renderer.toneMappingExposure = 1.5;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     
-    // 🌍 6. ENVIRONMENT (reflejos realistas)
+    // 🌍 6. HDRI REALISTA DESDE POLY HAVEN
     const pmremGenerator = new THREE.PMREMGenerator(renderer);
     pmremGenerator.compileEquirectangularShader();
-    const envTexture = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
+    
+    let envTexture;
+    try {
+        const rgbeLoader = new RGBELoader();
+        const hdrTexture = await rgbeLoader.loadAsync('https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/studio_small_03_1k.hdr');
+        envTexture = pmremGenerator.fromEquirectangular(hdrTexture).texture;
+        hdrTexture.dispose();
+    } catch (e) {
+        console.warn('⚠️ HDRI no disponible, usando fallback');
+        const { RoomEnvironment } = await import('https://unpkg.com/three@0.160.0/examples/jsm/environments/RoomEnvironment.js');
+        envTexture = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
+    }
     scene.environment = envTexture;
     
-    // 💡 7. ILUMINACIÓN CINEMATOGRÁFICA
-    const keyLight = new THREE.DirectionalLight(0xffffff, 4);
+    // 💡 7. ILUMINACIÓN CINEMATOGRÁFICA CON SOMBRAS
+    const keyLight = new THREE.DirectionalLight(0xffffff, 6);
     keyLight.position.set(5, 8, 6);
+    keyLight.castShadow = true;
+    keyLight.shadow.mapSize.set(2048, 2048);
+    keyLight.shadow.camera.near = 0.5;
+    keyLight.shadow.camera.far = 50;
+    keyLight.shadow.bias = -0.0005;
+    keyLight.shadow.radius = 4;
     scene.add(keyLight);
     
-    const goldLight = new THREE.PointLight(0xffd700, 15, 20);
-    goldLight.position.set(-3, 2, 3);
-    scene.add(goldLight);
+    const fillLight = new THREE.DirectionalLight(0xa0c0ff, 2);
+    fillLight.position.set(-6, 2, 4);
+    scene.add(fillLight);
     
-    const pinkLight = new THREE.PointLight(0xc2185b, 10, 20);
-    pinkLight.position.set(3, -2, 3);
-    scene.add(pinkLight);
-    
-    const rimLight = new THREE.DirectionalLight(0xd4af37, 5);
+    const rimLight = new THREE.DirectionalLight(0xd4af37, 6);
     rimLight.position.set(0, 5, -8);
     scene.add(rimLight);
+    
+    const pinkLight = new THREE.PointLight(0xc2185b, 12, 20);
+    pinkLight.position.set(3, -3, 3);
+    scene.add(pinkLight);
+    
+    const goldLight = new THREE.PointLight(0xffd700, 15, 15);
+    goldLight.position.set(-2, 4, 2);
+    scene.add(goldLight);
+    
+    const topLight = new THREE.SpotLight(0xffffff, 20, 20, Math.PI / 4, 0.5);
+    topLight.position.set(0, 10, 0);
+    topLight.target.position.set(0, 0, 0);
+    topLight.castShadow = true;
+    scene.add(topLight);
+    scene.add(topLight.target);
     
     // 👑 8. CREAR CORONA CON MATERIALES REALISTAS
     function crearCorona() {
         const group = new THREE.Group();
         
-        // Materiales físicos reales
         const goldPolished = new THREE.MeshPhysicalMaterial({
             color: 0xd4af37,
             metalness: 1.0,
-            roughness: 0.08,
-            envMapIntensity: 2.5,
+            roughness: 0.06,
+            envMapIntensity: 3.0,
             clearcoat: 1.0,
-            clearcoatRoughness: 0.05
+            clearcoatRoughness: 0.03,
+            reflectivity: 1.0
         });
         
         const goldMatte = new THREE.MeshPhysicalMaterial({
             color: 0xb8952a,
             metalness: 1.0,
-            roughness: 0.35,
+            roughness: 0.3,
+            envMapIntensity: 2.5
+        });
+        
+        const goldDark = new THREE.MeshPhysicalMaterial({
+            color: 0x8a6d1f,
+            metalness: 1.0,
+            roughness: 0.5,
             envMapIntensity: 2.0
         });
         
@@ -5468,11 +5507,13 @@ async function iniciarIntroCinematica() {
             metalness: 0.0,
             roughness: 0.02,
             transmission: 0.95,
-            thickness: 0.8,
+            thickness: 1.0,
             ior: 2.4,
-            envMapIntensity: 4.0,
+            envMapIntensity: 5.0,
             clearcoat: 1.0,
-            clearcoatRoughness: 0.0
+            clearcoatRoughness: 0.0,
+            attenuationColor: new THREE.Color(0xff0066),
+            attenuationDistance: 0.5
         });
         
         const diamond = new THREE.MeshPhysicalMaterial({
@@ -5482,92 +5523,127 @@ async function iniciarIntroCinematica() {
             transmission: 1.0,
             thickness: 0.5,
             ior: 2.42,
-            envMapIntensity: 5.0,
+            envMapIntensity: 6.0,
             clearcoat: 1.0,
-            clearcoatRoughness: 0.0
+            clearcoatRoughness: 0.0,
+            dispersion: 0.1
         });
         
-        // Base circular
-        const base = new THREE.Mesh(new THREE.TorusGeometry(1.8, 0.15, 32, 96), goldPolished);
+        const base = new THREE.Mesh(new THREE.TorusGeometry(1.8, 0.18, 32, 96), goldPolished);
         base.rotation.x = Math.PI / 2;
         base.position.y = -0.7;
+        base.castShadow = true;
+        base.receiveShadow = true;
         group.add(base);
         
-        // Anillo superior
         const ring = new THREE.Mesh(new THREE.TorusGeometry(1.8, 0.08, 24, 96), goldMatte);
         ring.rotation.x = Math.PI / 2;
         ring.position.y = -0.5;
+        ring.castShadow = true;
         group.add(ring);
         
-        // 8 puntas de la corona
+        const ring2 = new THREE.Mesh(new THREE.TorusGeometry(1.8, 0.06, 24, 96), goldDark);
+        ring2.rotation.x = Math.PI / 2;
+        ring2.position.y = -0.9;
+        ring2.castShadow = true;
+        group.add(ring2);
+        
         for (let i = 0; i < 8; i++) {
             const angle = (i / 8) * Math.PI * 2;
             const x = Math.cos(angle) * 1.8;
             const z = Math.sin(angle) * 1.8;
-            const altura = i % 2 === 0 ? 1.7 : 1.2;
-            const grosor = i % 2 === 0 ? 0.22 : 0.18;
+            const altura = i % 2 === 0 ? 1.8 : 1.3;
+            const grosor = i % 2 === 0 ? 0.25 : 0.2;
             
             const punta = new THREE.Mesh(new THREE.ConeGeometry(grosor, altura, 20), goldPolished);
             punta.position.set(x, altura / 2 - 0.7, z);
+            punta.castShadow = true;
             group.add(punta);
             
-            const bola = new THREE.Mesh(new THREE.SphereGeometry(0.18, 32, 32), goldPolished);
+            const bola = new THREE.Mesh(new THREE.SphereGeometry(0.2, 32, 32), goldPolished);
             bola.position.set(x, altura - 0.7, z);
+            bola.castShadow = true;
             group.add(bola);
             
-            const di = new THREE.Mesh(new THREE.OctahedronGeometry(0.12, 1), diamond);
+            const di = new THREE.Mesh(new THREE.OctahedronGeometry(0.14, 1), diamond);
             di.position.set(x, altura - 0.7, z);
+            di.castShadow = true;
             group.add(di);
         }
         
-        // Rubíes en la base
         for (let i = 0; i < 8; i++) {
             const angle = (i / 8) * Math.PI * 2 + Math.PI / 8;
             const x = Math.cos(angle) * 1.8;
             const z = Math.sin(angle) * 1.8;
-            const rubiMesh = new THREE.Mesh(new THREE.OctahedronGeometry(0.2, 0), ruby);
+            const rubiMesh = new THREE.Mesh(new THREE.OctahedronGeometry(0.22, 0), ruby);
             rubiMesh.position.set(x, -0.35, z);
             rubiMesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+            rubiMesh.castShadow = true;
             group.add(rubiMesh);
         }
         
-        // Diamante central gigante
-        const diamondCenter = new THREE.Mesh(new THREE.OctahedronGeometry(0.45, 1), diamond);
-        diamondCenter.position.set(0, 1.6, 0);
+        const diamondCenter = new THREE.Mesh(new THREE.OctahedronGeometry(0.5, 1), diamond);
+        diamondCenter.position.set(0, 1.7, 0);
+        diamondCenter.castShadow = true;
         group.add(diamondCenter);
         
-        // 4 diamantes alrededor del central
         for (let i = 0; i < 4; i++) {
             const angle = (i / 4) * Math.PI * 2 + Math.PI / 4;
-            const dMesh = new THREE.Mesh(new THREE.OctahedronGeometry(0.12, 0), diamond);
-            dMesh.position.set(Math.cos(angle) * 0.5, 1.4, Math.sin(angle) * 0.5);
+            const dMesh = new THREE.Mesh(new THREE.OctahedronGeometry(0.14, 0), diamond);
+            dMesh.position.set(Math.cos(angle) * 0.5, 1.5, Math.sin(angle) * 0.5);
+            dMesh.castShadow = true;
             group.add(dMesh);
         }
         
-        // Adornos pequeños en la base
         for (let i = 0; i < 24; i++) {
             const angle = (i / 24) * Math.PI * 2;
-            const adorno = new THREE.Mesh(new THREE.SphereGeometry(0.06, 16, 16), goldMatte);
+            const adorno = new THREE.Mesh(new THREE.SphereGeometry(0.07, 16, 16), goldMatte);
             adorno.position.set(Math.cos(angle) * 1.8, -0.6, Math.sin(angle) * 1.8);
+            adorno.castShadow = true;
             group.add(adorno);
         }
         
-        group.rotation.x = 0.2;
+        for (let i = 0; i < 12; i++) {
+            const angle = (i / 12) * Math.PI * 2 + Math.PI / 12;
+            const dMesh = new THREE.Mesh(new THREE.SphereGeometry(0.05, 12, 12), diamond);
+            dMesh.position.set(Math.cos(angle) * 1.8, -0.45, Math.sin(angle) * 1.8);
+            dMesh.castShadow = true;
+            group.add(dMesh);
+        }
+        
+        group.rotation.x = 0.15;
         return group;
+    }
+    
+    // 🎨 9. TEXTURA CIRCULAR DE PARTÍCULAS
+    function crearTexturaParticula() {
+        const c = document.createElement('canvas');
+        c.width = 128;
+        c.height = 128;
+        const ctx = c.getContext('2d');
+        const gradient = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+        gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+        gradient.addColorStop(0.2, 'rgba(255, 240, 180, 0.9)');
+        gradient.addColorStop(0.5, 'rgba(212, 175, 55, 0.4)');
+        gradient.addColorStop(1, 'rgba(212, 175, 55, 0)');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, 128, 128);
+        return new THREE.CanvasTexture(c);
     }
     
     const crown = crearCorona();
     crown.scale.setScalar(0);
     scene.add(crown);
     
-    // ✨ 9. PARTICLE SYSTEM (1000 partículas doradas)
-    const particleCount = 1000;
+    // ✨ 10. PARTICLE SYSTEM MEJORADO
+    const particleCount = 1500;
     const particlesGeometry = new THREE.BufferGeometry();
     const particlesPositions = new Float32Array(particleCount * 3);
     const particlesVelocities = [];
     const particlesColors = new Float32Array(particleCount * 3);
     
     const goldColor = new THREE.Color(0xd4af37);
+    const lightGoldColor = new THREE.Color(0xf5d76e);
     const pinkColor = new THREE.Color(0xc2185b);
     const whiteColor = new THREE.Color(0xffffff);
     
@@ -5576,18 +5652,23 @@ async function iniciarIntroCinematica() {
         particlesPositions[i * 3 + 1] = 0;
         particlesPositions[i * 3 + 2] = 0;
         
-        const speed = 2 + Math.random() * 8;
+        const speed = 3 + Math.random() * 12;
         const angle1 = Math.random() * Math.PI * 2;
         const angle2 = (Math.random() - 0.5) * Math.PI;
         
         particlesVelocities.push(new THREE.Vector3(
             Math.cos(angle1) * Math.cos(angle2) * speed,
-            Math.sin(angle2) * speed + 3,
+            Math.sin(angle2) * speed + 4,
             Math.sin(angle1) * Math.cos(angle2) * speed
         ));
         
         const colorChoice = Math.random();
-        const color = colorChoice < 0.5 ? goldColor : (colorChoice < 0.8 ? pinkColor : whiteColor);
+        let color;
+        if (colorChoice < 0.4) color = goldColor;
+        else if (colorChoice < 0.6) color = lightGoldColor;
+        else if (colorChoice < 0.8) color = pinkColor;
+        else color = whiteColor;
+        
         particlesColors[i * 3] = color.r;
         particlesColors[i * 3 + 1] = color.g;
         particlesColors[i * 3 + 2] = color.b;
@@ -5597,7 +5678,8 @@ async function iniciarIntroCinematica() {
     particlesGeometry.setAttribute('color', new THREE.BufferAttribute(particlesColors, 3));
     
     const particlesMaterial = new THREE.PointsMaterial({
-        size: 0.08,
+        size: 0.25,
+        map: crearTexturaParticula(),
         vertexColors: true,
         transparent: true,
         opacity: 0,
@@ -5609,19 +5691,19 @@ async function iniciarIntroCinematica() {
     const particles = new THREE.Points(particlesGeometry, particlesMaterial);
     scene.add(particles);
     
-    // 🎬 10. POST-PROCESSING (Bloom cinematográfico)
+    // 🎬 11. POST-PROCESSING CINEMATOGRÁFICO
     const composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
     
     const bloomPass = new UnrealBloomPass(
         new THREE.Vector2(window.innerWidth, window.innerHeight),
-        0,     // strength (empieza en 0)
-        0.8,   // radius
-        0.1    // threshold
+        0,
+        1.2,
+        0.0
     );
     composer.addPass(bloomPass);
     
-    // 📳 11. SCREEN SHAKE
+    // 📳 12. SCREEN SHAKE
     function shake(intensity = 20, duration = 800) {
         const start = Date.now();
         function loop() {
@@ -5639,7 +5721,7 @@ async function iniciarIntroCinematica() {
         loop();
     }
     
-    // 🎬 12. ANIMACIÓN PRINCIPAL (3 segundos)
+    // 🎬 13. ANIMACIÓN PRINCIPAL (3 segundos)
     const clock = new THREE.Clock();
     let t = 0;
     let exploded = false;
@@ -5658,7 +5740,7 @@ async function iniciarIntroCinematica() {
                 camera.position.z = 15 - eased * 5;
                 crown.scale.setScalar(eased * 0.3);
                 crown.rotation.y = p * Math.PI * 2;
-                bloomPass.strength = p * 0.8;
+                bloomPass.strength = p * 1.2;
             }
             // FASE 2: 0.5 - 1.2s — Corona entra girando
             else if (t < 1.2) {
@@ -5667,26 +5749,25 @@ async function iniciarIntroCinematica() {
                 camera.position.z = 10 - eased * 2;
                 crown.scale.setScalar(0.3 + eased * 0.9);
                 crown.rotation.y += dt * 4;
-                crown.rotation.x = 0.2 + Math.sin(p * Math.PI) * 0.3;
-                bloomPass.strength = 0.8 + p * 1.2;
+                crown.rotation.x = 0.15 + Math.sin(p * Math.PI) * 0.3;
+                bloomPass.strength = 1.2 + p * 1.5;
             }
-            // FASE 3: 1.2 - 1.8s — Clímax (flash + shake)
+            // FASE 3: 1.2 - 1.8s — Clímax
             else if (t < 1.8) {
                 const p = (t - 1.2) / 0.6;
-                crown.rotation.y += dt * 6;
+                crown.rotation.y += dt * 7;
                 crown.rotation.x += dt * 0.5;
-                bloomPass.strength = 2.0 + p * 2.0;
-                cameraShake = 0.3 + p * 0.7;
+                bloomPass.strength = 2.7 + p * 2.5;
+                cameraShake = 0.3 + p * 0.9;
             }
-            // FASE 4: 1.8 - 2.3s — EXPLOSIÓN
+            // FASE 4: 1.8s — EXPLOSIÓN
             else if (t >= 1.8 && !exploded) {
                 exploded = true;
                 explodedTime = t;
-                shake(30, 800);
-                cameraShake = 2.5;
+                shake(35, 900);
+                cameraShake = 3.0;
                 scene.remove(crown);
                 
-                // Mover partículas al centro
                 const positions = particlesGeometry.attributes.position.array;
                 for (let i = 0; i < particleCount; i++) {
                     positions[i * 3] = (Math.random() - 0.5) * 0.5;
@@ -5696,7 +5777,6 @@ async function iniciarIntroCinematica() {
                 particlesGeometry.attributes.position.needsUpdate = true;
                 particlesMaterial.opacity = 1;
                 
-                // Flash blanco + dorado
                 const flash1 = document.createElement('div');
                 flash1.style.cssText = 'position:fixed;inset:0;background:radial-gradient(circle,#ffffff,#f5d76e 30%,transparent 70%);z-index:100000;pointer-events:none;opacity:1;transition:opacity 0.4s ease;';
                 document.body.appendChild(flash1);
@@ -5711,16 +5791,15 @@ async function iniciarIntroCinematica() {
                     setTimeout(() => flash2.remove(), 600);
                 }, 150);
             }
-            // FASE 5: 1.8 - 2.8s — Partículas vuelan
+            // FASE 5: 1.8 - 3.0s — Partículas vuelan
             if (exploded) {
                 const elapsed = t - explodedTime;
                 const positions = particlesGeometry.attributes.position.array;
                 const velocities = particlesVelocities;
                 
                 for (let i = 0; i < particleCount; i++) {
-                    // Gravedad + resistencia
-                    velocities[i].y -= 3 * dt;
-                    velocities[i].multiplyScalar(Math.pow(0.97, dt * 60));
+                    velocities[i].y -= 3.5 * dt;
+                    velocities[i].multiplyScalar(Math.pow(0.96, dt * 60));
                     
                     positions[i * 3] += velocities[i].x * dt;
                     positions[i * 3 + 1] += velocities[i].y * dt;
@@ -5728,15 +5807,12 @@ async function iniciarIntroCinematica() {
                 }
                 particlesGeometry.attributes.position.needsUpdate = true;
                 
-                // Fade out de partículas
                 if (elapsed > 0.3) {
-                    particlesMaterial.opacity = Math.max(0, 1 - (elapsed - 0.3) / 0.7);
+                    particlesMaterial.opacity = Math.max(0, 1 - (elapsed - 0.3) / 0.8);
                 }
                 
-                // Bloom baja
-                bloomPass.strength = Math.max(0, 3.5 - elapsed * 1.5);
+                bloomPass.strength = Math.max(0, 4.5 - elapsed * 1.5);
                 
-                // Camera shake decae
                 if (cameraShake > 0) {
                     camera.position.x = (Math.random() - 0.5) * cameraShake;
                     camera.position.y = (Math.random() - 0.5) * cameraShake;
@@ -5747,18 +5823,16 @@ async function iniciarIntroCinematica() {
             
             composer.render();
             
-            // Termina a los 3s
             if (t < 3.0) {
                 requestAnimationFrame(animate);
             } else {
-                // Fade out del canvas
                 canvas.style.opacity = '0';
                 setTimeout(() => {
                     canvas.remove();
                     pmremGenerator.dispose();
                     envTexture.dispose();
                     renderer.dispose();
-                    resolve(); // Resolver la Promise
+                    resolve();
                 }, 400);
             }
         }
@@ -5766,334 +5840,7 @@ async function iniciarIntroCinematica() {
         animate();
     });
 }
-// ============================================
-// ⚡ THE ROYAL PRIME - Efecto de entrada
-// ============================================
-async function iniciarPrime() {
-    const THREE = await import('https://unpkg.com/three@0.160.0/build/three.module.js');
-    const { EffectComposer } = await import('https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/EffectComposer.js');
-    const { RenderPass } = await import('https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/RenderPass.js');
-    const { UnrealBloomPass } = await import('https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/UnrealBloomPass.js');
-    const { ShaderPass } = await import('https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/ShaderPass.js');
-    const { RGBShiftShader } = await import('https://unpkg.com/three@0.160.0/examples/jsm/shaders/RGBShiftShader.js');
-    const { FilmPass } = await import('https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/FilmPass.js');
-    const { BokehPass } = await import('https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/BokehPass.js');
-    const { RoomEnvironment } = await import('https://unpkg.com/three@0.160.0/examples/jsm/environments/RoomEnvironment.js');
-    
-    // 🎨 Canvas
-    const canvas = document.createElement('canvas');
-    canvas.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:99999;pointer-events:none;';
-    document.body.appendChild(canvas);
-    
-    // 🎥 Escena + cámara + renderer
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x000000);
-    scene.fog = new THREE.FogExp2(0x000000, 0.02);
-    
-    const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 100);
-    camera.position.set(0, 0, 8);
-    
-    const renderer = new THREE.WebGLRenderer({ 
-        canvas, 
-        antialias: true,
-        powerPreference: 'high-performance',
-        alpha: false
-    });
-    renderer.setSize(innerWidth, innerHeight);
-    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.2;
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    
-    // 🌍 Environment HDRI realista
-    const pmremGenerator = new THREE.PMREMGenerator(renderer);
-    pmremGenerator.compileEquirectangularShader();
-    const envTexture = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
-    scene.environment = envTexture;
-    
-    // 💡 Iluminación cinematográfica
-    const keyLight = new THREE.DirectionalLight(0xffffff, 5);
-    keyLight.position.set(5, 8, 6);
-    keyLight.castShadow = true;
-    keyLight.shadow.mapSize.set(2048, 2048);
-    scene.add(keyLight);
-    
-    const fillLight = new THREE.DirectionalLight(0xa0c0ff, 2);
-    fillLight.position.set(-6, 2, 4);
-    scene.add(fillLight);
-    
-    const rimLight = new THREE.DirectionalLight(0xd4af37, 4);
-    rimLight.position.set(0, 5, -8);
-    scene.add(rimLight);
-    
-    const pinkLight = new THREE.PointLight(0xc2185b, 8, 20);
-    pinkLight.position.set(3, -3, 3);
-    scene.add(pinkLight);
-    
-    const goldLight = new THREE.PointLight(0xffd700, 10, 15);
-    goldLight.position.set(-2, 4, 2);
-    scene.add(goldLight);
-    
-    // 👑 Crear la corona 3D
-    const crown = crearCoronaUltraRealista(THREE);
-    scene.add(crown);
-    
-    // ✨ Post-processing nivel cine
-    const composer = new EffectComposer(renderer);
-    composer.addPass(new RenderPass(scene, camera));
-    
-    const bloomPass = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 2.0, 0.8, 0.1);
-    composer.addPass(bloomPass);
-    
-    const rgbShiftPass = new ShaderPass(RGBShiftShader);
-    rgbShiftPass.uniforms['amount'].value = 0.0015;
-    composer.addPass(rgbShiftPass);
-    
-    const filmPass = new FilmPass(0.35, 0.025, 648);
-    filmPass.renderToScreen = false;
-    composer.addPass(filmPass);
-    
-    const bokehPass = new BokehPass(scene, camera, {
-        focus: 1.0, aperture: 0.0001, maxblur: 0.01,
-        width: innerWidth, height: innerHeight
-    });
-    composer.addPass(bokehPass);
-    
-    // 📳 Screen shake
-    function shake(intensity = 20, duration = 800) {
-        const start = Date.now();
-        function loop() {
-            const elapsed = Date.now() - start;
-            if (elapsed > duration) { document.body.style.transform = ''; return; }
-            const progress = 1 - (elapsed / duration);
-            const decay = Math.pow(progress, 2);
-            const amp = intensity * decay;
-            document.body.style.transform = `translate(${(Math.random() - 0.5) * amp * 2}px, ${(Math.random() - 0.5) * amp * 2}px) rotate(${(Math.random() - 0.5) * amp * 0.08}deg)`;
-            requestAnimationFrame(loop);
-        }
-        loop();
-    }
-    
-    const clock = new THREE.Clock();
-    let t = 0;
-    let fragments = [];
-    let exploded = false;
-    let explodedTime = 0;
-    let cameraShake = 0;
-    let timeSlowdown = 1;
-    
-    function animate() {
-        const rawDt = Math.min(clock.getDelta(), 0.05);
-        const dt = rawDt * timeSlowdown;
-        t += dt;
-        
-        if (t < 1.5) {
-            const p = t / 1.5;
-            const eased = easeOutExpo(p);
-            camera.position.z = 12 - p * 4;
-            camera.position.y = Math.sin(p * Math.PI) * 0.5;
-            crown.scale.setScalar(eased * 1.1);
-            crown.rotation.y = p * Math.PI * 8;
-            crown.rotation.x = 0.2 + Math.sin(p * Math.PI * 2) * 0.15;
-            bloomPass.strength = 0.8 + p * 1.8;
-            rgbShiftPass.uniforms['amount'].value = 0.001 + p * 0.005;
-        } else if (t < 1.8) {
-            crown.rotation.y += dt * 2.5;
-            crown.rotation.x += dt * 0.5;
-            bloomPass.strength = 2.8;
-            cameraShake = 0.5;
-        } else if (t >= 1.8 && !exploded) {
-            exploded = true;
-            explodedTime = t;
-            shake(25, 900);
-            cameraShake = 2.0;
-            scene.remove(crown);
-            fragments = crearFragmentosUltraRealistas(THREE, crown, scene);
-            
-            const flash1 = document.createElement('div');
-            flash1.style.cssText = 'position:fixed;inset:0;background:radial-gradient(circle,#ffffff,#f5d76e 30%,transparent 60%);z-index:100000;pointer-events:none;opacity:1;transition:opacity 0.15s ease;';
-            document.body.appendChild(flash1);
-            setTimeout(() => flash1.style.opacity = '0', 30);
-            setTimeout(() => flash1.remove(), 300);
-            
-            setTimeout(() => {
-                const flash2 = document.createElement('div');
-                flash2.style.cssText = 'position:fixed;inset:0;background:radial-gradient(circle,#f5d76e,#d4af37 40%,transparent 70%);z-index:100000;pointer-events:none;opacity:1;transition:opacity 0.6s ease;';
-                document.body.appendChild(flash2);
-                setTimeout(() => flash2.style.opacity = '0', 50);
-                setTimeout(() => flash2.remove(), 700);
-            }, 150);
-            
-            timeSlowdown = 0.3;
-            setTimeout(() => timeSlowdown = 1, 600);
-        }
-        
-        if (exploded) {
-            const elapsed = t - explodedTime;
-            fragments.forEach(f => {
-                f.velocity.y -= 4 * dt;
-                f.velocity.multiplyScalar(Math.pow(0.96, dt * 60));
-                f.mesh.position.add(f.velocity.clone().multiplyScalar(dt));
-                f.mesh.rotation.x += f.rotationSpeed.x * dt;
-                f.mesh.rotation.y += f.rotationSpeed.y * dt;
-                f.mesh.rotation.z += f.rotationSpeed.z * dt;
-                if (f.mesh.position.y < -4 && f.velocity.y < 0) {
-                    f.velocity.y *= -0.4;
-                    f.mesh.position.y = -4;
-                }
-                if (elapsed > 0.5) {
-                    f.mesh.material.opacity = Math.max(0, 1 - (elapsed - 0.5) / 1.2);
-                    f.mesh.material.transparent = true;
-                }
-                if (elapsed > 0.8) {
-                    f.mesh.scale.setScalar(Math.max(0, 1 - (elapsed - 0.8) / 1));
-                }
-            });
-            bloomPass.strength = Math.max(0, 3.5 - elapsed * 1.2);
-            rgbShiftPass.uniforms['amount'].value = Math.max(0, 0.006 - elapsed * 0.003);
-            bokehPass.uniforms['maxblur'].value = 0.01 + elapsed * 0.02;
-            if (cameraShake > 0) {
-                camera.position.x = (Math.random() - 0.5) * cameraShake;
-                camera.position.y = (Math.random() - 0.5) * cameraShake;
-                cameraShake *= 0.92;
-                if (cameraShake < 0.01) cameraShake = 0;
-            }
-        }
-        
-        composer.render();
-        if (t < 3.5) requestAnimationFrame(animate);
-        else {
-            canvas.style.transition = 'opacity 0.6s ease';
-            canvas.style.opacity = '0';
-            setTimeout(() => {
-                canvas.remove();
-                pmremGenerator.dispose();
-                envTexture.dispose();
-                renderer.dispose();
-            }, 700);
-        }
-    }
-    animate();
-}
 
-function crearCoronaUltraRealista(THREE) {
-    const group = new THREE.Group();
-    const oroPulido = new THREE.MeshPhysicalMaterial({ color: 0xd4af37, metalness: 1.0, roughness: 0.08, envMapIntensity: 2.5, clearcoat: 1.0, clearcoatRoughness: 0.05 });
-    const oroMate = new THREE.MeshPhysicalMaterial({ color: 0xb8952a, metalness: 1.0, roughness: 0.35, envMapIntensity: 2.0 });
-    const rubi = new THREE.MeshPhysicalMaterial({ color: 0xc2185b, metalness: 0.0, roughness: 0.02, transmission: 0.95, thickness: 0.8, ior: 2.4, envMapIntensity: 4.0, clearcoat: 1.0, clearcoatRoughness: 0.0, attenuationColor: new THREE.Color(0xff0066), attenuationDistance: 0.5 });
-    const diamante = new THREE.MeshPhysicalMaterial({ color: 0xffffff, metalness: 0.0, roughness: 0.0, transmission: 1.0, thickness: 0.5, ior: 2.42, envMapIntensity: 5.0, clearcoat: 1.0, clearcoatRoughness: 0.0, dispersion: 0.05 });
-    
-    const base = new THREE.Mesh(new THREE.TorusGeometry(1.8, 0.15, 32, 96), oroPulido);
-    base.rotation.x = Math.PI / 2; base.position.y = -0.7; base.castShadow = true;
-    group.add(base);
-    
-    const anilloSup = new THREE.Mesh(new THREE.TorusGeometry(1.8, 0.08, 24, 96), oroMate);
-    anilloSup.rotation.x = Math.PI / 2; anilloSup.position.y = -0.5;
-    group.add(anilloSup);
-    
-    for (let i = 0; i < 8; i++) {
-        const angle = (i / 8) * Math.PI * 2;
-        const x = Math.cos(angle) * 1.8, z = Math.sin(angle) * 1.8;
-        const altura = i % 2 === 0 ? 1.7 : 1.2;
-        const grosor = i % 2 === 0 ? 0.22 : 0.18;
-        const punta = new THREE.Mesh(new THREE.ConeGeometry(grosor, altura, 20), oroPulido);
-        punta.position.set(x, altura / 2 - 0.7, z); punta.castShadow = true;
-        group.add(punta);
-        const bola = new THREE.Mesh(new THREE.SphereGeometry(0.18, 32, 32), oroPulido);
-        bola.position.set(x, altura - 0.7, z); bola.castShadow = true;
-        group.add(bola);
-        const diam = new THREE.Mesh(new THREE.OctahedronGeometry(0.1, 1), diamante);
-        diam.position.set(x, altura - 0.7, z);
-        group.add(diam);
-    }
-    
-    for (let i = 0; i < 8; i++) {
-        const angle = (i / 8) * Math.PI * 2 + Math.PI / 8;
-        const x = Math.cos(angle) * 1.8, z = Math.sin(angle) * 1.8;
-        const rubiMesh = new THREE.Mesh(new THREE.OctahedronGeometry(0.18, 0), rubi);
-        rubiMesh.position.set(x, -0.35, z);
-        rubiMesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
-        group.add(rubiMesh);
-    }
-    
-    const diamond = new THREE.Mesh(new THREE.OctahedronGeometry(0.45, 1), diamante);
-    diamond.position.set(0, 1.6, 0); diamond.castShadow = true;
-    group.add(diamond);
-    
-    for (let i = 0; i < 4; i++) {
-        const angle = (i / 4) * Math.PI * 2 + Math.PI / 4;
-        const dMesh = new THREE.Mesh(new THREE.OctahedronGeometry(0.12, 0), diamante);
-        dMesh.position.set(Math.cos(angle) * 0.5, 1.4, Math.sin(angle) * 0.5);
-        group.add(dMesh);
-    }
-    
-    for (let i = 0; i < 24; i++) {
-        const angle = (i / 24) * Math.PI * 2;
-        const adorno = new THREE.Mesh(new THREE.SphereGeometry(0.06, 16, 16), oroMate);
-        adorno.position.set(Math.cos(angle) * 1.8, -0.6, Math.sin(angle) * 1.8);
-        group.add(adorno);
-    }
-    
-    for (let i = 0; i < 12; i++) {
-        const angle = (i / 12) * Math.PI * 2 + Math.PI / 12;
-        const dMesh = new THREE.Mesh(new THREE.SphereGeometry(0.04, 12, 12), diamante);
-        dMesh.position.set(Math.cos(angle) * 1.8, -0.45, Math.sin(angle) * 1.8);
-        group.add(dMesh);
-    }
-    
-    group.rotation.x = 0.2;
-    return group;
-}
-
-function crearFragmentosUltraRealistas(THREE, crown, scene) {
-    const fragments = [];
-    const materiales = [
-        new THREE.MeshPhysicalMaterial({ color: 0xd4af37, metalness: 1, roughness: 0.08, envMapIntensity: 2.5, clearcoat: 1 }),
-        new THREE.MeshPhysicalMaterial({ color: 0xf5d76e, metalness: 1, roughness: 0.15, envMapIntensity: 2.5 }),
-        new THREE.MeshPhysicalMaterial({ color: 0xffffff, metalness: 0, roughness: 0.0, transmission: 1, thickness: 0.3, ior: 2.42, envMapIntensity: 4 }),
-        new THREE.MeshPhysicalMaterial({ color: 0xc2185b, metalness: 0, roughness: 0.02, transmission: 0.95, thickness: 0.4, ior: 2.4, envMapIntensity: 3, attenuationColor: new THREE.Color(0xff0066), attenuationDistance: 0.5 })
-    ];
-    
-    for (let i = 0; i < 150; i++) {
-        const tamaño = 0.04 + Math.random() * 0.12;
-        let geom;
-        const tipo = Math.random();
-        if (tipo < 0.4) geom = new THREE.IcosahedronGeometry(tamaño, 0);
-        else if (tipo < 0.65) geom = new THREE.TetrahedronGeometry(tamaño, 0);
-        else if (tipo < 0.85) geom = new THREE.OctahedronGeometry(tamaño, 0);
-        else geom = new THREE.DodecahedronGeometry(tamaño, 0);
-        
-        const material = materiales[Math.floor(Math.random() * materiales.length)].clone();
-        material.transparent = true;
-        material.opacity = 1;
-        
-        const mesh = new THREE.Mesh(geom, material);
-        mesh.position.set((Math.random() - 0.5) * 1.5, (Math.random() - 0.5) * 1.5 + 0.5, (Math.random() - 0.5) * 1.5);
-        mesh.castShadow = true;
-        scene.add(mesh);
-        
-        const speed = 4 + Math.random() * 8;
-        const angle1 = Math.random() * Math.PI * 2;
-        const angle2 = (Math.random() - 0.5) * Math.PI;
-        const velocity = new THREE.Vector3(
-            Math.cos(angle1) * Math.cos(angle2) * speed,
-            Math.sin(angle2) * speed + 3,
-            Math.sin(angle1) * Math.cos(angle2) * speed
-        );
-        
-        fragments.push({
-            mesh, velocity,
-            rotationSpeed: new THREE.Vector3((Math.random() - 0.5) * 25, (Math.random() - 0.5) * 25, (Math.random() - 0.5) * 25)
-        });
-    }
-    return fragments;
-}
-
-function easeOutExpo(x) {
-    return x === 1 ? 1 : 1 - Math.pow(2, -10 * x);
-}
 // ============================================
 // 👑 PANEL ADMIN
 // ============================================
