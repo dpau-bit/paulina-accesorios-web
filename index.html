@@ -5426,7 +5426,7 @@ async function iniciarIntroCinematica() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.5;
+    renderer.toneMappingExposure = 2.2;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -5449,7 +5449,7 @@ async function iniciarIntroCinematica() {
     scene.environment = envTexture;
     
     // 💡 7. ILUMINACIÓN CINEMATOGRÁFICA CON SOMBRAS
-    const keyLight = new THREE.DirectionalLight(0xffffff, 6);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 12);
     keyLight.position.set(5, 8, 6);
     keyLight.castShadow = true;
     keyLight.shadow.mapSize.set(2048, 2048);
@@ -5463,7 +5463,7 @@ async function iniciarIntroCinematica() {
     fillLight.position.set(-6, 2, 4);
     scene.add(fillLight);
     
-    const rimLight = new THREE.DirectionalLight(0xd4af37, 6);
+    const rimLight = new THREE.DirectionalLight(0xd4af37, 15);
     rimLight.position.set(0, 5, -8);
     scene.add(rimLight);
     
@@ -5471,7 +5471,7 @@ async function iniciarIntroCinematica() {
     pinkLight.position.set(3, -3, 3);
     scene.add(pinkLight);
     
-    const goldLight = new THREE.PointLight(0xffd700, 15, 15);
+    const goldLight = new THREE.PointLight(0xffd700, 30, 25);
     goldLight.position.set(-2, 4, 2);
     scene.add(goldLight);
     
@@ -5487,21 +5487,20 @@ async function iniciarIntroCinematica() {
         const group = new THREE.Group();
         
         const goldPolished = new THREE.MeshPhysicalMaterial({
-            color: 0xd4af37,
-            metalness: 1.0,
-            roughness: 0.06,
-            envMapIntensity: 3.0,
-            clearcoat: 1.0,
-            clearcoatRoughness: 0.03,
-            reflectivity: 1.0
-        });
-        
+    color: 0xffd700,
+    metalness: 1.0,
+    roughness: 0.05,
+    envMapIntensity: 6.0,
+    clearcoat: 1.0,
+    clearcoatRoughness: 0.0,
+    reflectivity: 1.0
+});
         const goldMatte = new THREE.MeshPhysicalMaterial({
-            color: 0xb8952a,
-            metalness: 1.0,
-            roughness: 0.3,
-            envMapIntensity: 2.5
-        });
+    color: 0xd4af37,
+    metalness: 1.0,
+    roughness: 0.25,
+    envMapIntensity: 4.0
+});
         
         const goldDark = new THREE.MeshPhysicalMaterial({
             color: 0x8a6d1f,
@@ -5517,7 +5516,7 @@ async function iniciarIntroCinematica() {
             transmission: 0.95,
             thickness: 1.0,
             ior: 2.4,
-            envMapIntensity: 5.0,
+            envMapIntensity: 8.0,
             clearcoat: 1.0,
             clearcoatRoughness: 0.0,
             attenuationColor: new THREE.Color(0xff0066),
@@ -5531,10 +5530,9 @@ async function iniciarIntroCinematica() {
             transmission: 1.0,
             thickness: 0.5,
             ior: 2.42,
-            envMapIntensity: 6.0,
+            envMapIntensity: 10.0,
             clearcoat: 1.0,
-            clearcoatRoughness: 0.0,
-            dispersion: 0.1
+            clearcoatRoughness: 0.0
         });
         
         const base = new THREE.Mesh(new THREE.TorusGeometry(1.8, 0.18, 32, 96), goldPolished);
@@ -5703,11 +5701,11 @@ async function iniciarIntroCinematica() {
     const composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
     
-    const bloomPass = new UnrealBloomPass(
+const bloomPass = new UnrealBloomPass(
     new THREE.Vector2(window.innerWidth, window.innerHeight),
-    0,      // strength (empieza en 0, sube en la animación)
-    0.8,    // radius (más concentrado)
-    0.7     // threshold (SOLO lo muy brillante florece)
+    0,      // strength (se controla en animación)
+    0.5,    // radius: glow más concentrado
+    0.85    // threshold: SOLO lo súper brillante florece
 );
     composer.addPass(bloomPass);
     
