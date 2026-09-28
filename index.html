@@ -100,6 +100,7 @@
 
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+                body.loading { overflow: hidden; }
 
         :root {
             --gold: #d4af37; --gold-light: #f5d76e; --gold-dark: #b8952a;
@@ -2009,7 +2010,7 @@ body.shake-active {
         }
     </style>
 </head>
-    <body>
+    <body class="loading">
 
     <div id="particles-js"></div>
 
@@ -2338,28 +2339,26 @@ body.shake-active {
         <div class="footer-bottom">&copy; 2026 Paulina Accesorios · Hecho con 💖 para mujeres que brillan · 🇵🇪 Perú</div>
     </footer>
             <script type="module">
+                        const DEBUG = false;
+        const log = (...args) => DEBUG && console.log(...args);
+
         // ============================================
         // PARTÍCULAS
         // ============================================
-        // PARTÍCULAS
-        // ============================================
-        particlesJS('particles-js', {
+       particlesJS('particles-js', {
     particles: {
-        number: { value: 12, density: { enable: true, value_area: 1500 } },
-        color: { value: ['#d4af37', '#f5d76e'] },
+        number: { value: 40, density: { enable: true, value_area: 1200 } },
+        color: { value: ['#d4af37', '#f5d76e', '#f06292'] },
         shape: { type: 'circle' },
-        opacity: { value: 0.3 },
-        size: { value: 2 },
+        opacity: { value: 0.25, random: true },
+        size: { value: 3, random: true },
         line_linked: { enable: false },
-        move: { enable: true, speed: 0.4 }
+        move: { enable: true, speed: 0.6, direction: 'none', random: true }
     },
     interactivity: {
-        events: {
-            onhover: { enable: false },
-            onclick: { enable: false }
-        }
+        events: { onhover: { enable: false }, onclick: { enable: false } }
     },
-    retina_detect: false
+    retina_detect: true
 });
 
         // ============================================
@@ -2395,6 +2394,13 @@ function safeInt(val, fallback = 0) {
     return Number.isFinite(n) ? n : fallback;
 }
 function formatPrice(p) { return `S/ ${safeNumber(p, 0).toFixed(2)}`; }
+                        function fmtFecha(f) {
+            if (!f) return '';
+            return new Date(f).toLocaleString('es-PE', {
+                day: '2-digit', month: 'short', year: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            });
+        }
 
         function mostrarNotificacion(mensaje, icono = '✅') {
             const n = document.getElementById('notification');
@@ -2433,11 +2439,11 @@ function formatPrice(p) { return `S/ ${safeNumber(p, 0).toFixed(2)}`; }
         // NIVELES Y CÓDIGOS
         // ============================================
         const CODIGOS_POR_NIVEL = [
-            { min: 1000, code: 'DIAMANTE20', desc: '20% OFF + Envío gratis', emoji: '💎', nombre: 'Diamante', color: '#a78bfa' },
-            { min: 500, code: 'ORO15', desc: '15% OFF + Envío gratis', emoji: '🥇', nombre: 'Oro', color: '#d4af37' },
-            { min: 200, code: 'PLATA10', desc: '10% OFF', emoji: '🥈', nombre: 'Plata', color: '#94a3b8' },
-            { min: 50, code: 'BRONCE5', desc: '5% OFF', emoji: '🥉', nombre: 'Bronce', color: '#cd7f32' }
-        ];
+    { min: 1000, code: 'DIAMANTE20', descuento: 20, desc: '20% OFF + Envío gratis', emoji: '💎', nombre: 'Diamante', color: '#a78bfa' },
+    { min: 500,  code: 'ORO15',      descuento: 15, desc: '15% OFF + Envío gratis', emoji: '🥇', nombre: 'Oro', color: '#d4af37' },
+    { min: 200,  code: 'PLATA10',    descuento: 10, desc: '10% OFF', emoji: '🥈', nombre: 'Plata', color: '#94a3b8' },
+    { min: 50,   code: 'BRONCE5',    descuento: 5,  desc: '5% OFF', emoji: '🥉', nombre: 'Bronce', color: '#cd7f32' }
+];
 
         function obtenerNivelCompleto(points) {
             if (points >= 1000) return { min: 1000, next: null, nombre: 'Diamante', emoji: '💎', color: '#a78bfa' };
@@ -2538,8 +2544,6 @@ function formatPrice(p) { return `S/ ${safeNumber(p, 0).toFixed(2)}`; }
 
             modal.classList.add('show');
             document.body.style.overflow = 'hidden';
-
-            cargarComentariosProducto(p.id);
         }
 
         function cerrarProductoModal() {
@@ -2623,14 +2627,19 @@ function formatPrice(p) { return `S/ ${safeNumber(p, 0).toFixed(2)}`; }
             }
         }
 
-        async function enviarComentario(productId) {
+                async function enviarComentario(productId) {
             if (!window.currentUser || !window.currentUser.id) {
                 mostrarNotificacion('⚠️ Inicia sesión para comentar', '⚠️');
                 return;
             }
 
+            const p = productos.find(x => x.id === productId);
+            if (!p) {
+                mostrarNotificacion('⚠️ Este producto ya no existe', '⚠️');
+                return;
+            }
+
             const textarea = document.getElementById('nuevoComentario-' + productId);
-            if (!textarea) return;
 
             const texto = textarea.value.trim();
             if (!texto) {
@@ -2794,9 +2803,10 @@ function initChatAI() {
                         if (typeof actualizarOfertasDinamicas === 'function') actualizarOfertasDinamicas();
                     }
 
-                    // Ranking se carga después
-                    setTimeout(cargarRanking, 1500);
                 }, (error) => console.error('❌ onSnapshot:', error));
+
+                // ✅ Ranking se carga UNA sola vez, fuera del snapshot
+                setTimeout(cargarRanking, 1500);
             } catch (error) { console.error('❌', error); }
         }
 
@@ -3109,7 +3119,7 @@ if (cuponNivel) {
         return;
     }
 
-    cuponAplicado = { codigo: cuponNivel.code, descuento: parseInt(cuponNivel.code.match(/\d+/)[0]), descripcion: cuponNivel.desc, tipo: 'nivel' };
+    cuponAplicado = { codigo: cuponNivel.code, descuento: cuponNivel.descuento, descripcion: cuponNivel.desc, tipo: 'nivel' };
     guardarCarrito();
     mostrarCuponAplicado();
     renderCart();
@@ -3213,7 +3223,10 @@ if (cuponNivel) {
             codeEl.textContent = cuponAplicado.codigo;
             descEl.textContent = `${cuponAplicado.descuento}% OFF aplicado`;
             div.classList.add('show');
-            document.getElementById('cuponInputs').classList.remove('open');
+            const inputs = document.getElementById('cuponInputs');
+            const toggle = document.getElementById('cuponToggle');
+            if (inputs) inputs.classList.remove('open');
+            if (toggle) toggle.classList.remove('open');
         }
 
         function quitarCupon() {
@@ -3621,14 +3634,21 @@ if (cuponNivel) {
 
 async function loginUser(email, password) {
     try {
-        await window.firebaseAuth.signInWithEmailAndPassword(window.auth, email, password);
+        const cred = await window.firebaseAuth.signInWithEmailAndPassword(window.auth, email, password);
+
+        try {
+            const snap = await window.firebaseDB.getDoc(
+                window.firebaseDB.doc(window.db, "usuarios", cred.user.uid)
+            );
+            if (snap.exists()) {
+                const data = snap.data();
+                if (!Array.isArray(data.cuponesUsados)) data.cuponesUsados = [];
+                window.currentUser = data;
+            }
+        } catch (e) { console.warn('⚠️ No se pudo cargar usuario:', e); }
+
+        updateUserUI();
         mostrarNotificacion('✅ ¡Bienvenida! 👋', '👋');
-        
-        // 🆕 Forzar actualización inmediata y diferida
-        setTimeout(() => { if (typeof updateUserUI === 'function') updateUserUI(); }, 100);
-        setTimeout(() => { if (typeof updateUserUI === 'function') updateUserUI(); }, 500);
-        setTimeout(() => { if (typeof updateUserUI === 'function') updateUserUI(); }, 1500);
-        
         return true;
     } catch (error) {
         let msg = '❌ Correo o contraseña incorrectos';
@@ -4333,7 +4353,6 @@ async function subirImagenEdit(event) {
         mostrarNotificacion('⚠️ Solo imágenes permitidas', '⚠️');
         return;
     }
-
     if (file.size > 5 * 1024 * 1024) {
         mostrarNotificacion('⚠️ Imagen muy grande (máx 5MB)', '⚠️');
         return;
@@ -4347,6 +4366,11 @@ async function subirImagenEdit(event) {
     const label = document.getElementById('editImagenLabel');
     const inputHidden = document.getElementById('editImagen');
 
+    if (!preview || !previewImg || !progress || !progressFill || !status || !label || !inputHidden) {
+        console.warn('⚠️ Elementos de edición no encontrados');
+        return;
+    }
+
     const reader = new FileReader();
     reader.onload = (e) => {
         previewImg.src = e.target.result;
@@ -4359,7 +4383,7 @@ async function subirImagenEdit(event) {
     status.textContent = '⏳ Subiendo imagen...';
     status.style.color = 'rgba(212, 175, 55, 0.8)';
     progressFill.style.width = '30%';
-    label.textContent = '📤 Subiendo...';
+    label.textContent = '📁 Subiendo...';
 
     try {
         const base64 = await fileToBase64(file);
@@ -4378,12 +4402,9 @@ async function subirImagenEdit(event) {
         });
 
         progressFill.style.width = '80%';
-
         const data = await response.json();
 
-        if (!data.success) {
-            throw new Error(data.error?.message || 'Error al subir');
-        }
+        if (!data.success) throw new Error(data.error?.message || 'Error al subir');
 
         const imageUrl = data.data.url;
 
@@ -4391,7 +4412,6 @@ async function subirImagenEdit(event) {
         status.textContent = '✅ Imagen subida correctamente';
         status.style.color = '#4ade80';
         label.textContent = '✅ Imagen lista';
-
         inputHidden.value = imageUrl;
 
         mostrarNotificacion('✅ Imagen subida', '📸');
@@ -4401,7 +4421,6 @@ async function subirImagenEdit(event) {
             progress.classList.remove('show');
             progressFill.style.width = '0%';
         }, 1500);
-
     } catch (error) {
         console.error('❌ Error subiendo imagen:', error);
         mostrarNotificacion('❌ Error al subir imagen', '❌');
@@ -4412,33 +4431,49 @@ async function subirImagenEdit(event) {
         setTimeout(() => progress.classList.remove('show'), 2000);
     }
 }
-
-function fileToBase64(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-    });
-}
-
+                // ============================================
+// 🗑️ QUITAR IMÁGENES (Admin y Edit)
+// ============================================
 function quitarImagenAdmin() {
-    document.getElementById('adminImagen').value = '';
-    document.getElementById('adminImagenPreview').classList.remove('show');
-    document.getElementById('adminImagenPreviewImg').src = '';
-    document.getElementById('adminImagenFile').value = '';
-    document.getElementById('adminImagenLabel').textContent = 'Elegir imagen de mi galería';
+    const input = document.getElementById('adminImagen');
+    const preview = document.getElementById('adminImagenPreview');
+    const previewImg = document.getElementById('adminImagenPreviewImg');
+    const fileInput = document.getElementById('adminImagenFile');
+    const label = document.getElementById('adminImagenLabel');
+    const progress = document.getElementById('adminUploadProgress');
+    const status = document.getElementById('adminUploadStatus');
+
+    if (input) input.value = '';
+    if (preview) preview.classList.remove('show');
+    if (previewImg) previewImg.src = '';
+    if (fileInput) fileInput.value = '';
+    if (label) label.textContent = 'Elegir imagen de mi galería';
+    if (progress) progress.classList.remove('show');
+    if (status) status.classList.remove('show');
+
     mostrarNotificacion('🗑️ Imagen removida', '🗑️');
 }
 
 function quitarImagenEdit() {
-    document.getElementById('editImagen').value = '';
-    document.getElementById('editImagenPreview').classList.remove('show');
-    document.getElementById('editImagenPreviewImg').src = '';
-    document.getElementById('editImagenFile').value = '';
-    document.getElementById('editImagenLabel').textContent = 'Cambiar imagen';
+    const input = document.getElementById('editImagen');
+    const preview = document.getElementById('editImagenPreview');
+    const previewImg = document.getElementById('editImagenPreviewImg');
+    const fileInput = document.getElementById('editImagenFile');
+    const label = document.getElementById('editImagenLabel');
+    const progress = document.getElementById('editUploadProgress');
+    const status = document.getElementById('editUploadStatus');
+
+    if (input) input.value = '';
+    if (preview) preview.classList.remove('show');
+    if (previewImg) previewImg.src = '';
+    if (fileInput) fileInput.value = '';
+    if (label) label.textContent = 'Cambiar imagen';
+    if (progress) progress.classList.remove('show');
+    if (status) status.classList.remove('show');
+
     mostrarNotificacion('🗑️ Imagen removida', '🗑️');
 }
+
 // ============================================
 // 📦 ADMIN - PRODUCTOS
 // ============================================
@@ -4669,100 +4704,100 @@ function renderizarListaProductosAdmin(lista) {
         // ✏️ EDITAR PRODUCTO
         // ============================================
         async function editarProducto(id) {
-            try {
-                const docRef = window.firebaseDB.doc(window.db, "productos", id);
-                const docSnap = await window.firebaseDB.getDoc(docRef);
-                if (!docSnap.exists()) return;
-                const p = docSnap.data();
+    try {
+        const docRef = window.firebaseDB.doc(window.db, "productos", id);
+        const docSnap = await window.firebaseDB.getDoc(docRef);
+        if (!docSnap.exists()) return;
+        const p = docSnap.data();
 
-                let modal = document.getElementById('editarProductoModal');
-                if (modal) modal.remove();
+        let modal = document.getElementById('editarProductoModal');
+        if (modal) modal.remove();
 
-                modal = document.createElement('div');
-                modal.id = 'editarProductoModal';
-                modal.className = 'admin-premium-overlay';
-                modal.style.zIndex = '10001';
-                modal.innerHTML = `
-                    <div class="admin-premium" style="max-width:520px;">
-                        <div class="admin-premium-header">
-                            <div class="admin-premium-title">
-                                <span class="admin-premium-crown">✏️</span>
-                                <div>
-                                    <h2>Editar producto</h2>
-                                    <p>${p.nombre}</p>
-                                </div>
-                            </div>
-                            <button class="admin-premium-close" onclick="document.getElementById('editarProductoModal').remove()">✕</button>
-                        </div>
-                        <div class="admin-premium-body">
-                            <div class="admin-form-group">
-                                <label class="admin-label">📦 Nombre *</label>
-                                <input type="text" id="editNombre" class="admin-input" value="${(p.nombre || '').replace(/"/g, '&quot;')}">
-                            </div>
-                            <div class="admin-form-row">
-                                <div class="admin-form-group">
-                                    <label class="admin-label">💰 Precio *</label>
-                                    <input type="number" id="editPrecio" class="admin-input" step="0.01" value="${p.precio}">
-                                </div>
-                                <div class="admin-form-group">
-                                    <label class="admin-label">💸 Precio anterior</label>
-                                    <input type="number" id="editPrecioOld" class="admin-input" step="0.01" value="${p.precio_old || ''}">
-                                </div>
-                            </div>
-                            <div class="admin-form-group">
-                                <label class="admin-label">📝 Descripción</label>
-                                <input type="text" id="editDescripcion" class="admin-input" value="${(p.descripcion || '').replace(/"/g, '&quot;')}">
-                            </div>
-                            <div class="admin-form-group">
-    <label class="admin-label">📸 Imagen del producto</label>
-    <div class="admin-file-upload">
-        <label for="adminImagenFile" class="admin-file-btn">
-            <span style="font-size: 1.2rem;">📁</span>
-            <span id="adminImagenLabel">Elegir imagen de mi galería</span>
-            <input type="file" id="adminImagenFile" accept="image/*" onchange="subirImagenAdmin(event)">
-        </label>
-        <input type="hidden" id="adminImagen" value="">
-        <div class="admin-image-preview" id="adminImagenPreview">
-            <img id="adminImagenPreviewImg" src="" alt="Vista previa">
-            <button class="remove-image" type="button" onclick="quitarImagenAdmin()">✕</button>
-        </div>
-        <div class="admin-upload-progress" id="adminUploadProgress">
-            <div class="admin-upload-progress-fill" id="adminUploadProgressFill"></div>
-        </div>
-        <div class="admin-upload-status" id="adminUploadStatus"></div>
-    </div>
-</div>
-                            <div class="admin-form-row">
-                                <div class="admin-form-group">
-                                    <label class="admin-label">📊 Stock</label>
-                                    <input type="number" id="editStock" class="admin-input" value="${p.stock || 0}" min="0">
-                                </div>
-                                <div class="admin-form-group">
-                                    <label class="admin-label">⭐ Badge</label>
-                                    <input type="text" id="editBadge" class="admin-input" value="${(p.badge || '').replace(/"/g, '&quot;')}">
-                                </div>
-                            </div>
-                            <div class="admin-form-group">
-                                <label class="admin-label">📂 Categoría</label>
-                                <select id="editCategoria" class="admin-select">
-                                    <option value="aretes" ${p.categoria === 'aretes' ? 'selected' : ''}>📿 Aretes</option>
-                                    <option value="pestanas" ${p.categoria === 'pestanas' ? 'selected' : ''}>👁️ Pestañas</option>
-                                    <option value="collares" ${p.categoria === 'collares' ? 'selected' : ''}>📿 Collares</option>
-                                    <option value="maquillaje" ${p.categoria === 'maquillaje' ? 'selected' : ''}>💄 Maquillaje</option>
-                                    <option value="capilar" ${p.categoria === 'capilar' ? 'selected' : ''}>💈 Cuidado Capilar</option>
-                                </select>
-                            </div>
-                            <button class="admin-btn admin-btn-primary admin-btn-full" onclick="guardarEdicion('${id}')" style="margin-top:8px;">✅ Guardar cambios</button>
+        modal = document.createElement('div');
+        modal.id = 'editarProductoModal';
+        modal.className = 'admin-premium-overlay';
+        modal.style.zIndex = '10001';
+        modal.innerHTML = `
+            <div class="admin-premium" style="max-width:520px;">
+                <div class="admin-premium-header">
+                    <div class="admin-premium-title">
+                        <span class="admin-premium-crown">✏️</span>
+                        <div>
+                            <h2>Editar producto</h2>
+                            <p>${p.nombre}</p>
                         </div>
                     </div>
-                `;
-                document.body.appendChild(modal);
-                modal.classList.add('show');
-            } catch (error) {
-                console.error('❌ Error:', error);
-                mostrarNotificacion('❌ Error al abrir editor', '❌');
-            }
-        }
+                    <button class="admin-premium-close" onclick="document.getElementById('editarProductoModal').remove()">✕</button>
+                </div>
+                <div class="admin-premium-body">
+                    <div class="admin-form-group">
+                        <label class="admin-label">📦 Nombre *</label>
+                        <input type="text" id="editNombre" class="admin-input" value="${(p.nombre || '').replace(/"/g, '&quot;')}">
+                    </div>
+                    <div class="admin-form-row">
+                        <div class="admin-form-group">
+                            <label class="admin-label">💰 Precio *</label>
+                            <input type="number" id="editPrecio" class="admin-input" step="0.01" value="${p.precio}">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-label">💸 Precio anterior</label>
+                            <input type="number" id="editPrecioOld" class="admin-input" step="0.01" value="${p.precio_old || ''}">
+                        </div>
+                    </div>
+                    <div class="admin-form-group">
+                        <label class="admin-label">📝 Descripción</label>
+                        <input type="text" id="editDescripcion" class="admin-input" value="${(p.descripcion || '').replace(/"/g, '&quot;')}">
+                    </div>
+                    <div class="admin-form-group">
+                        <label class="admin-label">📸 Imagen del producto</label>
+                        <div class="admin-file-upload">
+                            <label for="editImagenFile" class="admin-file-btn">
+                                <span style="font-size: 1.2rem;">📁</span>
+                                <span id="editImagenLabel">Cambiar imagen</span>
+                                <input type="file" id="editImagenFile" accept="image/*" onchange="subirImagenEdit(event)">
+                            </label>
+                            <input type="hidden" id="editImagen" value="${p.imagen || ''}">
+                            <div class="admin-image-preview ${p.imagen ? 'show' : ''}" id="editImagenPreview">
+                                <img id="editImagenPreviewImg" src="${p.imagen || ''}" alt="Vista previa">
+                                <button class="remove-image" type="button" onclick="quitarImagenEdit()">✕</button>
+                            </div>
+                            <div class="admin-upload-progress" id="editUploadProgress">
+                                <div class="admin-upload-progress-fill" id="editUploadProgressFill"></div>
+                            </div>
+                            <div class="admin-upload-status" id="editUploadStatus"></div>
+                        </div>
+                    </div>
+                    <div class="admin-form-row">
+                        <div class="admin-form-group">
+                            <label class="admin-label">📊 Stock</label>
+                            <input type="number" id="editStock" class="admin-input" value="${p.stock || 0}" min="0">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-label">⭐ Badge</label>
+                            <input type="text" id="editBadge" class="admin-input" value="${(p.badge || '').replace(/"/g, '&quot;')}">
+                        </div>
+                    </div>
+                    <div class="admin-form-group">
+                        <label class="admin-label">📂 Categoría</label>
+                        <select id="editCategoria" class="admin-select">
+                            <option value="aretes" ${p.categoria === 'aretes' ? 'selected' : ''}>📿 Aretes</option>
+                            <option value="pestanas" ${p.categoria === 'pestanas' ? 'selected' : ''}>👁️ Pestañas</option>
+                            <option value="collares" ${p.categoria === 'collares' ? 'selected' : ''}>📿 Collares</option>
+                            <option value="maquillaje" ${p.categoria === 'maquillaje' ? 'selected' : ''}>💄 Maquillaje</option>
+                            <option value="capilar" ${p.categoria === 'capilar' ? 'selected' : ''}>💈 Cuidado Capilar</option>
+                        </select>
+                    </div>
+                    <button class="admin-btn admin-btn-primary admin-btn-full" onclick="guardarEdicion('${id}')" style="margin-top:8px;">✅ Guardar cambios</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        modal.classList.add('show');
+    } catch (error) {
+        console.error('❌ Error:', error);
+        mostrarNotificacion('❌ Error al abrir editor', '❌');
+    }
+}
 
         async function guardarEdicion(id) {
             try {
@@ -5339,18 +5374,16 @@ function renderizarListaProductosAdmin(lista) {
                 document.getElementById('ventasTopProductos').innerHTML = topHtml;
             } catch (e) { console.error('❌ ventas:', e); }
         }
-// ============================================
-// 🎬 THE CROWN PROTOCOL V3 - CINEMATIC EDITION
-// ============================================
+                
 // ============================================
 // 🎬 THE CROWN PROTOCOL V4 - CINEMATIC EDITION
 // ============================================
 async function iniciarIntroCinematica() {
-    // 🎵 1. SONIDO ÉPICO (Web Audio API)
+    // 🎵 Sonido épico (Web Audio API)
     try {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        
-        const playTone = (freq, duration, type = 'sine', gainVal = 0.15, delay = 0) => {
+
+        const playTone = (freq, duration, type = 'sine', gainVal = 0.12, delay = 0) => {
             setTimeout(() => {
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
@@ -5365,60 +5398,50 @@ async function iniciarIntroCinematica() {
                 osc.stop(audioCtx.currentTime + duration);
             }, delay);
         };
-        
-        // Whoosh inicial
+
         const whooshOsc = audioCtx.createOscillator();
         const whooshGain = audioCtx.createGain();
-        whooshOsc.type = 'sawtooth';
-        whooshOsc.frequency.setValueAtTime(80, audioCtx.currentTime);
-        whooshOsc.frequency.exponentialRampToValueAtTime(1800, audioCtx.currentTime + 0.8);
+        whooshOsc.type = 'sine';
+        whooshOsc.frequency.setValueAtTime(120, audioCtx.currentTime);
+        whooshOsc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.6);
         whooshGain.gain.setValueAtTime(0, audioCtx.currentTime);
-        whooshGain.gain.linearRampToValueAtTime(0.12, audioCtx.currentTime + 0.15);
-        whooshGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.5);
+        whooshGain.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 0.15);
+        whooshGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.2);
         whooshOsc.connect(whooshGain);
         whooshGain.connect(audioCtx.destination);
         whooshOsc.start(audioCtx.currentTime);
-        whooshOsc.stop(audioCtx.currentTime + 1.5);
-        
-        // Impacto grave en el flash
-        playTone(55, 1.8, 'sine', 0.28, 1700);
-        playTone(75, 1.4, 'triangle', 0.18, 1700);
-        playTone(110, 1.0, 'sine', 0.1, 1750);
-        
-        // Brillos cristalinos al desvanecer
-        playTone(1400, 0.5, 'sine', 0.09, 2100);
-        playTone(1800, 0.6, 'sine', 0.07, 2300);
-        playTone(2200, 0.7, 'sine', 0.05, 2500);
-        playTone(2800, 0.8, 'sine', 0.03, 2700);
+        whooshOsc.stop(audioCtx.currentTime + 1.2);
+
+        playTone(880, 0.4, 'sine', 0.06, 800);
+        playTone(1320, 0.5, 'sine', 0.05, 1000);
+        playTone(1760, 0.6, 'sine', 0.04, 1300);
+        playTone(2200, 0.7, 'sine', 0.03, 1600);
     } catch (e) {
         console.warn('⚠️ Audio no disponible:', e);
     }
-    
-    // 🎬 2. IMPORTAR THREE.JS + POST-PROCESSING
+
+    // 🎬 Imports Three.js
     const THREE = await import('https://unpkg.com/three@0.160.0/build/three.module.js');
     const { EffectComposer } = await import('https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/EffectComposer.js');
     const { RenderPass } = await import('https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/RenderPass.js');
     const { UnrealBloomPass } = await import('https://unpkg.com/three@0.160.0/examples/jsm/postprocessing/UnrealBloomPass.js');
     const { RGBELoader } = await import('https://unpkg.com/three@0.160.0/examples/jsm/loaders/RGBELoader.js');
-    
-    // 🎨 3. CANVAS
+
     const canvas = document.createElement('canvas');
     canvas.id = 'cinematicCanvas';
     canvas.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:99999;pointer-events:none;opacity:0;transition:opacity 0.4s ease;';
     document.body.appendChild(canvas);
     requestAnimationFrame(() => canvas.style.opacity = '1');
-    
-    // 🎥 4. ESCENA
+
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x000000);
-    scene.fog = new THREE.FogExp2(0x000000, 0.02);
-    
-    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(0, 0, 10);
-    
-    // 🖼️ 5. RENDERER CON SOMBRAS DE ALTA CALIDAD
-    const renderer = new THREE.WebGLRenderer({ 
-        canvas, 
+    scene.background = new THREE.Color(0x0a050a);
+    scene.fog = new THREE.FogExp2(0x0a050a, 0.012);
+
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 0.5, 9);
+
+    const renderer = new THREE.WebGLRenderer({
+        canvas,
         antialias: true,
         powerPreference: 'high-performance',
         alpha: false
@@ -5426,15 +5449,14 @@ async function iniciarIntroCinematica() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 2.2;
+    renderer.toneMappingExposure = 1.1;   // ✅ Bajado de 2.2 → 1.1
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    
-    // 🌍 6. HDRI REALISTA DESDE POLY HAVEN
+
     const pmremGenerator = new THREE.PMREMGenerator(renderer);
     pmremGenerator.compileEquirectangularShader();
-    
+
     let envTexture;
     try {
         const rgbeLoader = new RGBELoader();
@@ -5447,82 +5469,73 @@ async function iniciarIntroCinematica() {
         envTexture = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
     }
     scene.environment = envTexture;
-    
-    // 💡 7. ILUMINACIÓN CINEMATOGRÁFICA CON SOMBRAS
-    const keyLight = new THREE.DirectionalLight(0xffffff, 12);
+
+    // 💡 Iluminación BALANCEADA
+    scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+
+    const keyLight = new THREE.DirectionalLight(0xfff5e0, 3.5);
     keyLight.position.set(5, 8, 6);
     keyLight.castShadow = true;
-    keyLight.shadow.mapSize.set(2048, 2048);
-    keyLight.shadow.camera.near = 0.5;
-    keyLight.shadow.camera.far = 50;
+    keyLight.shadow.mapSize.set(1024, 1024);
     keyLight.shadow.bias = -0.0005;
-    keyLight.shadow.radius = 4;
     scene.add(keyLight);
-    
-    const fillLight = new THREE.DirectionalLight(0xa0c0ff, 2);
+
+    const fillLight = new THREE.DirectionalLight(0xa0c0ff, 1.2);
     fillLight.position.set(-6, 2, 4);
     scene.add(fillLight);
-    
-    const rimLight = new THREE.DirectionalLight(0xd4af37, 15);
+
+    const rimLight = new THREE.DirectionalLight(0xd4af37, 3);
     rimLight.position.set(0, 5, -8);
     scene.add(rimLight);
-    
-    const pinkLight = new THREE.PointLight(0xc2185b, 12, 20);
-    pinkLight.position.set(3, -3, 3);
-    scene.add(pinkLight);
-    
-    const goldLight = new THREE.PointLight(0xffd700, 30, 25);
-    goldLight.position.set(-2, 4, 2);
+
+    const goldLight = new THREE.PointLight(0xffd700, 6, 20);
+    goldLight.position.set(-2, 4, 3);
     scene.add(goldLight);
-    
-    const topLight = new THREE.SpotLight(0xffffff, 20, 20, Math.PI / 4, 0.5);
-    topLight.position.set(0, 10, 0);
-    topLight.target.position.set(0, 0, 0);
-    topLight.castShadow = true;
-    scene.add(topLight);
-    scene.add(topLight.target);
-    
-    // 👑 8. CREAR CORONA CON MATERIALES REALISTAS
+
+    const pinkLight = new THREE.PointLight(0xc2185b, 3, 15);
+    pinkLight.position.set(3, -2, 3);
+    scene.add(pinkLight);
+
+    // 👑 Crear corona
     function crearCorona() {
         const group = new THREE.Group();
-        
+
         const goldPolished = new THREE.MeshPhysicalMaterial({
-    color: 0xffd700,
-    metalness: 1.0,
-    roughness: 0.05,
-    envMapIntensity: 6.0,
-    clearcoat: 1.0,
-    clearcoatRoughness: 0.0,
-    reflectivity: 1.0
-});
+            color: 0xffd700,
+            metalness: 1.0,
+            roughness: 0.18,
+            envMapIntensity: 3.0,
+            clearcoat: 1.0,
+            clearcoatRoughness: 0.05
+        });
+
         const goldMatte = new THREE.MeshPhysicalMaterial({
-    color: 0xd4af37,
-    metalness: 1.0,
-    roughness: 0.25,
-    envMapIntensity: 4.0
-});
-        
+            color: 0xd4af37,
+            metalness: 1.0,
+            roughness: 0.35,
+            envMapIntensity: 2.0
+        });
+
         const goldDark = new THREE.MeshPhysicalMaterial({
             color: 0x8a6d1f,
             metalness: 1.0,
             roughness: 0.5,
-            envMapIntensity: 2.0
+            envMapIntensity: 1.5
         });
-        
+
         const ruby = new THREE.MeshPhysicalMaterial({
             color: 0xc2185b,
             metalness: 0.0,
-            roughness: 0.02,
-            transmission: 0.95,
-            thickness: 1.0,
+            roughness: 0.05,
+            transmission: 0.9,
+            thickness: 0.8,
             ior: 2.4,
-            envMapIntensity: 8.0,
+            envMapIntensity: 4.0,
             clearcoat: 1.0,
-            clearcoatRoughness: 0.0,
             attenuationColor: new THREE.Color(0xff0066),
             attenuationDistance: 0.5
         });
-        
+
         const diamond = new THREE.MeshPhysicalMaterial({
             color: 0xffffff,
             metalness: 0.0,
@@ -5530,53 +5543,52 @@ async function iniciarIntroCinematica() {
             transmission: 1.0,
             thickness: 0.5,
             ior: 2.42,
-            envMapIntensity: 10.0,
-            clearcoat: 1.0,
-            clearcoatRoughness: 0.0
+            envMapIntensity: 5.0,
+            clearcoat: 1.0
         });
-        
+
         const base = new THREE.Mesh(new THREE.TorusGeometry(1.8, 0.18, 32, 96), goldPolished);
         base.rotation.x = Math.PI / 2;
         base.position.y = -0.7;
         base.castShadow = true;
         base.receiveShadow = true;
         group.add(base);
-        
+
         const ring = new THREE.Mesh(new THREE.TorusGeometry(1.8, 0.08, 24, 96), goldMatte);
         ring.rotation.x = Math.PI / 2;
         ring.position.y = -0.5;
         ring.castShadow = true;
         group.add(ring);
-        
+
         const ring2 = new THREE.Mesh(new THREE.TorusGeometry(1.8, 0.06, 24, 96), goldDark);
         ring2.rotation.x = Math.PI / 2;
         ring2.position.y = -0.9;
         ring2.castShadow = true;
         group.add(ring2);
-        
+
         for (let i = 0; i < 8; i++) {
             const angle = (i / 8) * Math.PI * 2;
             const x = Math.cos(angle) * 1.8;
             const z = Math.sin(angle) * 1.8;
             const altura = i % 2 === 0 ? 1.8 : 1.3;
             const grosor = i % 2 === 0 ? 0.25 : 0.2;
-            
+
             const punta = new THREE.Mesh(new THREE.ConeGeometry(grosor, altura, 20), goldPolished);
             punta.position.set(x, altura / 2 - 0.7, z);
             punta.castShadow = true;
             group.add(punta);
-            
+
             const bola = new THREE.Mesh(new THREE.SphereGeometry(0.2, 32, 32), goldPolished);
             bola.position.set(x, altura - 0.7, z);
             bola.castShadow = true;
             group.add(bola);
-            
+
             const di = new THREE.Mesh(new THREE.OctahedronGeometry(0.14, 1), diamond);
             di.position.set(x, altura - 0.7, z);
             di.castShadow = true;
             group.add(di);
         }
-        
+
         for (let i = 0; i < 8; i++) {
             const angle = (i / 8) * Math.PI * 2 + Math.PI / 8;
             const x = Math.cos(angle) * 1.8;
@@ -5587,12 +5599,12 @@ async function iniciarIntroCinematica() {
             rubiMesh.castShadow = true;
             group.add(rubiMesh);
         }
-        
+
         const diamondCenter = new THREE.Mesh(new THREE.OctahedronGeometry(0.5, 1), diamond);
         diamondCenter.position.set(0, 1.7, 0);
         diamondCenter.castShadow = true;
         group.add(diamondCenter);
-        
+
         for (let i = 0; i < 4; i++) {
             const angle = (i / 4) * Math.PI * 2 + Math.PI / 4;
             const dMesh = new THREE.Mesh(new THREE.OctahedronGeometry(0.14, 0), diamond);
@@ -5600,28 +5612,12 @@ async function iniciarIntroCinematica() {
             dMesh.castShadow = true;
             group.add(dMesh);
         }
-        
-        for (let i = 0; i < 24; i++) {
-            const angle = (i / 24) * Math.PI * 2;
-            const adorno = new THREE.Mesh(new THREE.SphereGeometry(0.07, 16, 16), goldMatte);
-            adorno.position.set(Math.cos(angle) * 1.8, -0.6, Math.sin(angle) * 1.8);
-            adorno.castShadow = true;
-            group.add(adorno);
-        }
-        
-        for (let i = 0; i < 12; i++) {
-            const angle = (i / 12) * Math.PI * 2 + Math.PI / 12;
-            const dMesh = new THREE.Mesh(new THREE.SphereGeometry(0.05, 12, 12), diamond);
-            dMesh.position.set(Math.cos(angle) * 1.8, -0.45, Math.sin(angle) * 1.8);
-            dMesh.castShadow = true;
-            group.add(dMesh);
-        }
-        
-        group.rotation.x = 0.15;
+
+        group.rotation.x = 0.12;
         return group;
     }
-    
-    // 🎨 9. TEXTURA CIRCULAR DE PARTÍCULAS
+
+    // ✨ Partículas
     function crearTexturaParticula() {
         const c = document.createElement('canvas');
         c.width = 128;
@@ -5636,55 +5632,54 @@ async function iniciarIntroCinematica() {
         ctx.fillRect(0, 0, 128, 128);
         return new THREE.CanvasTexture(c);
     }
-    
+
     const crown = crearCorona();
     crown.scale.setScalar(0);
     scene.add(crown);
-    
-    // ✨ 10. PARTICLE SYSTEM MEJORADO
-    const particleCount = 1500;
+
+    const particleCount = 800;
     const particlesGeometry = new THREE.BufferGeometry();
     const particlesPositions = new Float32Array(particleCount * 3);
     const particlesVelocities = [];
     const particlesColors = new Float32Array(particleCount * 3);
-    
+
     const goldColor = new THREE.Color(0xd4af37);
     const lightGoldColor = new THREE.Color(0xf5d76e);
     const pinkColor = new THREE.Color(0xc2185b);
     const whiteColor = new THREE.Color(0xffffff);
-    
+
     for (let i = 0; i < particleCount; i++) {
         particlesPositions[i * 3] = 0;
         particlesPositions[i * 3 + 1] = 0;
         particlesPositions[i * 3 + 2] = 0;
-        
-        const speed = 3 + Math.random() * 12;
+
+        const speed = 3 + Math.random() * 10;
         const angle1 = Math.random() * Math.PI * 2;
         const angle2 = (Math.random() - 0.5) * Math.PI;
-        
+
         particlesVelocities.push(new THREE.Vector3(
             Math.cos(angle1) * Math.cos(angle2) * speed,
-            Math.sin(angle2) * speed + 4,
+            Math.sin(angle2) * speed + 3,
             Math.sin(angle1) * Math.cos(angle2) * speed
         ));
-        
+
         const colorChoice = Math.random();
         let color;
         if (colorChoice < 0.4) color = goldColor;
         else if (colorChoice < 0.6) color = lightGoldColor;
         else if (colorChoice < 0.8) color = pinkColor;
         else color = whiteColor;
-        
+
         particlesColors[i * 3] = color.r;
         particlesColors[i * 3 + 1] = color.g;
         particlesColors[i * 3 + 2] = color.b;
     }
-    
+
     particlesGeometry.setAttribute('position', new THREE.BufferAttribute(particlesPositions, 3));
     particlesGeometry.setAttribute('color', new THREE.BufferAttribute(particlesColors, 3));
-    
+
     const particlesMaterial = new THREE.PointsMaterial({
-        size: 0.25,
+        size: 0.22,
         map: crearTexturaParticula(),
         vertexColors: true,
         transparent: true,
@@ -5693,142 +5688,124 @@ async function iniciarIntroCinematica() {
         sizeAttenuation: true,
         depthWrite: false
     });
-    
+
     const particles = new THREE.Points(particlesGeometry, particlesMaterial);
     scene.add(particles);
-    
-    // 🎬 11. POST-PROCESSING CINEMATOGRÁFICO
+
+    // 🎬 Post-processing SUAVE
     const composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
-    
-const bloomPass = new UnrealBloomPass(
-    new THREE.Vector2(window.innerWidth, window.innerHeight),
-    0,      // strength (se controla en animación)
-    0.5,    // radius: glow más concentrado
-    0.85    // threshold: SOLO lo súper brillante florece
-);
+
+    const bloomPass = new UnrealBloomPass(
+        new THREE.Vector2(window.innerWidth, window.innerHeight),
+        0.0,    // strength (se anima)
+        0.4,    // radius
+        0.95    // threshold ALTO → solo lo muy brillante florece
+    );
     composer.addPass(bloomPass);
-    
-    // 📳 12. SCREEN SHAKE
-    function shake(intensity = 20, duration = 800) {
+
+    function shake(intensity = 12, duration = 500) {
         const start = Date.now();
         function loop() {
             const elapsed = Date.now() - start;
-            if (elapsed > duration) { 
-                document.body.style.transform = ''; 
-                return; 
+            if (elapsed > duration) {
+                document.body.style.transform = '';
+                return;
             }
             const progress = 1 - (elapsed / duration);
             const decay = Math.pow(progress, 2);
             const amp = intensity * decay;
-            document.body.style.transform = `translate(${(Math.random() - 0.5) * amp * 2}px, ${(Math.random() - 0.5) * amp * 2}px) rotate(${(Math.random() - 0.5) * amp * 0.05}deg)`;
+            document.body.style.transform = `translate(${(Math.random() - 0.5) * amp * 2}px, ${(Math.random() - 0.5) * amp * 2}px)`;
             requestAnimationFrame(loop);
         }
         loop();
     }
-    
-    // 🎬 13. ANIMACIÓN PRINCIPAL (3 segundos)
+
     const clock = new THREE.Clock();
     let t = 0;
     let exploded = false;
     let explodedTime = 0;
     let cameraShake = 0;
-    
+
     return new Promise((resolve) => {
         function animate() {
             const dt = Math.min(clock.getDelta(), 0.05);
             t += dt;
-            
-            // FASE 1: 0 - 0.5s — Zoom in
-            if (t < 0.5) {
-                const p = t / 0.5;
+
+            // FASE 1: 0 - 0.6s → Zoom in suave
+            if (t < 0.6) {
+                const p = t / 0.6;
                 const eased = 1 - Math.pow(1 - p, 3);
-                camera.position.z = 15 - eased * 5;
-                crown.scale.setScalar(eased * 0.3);
-                crown.rotation.y = p * Math.PI * 2;
-                bloomPass.strength = p * 0.6;
+                camera.position.z = 12 - eased * 3;
+                crown.scale.setScalar(eased * 0.5);
+                crown.rotation.y = p * Math.PI * 1.5;
+                bloomPass.strength = p * 0.15;
             }
-            // FASE 2: 0.5 - 1.2s — Corona entra girando
-            else if (t < 1.2) {
-                const p = (t - 0.5) / 0.7;
+            // FASE 2: 0.6 - 1.4s → Corona visible girando
+            else if (t < 1.4) {
+                const p = (t - 0.6) / 0.8;
                 const eased = 1 - Math.pow(1 - p, 3);
-                camera.position.z = 10 - eased * 2;
-                crown.scale.setScalar(0.3 + eased * 0.9);
-                crown.rotation.y += dt * 4;
-                crown.rotation.x = 0.15 + Math.sin(p * Math.PI) * 0.3;
-                bloomPass.strength = 0.6 + p * 0.8;
+                camera.position.z = 9 - eased * 1;
+                crown.scale.setScalar(0.5 + eased * 0.6);
+                crown.rotation.y += dt * 2.5;
+                crown.rotation.x = 0.12 + Math.sin(p * Math.PI) * 0.15;
+                bloomPass.strength = 0.15 + p * 0.25;   // ✅ MUY sutil
             }
-            // FASE 3: 1.2 - 1.8s — Clímax
-            else if (t < 1.8) {
-                const p = (t - 1.2) / 0.6;
-                crown.rotation.y += dt * 7;
-                crown.rotation.x += dt * 0.5;
-                bloomPass.strength = 1.4 + p * 1.0;
-                cameraShake = 0.3 + p * 0.9;
+            // FASE 3: 1.4 - 2.0s → Pose final
+            else if (t < 2.0) {
+                const p = (t - 1.4) / 0.6;
+                crown.rotation.y += dt * 1.2;
+                bloomPass.strength = 0.4 + p * 0.2;
+                cameraShake = p * 0.25;
             }
-            // FASE 4: 1.8s — EXPLOSIÓN
-            else if (t >= 1.8 && !exploded) {
+            // FASE 4: 2.0s → Explosión de partículas (SIN flash blanco brutal)
+            else if (t >= 2.0 && !exploded) {
                 exploded = true;
                 explodedTime = t;
-                shake(35, 900);
-                cameraShake = 3.0;
+                shake(15, 500);
+                cameraShake = 0.8;
                 scene.remove(crown);
-                
+
                 const positions = particlesGeometry.attributes.position.array;
                 for (let i = 0; i < particleCount; i++) {
-                    positions[i * 3] = (Math.random() - 0.5) * 0.5;
-                    positions[i * 3 + 1] = (Math.random() - 0.5) * 0.5;
-                    positions[i * 3 + 2] = (Math.random() - 0.5) * 0.5;
+                    positions[i * 3] = (Math.random() - 0.5) * 0.3;
+                    positions[i * 3 + 1] = (Math.random() - 0.5) * 0.3;
+                    positions[i * 3 + 2] = (Math.random() - 0.5) * 0.3;
                 }
                 particlesGeometry.attributes.position.needsUpdate = true;
                 particlesMaterial.opacity = 1;
-                
-                const flash1 = document.createElement('div');
-                flash1.style.cssText = 'position:fixed;inset:0;background:radial-gradient(circle,#ffffff,#f5d76e 30%,transparent 70%);z-index:100000;pointer-events:none;opacity:1;transition:opacity 0.4s ease;';
-                document.body.appendChild(flash1);
-                setTimeout(() => flash1.style.opacity = '0', 50);
-                setTimeout(() => flash1.remove(), 500);
-                
-                setTimeout(() => {
-                    const flash2 = document.createElement('div');
-                    flash2.style.cssText = 'position:fixed;inset:0;background:radial-gradient(circle,#f5d76e,#d4af37 40%,transparent 70%);z-index:100000;pointer-events:none;opacity:1;transition:opacity 0.5s ease;';
-                    document.body.appendChild(flash2);
-                    setTimeout(() => flash2.style.opacity = '0', 80);
-                    setTimeout(() => flash2.remove(), 600);
-                }, 150);
             }
-            // FASE 5: 1.8 - 3.0s — Partículas vuelan
+            // FASE 5: 2.0 - 3.0s → Partículas vuelan
             if (exploded) {
                 const elapsed = t - explodedTime;
                 const positions = particlesGeometry.attributes.position.array;
-                const velocities = particlesVelocities;
-                
+
                 for (let i = 0; i < particleCount; i++) {
-                    velocities[i].y -= 3.5 * dt;
-                    velocities[i].multiplyScalar(Math.pow(0.96, dt * 60));
-                    
-                    positions[i * 3] += velocities[i].x * dt;
-                    positions[i * 3 + 1] += velocities[i].y * dt;
-                    positions[i * 3 + 2] += velocities[i].z * dt;
+                    particlesVelocities[i].y -= 2.5 * dt;
+                    particlesVelocities[i].multiplyScalar(Math.pow(0.96, dt * 60));
+
+                    positions[i * 3] += particlesVelocities[i].x * dt;
+                    positions[i * 3 + 1] += particlesVelocities[i].y * dt;
+                    positions[i * 3 + 2] += particlesVelocities[i].z * dt;
                 }
                 particlesGeometry.attributes.position.needsUpdate = true;
-                
+
                 if (elapsed > 0.3) {
-                    particlesMaterial.opacity = Math.max(0, 1 - (elapsed - 0.3) / 0.8);
+                    particlesMaterial.opacity = Math.max(0, 1 - (elapsed - 0.3) / 0.7);
                 }
-                
-                bloomPass.strength = Math.max(0, 2.4 - elapsed * 0.8);
-                
+
+                bloomPass.strength = Math.max(0, 0.6 - elapsed * 0.3);
+
                 if (cameraShake > 0) {
                     camera.position.x = (Math.random() - 0.5) * cameraShake;
                     camera.position.y = (Math.random() - 0.5) * cameraShake;
-                    cameraShake *= 0.92;
+                    cameraShake *= 0.9;
                     if (cameraShake < 0.01) cameraShake = 0;
                 }
             }
-            
+
             composer.render();
-            
+
             if (t < 3.0) {
                 requestAnimationFrame(animate);
             } else {
@@ -5842,11 +5819,10 @@ const bloomPass = new UnrealBloomPass(
                 }, 400);
             }
         }
-        
+
         animate();
     });
 }
-
 // ============================================
 // 👑 PANEL ADMIN
 // ============================================
@@ -6149,7 +6125,7 @@ function abrirPanelAdmin() {
     }
     modal.classList.add('show');
     document.body.style.overflow = 'hidden';
-    cambiarTabAdmin('dashboard');
+    requestAnimationFrame(() => cambiarTabAdmin('dashboard'));
 }
                 function cerrarPanelAdmin() {
     const m = document.getElementById('adminModal');
@@ -6588,14 +6564,15 @@ setTimeout(cargarCuponesDesdeFirestore, 1000);
                 else nb.classList.remove('navbar-scrolled');
             });
 
-            if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        document.getElementById('preloader').classList.add('hidden');
-    });
-} else {
-    document.getElementById('preloader').classList.add('hidden');
-}
-
+                        if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', () => {
+                    document.getElementById('preloader').classList.add('hidden');
+                    document.body.classList.remove('loading');
+                });
+            } else {
+                document.getElementById('preloader').classList.add('hidden');
+                document.body.classList.remove('loading');
+            }
             document.querySelectorAll('.category-pills .pill').forEach(p => {
                 p.addEventListener('click', function() {
                     document.querySelectorAll('.category-pills .pill').forEach(x => x.classList.remove('active'));
@@ -6628,7 +6605,15 @@ setTimeout(cargarCuponesDesdeFirestore, 1000);
 
             // CHECKOUT con cupones
             document.getElementById('checkoutBtn').addEventListener('click', async () => {
-                if (cart.length === 0) return mostrarNotificacion('⚠️ Carrito vacío', '⚠️');
+                                if (cart.length === 0) return mostrarNotificacion('⚠️ Carrito vacío', '⚠️');
+
+                for (const item of cart) {
+                    const p = productos.find(x => x.id === item.id);
+                    if (!p) return mostrarNotificacion(`❌ ${item.name} ya no existe`, '❌');
+                    if (safeInt(p.stock) < safeInt(item.quantity)) {
+                        return mostrarNotificacion(`⚠️ Solo quedan ${p.stock} de ${item.name}`, '⚠️');
+                    }
+                }
 
                 const { subtotal, descuento, total } = calcularTotales();
 
@@ -6744,29 +6729,32 @@ window.__intervalReRender = setInterval(() => {
 }, 30000);
 
             if (window.auth) {
-    window.auth.onAuthStateChanged(async user => {
+    let adminUnsub = null;
+    window.auth.onAuthStateChanged((user) => {
+        if (adminUnsub) { adminUnsub(); adminUnsub = null; }
+
         const btn = document.getElementById('adminPanelBtn');
         if (!user) {
             if (btn) btn.remove();
             return;
         }
-        // 🔍 Consultar colección admins/ en Firestore
-        try {
-            // Esperar 500ms por si el token aún no está listo
-await new Promise(r => setTimeout(r, 500));
 
-const adminDoc = await window.firebaseDB.getDoc(
-    window.firebaseDB.doc(window.db, "admins", user.uid)
-);
-            if (adminDoc.exists()) {
-                if (!btn) crearPanelAdmin();
-            } else {
-                if (btn) btn.remove();
+        adminUnsub = window.firebaseDB.onSnapshot(
+            window.firebaseDB.doc(window.db, "admins", user.uid),
+            (snap) => {
+                const btnNow = document.getElementById('adminPanelBtn');
+                if (snap.exists()) {
+                    if (!btnNow) crearPanelAdmin();
+                } else {
+                    if (btnNow) btnNow.remove();
+                }
+            },
+            (error) => {
+                console.warn('⚠️ Error verificando admin:', error);
+                const btnNow = document.getElementById('adminPanelBtn');
+                if (btnNow) btnNow.remove();
             }
-        } catch (e) {
-            console.warn('⚠️ Error verificando admin:', e);
-            if (btn) btn.remove();
-        }
+        );
     });
 }
 
@@ -6792,6 +6780,11 @@ const adminDoc = await window.firebaseDB.getDoc(
 setTimeout(() => { if (typeof updateUserUI === 'function') updateUserUI(); }, 500);
 setTimeout(() => { if (typeof updateUserUI === 'function') updateUserUI(); }, 1500);
 setTimeout(() => { if (typeof updateUserUI === 'function') updateUserUI(); }, 3000);
+window.addEventListener('beforeunload', () => {
+clearInterval(window.__intervalRotarProd);
+clearInterval(window.__intervalRotarCup);
+clearInterval(window.__intervalReRender);
+});
 
             console.log('✨ Paulina Accesorios 2026 - Premium ✨');
             console.log('👑 Admin:', 'paulinabellezaperu@gmail.com');
