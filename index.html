@@ -3682,13 +3682,14 @@ async function loginUser(email, password) {
         return false;
     }
 }
-        async function logoutUser() {
-            await window.firebaseAuth.signOut(window.auth);
-            window.currentUser = null;
-            updateUserUI();
-            mostrarNotificacion('👋 Sesión cerrada', '👋');
-        }
-
+                async function logoutUser() {
+    await window.firebaseAuth.signOut(window.auth);
+    window.currentUser = null;
+    // 🎬 Resetear la bandera de la intro
+    __introVistaEstaCarga = false;
+    updateUserUI();
+    mostrarNotificacion('👋 Sesión cerrada', '👋');
+}
         function showLoginModal() {
             let modal = document.getElementById('loginModal');
             if (!modal) {
@@ -6033,13 +6034,23 @@ function crearEfectoPrime() {
         setTimeout(() => container.remove(), 500);
     }, 3000);
 }
+// 🎬 Bandera en memoria: se resetea sola al recargar la página
+let __introVistaEstaCarga = false;
 
 function abrirPanelAdmin() {
-    // 🎬 SIEMPRE la intro cinematográfica
+    // 🎬 Solo la primera vez por carga de página
+    if (__introVistaEstaCarga) {
+        abrirPanelAdminContenido();
+        return;
+    }
+
+    // Primera vez en esta carga → mostrar intro épica
     iniciarIntroCinematica().then(() => {
+        __introVistaEstaCarga = true;
         abrirPanelAdminContenido();
     }).catch(err => {
         console.warn('⚠️ Error en intro, abriendo panel directo:', err);
+        __introVistaEstaCarga = true;
         abrirPanelAdminContenido();
     });
 }
@@ -6745,8 +6756,7 @@ setTimeout(cargarCuponesDesdeFirestore, 1000);
                         productos: cart.map(i => ({ id: i.id, nombre: i.name, precio: i.price, cantidad: i.quantity })),
                         subtotal,
                         cupon: cuponAplicado?.codigo || null,
-                        cuponId: cuponAplicado?.id || null,        
-                        cuponTipo: cuponAplicado?.tipo || null,    
+                        cuponId: cuponAplicado?.id || null,    
                         descuento: cuponAplicado?.descuento || 0,
                         descuentoMonto: descuento,
                         cuponAplicado: false,                       
