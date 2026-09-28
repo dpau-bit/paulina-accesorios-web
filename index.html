@@ -4841,12 +4841,17 @@ function renderizarListaProductosAdmin(lista) {
                     <div class="admin-form-group">
                         <label class="admin-label">📂 Categoría</label>
                         <select id="editCategoria" class="admin-select">
-                            <option value="aretes" ${p.categoria === 'aretes' ? 'selected' : ''}>📿 Aretes</option>
-                            <option value="pestanas" ${p.categoria === 'pestanas' ? 'selected' : ''}>👁️ Pestañas</option>
-                            <option value="collares" ${p.categoria === 'collares' ? 'selected' : ''}>📿 Collares</option>
-                            <option value="maquillaje" ${p.categoria === 'maquillaje' ? 'selected' : ''}>💄 Maquillaje</option>
-                            <option value="capilar" ${p.categoria === 'capilar' ? 'selected' : ''}>💈 Cuidado Capilar</option>
-                        </select>
+    <option value="aretes" ${p.categoria === 'aretes' ? 'selected' : ''}>📿 Aretes</option>
+    <option value="pestanas" ${p.categoria === 'pestanas' ? 'selected' : ''}>👁️ Pestañas</option>
+    <option value="collares" ${p.categoria === 'collares' ? 'selected' : ''}>📿 Collares</option>
+    <option value="maquillaje" ${p.categoria === 'maquillaje' ? 'selected' : ''}>💄 Maquillaje</option>
+    <option value="capilar" ${p.categoria === 'capilar' ? 'selected' : ''}>💈 Cuidado Capilar</option>
+</select>
+<button type="button" class="admin-btn admin-btn-secondary admin-btn-sm" 
+        onclick="abrirModalNuevaCategoria()" 
+        style="margin-top:8px;width:100%;">
+    ➕ Agregar nueva categoría
+</button>
                     </div>
                     <button class="admin-btn admin-btn-primary admin-btn-full" onclick="guardarEdicion('${id}')" style="margin-top:8px;">✅ Guardar cambios</button>
                 </div>
@@ -6168,13 +6173,18 @@ function abrirPanelAdmin() {
                             </div>
                             <div class="admin-form-group">
                                 <label class="admin-label">📂 Categoría</label>
-                                <select id="adminCategoria" class="admin-select">
-                                    <option value="aretes">📿 Aretes</option>
-                                    <option value="pestanas">👁️ Pestañas</option>
-                                    <option value="collares">📿 Collares</option>
-                                    <option value="maquillaje">💄 Maquillaje</option>
-                                    <option value="capilar">💈 Cuidado Capilar</option>
-                                </select>
+    <select id="adminCategoria" class="admin-select">
+    <option value="aretes">📿 Aretes</option>
+    <option value="pestanas">👁️ Pestañas</option>
+    <option value="collares">📿 Collares</option>
+    <option value="maquillaje">💄 Maquillaje</option>
+    <option value="capilar">💈 Cuidado Capilar</option>
+</select>
+<button type="button" class="admin-btn admin-btn-secondary admin-btn-sm" 
+        onclick="abrirModalNuevaCategoria()" 
+        style="margin-top:8px;width:100%;">
+    ➕ Agregar nueva categoría
+</button>
                             </div>
                             <button class="admin-btn admin-btn-primary admin-btn-full" onclick="guardarProducto()">✅ Guardar</button>
                         </div>
@@ -6265,6 +6275,8 @@ function abrirPanelAdmin() {
     modal.classList.add('show');
     document.body.style.overflow = 'hidden';
     requestAnimationFrame(() => cambiarTabAdmin('dashboard'));
+    // 📂 Cargar categorías al abrir el panel
+    setTimeout(cargarCategorias, 200);
 }
                 function cerrarPanelAdmin() {
     const m = document.getElementById('adminModal');
@@ -6314,6 +6326,202 @@ function cambiarTabAdmin(tab) {
                 `;
             } catch (e) { console.error('❌', e); }
         }
+                // ============================================
+// 📂 SISTEMA DE CATEGORÍAS DINÁMICAS
+// ============================================
+let categoriasGlobales = [];
+
+async function cargarCategorias() {
+    try {
+        const snap = await window.firebaseDB.getDocs(
+            window.firebaseDB.collection(window.db, "categorias")
+        );
+        categoriasGlobales = [];
+        snap.forEach(d => categoriasGlobales.push({ id: d.id, ...d.data() }));
+        
+        categoriasGlobales.sort((a, b) => (a.label || '').localeCompare(b.label || ''));
+        
+        if (categoriasGlobales.length === 0) {
+            await crearCategoriasPorDefecto();
+            return;
+        }
+        
+        actualizarSelectsCategorias();
+        log('✅ Categorías cargadas:', categoriasGlobales.length);
+    } catch (e) {
+        console.error('❌ Error cargando categorías:', e);
+    }
+}
+
+async function crearCategoriasPorDefecto() {
+    const porDefecto = [
+        { nombre: 'aretes', emoji: '📿', label: 'Aretes' },
+        { nombre: 'pestanas', emoji: '👁️', label: 'Pestañas' },
+        { nombre: 'collares', emoji: '📿', label: 'Collares' },
+        { nombre: 'maquillaje', emoji: '💄', label: 'Maquillaje' },
+        { nombre: 'capilar', emoji: '💈', label: 'Cuidado Capilar' }
+    ];
+    
+    for (const cat of porDefecto) {
+        await window.firebaseDB.addDoc(
+            window.firebaseDB.collection(window.db, "categorias"),
+            {
+                ...cat,
+                fechaCreacion: new Date().toISOString()
+            }
+        );
+    }
+    
+    await cargarCategorias();
+}
+
+function actualizarSelectsCategorias() {
+    // Categorías base (siempre presentes)
+    const categoriasBase = [
+        { nombre: 'aretes', emoji: '📿', label: 'Aretes' },
+        { nombre: 'pestanas', emoji: '👁️', label: 'Pestañas' },
+        { nombre: 'collares', emoji: '📿', label: 'Collares' },
+        { nombre: 'maquillaje', emoji: '💄', label: 'Maquillaje' },
+        { nombre: 'capilar', emoji: '💈', label: 'Cuidado Capilar' }
+    ];
+
+    // Combinar base + nuevas (sin duplicados)
+    const nombresBase = categoriasBase.map(c => c.nombre);
+    const nuevas = categoriasGlobales.filter(c => !nombresBase.includes(c.nombre));
+    const todas = [...categoriasBase, ...nuevas];
+
+    // Select del admin (agregar producto)
+    const selectAdmin = document.getElementById('adminCategoria');
+    if (selectAdmin) {
+        const valorActual = selectAdmin.value;
+        selectAdmin.innerHTML = todas.map(c => 
+            `<option value="${c.nombre}">${c.emoji} ${c.label}</option>`
+        ).join('');
+        if (valorActual && todas.find(c => c.nombre === valorActual)) {
+            selectAdmin.value = valorActual;
+        }
+    }
+    
+    // Select de editar producto
+    const selectEdit = document.getElementById('editCategoria');
+    if (selectEdit) {
+        const valorActual = selectEdit.value;
+        selectEdit.innerHTML = todas.map(c => 
+            `<option value="${c.nombre}">${c.emoji} ${c.label}</option>`
+        ).join('');
+        if (valorActual && todas.find(c => c.nombre === valorActual)) {
+            selectEdit.value = valorActual;
+        }
+    }
+    
+    // Pills de categorías en la tienda
+    const pillsCont = document.querySelector('.category-pills');
+    if (pillsCont) {
+        const pillActivo = document.querySelector('.category-pills .pill.active')?.dataset.category || 'todos';
+        pillsCont.innerHTML = `
+            <button class="pill ${pillActivo === 'todos' ? 'active' : ''}" data-category="todos">✨ Todos</button>
+            ${todas.map(c => 
+                `<button class="pill ${pillActivo === c.nombre ? 'active' : ''}" data-category="${c.nombre}">${c.emoji} ${c.label}</button>`
+            ).join('')}
+        `;
+        
+        pillsCont.querySelectorAll('.pill').forEach(p => {
+            p.addEventListener('click', function() {
+                document.querySelectorAll('.category-pills .pill').forEach(x => x.classList.remove('active'));
+                this.classList.add('active');
+                categoriaActual = this.dataset.category;
+                actualizarFiltros();
+            });
+        });
+    }
+}
+async function abrirModalNuevaCategoria() {
+    let modal = document.getElementById('nuevaCategoriaModal');
+    if (modal) modal.remove();
+
+    modal = document.createElement('div');
+    modal.id = 'nuevaCategoriaModal';
+    modal.className = 'admin-premium-overlay';
+    modal.style.zIndex = '10002';
+    modal.innerHTML = `
+        <div class="admin-premium" style="max-width:440px;">
+            <div class="admin-premium-header">
+                <div class="admin-premium-title">
+                    <span class="admin-premium-crown">📂</span>
+                    <div>
+                        <h2>Nueva categoría</h2>
+                        <p>Se guardará automáticamente</p>
+                    </div>
+                </div>
+                <button class="admin-premium-close" onclick="document.getElementById('nuevaCategoriaModal').remove()">✕</button>
+            </div>
+            <div class="admin-premium-body">
+                <div class="admin-form-group">
+                    <label class="admin-label">📝 Nombre (sin espacios)</label>
+                    <input type="text" id="nuevaCatNombre" class="admin-input" 
+                           placeholder="ej: unas, perfumes, ropa" 
+                           oninput="this.value = this.value.toLowerCase().replace(/[^a-z0-9]/g, '')">
+                </div>
+                <div class="admin-form-group">
+                    <label class="admin-label">😊 Emoji</label>
+                    <input type="text" id="nuevaCatEmoji" class="admin-input" 
+                           placeholder="💅" maxlength="4">
+                </div>
+                <div class="admin-form-group">
+                    <label class="admin-label">🏷️ Etiqueta visible</label>
+                    <input type="text" id="nuevaCatLabel" class="admin-input" 
+                           placeholder="Uñas">
+                </div>
+                <button class="admin-btn admin-btn-primary admin-btn-full" 
+                        onclick="guardarNuevaCategoria()">
+                    ✅ Crear categoría
+                </button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    modal.classList.add('show');
+}
+
+async function guardarNuevaCategoria() {
+    const nombre = document.getElementById('nuevaCatNombre').value.trim().toLowerCase();
+    const emoji = document.getElementById('nuevaCatEmoji').value.trim() || '📦';
+    const label = document.getElementById('nuevaCatLabel').value.trim();
+
+    if (!nombre) return mostrarNotificacion('⚠️ Falta el nombre', '⚠️');
+    if (!label) return mostrarNotificacion('⚠️ Falta la etiqueta', '⚠️');
+
+    const existe = categoriasGlobales.find(c => c.nombre === nombre);
+    if (existe) return mostrarNotificacion('⚠️ Esa categoría ya existe', '⚠️');
+
+    try {
+        await window.firebaseDB.addDoc(
+            window.firebaseDB.collection(window.db, "categorias"),
+            {
+                nombre,
+                emoji,
+                label,
+                fechaCreacion: new Date().toISOString()
+            }
+        );
+
+        mostrarNotificacion(`✅ Categoría "${label}" creada`, '📂');
+        lanzarConfetti();
+        
+        document.getElementById('nuevaCategoriaModal').remove();
+        
+        await cargarCategorias();
+        
+        setTimeout(() => {
+            const sel = document.getElementById('adminCategoria');
+            if (sel) sel.value = nombre;
+        }, 100);
+        
+    } catch (e) {
+        console.error('❌ Error:', e);
+        mostrarNotificacion('❌ Error al crear categoría', '❌');
+    }
+}
 
 // ============================================
 // 🔥 OFERTAS DINÁMICAS
@@ -6569,6 +6777,10 @@ function rotarCuponOferta() {
 window.actualizarOfertasDinamicas = actualizarOfertasDinamicas;
 window.aplicarFiltroOferta = aplicarFiltroOferta;
 window.rotarProductoOferta = rotarProductoOferta;
+window.cargarCategorias = cargarCategorias;
+window.abrirModalNuevaCategoria = abrirModalNuevaCategoria;
+window.guardarNuevaCategoria = guardarNuevaCategoria;
+window.actualizarSelectsCategorias = actualizarSelectsCategorias;
 // 🆕 EXPONER TODAS LAS FUNCIONES AL WINDOW
 window.crearPanelAdmin = crearPanelAdmin;
 window.abrirPanelAdmin = abrirPanelAdmin;
@@ -6660,6 +6872,8 @@ cargarWishlist();
 cargarProductosDesdeFirestore();
 // Cupones se cargan después para no bloquear la carga inicial
 setTimeout(cargarCuponesDesdeFirestore, 1000);
+// 📂 Cargar categorías dinámicas
+setTimeout(cargarCategorias, 800);
 
             let v = parseInt(localStorage.getItem('paulina_visits')) || 0;
             v++; localStorage.setItem('paulina_visits', v);
