@@ -5704,11 +5704,11 @@ async function iniciarIntroCinematica() {
     composer.addPass(new RenderPass(scene, camera));
     
     const bloomPass = new UnrealBloomPass(
-        new THREE.Vector2(window.innerWidth, window.innerHeight),
-        0,
-        1.2,
-        0.0
-    );
+    new THREE.Vector2(window.innerWidth, window.innerHeight),
+    0,      // strength (empieza en 0, sube en la animación)
+    0.8,    // radius (más concentrado)
+    0.7     // threshold (SOLO lo muy brillante florece)
+);
     composer.addPass(bloomPass);
     
     // 📳 12. SCREEN SHAKE
@@ -5748,7 +5748,7 @@ async function iniciarIntroCinematica() {
                 camera.position.z = 15 - eased * 5;
                 crown.scale.setScalar(eased * 0.3);
                 crown.rotation.y = p * Math.PI * 2;
-                bloomPass.strength = p * 1.2;
+                bloomPass.strength = p * 0.6;
             }
             // FASE 2: 0.5 - 1.2s — Corona entra girando
             else if (t < 1.2) {
@@ -5758,14 +5758,14 @@ async function iniciarIntroCinematica() {
                 crown.scale.setScalar(0.3 + eased * 0.9);
                 crown.rotation.y += dt * 4;
                 crown.rotation.x = 0.15 + Math.sin(p * Math.PI) * 0.3;
-                bloomPass.strength = 1.2 + p * 1.5;
+                bloomPass.strength = 0.6 + p * 0.8;
             }
             // FASE 3: 1.2 - 1.8s — Clímax
             else if (t < 1.8) {
                 const p = (t - 1.2) / 0.6;
                 crown.rotation.y += dt * 7;
                 crown.rotation.x += dt * 0.5;
-                bloomPass.strength = 2.7 + p * 2.5;
+                bloomPass.strength = 1.4 + p * 1.0;
                 cameraShake = 0.3 + p * 0.9;
             }
             // FASE 4: 1.8s — EXPLOSIÓN
@@ -5819,7 +5819,7 @@ async function iniciarIntroCinematica() {
                     particlesMaterial.opacity = Math.max(0, 1 - (elapsed - 0.3) / 0.8);
                 }
                 
-                bloomPass.strength = Math.max(0, 4.5 - elapsed * 1.5);
+                bloomPass.strength = Math.max(0, 2.4 - elapsed * 0.8);
                 
                 if (cameraShake > 0) {
                     camera.position.x = (Math.random() - 0.5) * cameraShake;
