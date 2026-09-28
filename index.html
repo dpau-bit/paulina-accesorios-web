@@ -2365,9 +2365,6 @@ body.shake-active {
         // ESTADO GLOBAL
         // ============================================
         let productos = [];
-        let chatHistory = [];  // 💭 Memoria de conversación
-        let ultimoProductoMencionado = null;
-        let ultimaCategoriaPreguntada = null;
         let cart = [];
         let wishlist = [];
         let cuponesActivos = [];
@@ -2381,6 +2378,9 @@ body.shake-active {
         let adminPedidosCache = [];
         let adminCuponesCache = [];
         let notificationTimeout = null;
+                
+        // 🎬 Bandera en memoria: se resetea sola al recargar la página
+        let __introVistaEstaCarga = false;
 
         // ============================================
         // UTILIDADES
@@ -2493,7 +2493,7 @@ function formatPrice(p) { return `S/ ${safeNumber(p, 0).toFixed(2)}`; }
                         <div class="relacionados-grid">
                             ${relacionados.map(r => `
                                 <div class="relacionado-card" onclick="abrirProductoModal(${r.id})">
-                                    <img src="${r.imagen}" alt="${r.nombre}" onerror="this.src='https://via.placeholder.com/70';">
+                                    <img src="${r.imagen}" alt="${(r.nombre || '').replace(/"/g, '&quot;')}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 70 70%22%3E%3Crect width=%2270%22 height=%2270%22 fill=%22%23f0ecf0%22/%3E%3Ctext x=%2235%22 y=%2240%22 font-size=%2228%22 text-anchor=%22middle%22 fill=%22%23c8bcc8%22%3E%3F%3C/text%3E%3C/svg%3E';">
                                     <div class="nombre">${r.nombre}</div>
                                     <div class="precio">S/ ${parseFloat(r.precio).toFixed(2)}</div>
                                 </div>
@@ -2506,7 +2506,7 @@ function formatPrice(p) { return `S/ ${safeNumber(p, 0).toFixed(2)}`; }
             content.innerHTML = `
                 <div class="producto-detalle">
                     <div class="producto-detalle-img">
-                        <img src="${p.imagen}" alt="${p.nombre}" onerror="this.src='https://via.placeholder.com/400';">
+                        <img src="${p.imagen}" alt="${(p.nombre || '').replace(/"/g, '&quot;')}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 400%22%3E%3Crect width=%22400%22 height=%22400%22 fill=%22%23f0ecf0%22/%3E%3Ctext x=%22200%22 y=%22220%22 font-size=%22160%22 text-anchor=%22middle%22 fill=%22%23c8bcc8%22%3E%3F%3C/text%3E%3C/svg%3E';">
                         ${p.badge ? `<div class="badges-grandes"><span class="badge-grande" style="background:var(--gold-gradient);">${p.badge}</span></div>` : ''}
                     </div>
                     <div class="producto-detalle-info">
@@ -2691,8 +2691,8 @@ function formatPrice(p) { return `S/ ${safeNumber(p, 0).toFixed(2)}`; }
         // ============================================
         // PRODUCTOS EN TIEMPO REAL
         // ============================================
-          function actualizarIALocal() {
-    console.log('✅ IA actualizada:', productos.length, 'productos,', cuponesActivos.length, 'cupones');
+                    function actualizarIALocal() {
+    log('✅ IA actualizada:', productos.length, 'productos,', cuponesActivos.length, 'cupones');
 }
 
 function initChatAI() {
@@ -2924,7 +2924,7 @@ function initChatAI() {
                     ${low && stockNum > 0 ? `<span class="badge badge-hot">🔥</span>` : ''}
                 </div>
                 <div class="product-image" onclick="abrirProductoModal(${p.id})">
-                    <img src="${p.imagen}" alt="${p.nombre}" loading="lazy" decoding="async">
+                    <img src="${p.imagen}" alt="${(p.nombre || '').replace(/"/g, '&quot;')}" loading="lazy" decoding="async">
                 </div>
                 <h3 class="product-name">${p.nombre}</h3>
                 <p class="product-description">${p.descripcion}</p>
@@ -4290,6 +4290,18 @@ function getAIResponse(message) {
     
     return '🤔 Mmm... no entendí bien. ¿Me lo reformulas? 💖';
 }
+// ============================================
+// 🔄 CONVERTIR ARCHIVO A BASE64
+// ============================================
+function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+}
+
 
     // ============================================
 // 📸 SUBIR IMÁGENES A IMGBB
@@ -4310,13 +4322,18 @@ async function subirImagenAdmin(event) {
         return;
     }
 
-    const preview = document.getElementById('adminImagenPreview');
+        const preview = document.getElementById('adminImagenPreview');
     const previewImg = document.getElementById('adminImagenPreviewImg');
     const progress = document.getElementById('adminUploadProgress');
     const progressFill = document.getElementById('adminUploadProgressFill');
     const status = document.getElementById('adminUploadStatus');
     const label = document.getElementById('adminImagenLabel');
     const inputHidden = document.getElementById('adminImagen');
+
+    if (!preview || !previewImg || !progress || !progressFill || !status || !label || !inputHidden) {
+        console.warn('⚠️ Elementos de admin no encontrados');
+        return;
+    }
 
     // Vista previa local instantánea
     const reader = new FileReader();
@@ -4378,12 +4395,13 @@ async function subirImagenAdmin(event) {
 
     } catch (error) {
         console.error('❌ Error subiendo imagen:', error);
-        mostrarNotificacion('❌ Error al subir imagen', '❌');
-        status.textContent = '❌ Error al subir';
+        const errorMsg = error?.message || 'Error desconocido';
+        mostrarNotificacion(`❌ Error: ${errorMsg}`, '❌');
+        status.textContent = `❌ ${errorMsg}`;
         status.style.color = '#ff6b6b';
         label.textContent = '📁 Reintentar';
         progressFill.style.width = '0%';
-        setTimeout(() => progress.classList.remove('show'), 2000);
+        setTimeout(() => progress.classList.remove('show'), 4000);
     }
 }
 
@@ -4463,17 +4481,18 @@ async function subirImagenEdit(event) {
             progress.classList.remove('show');
             progressFill.style.width = '0%';
         }, 1500);
-    } catch (error) {
+        } catch (error) {
         console.error('❌ Error subiendo imagen:', error);
-        mostrarNotificacion('❌ Error al subir imagen', '❌');
-        status.textContent = '❌ Error al subir';
+        const errorMsg = error?.message || 'Error desconocido';
+        mostrarNotificacion(`❌ Error: ${errorMsg}`, '❌');
+        status.textContent = `❌ ${errorMsg}`;
         status.style.color = '#ff6b6b';
         label.textContent = '📁 Reintentar';
         progressFill.style.width = '0%';
-        setTimeout(() => progress.classList.remove('show'), 2000);
+        setTimeout(() => progress.classList.remove('show'), 4000);
     }
 }
-                // ============================================
+// ============================================
 // 🗑️ QUITAR IMÁGENES (Admin y Edit)
 // ============================================
 function quitarImagenAdmin() {
@@ -4555,7 +4574,7 @@ function renderizarListaProductosAdmin(lista) {
         html += `
             <div class="admin-product-item">
                 <div class="admin-product-header">
-                    <img src="${p.imagen || 'https://via.placeholder.com/60'}" class="admin-product-img" onerror="this.src='https://via.placeholder.com/60';">
+                    <img src="${p.imagen || 'https://via.placeholder.com/60'}" class="admin-product-img" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 60 60%22%3E%3Crect width=%2260%22 height=%2260%22 fill=%22%23f0ecf0%22/%3E%3Ctext x=%2230%22 y=%2235%22 font-size=%2224%22 text-anchor=%22middle%22 fill=%22%23c8bcc8%22%3E%3F%3C/text%3E%3C/svg%3E';">
                     <div class="admin-product-info">
                         <div class="admin-product-name">
                             ${p.nombre || 'Sin nombre'}
@@ -6034,8 +6053,6 @@ function crearEfectoPrime() {
         setTimeout(() => container.remove(), 500);
     }, 3000);
 }
-// 🎬 Bandera en memoria: se resetea sola al recargar la página
-let __introVistaEstaCarga = false;
 
 function abrirPanelAdmin() {
     // 🎬 Solo la primera vez por carga de página
@@ -6886,9 +6903,9 @@ clearInterval(window.__intervalRotarCup);
 clearInterval(window.__intervalReRender);
 });
 
-            console.log('✨ Paulina Accesorios 2026 - Premium ✨');
-            console.log('👑 Admin:', 'paulinabellezaperu@gmail.com');
-            console.log('🎟️ Cupones: activos');
+            log('✨ Paulina Accesorios 2026 - Premium ✨');
+            log('👑 Admin:', 'paulinabellezaperu@gmail.com');
+            log('🎟️ Cupones: activos');
         });
     </script>
 
