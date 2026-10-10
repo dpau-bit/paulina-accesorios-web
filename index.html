@@ -61,41 +61,52 @@
         };
         window.firebaseDB = { doc, setDoc, getDoc, updateDoc, collection, getDocs, deleteDoc, onSnapshot, addDoc, query, where, orderBy, limit };
 
-        onAuthStateChanged(auth, (user) => {
-    const aplicarUI = (intentos = 0) => {
-        if (typeof updateUserUI === 'function') {
-            updateUserUI();
-        } else if (intentos < 25) {
-            setTimeout(() => aplicarUI(intentos + 1), 150);
-        }
-    };
+        // ✅ FIX #1: Esperar a Firestore antes de asignar currentUser (evita sobrescribir con datos falsos)
+        onAuthStateChanged(auth, async (user) => {
+            const aplicarUI = (intentos = 0) => {
+                if (typeof updateUserUI === 'function') {
+                    updateUserUI();
+                } else if (intentos < 25) {
+                    setTimeout(() => aplicarUI(intentos + 1), 150);
+                }
+            };
 
-    if (user) {
-        window.currentUser = {
-            id: user.uid,
-            name: user.displayName || user.email.split('@')[0],
-            email: user.email,
-            points: 0,
-            level: '✨ Visitante',
-            cuponesUsados: []
-        };
-        aplicarUI();
-
-        getDoc(doc(db, "usuarios", user.uid)).then(docSnap => {
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                if (!Array.isArray(data.cuponesUsados)) data.cuponesUsados = [];
-                window.currentUser = data;
+            if (user) {
+                try {
+                    const docSnap = await getDoc(doc(db, "usuarios", user.uid));
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        if (!Array.isArray(data.cuponesUsados)) data.cuponesUsados = [];
+                        window.currentUser = data;
+                    } else {
+                        window.currentUser = {
+                            id: user.uid,
+                            name: user.displayName || user.email.split('@')[0],
+                            email: user.email,
+                            points: 0,
+                            level: '✨ Visitante',
+                            cuponesUsados: []
+                        };
+                    }
+                } catch (err) {
+                    console.warn('⚠️ Error cargando usuario:', err);
+                    window.currentUser = {
+                        id: user.uid,
+                        name: user.displayName || user.email.split('@')[0],
+                        email: user.email,
+                        points: 0,
+                        level: '✨ Visitante',
+                        cuponesUsados: []
+                    };
+                }
                 aplicarUI();
+            } else {
+                window.currentUser = null;
+                aplicarUI();
+                const adminBtn = document.getElementById('adminPanelBtn');
+                if (adminBtn) adminBtn.remove();
             }
-        }).catch(err => console.warn('⚠️', err));
-    } else {
-        window.currentUser = null;
-        aplicarUI();
-        const adminBtn = document.getElementById('adminPanelBtn');
-        if (adminBtn) adminBtn.remove();
-    }
-});
+        });
     </script>
 
     <style>
@@ -136,7 +147,12 @@
             --gray-800: #c8bcc8; --gray-900: #f0ecf0;
         }
 
-        html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+        /* ✅ FIX #5: scroll-padding-top coincide con navbar (80px desktop, 64px móvil) */
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+        @media (max-width: 768px) {
+            html { scroll-padding-top: 64px; }
+        }
 
         body {
             font-family: var(--font-sans);
@@ -1051,19 +1067,6 @@ body.shake-active {
         .dark-mode-toggle { position: fixed; bottom: 186px; right: 20px; background: var(--white); color: var(--gray-700); width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(212, 175, 55, 0.06); font-size: 16px; cursor: pointer; z-index: 50; }
         .share-btn { position: fixed; bottom: 232px; right: 20px; background: var(--white); color: var(--gray-700); width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(212, 175, 55, 0.06); font-size: 16px; cursor: pointer; z-index: 50; }
 
-        @media (max-width: 768px) {
-            .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-            .product-image { width: 80px; height: 80px; }
-            .product-name { font-size: 11px; }
-            .hero-title { font-size: 2rem; }
-            .hero-image { display: none; }
-            .nav-links { display: none; }
-            .hamburger { display: flex; }
-            .filters-row { grid-template-columns: 1fr; }
-            .user-float-btn { width: 48px; height: 48px; font-size: 1.3rem; bottom: 76px; left: 16px; }
-            .chat-float-ai { width: 48px; height: 48px; font-size: 1.3rem; bottom: 16px; left: 16px; }
-            .cupon-banner { top: auto; bottom: 90px; left: 12px; right: 12px; max-width: none; }
-        }
             /* ========================================
            🔥 OFERTAS DINÁMICAS + BANNER FLOTANTE
            ======================================== */
@@ -2008,6 +2011,1188 @@ body.shake-active {
                 width: 100%;
             }
         }
+   /* ============================================
+   📱 ULTRA MOBILE OPTIMIZATION V2
+   Diseñado para que se vea HERMOSO en celular
+   ============================================ */
+
+@media (max-width: 768px) {
+    
+    /* ===== NAVBAR ===== */
+    .navbar {
+        padding: 0 3%;
+        min-height: 58px;
+        gap: 6px;
+        flex-wrap: nowrap;
+    }
+    
+    .navbar-left {
+        gap: 8px;
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .logo {
+        font-size: 1.1rem;
+        letter-spacing: -0.3px;
+        white-space: nowrap;
+    }
+    
+    .logo-sub {
+        font-size: 7px;
+        letter-spacing: 1.5px;
+    }
+    
+    .nav-links { display: none; }
+    .hamburger { display: flex; flex-shrink: 0; }
+    
+    .navbar-right {
+        gap: 4px;
+        flex-wrap: nowrap;
+    }
+    
+    .search-box {
+        display: none;
+    }
+    
+    .user-btn {
+        padding: 4px 8px;
+        font-size: 10px;
+        gap: 4px;
+    }
+    
+    .user-btn .user-avatar {
+        width: 22px;
+        height: 22px;
+        font-size: 9px;
+    }
+    
+    .user-btn .user-name-mobile {
+        display: none;
+    }
+    
+    .wishlist-icon,
+    .cart-icon {
+        padding: 5px 8px;
+        font-size: 11px;
+        gap: 3px;
+    }
+    
+    .cart-count,
+    .wishlist-count {
+        min-width: 15px;
+        line-height: 15px;
+        font-size: 8px;
+        padding: 0 4px;
+    }
+    
+    /* ===== FREE SHIPPING ===== */
+    .free-shipping {
+        font-size: 9px;
+        padding: 5px 8px;
+        letter-spacing: 0.3px;
+    }
+    
+    /* ===== HERO ===== */
+    .hero {
+        padding: 28px 5% 36px;
+        margin: 0 8px 20px;
+        border-radius: 0 0 24px 24px;
+        flex-direction: column;
+        text-align: center;
+        min-height: auto;
+    }
+    
+    .hero-content {
+        flex: 1 1 100%;
+        width: 100%;
+    }
+    
+    .hero-badge {
+        font-size: 9px;
+        padding: 4px 14px;
+        margin-bottom: 12px;
+        letter-spacing: 1.5px;
+    }
+    
+    .hero-title {
+        font-size: 1.9rem;
+        line-height: 1.1;
+        margin-bottom: 12px;
+    }
+    
+    .hero-title br {
+        display: none;
+    }
+    
+    .hero-description {
+        font-size: 0.88rem;
+        max-width: 100%;
+        margin: 0 auto 20px;
+        line-height: 1.6;
+        padding: 0 8px;
+    }
+    
+    .hero-stats {
+        justify-content: center;
+        gap: 6px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+    
+    .hero-stats .stat {
+        padding: 6px 10px;
+        min-width: 68px;
+        flex: 1 1 auto;
+        max-width: 85px;
+    }
+    
+    .hero-stats .stat .number {
+        font-size: 1rem;
+    }
+    
+    .hero-stats .stat .label {
+        font-size: 7px;
+        letter-spacing: 0.3px;
+    }
+    
+    .hero-actions {
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 16px;
+        width: 100%;
+    }
+    
+    .hero-actions .btn {
+        width: 100%;
+        padding: 12px 20px;
+        font-size: 12px;
+        justify-content: center;
+    }
+    
+    .hero-image { display: none; }
+    
+    /* ===== SECCIONES ===== */
+    .section {
+        padding: 32px 4%;
+    }
+    
+    .section-header {
+        margin-bottom: 20px;
+    }
+    
+    .section-tag {
+        font-size: 9px;
+        padding: 3px 12px;
+        letter-spacing: 1.5px;
+    }
+    
+    .section-title {
+        font-size: 1.6rem;
+        line-height: 1.15;
+    }
+    
+    .section-subtitle {
+        font-size: 0.82rem;
+        padding: 0 10px;
+        line-height: 1.5;
+    }
+    
+    /* ===== CATEGORÍAS PILLS ===== */
+    .category-pills {
+        gap: 6px;
+        padding: 4px 2px;
+        margin-bottom: 14px;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .category-pills::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .category-pills .pill {
+        padding: 8px 14px;
+        font-size: 10px;
+        flex-shrink: 0;
+        white-space: nowrap;
+    }
+    
+    /* ===== FILTROS ===== */
+    .filters-panel {
+        padding: 14px 12px;
+        border-radius: 16px;
+        margin: 0 2px 16px;
+    }
+    
+    .filters-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+    
+    .filters-row .filter-group:nth-child(1) { grid-column: 1 / 2; }
+    .filters-row .filter-group:nth-child(2) { grid-column: 2 / 3; }
+    .filters-row .filter-group:nth-child(3) { grid-column: 1 / -1; }
+    .filters-row .filter-group:nth-child(4) { grid-column: 1 / -1; }
+    
+    .filter-label {
+        font-size: 9px;
+        letter-spacing: 1px;
+    }
+    
+    .filter-select {
+        padding: 10px 12px;
+        font-size: 11px;
+        border-radius: 10px;
+        width: 100%;
+    }
+    
+    .filter-clear {
+        padding: 10px 12px;
+        font-size: 11px;
+        width: 100%;
+        border-radius: 10px;
+    }
+    
+    .results-count {
+        font-size: 11px;
+        margin-bottom: 12px;
+    }
+    
+    .results-count strong {
+        font-size: 13px;
+    }
+    
+    /* ===== PRODUCTOS GRID ===== */
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        padding: 0;
+    }
+    
+    .product-card {
+        padding: 12px 8px 10px;
+        border-radius: 16px;
+        box-shadow: 0 2px 12px rgba(200, 120, 180, 0.08);
+    }
+    
+    .product-card:hover {
+        transform: translateY(-3px);
+    }
+    
+    .product-image {
+        width: 100%;
+        max-width: 110px;
+        height: 110px;
+        margin: 0 auto 8px;
+        border-width: 2px;
+    }
+    
+    .product-badges {
+        top: 6px;
+        right: 6px;
+        gap: 3px;
+    }
+    
+    .product-badges .badge {
+        font-size: 6px;
+        padding: 2px 7px;
+        letter-spacing: 0.3px;
+    }
+    
+    .product-name {
+        font-size: 12px;
+        line-height: 1.2;
+        margin-bottom: 3px;
+        min-height: 28px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .product-description {
+        font-size: 9px;
+        margin-bottom: 5px;
+        line-height: 1.3;
+        min-height: 22px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .stars-display {
+        font-size: 10px;
+        margin-bottom: 2px;
+    }
+    
+    .rating-info {
+        font-size: 8px;
+        margin-bottom: 5px;
+    }
+    
+    .product-stock {
+        font-size: 8px;
+        margin-bottom: 5px;
+        display: block;
+        padding: 2px 6px;
+        border-radius: 6px;
+        background: rgba(212, 175, 55, 0.06);
+    }
+    
+    .product-price {
+        font-size: 1.15rem;
+        margin-bottom: 6px;
+        line-height: 1.2;
+    }
+    
+    .product-price .old {
+        font-size: 9px;
+        display: block;
+        margin-left: 0;
+        margin-top: 1px;
+    }
+    
+    .btn-reviews {
+        padding: 5px 8px;
+        font-size: 8px;
+        margin-bottom: 5px;
+        border-radius: 20px;
+    }
+    
+    .btn-add {
+        padding: 8px 8px;
+        font-size: 9px;
+        border-radius: 20px;
+        font-weight: 700;
+    }
+    
+    .btn-wishlist {
+        width: 28px;
+        height: 28px;
+        font-size: 13px;
+        top: 6px;
+        left: 6px;
+    }
+    
+    /* ===== OFERTAS ===== */
+    #ofertas > div[style*="grid"] {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+    
+    .oferta-card {
+        padding: 22px 16px;
+        border-radius: 20px;
+    }
+    
+    .oferta-card .oferta-icon {
+        font-size: 2.6rem;
+        margin-bottom: 8px;
+    }
+    
+    .oferta-card h3 {
+        font-size: 1.15rem;
+        margin: 6px 0;
+    }
+    
+    .oferta-card p {
+        font-size: 11px;
+        margin-bottom: 10px;
+    }
+    
+    .oferta-card .precio-viejo {
+        font-size: 13px;
+    }
+    
+    .oferta-card .precio-nuevo {
+        font-size: 1.35rem;
+    }
+    
+    .oferta-card .cupon-codigo {
+        font-size: 1.3rem;
+        padding: 7px 14px;
+        letter-spacing: 2px;
+    }
+    
+    .oferta-card .btn {
+        width: 100%;
+        padding: 11px 18px;
+        font-size: 12px;
+    }
+    
+    /* ===== CONTACTO ===== */
+    #contacto > div[style*="max-width"] {
+        padding: 20px 16px !important;
+        border-radius: 18px !important;
+    }
+    
+    /* ===== MODALES GENERALES ===== */
+    .modal-overlay {
+        padding: 8px;
+        align-items: flex-end;
+    }
+    
+    .modal-overlay > div {
+        max-height: 92vh !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 24px 24px 0 0 !important;
+        padding: 20px 16px !important;
+        animation: slideUpMobile 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    
+    @keyframes slideUpMobile {
+        from { transform: translateY(100%); opacity: 0.5; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+    
+    .modal-overlay h2 {
+        font-size: 1.15rem !important;
+    }
+    
+    /* ===== CARRITO ===== */
+    .cupon-section {
+        padding: 10px 12px;
+        border-radius: 12px;
+    }
+    
+    .cupon-toggle {
+        font-size: 11px;
+    }
+    
+    .cupon-input {
+        font-size: 11px;
+        padding: 9px 12px;
+    }
+    
+    .btn-cupon {
+        padding: 9px 14px;
+        font-size: 10px;
+    }
+    
+    .cupon-aplicado {
+        padding: 9px 12px;
+        gap: 8px;
+    }
+    
+    .cupon-aplicado .info {
+        font-size: 10px;
+    }
+    
+    .cupon-aplicado .info strong {
+        font-size: 11px;
+    }
+    
+    .cupon-aplicado .btn-quitar {
+        padding: 4px 9px;
+        font-size: 9px;
+    }
+    
+    /* ===== CHAT IA ===== */
+    .chat-float-ai {
+        width: 52px;
+        height: 52px;
+        font-size: 1.4rem;
+        bottom: 16px;
+        left: 16px;
+        box-shadow: 0 4px 20px rgba(212, 175, 55, 0.5);
+    }
+    
+    .chat-float-ai .chat-badge {
+        width: 18px;
+        height: 18px;
+        font-size: 7px;
+        top: -2px;
+        right: -2px;
+    }
+    
+    .chat-modal-ai {
+        left: 8px;
+        right: 8px;
+        bottom: 78px;
+        width: auto;
+        max-width: none;
+        max-height: 75vh;
+        border-radius: 20px;
+    }
+    
+    .chat-header-ai {
+        padding: 12px 16px;
+        font-size: 13px;
+    }
+    
+    .chat-messages-ai {
+        padding: 12px 14px;
+        max-height: 48vh;
+    }
+    
+    .chat-message-ai {
+        font-size: 12px;
+        padding: 8px 12px;
+        max-width: 88%;
+    }
+    
+    .chat-options-ai {
+        padding: 8px 12px 10px;
+        gap: 5px;
+    }
+    
+    .chat-options-ai .chat-opt {
+        font-size: 9px;
+        padding: 5px 10px;
+    }
+    
+    .chat-input-ai {
+        padding: 8px 12px;
+        gap: 5px;
+    }
+    
+    .chat-input-ai input {
+        font-size: 12px;
+        padding: 9px 12px;
+    }
+    
+    .chat-input-ai button {
+        padding: 9px 14px;
+        font-size: 11px;
+    }
+    
+    /* ===== BOTONES FLOTANTES ===== */
+    .whatsapp-float {
+        width: 52px;
+        height: 52px;
+        font-size: 1.5rem;
+        bottom: 16px;
+        right: 16px;
+        box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+    }
+    
+    .btn-back-top {
+        width: 38px;
+        height: 38px;
+        font-size: 14px;
+        bottom: 140px;
+        right: 16px;
+    }
+    
+    .dark-mode-toggle,
+    .share-btn {
+        width: 38px;
+        height: 38px;
+        font-size: 14px;
+        right: 16px;
+    }
+    
+    .dark-mode-toggle { bottom: 186px; }
+    .share-btn { bottom: 232px; }
+    
+    .floating-cart {
+        bottom: 80px;
+        right: 16px;
+        padding: 6px 14px;
+        font-size: 10px;
+        gap: 5px;
+    }
+    
+    .user-float-btn {
+        width: 52px;
+        height: 52px;
+        font-size: 1.4rem;
+        bottom: 78px;
+        left: 16px;
+    }
+    
+    #adminPanelBtn {
+        bottom: 88px;
+        right: 16px;
+        padding: 11px 18px;
+        font-size: 11px;
+    }
+    
+    .cupon-flotante {
+        top: auto;
+        bottom: 88px;
+        left: 10px;
+        right: 10px;
+        max-width: none;
+        padding: 14px 16px;
+        border-radius: 16px;
+    }
+    
+    .cupon-flotante .codigo-grande {
+        font-size: 18px;
+        letter-spacing: 2px;
+    }
+    
+    .cupon-flotante .descripcion {
+        font-size: 11px;
+    }
+    
+    /* ===== FOOTER ===== */
+    footer {
+        padding: 28px 5% 20px;
+        border-radius: 24px 24px 0 0;
+        margin-top: 32px;
+    }
+    
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+    }
+    
+    .footer-grid h4 {
+        font-size: 12px;
+        margin-bottom: 8px;
+    }
+    
+    .footer-grid a {
+        font-size: 10px;
+        margin-bottom: 5px;
+    }
+    
+    .footer-payments {
+        font-size: 1.4rem;
+        gap: 6px;
+    }
+    
+    .footer-bottom {
+        font-size: 9px;
+        padding-top: 14px;
+        margin-top: 18px;
+        line-height: 1.5;
+    }
+    
+    /* ===== PANEL ADMIN ===== */
+    .admin-premium-overlay {
+        padding: 0;
+        align-items: stretch;
+    }
+    
+    .admin-premium {
+        max-width: 100%;
+        max-height: 100vh;
+        border-radius: 0;
+    }
+    
+    .admin-premium-header {
+        padding: 14px 16px;
+    }
+    
+    .admin-premium-crown {
+        font-size: 1.5rem;
+    }
+    
+    .admin-premium-title h2 {
+        font-size: 1.05rem;
+    }
+    
+    .admin-premium-title p {
+        font-size: 8px;
+        letter-spacing: 2px;
+    }
+    
+    .admin-premium-close {
+        width: 34px;
+        height: 34px;
+        font-size: 1.1rem;
+    }
+    
+    .admin-premium-tabs {
+        padding: 10px 12px;
+        gap: 4px;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .admin-premium-tabs::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .admin-premium-tab {
+        padding: 8px 12px;
+        font-size: 10px;
+        flex-shrink: 0;
+        white-space: nowrap;
+    }
+    
+    .admin-premium-body {
+        padding: 16px 14px 24px;
+    }
+    
+    .admin-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    
+    .admin-stat-card {
+        padding: 12px 10px;
+        border-radius: 12px;
+    }
+    
+    .admin-stat-icon {
+        font-size: 1.3rem;
+        margin-bottom: 4px;
+    }
+    
+    .admin-stat-label {
+        font-size: 8px;
+        letter-spacing: 1px;
+    }
+    
+    .admin-stat-value {
+        font-size: 1.25rem;
+    }
+    
+    .admin-panel {
+        padding: 14px 12px;
+        border-radius: 12px;
+    }
+    
+    .admin-panel-title {
+        font-size: 0.92rem;
+        margin-bottom: 12px;
+    }
+    
+    .admin-form-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    
+    .admin-form-group {
+        margin-bottom: 10px;
+    }
+    
+    .admin-input,
+    .admin-select {
+        font-size: 12px;
+        padding: 10px 12px;
+        border-radius: 10px;
+    }
+    
+    .admin-label {
+        font-size: 9px;
+        margin-bottom: 4px;
+    }
+    
+    .admin-product-header,
+    .admin-user-header {
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    
+    .admin-product-img {
+        width: 44px;
+        height: 44px;
+        border-radius: 8px;
+    }
+    
+    .admin-product-name,
+    .admin-user-name {
+        font-size: 11px;
+    }
+    
+    .admin-product-price {
+        font-size: 12px;
+    }
+    
+    .admin-product-stock {
+        font-size: 10px;
+        padding: 3px 8px;
+    }
+    
+    .admin-stock-controls {
+        gap: 4px;
+        justify-content: flex-start;
+    }
+    
+    .admin-stock-input {
+        width: 52px;
+        font-size: 11px;
+        padding: 6px 8px;
+    }
+    
+    .admin-icon-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 11px;
+    }
+    
+    .admin-btn {
+        padding: 8px 12px;
+        font-size: 10px;
+        border-radius: 8px;
+    }
+    
+    .admin-btn-sm {
+        padding: 6px 10px;
+        font-size: 9px;
+    }
+    
+    .admin-file-btn {
+        padding: 12px 14px;
+        font-size: 11px;
+    }
+    
+    .admin-search-bar {
+        gap: 6px;
+    }
+    
+    .admin-user-avatar {
+        width: 38px;
+        height: 38px;
+        font-size: 14px;
+    }
+    
+    .admin-user-level {
+        font-size: 9px;
+    }
+    
+    .admin-user-points {
+        font-size: 14px;
+    }
+    
+    .admin-points-controls {
+        gap: 5px;
+    }
+    
+    .admin-points-input {
+        font-size: 11px;
+        padding: 7px 10px;
+        min-width: 60px;
+    }
+    
+    .admin-cupon-item {
+        padding: 12px;
+    }
+    
+    .admin-cupon-codigo {
+        font-size: 14px;
+        letter-spacing: 1.5px;
+    }
+    
+    .admin-cupon-descuento {
+        font-size: 1.15rem;
+    }
+    
+    .admin-cupon-desc {
+        font-size: 10px;
+    }
+    
+    .admin-cupon-stats {
+        gap: 6px;
+        font-size: 9px;
+    }
+    
+    .admin-cupon-stats span {
+        padding: 3px 8px;
+    }
+    
+    /* ===== PRODUCTO MODAL ===== */
+    .producto-modal {
+        border-radius: 20px;
+        max-height: 94vh;
+    }
+    
+    .producto-detalle {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 18px;
+    }
+    
+    .producto-detalle-img {
+        min-height: 200px;
+        border-radius: 14px;
+    }
+    
+    .producto-detalle-nombre {
+        font-size: 1.4rem;
+        line-height: 1.15;
+    }
+    
+    .producto-detalle-precio .precio-final {
+        font-size: 1.5rem;
+    }
+    
+    .producto-detalle-precio .precio-original {
+        font-size: 0.9rem;
+    }
+    
+    .producto-detalle-desc {
+        font-size: 12px;
+        line-height: 1.6;
+    }
+    
+    .producto-detalle-acciones {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .producto-detalle-acciones .btn {
+        width: 100%;
+        min-width: 0;
+        padding: 12px 16px;
+    }
+    
+    .producto-modal-close {
+        width: 36px;
+        height: 36px;
+        font-size: 1.1rem;
+        top: 12px;
+        right: 12px;
+    }
+    
+    .productos-relacionados {
+        padding: 18px;
+    }
+    
+    .productos-relacionados h3 {
+        font-size: 1rem;
+    }
+    
+    .relacionados-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+    
+    .relacionado-card {
+        padding: 10px 6px;
+        border-radius: 12px;
+    }
+    
+    .relacionado-card img {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .relacionado-card .nombre {
+        font-size: 9px;
+    }
+    
+    .relacionado-card .precio {
+        font-size: 11px;
+    }
+    
+    .comentarios-section {
+        padding: 18px;
+    }
+    
+    .comentarios-section h3 {
+        font-size: 1rem;
+    }
+    
+    .comentario-form {
+        flex-direction: column;
+    }
+    
+    .comentario-form button {
+        width: 100%;
+    }
+    
+    .comentario-avatar {
+        width: 34px;
+        height: 34px;
+        font-size: 13px;
+    }
+    
+    .comentario-nombre {
+        font-size: 11px;
+    }
+    
+    .comentario-texto {
+        font-size: 11px;
+    }
+    
+    /* ===== RESEÑAS ===== */
+    .review-stars-input {
+        font-size: 24px;
+        gap: 3px;
+    }
+    
+    .review-item {
+        padding: 10px 0;
+    }
+    
+    .review-author {
+        font-size: 11px;
+    }
+    
+    .review-text {
+        font-size: 11px;
+    }
+    
+    /* ===== RANKING ===== */
+    .ranking-podium {
+        padding: 16px 8px;
+        gap: 6px;
+    }
+    
+    .podium-avatar {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+    
+    .podium-item.gold .podium-avatar {
+        width: 65px;
+        height: 65px;
+        font-size: 1.6rem;
+    }
+    
+    .podium-name {
+        font-size: 10px;
+    }
+    
+    .podium-points {
+        font-size: 9px;
+    }
+    
+    /* ===== PRELOADER ===== */
+    .preloader-logo {
+        font-size: 2.2rem;
+    }
+    
+    .preloader-spinner {
+        width: 42px;
+        height: 42px;
+    }
+    
+    .preloader-text {
+        font-size: 10px;
+        letter-spacing: 3px;
+    }
+    
+    /* ===== NOTIFICACIONES ===== */
+    .notification {
+        top: 68px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+        font-size: 11px;
+        padding: 10px 14px;
+    }
+    
+    /* ===== BIRTHDAY BANNER ===== */
+    .birthday-banner {
+        padding: 10px 16px;
+        font-size: 12px;
+        margin-bottom: 14px;
+    }
+}
+
+/* ===== PANTALLAS MUY PEQUEÑAS (iPhone SE, etc) ===== */
+@media (max-width: 380px) {
+    .hero-title {
+        font-size: 1.6rem;
+    }
+    
+    .section-title {
+        font-size: 1.4rem;
+    }
+    
+    .product-name {
+        font-size: 11px;
+    }
+    
+    .product-price {
+        font-size: 1rem;
+    }
+    
+    .product-image {
+        max-width: 95px;
+        height: 95px;
+    }
+    
+    .logo {
+        font-size: 1rem;
+    }
+    
+    .cart-icon,
+    .wishlist-icon {
+        padding: 4px 6px;
+        font-size: 10px;
+    }
+    
+    .whatsapp-float,
+    .chat-float-ai {
+        width: 48px;
+        height: 48px;
+        font-size: 1.3rem;
+    }
+    
+    .user-float-btn {
+        width: 48px;
+        height: 48px;
+        font-size: 1.3rem;
+    }
+}
+
+/* ===== AJUSTES ADICIONALES ===== */
+@media (max-width: 768px) {
+    /* Ocultar scroll horizontal */
+    body {
+        overflow-x: hidden;
+    }
+    
+    /* Mejorar tap targets */
+    button, a, input, select {
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* Suavizar animaciones pesadas */
+    .product-card {
+        animation-duration: 0.4s;
+    }
+    
+    /* Header sticky más compacto */
+    .navbar {
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+    }
+    
+    /* Ofertas se vean bien */
+    #ofertas .oferta-card {
+        min-height: auto;
+    }
+    
+    /* Contacto más compacto */
+    #contacto form button {
+        padding: 12px !important;
+        font-size: 12px !important;
+    }
+    
+    #contacto input,
+    #contacto textarea {
+        font-size: 13px !important;
+        padding: 12px !important;
+    }
+    
+    /* Mejorar el panel de categorías nuevas */
+    #nuevaCategoriaModal .admin-premium {
+        max-width: 100%;
+        border-radius: 20px 20px 0 0;
+        max-height: 90vh;
+    }
+}
+
+
+@media (max-width: 380px) {
+    .hero-title { font-size: 1.6rem; }
+    .section-title { font-size: 1.4rem; }
+    .product-name { font-size: 11px; }
+    .product-price { font-size: 1rem; }
+    .product-image { max-width: 95px; height: 95px; }
+    .logo { font-size: 1rem; }
+    .cart-icon, .wishlist-icon { padding: 4px 6px; font-size: 10px; }
+    .whatsapp-float, .chat-float-ai { width: 48px; height: 48px; font-size: 1.3rem; }
+    .user-float-btn { width: 48px; height: 48px; font-size: 1.3rem; }
+}
+    
     </style>
 </head>
     <body class="loading">
@@ -2379,8 +3564,8 @@ body.shake-active {
         let adminCuponesCache = [];
         let notificationTimeout = null;
                 
-        // 🎬 Bandera en memoria: se resetea sola al recargar la página
-        let __introVistaEstaCarga = false;
+        // ✅ FIX #3: Bandera persistente por sesión (ya no se ve la intro cada vez)
+        let __introVistaEstaCarga = sessionStorage.getItem('paulina_intro_vista') === 'true';
 
         // ============================================
         // UTILIDADES
@@ -3124,8 +4309,8 @@ if (cuponNivel) {
         return;
     }
 
-    // 🆕 Verificar si ya lo usó antes
-    const cuponesUsados = window.currentUser.cuponesUsados || [];
+    // ✅ FIX #7: Optional chaining para evitar crash si cuponesUsados es undefined
+    const cuponesUsados = window.currentUser?.cuponesUsados || [];
     if (cuponesUsados.includes(codigo)) {
         msg.className = 'cupon-msg error';
         msg.textContent = '❌ Ya usaste este cupón anteriormente';
@@ -3682,11 +4867,20 @@ async function loginUser(email, password) {
         return false;
     }
 }
+                // ✅ FIX #4: Limpiar carrito y cupón al cerrar sesión
                 async function logoutUser() {
     await window.firebaseAuth.signOut(window.auth);
     window.currentUser = null;
     // 🎬 Resetear la bandera de la intro
     __introVistaEstaCarga = false;
+    sessionStorage.removeItem('paulina_intro_vista');
+    // 🛒 Limpiar carrito y cupón del usuario anterior
+    cart = [];
+    cuponAplicado = null;
+    localStorage.removeItem('paulina_cart');
+    localStorage.removeItem('paulina_cupon');
+    actualizarCarritoUI();
+    renderCart();
     updateUserUI();
     mostrarNotificacion('👋 Sesión cerrada', '👋');
 }
@@ -4574,7 +5768,7 @@ function renderizarListaProductosAdmin(lista) {
         html += `
             <div class="admin-product-item">
                 <div class="admin-product-header">
-                    <img src="${p.imagen || 'https://via.placeholder.com/60'}" class="admin-product-img" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 60 60%22%3E%3Crect width=%2260%22 height=%2260%22 fill=%22%23f0ecf0%22/%3E%3Ctext x=%2230%22 y=%2235%22 font-size=%2224%22 text-anchor=%22middle%22 fill=%22%23c8bcc8%22%3E%3F%3C/text%3E%3C/svg%3E';">
+                    <img src="${p.imagen || 'https://via.placeholder.com/60'}" class="admin-product-img" loading="lazy" decoding="async" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 60 60%22%3E%3Crect width=%2260%22 height=%2260%22 fill=%22%23f0ecf0%22/%3E%3Ctext x=%2230%22 y=%2235%22 font-size=%2224%22 text-anchor=%22middle%22 fill=%22%23c8bcc8%22%3E%3F%3C/text%3E%3C/svg%3E';">
                     <div class="admin-product-info">
                         <div class="admin-product-name">
                             ${p.nombre || 'Sin nombre'}
@@ -6060,19 +7254,21 @@ function crearEfectoPrime() {
 }
 
 function abrirPanelAdmin() {
-    // 🎬 Solo la primera vez por carga de página
+    // 🎬 Solo la primera vez por sesión del navegador
     if (__introVistaEstaCarga) {
         abrirPanelAdminContenido();
         return;
     }
 
-    // Primera vez en esta carga → mostrar intro épica
+    // Primera vez en esta sesión → mostrar intro épica
     iniciarIntroCinematica().then(() => {
         __introVistaEstaCarga = true;
+        sessionStorage.setItem('paulina_intro_vista', 'true');
         abrirPanelAdminContenido();
     }).catch(err => {
         console.warn('⚠️ Error en intro, abriendo panel directo:', err);
         __introVistaEstaCarga = true;
+        sessionStorage.setItem('paulina_intro_vista', 'true');
         abrirPanelAdminContenido();
     });
 }
@@ -6957,7 +8153,7 @@ setTimeout(cargarCategorias, 800);
             document.getElementById('cartIcon').addEventListener('click', () => { renderCart(); document.getElementById('cartModal').classList.add('show'); });
             document.getElementById('floatingCart').addEventListener('click', () => { renderCart(); document.getElementById('cartModal').classList.add('show'); });
 
-            // CHECKOUT con cupones
+            // CHECKOUT con cupones - ✅ FIX #2: Consumir cupón al hacer checkout
             document.getElementById('checkoutBtn').addEventListener('click', async () => {
     if (cart.length === 0) return mostrarNotificacion('⚠️ Carrito vacío', '⚠️');
 
@@ -6997,7 +8193,42 @@ setTimeout(cargarCategorias, 800);
                     };
 
                     await window.firebaseDB.addDoc(window.firebaseDB.collection(window.db, "pedidos"), pedido);
-                    log('✅ Pedido guardado (cupón NO marcado como usado aún)');
+                    log('✅ Pedido guardado');
+
+                    // 🎟️ CONSUMIR CUPÓN al hacer checkout
+                    if (cuponAplicado) {
+                        try {
+                            // 1. Sumar uso al cupón personalizado
+                            if (cuponAplicado.id) {
+                                const cuponRef = window.firebaseDB.doc(window.db, "cupones", cuponAplicado.id);
+                                const cuponSnap = await window.firebaseDB.getDoc(cuponRef);
+                                if (cuponSnap.exists()) {
+                                    const c = cuponSnap.data();
+                                    const nuevosUsos = (c.usosActuales || 0) + 1;
+                                    const updates = { usosActuales: nuevosUsos };
+                                    if (c.limiteTotal > 0 && nuevosUsos >= c.limiteTotal) updates.activo = false;
+                                    await window.firebaseDB.updateDoc(cuponRef, updates);
+                                }
+                            }
+                            
+                            // 2. Registrar en cuponesUsados del usuario
+                            if (window.currentUser?.id) {
+                                const userRef = window.firebaseDB.doc(window.db, "usuarios", window.currentUser.id);
+                                const userSnap = await window.firebaseDB.getDoc(userRef);
+                                if (userSnap.exists()) {
+                                    const u = userSnap.data();
+                                    const usados = u.cuponesUsados || [];
+                                    if (!usados.includes(cuponAplicado.codigo)) {
+                                        usados.push(cuponAplicado.codigo);
+                                        await window.firebaseDB.updateDoc(userRef, { cuponesUsados: usados });
+                                        // Actualizar en memoria
+                                        window.currentUser.cuponesUsados = usados;
+                                    }
+                                }
+                            }
+                            log('✅ Cupón consumido:', cuponAplicado.codigo);
+                        } catch (err) { console.warn('⚠️ Error consumiendo cupón:', err); }
+                    }
                 } catch (e) { console.warn('⚠️ No se pudo guardar:', e); }
                 
                 let msg = '✨ ¡Hola Paulina! ✨%0A%0A';
