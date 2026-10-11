@@ -61,8 +61,7 @@
         };
         window.firebaseDB = { doc, setDoc, getDoc, updateDoc, collection, getDocs, deleteDoc, onSnapshot, addDoc, query, where, orderBy, limit };
 
-        // ✅ FIX #1: Esperar a Firestore antes de asignar currentUser
-        onAuthStateChanged(auth, async (user) => {
+                onAuthStateChanged(auth, (user) => {
             const aplicarUI = (intentos = 0) => {
                 if (typeof updateUserUI === 'function') {
                     updateUserUI();
@@ -72,34 +71,24 @@
             };
 
             if (user) {
-                try {
-                    const docSnap = await getDoc(doc(db, "usuarios", user.uid));
+                window.currentUser = {
+                    id: user.uid,
+                    name: user.displayName || user.email.split('@')[0],
+                    email: user.email,
+                    points: 0,
+                    level: '✨ Visitante',
+                    cuponesUsados: []
+                };
+                aplicarUI();
+
+                getDoc(doc(db, "usuarios", user.uid)).then(docSnap => {
                     if (docSnap.exists()) {
                         const data = docSnap.data();
                         if (!Array.isArray(data.cuponesUsados)) data.cuponesUsados = [];
                         window.currentUser = data;
-                    } else {
-                        window.currentUser = {
-                            id: user.uid,
-                            name: user.displayName || user.email.split('@')[0],
-                            email: user.email,
-                            points: 0,
-                            level: '✨ Visitante',
-                            cuponesUsados: []
-                        };
+                        aplicarUI();
                     }
-                } catch (err) {
-                    console.warn('⚠️ Error cargando usuario:', err);
-                    window.currentUser = {
-                        id: user.uid,
-                        name: user.displayName || user.email.split('@')[0],
-                        email: user.email,
-                        points: 0,
-                        level: '✨ Visitante',
-                        cuponesUsados: []
-                    };
-                }
-                aplicarUI();
+                }).catch(err => console.warn('⚠️', err));
             } else {
                 window.currentUser = null;
                 aplicarUI();
