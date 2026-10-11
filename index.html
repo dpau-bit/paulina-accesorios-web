@@ -136,7 +136,6 @@
             --gray-800: #c8bcc8; --gray-900: #f0ecf0;
         }
 
-        /* ✅ FIX #5: scroll-padding-top responsive */
         html { scroll-behavior: smooth; scroll-padding-top: 80px; }
 
         @media (max-width: 768px) {
@@ -237,9 +236,6 @@
         .mobile-menu a:hover { color: var(--gold); transform: translateX(8px); }
         .mobile-menu .close-menu { opacity: 0.6; margin-top: var(--space-md); cursor: pointer; }
 
-        /* ============================================
-           🎨 HERO ULTRA PREMIUM
-           ============================================ */
         .hero { 
             display: flex; 
             flex-wrap: wrap; 
@@ -328,9 +324,6 @@
         .category-pills .pill:hover { border-color: var(--gold); transform: translateY(-2px); }
         .category-pills .pill.active { background: var(--gold-gradient); color: #fff; border-color: transparent; box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3); }
 
-        /* ============================================
-           🛍️ PRODUCT GRID ULTRA PREMIUM
-           ============================================ */
         .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--space-lg); }
         .product-card { 
             background: var(--white); 
@@ -387,7 +380,6 @@
         .btn-add:hover:not(:disabled) { background: var(--gold-gradient); color: #fff; border-color: transparent; box-shadow: 0 8px 20px rgba(212, 175, 55, 0.35); transform: translateY(-2px); }
         .btn-add:disabled { opacity: 0.4; cursor: not-allowed; }
 
-        /* FILTROS */
         .filters-panel { background: var(--white); border-radius: var(--radius-lg); padding: var(--space-lg); margin-bottom: var(--space-xl); box-shadow: var(--shadow-md); border: 1px solid rgba(212, 175, 55, 0.08); }
         [data-theme="dark"] .filters-panel { background: rgba(255, 255, 255, 0.02); }
         .filters-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--space-md); align-items: end; }
@@ -401,12 +393,10 @@
         .results-count { text-align: center; font-size: 12px; color: var(--gray-500); margin-bottom: var(--space-md); font-weight: 600; }
         .results-count strong { color: var(--gold); font-size: 14px; }
 
-        /* WISHLIST */
         .btn-wishlist { position: absolute; top: 12px; left: 12px; width: 34px; height: 34px; border-radius: 50%; background: rgba(255, 255, 255, 0.95); border: 1.5px solid rgba(194, 24, 91, 0.15); display: flex; align-items: center; justify-content: center; font-size: 15px; cursor: pointer; z-index: 2; color: #ccc; transition: var(--transition-base); backdrop-filter: blur(10px); }
         .btn-wishlist:hover { transform: scale(1.1); }
         .btn-wishlist.active { color: var(--primary); border-color: var(--primary); background: rgba(194, 24, 91, 0.1); animation: heartBeat 0.6s ease; }
 
-        /* RESEÑAS */
         .stars-display { display: inline-flex; gap: 2px; font-size: 12px; color: var(--gold); margin-bottom: 4px; }
         .rating-info { font-size: 9px; color: var(--gray-500); margin-bottom: 8px; }
         .btn-reviews { padding: 7px 14px; border-radius: var(--radius-full); border: 1.5px solid rgba(212, 175, 55, 0.2); background: rgba(212, 175, 55, 0.05); color: var(--gold); font-size: 10px; font-weight: 700; cursor: pointer; width: 100%; margin-bottom: 6px; transition: var(--transition-base); }
@@ -422,7 +412,6 @@
         .review-textarea { width: 100%; padding: 12px; border: 1.5px solid rgba(212, 175, 55, 0.2); border-radius: var(--radius-md); font-size: 12px; background: var(--gray-50); color: var(--gray-800); min-height: 80px; resize: vertical; outline: none; }
         [data-theme="dark"] .review-textarea { background: rgba(0,0,0,0.3); color: #fff; }
 
-        /* RANKING */
         .ranking-podium { display: flex; justify-content: center; align-items: flex-end; gap: 12px; margin: var(--space-lg) 0; padding: var(--space-lg) var(--space-md); background: linear-gradient(180deg, rgba(212,175,55,0.05), transparent); border-radius: var(--radius-lg); }
         .podium-item { text-align: center; flex: 1; max-width: 140px; }
         .podium-avatar { width: 60px; height: 60px; border-radius: 50%; background: var(--gold-gradient); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 900; color: #1a0b1a; margin: 0 auto 8px; border: 3px solid #fff; box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3); }
@@ -433,11 +422,9 @@
         .podium-points { font-size: 10px; color: var(--gold); font-weight: 700; }
         .podium-medal { font-size: 1.2rem; margin-bottom: 4px; }
 
-        /* CUMPLEAÑOS */
         .birthday-banner { background: linear-gradient(135deg, #f06292, #c2185b, #f06292); background-size: 200% 200%; animation: gradientBG 3s ease infinite; color: #fff; padding: 14px 22px; border-radius: var(--radius-md); text-align: center; font-weight: 700; font-size: 13px; margin-bottom: var(--space-lg); box-shadow: var(--shadow-lg); display: none; }
         .birthday-banner.show { display: block; animation: slideDown 0.5s ease; }
 
-        /* CUPONES */
         .cupon-section { background: rgba(212, 175, 55, 0.05); border: 1.5px dashed rgba(212, 175, 55, 0.3); border-radius: 12px; padding: 12px 14px; margin: 12px 0; }
         .cupon-toggle { display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; font-size: 12px; font-weight: 700; color: var(--gold); }
         .cupon-toggle .arrow { transition: var(--transition-base); display: inline-block; }
@@ -460,7 +447,6 @@
         .cupon-msg.error { color: #e74c3c; display: block; }
         .cupon-msg.success { color: #2e7d32; display: block; }
 
-        /* MODALES GENERALES */
         .notification { position: fixed; top: 78px; right: 20px; background: var(--white); padding: 14px 22px; border-radius: var(--radius-md); box-shadow: var(--shadow-lg); border-left: 4px solid var(--gold); transform: translateX(120%); transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 1000; font-weight: 600; font-size: 12px; display: flex; align-items: center; gap: 8px; max-width: 90%; }
         .notification.show { transform: translateX(0); }
 
@@ -470,7 +456,6 @@
         .confetti-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
         .confetti { position: absolute; border-radius: 2px; animation: confettiFall linear forwards; }
 
-        /* PANEL ADMIN */
         .admin-premium-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(12px); z-index: 10000; display: none; align-items: center; justify-content: center; padding: 20px; }
         .admin-premium-overlay.show { display: flex; }
         .admin-premium { width: 100%; max-width: 1100px; max-height: 94vh; background: linear-gradient(180deg, #0a050a 0%, #1a0b1a 100%); border-radius: 24px; overflow: hidden; box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.2), 0 20px 80px rgba(0, 0, 0, 0.8); display: flex; flex-direction: column; }
@@ -619,7 +604,15 @@
         .admin-cupon-progress-fill { height: 100%; background: var(--gold-gradient); transition: width 0.5s ease; }
         .admin-cupon-progress-fill.agotado { background: linear-gradient(90deg, #e74c3c, #c0392b); }
 
-        #adminPanelBtn { position: fixed; bottom: 100px; right: 20px; background: linear-gradient(135deg, #0a050a, #1a0b1a); color: #d4af37; border: 2px solid #d4af37; border-radius: 50px; padding: 14px 24px; font-weight: 800; font-size: 13px; cursor: pointer; z-index: 9999; animation: premiumPulse 2.5s ease-in-out infinite; }
+        #adminPanelBtn { position: fixed; bottom: 100px; right: 20px; background: linear-gradient(135deg, #0a050a, #1a0b1a); color: #d4af37; border: 2px solid #d4af37; border-radius: 50px; padding: 14px 24px; font-weight: 800; font-size: 13px; cursor: pointer; z-index: 9999; animation: premiumPulse 2.5s ease-in-out infinite; transition: opacity 0.3s ease; }
+
+        /* ✅ FIX: Ocultar botón Admin cuando el chat IA está abierto */
+        .chat-modal-ai.open ~ #adminPanelBtn,
+        body:has(.chat-modal-ai.open) #adminPanelBtn {
+            opacity: 0 !important;
+            pointer-events: none !important;
+            visibility: hidden !important;
+        }
 
         .user-float-btn { position: fixed !important; bottom: 92px !important; left: 24px !important; background: var(--gold-gradient); color: #fff; width: 56px; height: 56px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; border: none; z-index: 60 !important; box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4); transition: var(--transition-base); }
         .user-float-btn.visible { display: flex !important; }
@@ -659,7 +652,6 @@
         .dark-mode-toggle { position: fixed; bottom: 190px; right: 20px; background: var(--white); color: var(--gray-700); width: 42px; height: 42px; border-radius: 50%; border: 1px solid rgba(212, 175, 55, 0.15); font-size: 16px; cursor: pointer; z-index: 50; box-shadow: 0 4px 15px rgba(200, 120, 180, 0.15); }
         .share-btn { position: fixed; bottom: 240px; right: 20px; background: var(--white); color: var(--gray-700); width: 42px; height: 42px; border-radius: 50%; border: 1px solid rgba(212, 175, 55, 0.15); font-size: 16px; cursor: pointer; z-index: 50; box-shadow: 0 4px 15px rgba(200, 120, 180, 0.15); }
 
-        /* OFERTAS DINÁMICAS */
         .oferta-card { background: var(--white); border-radius: var(--radius-lg); padding: var(--space-lg); text-align: center; box-shadow: var(--shadow-md); border: 1px solid rgba(212, 175, 55, 0.1); transition: var(--transition-base); position: relative; overflow: hidden; perspective: 1200px; }
         [data-theme="dark"] .oferta-card { background: rgba(255, 255, 255, 0.02); }
         .oferta-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-xl); border-color: var(--gold); }
@@ -685,7 +677,6 @@
         @keyframes breathing { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
         .oferta-card:not(:hover) { animation: breathing 4s ease-in-out infinite; }
 
-        /* ANIMACIONES AVANZADAS */
         .product-card { animation: cardFadeIn 0.6s ease-out backwards; }
         .product-card:nth-child(1) { animation-delay: 0.05s; }
         .product-card:nth-child(2) { animation-delay: 0.10s; }
@@ -736,7 +727,6 @@
         .producto-detalle-img:hover img { transform: scale(1.05); }
         .btn-gold { background-size: 200% 200%; animation: shimmerGold 3s ease-in-out infinite; }
 
-        /* BANNER FLOTANTE */
         .cupon-flotante { position: fixed; top: 90px; right: 20px; max-width: 320px; background: var(--gold-gradient); color: #1a0b1a; padding: 16px 20px; border-radius: 16px; box-shadow: 0 12px 40px rgba(212, 175, 55, 0.4); z-index: 900; transform: translateX(400px); transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); cursor: pointer; }
         .cupon-flotante.show { transform: translateX(0); }
         .cupon-flotante .cerrar-cupon { position: absolute; top: 8px; right: 12px; font-size: 18px; cursor: pointer; opacity: 0.7; transition: var(--transition-base); font-weight: 700; }
@@ -748,7 +738,6 @@
         .cupon-flotante .btn-copiar-flotante { background: rgba(26, 11, 26, 0.9); color: var(--gold); border: none; padding: 8px 16px; border-radius: var(--radius-full); font-weight: 800; font-size: 11px; cursor: pointer; margin-top: 10px; transition: var(--transition-base); width: 100%; }
         .cupon-flotante .btn-copiar-flotante:hover { background: #1a0b1a; transform: scale(1.03); }
 
-        /* MODAL PRODUCTO DETALLADO */
         .producto-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px); z-index: 10000; display: none; align-items: center; justify-content: center; padding: 20px; }
         .producto-modal-overlay.show { display: flex; animation: fadeInScale 0.3s ease; }
         .producto-modal { background: var(--white); border-radius: var(--radius-lg); max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: var(--shadow-2xl); border: 1px solid rgba(212, 175, 55, 0.15); }
@@ -818,9 +807,6 @@
         .comentario-eliminar:hover { opacity: 1; transform: scale(1.2); }
         .comentarios-vacio { text-align: center; padding: 20px; color: var(--gray-400); font-size: 12px; }
 
-        /* ============================================
-           📱 ULTRA MOBILE OPTIMIZATION V3 - PREMIUM
-           ============================================ */
         @media (max-width: 1024px) {
             .product-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--space-md); }
             .hero-title { font-size: 3rem; }
@@ -828,7 +814,6 @@
         }
 
         @media (max-width: 768px) {
-            /* NAVBAR */
             .navbar { padding: 0 3%; min-height: 58px; gap: 6px; flex-wrap: nowrap; }
             .navbar-left { gap: 8px; flex: 1; min-width: 0; }
             .logo { font-size: 1.1rem; letter-spacing: -0.3px; white-space: nowrap; }
@@ -845,7 +830,6 @@
             
             .free-shipping { font-size: 9px; padding: 6px 8px; letter-spacing: 0.3px; }
             
-            /* HERO PREMIUM MÓVIL */
             .hero {
                 padding: 32px 5% 40px;
                 margin: 0 8px 20px;
@@ -867,19 +851,16 @@
             .hero-actions .btn { width: 100%; padding: 13px 20px; font-size: 12px; justify-content: center; }
             .hero-image { display: none; }
             
-            /* SECCIONES */
             .section { padding: 36px 4%; }
             .section-header { margin-bottom: 22px; }
             .section-tag { font-size: 9px; padding: 4px 14px; letter-spacing: 1.8px; }
             .section-title { font-size: 1.7rem; line-height: 1.15; }
             .section-subtitle { font-size: 0.85rem; padding: 0 12px; line-height: 1.55; }
             
-            /* CATEGORÍAS PILLS */
             .category-pills { gap: 6px; padding: 4px 2px; margin-bottom: 18px; overflow-x: auto; flex-wrap: nowrap; justify-content: flex-start; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
             .category-pills::-webkit-scrollbar { display: none; }
             .category-pills .pill { padding: 9px 16px; font-size: 11px; flex-shrink: 0; white-space: nowrap; }
             
-            /* FILTROS */
             .filters-panel { padding: 14px 12px; border-radius: 16px; margin: 0 2px 18px; }
             .filters-row { grid-template-columns: 1fr 1fr; gap: 8px; }
             .filters-row .filter-group:nth-child(1) { grid-column: 1 / 2; }
@@ -892,7 +873,6 @@
             .results-count { font-size: 11px; margin-bottom: 14px; }
             .results-count strong { font-size: 13px; }
             
-            /* PRODUCTOS GRID PREMIUM MÓVIL */
             .product-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0; }
             .product-card { padding: 14px 10px 12px; border-radius: 18px; box-shadow: 0 3px 16px rgba(200, 120, 180, 0.1); }
             .product-card:hover { transform: translateY(-3px); }
@@ -911,7 +891,6 @@
             .btn-add { padding: 10px 10px; font-size: 10px; border-radius: 20px; font-weight: 700; }
             .btn-wishlist { width: 30px; height: 30px; font-size: 13px; top: 8px; left: 8px; }
             
-            /* OFERTAS */
             #ofertas > div[style*="grid"] { grid-template-columns: 1fr !important; gap: 14px !important; }
             .oferta-card { padding: 24px 18px; border-radius: 20px; }
             .oferta-card .oferta-icon { font-size: 2.8rem; margin-bottom: 10px; }
@@ -922,16 +901,13 @@
             .oferta-card .cupon-codigo { font-size: 1.35rem; padding: 8px 16px; letter-spacing: 2.5px; }
             .oferta-card .btn { width: 100%; padding: 12px 20px; font-size: 12px; }
             
-            /* CONTACTO */
             #contacto > div[style*="max-width"] { padding: 22px 18px !important; border-radius: 20px !important; }
             
-            /* MODALES GENERALES */
             .modal-overlay { padding: 8px; align-items: flex-end; }
             .modal-overlay > div { max-height: 92vh !important; width: 100% !important; max-width: 100% !important; border-radius: 24px 24px 0 0 !important; padding: 22px 18px !important; animation: slideUpMobile 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); }
             @keyframes slideUpMobile { from { transform: translateY(100%); opacity: 0.5; } to { transform: translateY(0); opacity: 1; } }
             .modal-overlay h2 { font-size: 1.15rem !important; }
             
-            /* CARRITO */
             .cupon-section { padding: 12px 14px; border-radius: 14px; }
             .cupon-toggle { font-size: 12px; }
             .cupon-input { font-size: 11px; padding: 10px 13px; }
@@ -941,7 +917,6 @@
             .cupon-aplicado .info strong { font-size: 11.5px; }
             .cupon-aplicado .btn-quitar { padding: 5px 10px; font-size: 10px; }
             
-            /* CHAT IA */
             .chat-float-ai { width: 54px; height: 54px; font-size: 1.45rem; bottom: 18px; left: 18px; box-shadow: 0 6px 24px rgba(212, 175, 55, 0.55); }
             .chat-float-ai .chat-badge { width: 18px; height: 18px; font-size: 7px; top: -2px; right: -2px; }
             .chat-modal-ai { left: 8px; right: 8px; bottom: 82px; width: auto; max-width: none; max-height: 75vh; border-radius: 22px; }
@@ -954,7 +929,6 @@
             .chat-input-ai input { font-size: 12.5px; padding: 10px 13px; }
             .chat-input-ai button { padding: 10px 16px; font-size: 11.5px; }
             
-            /* BOTONES FLOTANTES */
             .whatsapp-float { width: 54px; height: 54px; font-size: 1.55rem; bottom: 18px; right: 18px; box-shadow: 0 6px 24px rgba(37, 211, 102, 0.45); }
             .btn-back-top { width: 40px; height: 40px; font-size: 14px; bottom: 148px; right: 18px; }
             .dark-mode-toggle, .share-btn { width: 40px; height: 40px; font-size: 14px; right: 18px; }
@@ -962,12 +936,12 @@
             .share-btn { bottom: 252px; }
             .floating-cart { bottom: 84px; right: 18px; padding: 8px 16px; font-size: 11px; gap: 6px; }
             .user-float-btn { width: 54px; height: 54px; font-size: 1.45rem; bottom: 82px; left: 18px; }
-            #adminPanelBtn { bottom: 92px; right: 18px; padding: 12px 20px; font-size: 12px; }
+            /* ✅ FIX: botón Admin se sube en móvil para no chocar con el chat IA */
+            #adminPanelBtn { bottom: 150px; right: 18px; padding: 12px 20px; font-size: 12px; }
             .cupon-flotante { top: auto; bottom: 92px; left: 12px; right: 12px; max-width: none; padding: 15px 18px; border-radius: 18px; }
             .cupon-flotante .codigo-grande { font-size: 19px; letter-spacing: 2.5px; }
             .cupon-flotante .descripcion { font-size: 11.5px; }
             
-            /* FOOTER */
             footer { padding: 32px 5% 24px; border-radius: 28px 28px 0 0; margin-top: 36px; }
             .footer-grid { grid-template-columns: 1fr 1fr; gap: 22px; }
             .footer-grid h4 { font-size: 12.5px; margin-bottom: 10px; }
@@ -975,7 +949,6 @@
             .footer-payments { font-size: 1.5rem; gap: 8px; }
             .footer-bottom { font-size: 9.5px; padding-top: 16px; margin-top: 22px; line-height: 1.55; }
             
-            /* PANEL ADMIN */
             .admin-premium-overlay { padding: 0; align-items: stretch; }
             .admin-premium { max-width: 100%; max-height: 100vh; border-radius: 0; }
             .admin-premium-header { padding: 16px 18px; }
@@ -1022,7 +995,6 @@
             .admin-cupon-stats { gap: 7px; font-size: 9.5px; }
             .admin-cupon-stats span { padding: 4px 9px; }
             
-            /* PRODUCTO MODAL */
             .producto-modal { border-radius: 22px; max-height: 94vh; }
             .producto-detalle { grid-template-columns: 1fr; gap: 18px; padding: 20px; }
             .producto-detalle-img { min-height: 210px; border-radius: 16px; }
@@ -1048,25 +1020,21 @@
             .comentario-nombre { font-size: 11.5px; }
             .comentario-texto { font-size: 11.5px; }
             
-            /* RESEÑAS */
             .review-stars-input { font-size: 26px; gap: 4px; }
             .review-item { padding: 11px 0; }
             .review-author { font-size: 11.5px; }
             .review-text { font-size: 11.5px; }
             
-            /* RANKING */
             .ranking-podium { padding: 18px 10px; gap: 8px; }
             .podium-avatar { width: 52px; height: 52px; font-size: 1.25rem; }
             .podium-item.gold .podium-avatar { width: 68px; height: 68px; font-size: 1.7rem; }
             .podium-name { font-size: 10.5px; }
             .podium-points { font-size: 9.5px; }
             
-            /* PRELOADER */
             .preloader-logo { font-size: 2.3rem; }
             .preloader-spinner { width: 44px; height: 44px; }
             .preloader-text { font-size: 10.5px; letter-spacing: 3px; }
             
-            /* NOTIFICACIONES */
             .notification { top: 70px; right: 12px; left: 12px; max-width: none; font-size: 11.5px; padding: 12px 16px; }
             .birthday-banner { padding: 12px 18px; font-size: 12.5px; margin-bottom: 16px; }
             
@@ -1423,10 +1391,7 @@
                         const DEBUG = false;
         const log = (...args) => DEBUG && console.log(...args);
 
-        // ============================================
-        // PARTÍCULAS
-        // ============================================
-       particlesJS('particles-js', {
+        particlesJS('particles-js', {
     particles: {
         number: { value: 40, density: { enable: true, value_area: 1200 } },
         color: { value: ['#d4af37', '#f5d76e', '#f06292'] },
@@ -1442,9 +1407,6 @@
     retina_detect: true
 });
 
-        // ============================================
-        // ESTADO GLOBAL
-        // ============================================
         let productos = [];
         let cart = [];
         let wishlist = [];
@@ -1460,12 +1422,8 @@
         let adminCuponesCache = [];
         let notificationTimeout = null;
 
-        // ✅ FIX #3: Bandera persistente por sesión
         let __introVistaEstaCarga = sessionStorage.getItem('paulina_intro_vista') === 'true';
 
-        // ============================================
-        // UTILIDADES
-        // ============================================
         function safeNumber(val, fallback = 0) {
     const n = parseFloat(val);
     return Number.isFinite(n) ? n : fallback;
@@ -1516,9 +1474,6 @@ function formatPrice(p) { return `S/ ${safeNumber(p, 0).toFixed(2)}`; }
             }
         }
 
-        // ============================================
-        // NIVELES Y CÓDIGOS
-        // ============================================
         const CODIGOS_POR_NIVEL = [
     { min: 1000, code: 'DIAMANTE20', descuento: 20, desc: '20% OFF + Envío gratis', emoji: '💎', nombre: 'Diamante', color: '#a78bfa' },
     { min: 500,  code: 'ORO15',      descuento: 15, desc: '15% OFF + Envío gratis', emoji: '🥇', nombre: 'Oro', color: '#d4af37' },
@@ -1542,9 +1497,6 @@ function formatPrice(p) { return `S/ ${safeNumber(p, 0).toFixed(2)}`; }
             return { nombre: 'Visitante', emoji: '✨', color: '#666' };
         }
 
-        // ============================================
-        // 📦 MODAL DE PRODUCTO DETALLADO
-        // ============================================
         function abrirProductoModal(id) {
             const p = productos.find(x => x.id === id);
             if (!p) return;
@@ -1636,9 +1588,6 @@ function formatPrice(p) { return `S/ ${safeNumber(p, 0).toFixed(2)}`; }
             }
         }
 
-        // ============================================
-        // 💬 COMENTARIOS DE PRODUCTOS
-        // ============================================
         async function cargarComentariosProducto(productId) {
             const cont = document.getElementById('comentariosLista-' + productId);
             if (!cont) return;
@@ -1770,9 +1719,6 @@ function formatPrice(p) { return `S/ ${safeNumber(p, 0).toFixed(2)}`; }
             }
         }
 
-        // ============================================
-        // PRODUCTOS EN TIEMPO REAL
-        // ============================================
                     function actualizarIALocal() {
     log('✅ IA actualizada:', productos.length, 'productos,', cuponesActivos.length, 'cupones');
 }
@@ -1889,9 +1835,6 @@ function initChatAI() {
             } catch (error) { console.error('❌', error); }
         }
 
-        // ============================================
-        // CUPONES EN TIEMPO REAL
-        // ============================================
         function cargarCuponesDesdeFirestore() {
             try {
                 if (unsubscribeCupones) unsubscribeCupones();
@@ -1918,9 +1861,6 @@ function initChatAI() {
             return true;
         }
                 
-        // ============================================
-        // FILTROS
-        // ============================================
         function aplicarFiltrosProductos(lista) {
     const precio = document.getElementById('filterPrecio')?.value || 'todos';
     const orden = document.getElementById('filterOrden')?.value || 'recientes';
@@ -1972,9 +1912,6 @@ function initChatAI() {
             mostrarNotificacion('🔄 Filtros limpiados', '🔄');
         }
 
-        // ============================================
-        // RENDERIZAR PRODUCTOS
-        // ============================================
         function renderizarProductos(products) {
     const cont = document.getElementById('productGrid');
     if (!cont) return;
@@ -2029,9 +1966,6 @@ function initChatAI() {
     });
 }
 
-        // ============================================
-        // CARRITO CON CUPONES
-        // ============================================
         function cargarCarrito() {
             const saved = localStorage.getItem('paulina_cart');
             if (saved) { try { cart = JSON.parse(saved); } catch(e) { cart = []; } }
@@ -2153,9 +2087,6 @@ function initChatAI() {
             document.getElementById('cartTotal').textContent = formatPrice(total);
         }
 
-        // ============================================
-        // 🎟️ SISTEMA DE CUPONES
-        // ============================================
         function toggleCuponInput() {
             const inputs = document.getElementById('cuponInputs');
             const toggle = document.getElementById('cuponToggle');
@@ -2199,7 +2130,6 @@ if (cuponNivel) {
         return;
     }
 
-    // ✅ FIX #7: Optional chaining
     const cuponesUsados = window.currentUser?.cuponesUsados || [];
     if (cuponesUsados.includes(codigo)) {
         msg.className = 'cupon-msg error';
@@ -2333,9 +2263,6 @@ try {
             mostrarNotificacion('🗑️ Cupón removido', '🗑️');
         }
 
-        // ============================================
-        // WISHLIST
-        // ============================================
         function cargarWishlist() {
             const saved = localStorage.getItem('paulina_wishlist');
             if (saved) { try { wishlist = JSON.parse(saved); } catch(e) { wishlist = []; } }
@@ -2389,9 +2316,6 @@ try {
             modal.classList.add('show');
         }
 
-        // ============================================
-        // RESEÑAS
-        // ============================================
         async function abrirResenas(productId) {
             const modal = document.getElementById('reviewModal');
             const cont = document.getElementById('reviewContent');
@@ -2501,9 +2425,6 @@ try {
             } catch (e) { console.error('❌', e); }
         }
 
-        // ============================================
-        // RANKING
-        // ============================================
         async function cargarRanking() {
             try {
                 const ref = window.firebaseDB.collection(window.db, "usuarios");
@@ -2529,9 +2450,6 @@ try {
             } catch (e) { console.warn('⚠️ ranking:', e); }
         }
 
-        // ============================================
-        // CUMPLEAÑOS
-        // ============================================
         function verificarCumpleanos() {
             if (!window.currentUser || !window.currentUser.cumpleanos) return;
             const hoy = new Date();
@@ -2546,9 +2464,6 @@ try {
             }
         }
 
-        // ============================================
-        // MI CUENTA
-        // ============================================
         function actualizarBotonFlotante() {
             const btn = document.getElementById('userFloatBtn');
             const badge = document.getElementById('userFloatBadge');
@@ -2659,9 +2574,6 @@ try {
             }).catch(() => mostrarNotificacion(`🎟️ ${code}`, '🎟️'));
         }
 
-        // ============================================
-        // AUTH
-        // ============================================
         function updateUserUI() {
             const u = window.currentUser;
             const userName = document.getElementById('userName');
@@ -2752,7 +2664,6 @@ async function loginUser(email, password) {
     }
 }
 
-                // ✅ FIX #4: Limpiar carrito al cerrar sesión
                 async function logoutUser() {
     await window.firebaseAuth.signOut(window.auth);
     window.currentUser = null;
@@ -3295,10 +3206,6 @@ function iaRespuestaAyuda() {
     return `💖 <strong>Puedo ayudarte con:</strong><br><br>🛍️ Productos y catálogo<br>💰 Precios y ofertas<br>🎟️ Cupones activos<br>📦 Envíos y pagos<br>📍 Ubicación y horarios<br>⭐ Puntos y niveles<br>🎁 Recomendaciones<br>⚖️ Comparar productos<br>💬 Y mucho más ✨<br><br>¿Qué te gustaría saber? 💖`;
 }
 
-// ============================================
-// 🚀 ROUTER FINAL - IA v2 + IA v1
-// ============================================
-
 function getAIResponseV2(message) {
     const msg = message.trim();
     if (!msg) return null;
@@ -3363,9 +3270,6 @@ function getAIResponse(message) {
     
     return '🤔 Mmm... no entendí bien. ¿Me lo reformulas? 💖';
 }
-// ============================================
-// 🔄 CONVERTIR ARCHIVO A BASE64
-// ============================================
 function fileToBase64(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -3375,10 +3279,6 @@ function fileToBase64(file) {
     });
 }
 
-
-    // ============================================
-// 📸 SUBIR IMÁGENES A IMGBB
-// ============================================
 const IMGBB_API_KEY = '83a5551cf1fb7002cc6be75d10b5de1f';
 
 async function subirImagenAdmin(event) {
@@ -3562,9 +3462,6 @@ async function subirImagenEdit(event) {
         setTimeout(() => progress.classList.remove('show'), 4000);
     }
 }
-// ============================================
-// 🗑️ QUITAR IMÁGENES (Admin y Edit)
-// ============================================
 function quitarImagenAdmin() {
     const input = document.getElementById('adminImagen');
     const preview = document.getElementById('adminImagenPreview');
@@ -3604,10 +3501,6 @@ function quitarImagenEdit() {
 
     mostrarNotificacion('🗑️ Imagen removida', '🗑️');
 }
-
-// ============================================
-// 📦 ADMIN - PRODUCTOS
-// ============================================
 
 async function cargarProductosAdmin() {
     const c = document.getElementById('adminProductosLista');
@@ -3697,10 +3590,7 @@ function renderizarListaProductosAdmin(lista) {
                 cargarDashboardStats();
             } catch (e) { console.error('❌', e); }
         }
-                        // ============================================
-        // 💸 APLICAR DESCUENTO A PRODUCTO
-        // ============================================
-        async function abrirModalDescuento(id) {
+                        async function abrirModalDescuento(id) {
             try {
                 const docRef = window.firebaseDB.doc(window.db, "productos", id);
                 const docSnap = await window.firebaseDB.getDoc(docRef);
@@ -3831,10 +3721,7 @@ function renderizarListaProductosAdmin(lista) {
                 console.error('❌ Error:', error);
             }
         }
-                        // ============================================
-        // ✏️ EDITAR PRODUCTO
-        // ============================================
-        async function editarProducto(id) {
+                        async function editarProducto(id) {
     try {
         const docRef = window.firebaseDB.doc(window.db, "productos", id);
         const docSnap = await window.firebaseDB.getDoc(docRef);
@@ -4019,7 +3906,6 @@ function renderizarListaProductosAdmin(lista) {
             } catch (e) { console.error('❌', e); }
         }
 
-        // 🎟️ CUPONES ADMIN
         async function cargarCuponesAdmin() {
             const c = document.getElementById('adminCuponesLista');
             if (!c) return;
@@ -4161,7 +4047,6 @@ function renderizarListaProductosAdmin(lista) {
             } catch (e) { console.error('❌', e); }
         }
 
-        // USUARIOS
         async function cargarUsuariosAdmin() {
             const c = document.getElementById('adminUsuariosLista');
             if (!c) return;
@@ -4269,7 +4154,6 @@ function renderizarListaProductosAdmin(lista) {
             } catch (e) { console.error('❌', e); }
         }
 
-        // ESTADÍSTICAS
         async function cargarEstadisticas() {
             try {
                 const snap = await window.firebaseDB.getDocs(window.firebaseDB.collection(window.db, "productos"));
@@ -4306,7 +4190,6 @@ function renderizarListaProductosAdmin(lista) {
             } catch (e) { console.error('❌', e); }
         }
 
-        // PEDIDOS
         async function cargarPedidosAdmin() {
             const c = document.getElementById('adminPedidosLista');
             if (!c) return;
@@ -4402,9 +4285,6 @@ if (p.cupon) {
             } catch (e) { console.error('❌', e); }
         }
 
-        // ============================================
-        // 🎟️ MARCAR CUPÓN COMO USADO
-        // ============================================
         async function marcarCuponComoUsado(pedido, pedidoId) {
             try {
                 const codigo = pedido.cupon;
@@ -4459,7 +4339,6 @@ if (p.cupon) {
             } catch (e) { console.error('❌', e); }
         }
 
-        // VENTAS
         function cambiarPeriodoVentas(periodo, btn) {
             periodoVentas = periodo;
             document.querySelectorAll('#tab-ventas .admin-btn').forEach(b => {
@@ -4574,9 +4453,6 @@ if (p.cupon) {
             } catch (e) { console.error('❌ ventas:', e); }
         }
                 
-// ============================================
-// 🎬 THE CROWN PROTOCOL V4
-// ============================================
 async function iniciarIntroCinematica() {
     try {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -5335,9 +5211,6 @@ async function cargarDashboardStats() {
     } catch (e) { console.error('❌', e); }
 }
 
-// ============================================
-// 📂 SISTEMA DE CATEGORÍAS DINÁMICAS
-// ============================================
 let categoriasGlobales = [];
 
 async function cargarCategorias() {
@@ -5527,9 +5400,6 @@ async function guardarNuevaCategoria() {
     }
 }
 
-// ============================================
-// 🔥 OFERTAS DINÁMICAS
-// ============================================
 let indexCuponOferta = 0;
 let indexProductoOferta = 0;
 let cuponEnOfertaActual = null;
@@ -5744,9 +5614,6 @@ function rotarCuponOferta() {
     }, 400);
 }
 
-// ============================================
-// 🌐 EXPONER AL WINDOW
-// ============================================
 window.actualizarOfertasDinamicas = actualizarOfertasDinamicas;
 window.aplicarFiltroOferta = aplicarFiltroOferta;
 window.rotarProductoOferta = rotarProductoOferta;
@@ -5821,9 +5688,6 @@ window.showLoginForm = showLoginForm;
 window.showRegisterForm = showRegisterForm;
 window.resetPassword = resetPassword;
 
-// ============================================
-// INIT
-// ============================================
 document.addEventListener('DOMContentLoaded', function() {
     if (window.location.hash) {
         history.replaceState(null, null, window.location.pathname);
@@ -5965,7 +5829,6 @@ document.addEventListener('DOMContentLoaded', function() {
             await window.firebaseDB.addDoc(window.firebaseDB.collection(window.db, "pedidos"), pedido);
             log('✅ Pedido guardado');
 
-            // ✅ FIX #2: Consumir cupón al hacer checkout
             if (cuponAplicado) {
                 try {
                     if (cuponAplicado.id) {
@@ -6054,33 +5917,29 @@ document.addEventListener('DOMContentLoaded', function() {
         renderizarCuponOferta();
     }, 30000);
 
+    /* ============================================
+       ✅ FIX: Verificación admin por EMAIL (temporal)
+       Reemplaza la verificación por Firestore.
+       Cuando recuperes acceso a Firebase Console,
+       crea el doc "admins/{tu-uid}" y puedes volver
+       al bloque original si quieres.
+       ============================================ */
     if (window.auth) {
-        let adminUnsub = null;
         window.auth.onAuthStateChanged((user) => {
-            if (adminUnsub) { adminUnsub(); adminUnsub = null; }
-
             const btn = document.getElementById('adminPanelBtn');
             if (!user) {
                 if (btn) btn.remove();
                 return;
             }
-
-            adminUnsub = window.firebaseDB.onSnapshot(
-                window.firebaseDB.doc(window.db, "admins", user.uid),
-                (snap) => {
-                    const btnNow = document.getElementById('adminPanelBtn');
-                    if (snap.exists()) {
-                        if (!btnNow) crearPanelAdmin();
-                    } else {
-                        if (btnNow) btnNow.remove();
-                    }
-                },
-                (error) => {
-                    console.warn('⚠️ Error verificando admin:', error);
-                    const btnNow = document.getElementById('adminPanelBtn');
-                    if (btnNow) btnNow.remove();
-                }
-            );
+            const ADMIN_EMAILS = [
+                'paulinabellezaperu@gmail.com',
+                'guillermopieraolivarezmore@gmail.com'
+            ];
+            if (ADMIN_EMAILS.includes(user.email)) {
+                if (!btn) crearPanelAdmin();
+            } else {
+                if (btn) btn.remove();
+            }
         });
     }
 
