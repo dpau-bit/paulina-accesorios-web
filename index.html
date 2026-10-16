@@ -4980,21 +4980,8 @@ function crearEfectoPrime() {
 }
 
 function abrirPanelAdmin() {
-    if (__introVistaEstaCarga) {
-        abrirPanelAdminContenido();
-        return;
-    }
-
-    iniciarIntroCinematica().then(() => {
-        __introVistaEstaCarga = true;
-        sessionStorage.setItem('paulina_intro_vista', 'true');
-        abrirPanelAdminContenido();
-    }).catch(err => {
-        console.warn('⚠️ Error en intro, abriendo panel directo:', err);
-        __introVistaEstaCarga = true;
-        sessionStorage.setItem('paulina_intro_vista', 'true');
-        abrirPanelAdminContenido();
-    });
+    crearEfectoPrime();
+    abrirPanelAdminContenido();
 }
 
 function abrirPanelAdminContenido() {
