@@ -1522,7 +1522,233 @@ footer:before{content:"✦";position:absolute;right:5%;top:-65px;font-size:220px
   *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
 
-    </style>
+    
+/* PAULINA ACCOUNT CENTER · RESPONSIVE PRO DASHBOARD */
+.pa-account-shell{width:min(1180px,98vw);height:min(900px,94vh);min-height:540px;display:grid;grid-template-columns:250px minmax(0,1fr);overflow:hidden;border-radius:26px;background:var(--gray-50);color:var(--gray-800);box-shadow:0 35px 100px rgba(20,8,18,.35);font-family:var(--font-sans)}
+.pa-account-sidebar{display:flex;flex-direction:column;min-height:0;padding:24px 16px;background:linear-gradient(165deg,#321b2b,#54233e 68%,#783c59);color:#fff}
+.pa-side-brand{display:flex;align-items:center;gap:10px;padding:2px 8px 25px;border-bottom:1px solid rgba(255,255,255,.12)}
+.pa-side-brand>span{width:38px;height:38px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,#e6b95f,#f4d9a1);color:#51243d;font-size:23px}
+.pa-side-brand b{display:block;font:800 14px var(--font-serif);letter-spacing:1.5px}
+.pa-side-brand small{display:block;font-size:8px;letter-spacing:1.7px;opacity:.65;margin-top:3px}
+.pa-side-user{display:flex;align-items:center;gap:11px;padding:22px 7px}
+.pa-side-avatar,.pa-welcome-avatar{width:44px;height:44px;flex:0 0 44px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(135deg,#f3d49b,#bd4778);color:white;font-size:20px;font-weight:900;overflow:hidden}
+.pa-side-avatar img,.pa-welcome-avatar img{width:100%;height:100%;object-fit:cover}
+.pa-side-user b{display:block;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}
+.pa-side-user small{display:block;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:9px;opacity:.65;margin-top:4px}
+.pa-account-nav{display:grid;gap:5px}
+.pa-account-nav button{display:flex;align-items:center;gap:12px;width:100%;padding:12px 13px;border:0;border-radius:12px;background:transparent;color:rgba(255,255,255,.75);font-size:12px;text-align:left;cursor:pointer;transition:background .2s,color .2s,transform .2s}
+.pa-account-nav button span{width:20px;text-align:center;font-size:17px}
+.pa-account-nav button:hover{background:rgba(255,255,255,.09);color:#fff;transform:translateX(2px)}
+.pa-account-nav button.active{background:linear-gradient(100deg,rgba(245,215,158,.22),rgba(255,255,255,.09));color:#fff;box-shadow:inset 3px 0 #e8c17a}
+.pa-account-nav button i{margin-left:auto;min-width:19px;height:19px;border-radius:20px;background:#e9b6ca;color:#54233e;font-size:9px;font-style:normal;font-weight:900;display:grid;place-items:center}
+.pa-sidebar-bottom{margin-top:auto;padding:18px 8px 2px;border-top:1px solid rgba(255,255,255,.12)}
+.pa-sidebar-bottom small{display:block;font-size:9px;opacity:.6;margin-bottom:13px}
+.pa-sidebar-bottom button,.pa-account-mobile-logout button{width:100%;padding:11px 12px;border:1px solid rgba(255,255,255,.2);border-radius:11px;background:rgba(255,255,255,.08);color:#fff;font-size:11px;font-weight:800;cursor:pointer}
+.pa-account-main{display:flex;flex-direction:column;min-width:0;min-height:0;background:var(--gray-50)}
+.pa-account-top{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:23px 30px 18px;border-bottom:1px solid var(--gray-200);background:var(--white)}
+.pa-account-top small{font-size:9px;font-weight:800;letter-spacing:1.5px;color:var(--pa-rose)}
+.pa-account-top h1{font:700 clamp(21px,2.5vw,29px) var(--font-serif);margin-top:5px}
+.pa-account-close{width:38px;height:38px;flex:0 0 38px;border:0;border-radius:50%;background:var(--gray-100);color:var(--gray-700);font-size:23px;cursor:pointer}
+.pa-account-content{padding:24px 30px 30px;overflow:auto;min-height:0;overscroll-behavior:contain}
+.pa-welcome-banner{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:25px 27px;border-radius:20px;background:linear-gradient(112deg,#52243e,#8b4265 65%,#c17a8e);color:#fff;overflow:hidden;position:relative}
+.pa-welcome-banner:after{content:"✧";position:absolute;right:85px;top:-72px;font-size:210px;color:rgba(255,255,255,.09);pointer-events:none}
+.pa-welcome-banner>div:first-child{position:relative;z-index:1}
+.pa-welcome-banner span{font-size:9px;letter-spacing:2px;color:#f6d9e5;font-weight:800}
+.pa-welcome-banner h2{font:700 clamp(23px,3vw,34px) var(--font-serif);margin:8px 0}
+.pa-welcome-banner p{font-size:11px;opacity:.82;max-width:440px}
+.pa-welcome-avatar{width:68px;height:68px;flex-basis:68px;border:3px solid rgba(255,255,255,.65);font-size:28px;position:relative;z-index:1}
+.pa-account-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:17px 0}
+.pa-account-stats>div{min-width:0;padding:16px 17px;border:1px solid var(--gray-200);border-radius:15px;background:var(--white);box-shadow:0 5px 18px rgba(55,25,43,.035)}
+.pa-account-stats small{display:block;color:var(--gray-500);font-size:10px}
+.pa-account-stats b{display:block;color:var(--gray-800);font-size:clamp(17px,2vw,23px);margin-top:7px;overflow-wrap:anywhere}
+.pa-level-card{padding:18px 20px;border:1px solid rgba(212,175,55,.3);border-radius:17px;background:linear-gradient(115deg,rgba(245,215,110,.14),rgba(255,255,255,.92))}
+.pa-level-head,.pa-level-foot{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.pa-level-head small{font-size:9px;letter-spacing:1.5px;color:var(--gray-500);font-weight:800}
+.pa-level-head h3{font:700 18px var(--font-serif);margin-top:5px}
+.pa-level-head>b{font-size:16px;color:var(--pa-rose-deep)}
+.pa-level-track{height:9px;margin:15px 0 8px;border-radius:20px;background:var(--gray-200);overflow:hidden}
+.pa-level-track span{display:block;height:100%;border-radius:20px;background:linear-gradient(90deg,#bd4778,#e8bc65);transition:width .6s ease}
+.pa-level-foot{font-size:9px;color:var(--gray-500)}
+.pa-shortcuts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:17px 0}
+.pa-shortcuts button{display:flex;flex-direction:column;align-items:flex-start;gap:5px;padding:14px;border:1px solid var(--gray-200);border-radius:15px;background:var(--white);color:var(--gray-800);text-align:left;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.pa-shortcuts button:hover{transform:translateY(-3px);box-shadow:0 10px 22px rgba(60,25,45,.08)}
+.pa-shortcuts button span{font-size:20px}.pa-shortcuts button b{font-size:11px}.pa-shortcuts button small{font-size:9px;color:var(--gray-500)}
+.pa-account-panel{padding:19px;margin:14px 0;border:1px solid var(--gray-200);border-radius:17px;background:var(--white);box-shadow:0 5px 18px rgba(55,25,43,.025)}
+.pa-panel-title{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:15px}
+.pa-panel-title h3{font:700 17px var(--font-serif)}
+.pa-panel-title small{display:block;margin-top:4px;font-size:10px;color:var(--gray-500)}
+.pa-panel-title>span{font-size:22px}
+.pa-text-action{border:0;background:transparent;color:var(--pa-rose-deep);font-size:10px;font-weight:900;cursor:pointer}
+.pa-order-card{padding:15px;margin:10px 0;border:1px solid var(--gray-200);border-radius:15px;background:var(--white)}
+.pa-order-card.compact{padding:13px}
+.pa-order-head,.pa-order-foot{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.pa-order-head>div small{display:block;color:var(--gray-500);font-size:8px;letter-spacing:1.2px}
+.pa-order-head>div b{font-size:12px}
+.pa-order-status{display:inline-flex;align-items:center;gap:5px;padding:6px 10px;border-radius:99px;font-size:9px;font-weight:900;background:#f3f0f2;color:#695b65}
+.pa-order-status.confirmado,.pa-order-status.entregado{background:#e5f5ed;color:#24744b}
+.pa-order-status.enviado{background:#e8f1ff;color:#3467a3}
+.pa-order-status.preparando{background:#fff3dc;color:#94651e}
+.pa-order-status.cancelado{background:#fde9e9;color:#ad3c3c}
+.pa-order-card>p{margin:12px 0;color:var(--gray-600);font-size:10px;line-height:1.6}
+.pa-order-foot{padding-top:10px;border-top:1px solid var(--gray-100)}
+.pa-order-foot small{color:var(--gray-500);font-size:9px}.pa-order-foot>b{font-size:14px}
+.pa-order-actions{display:flex;gap:8px;margin-top:12px}
+.pa-order-actions button,.pa-address-card button{padding:8px 11px;border:1px solid rgba(189,71,120,.24);border-radius:9px;background:rgba(189,71,120,.06);color:var(--pa-rose-deep);font-size:9px;font-weight:900;cursor:pointer}
+.pa-order-actions button:hover,.pa-address-card button:hover{background:rgba(189,71,120,.13)}
+.pa-order-filter{display:flex;gap:9px;margin-bottom:13px}
+.pa-order-filter input,.pa-order-filter select,.pa-form-grid input,.pa-address-form input{width:100%;min-width:0;padding:11px 12px;border:1px solid var(--gray-200);border-radius:10px;background:var(--gray-50);color:var(--gray-800);font:inherit;font-size:11px}
+.pa-profile-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 14px}
+.pa-profile-grid>.pa-account-panel{margin:0 0 14px}
+.pa-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.pa-form-grid label{display:block;min-width:0;color:var(--gray-600);font-size:10px;font-weight:800}
+.pa-form-grid label.wide{grid-column:1/-1}
+.pa-form-grid input{display:block;margin-top:6px;font-weight:500}
+.pa-form-grid input:focus,.pa-address-form input:focus,.pa-order-filter input:focus{outline:0;border-color:var(--pa-rose);box-shadow:0 0 0 3px rgba(189,71,120,.08)}
+.pa-form-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:15px}
+.pa-form-actions small{font-size:9px;color:var(--gray-500)}
+.pa-switch-row{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:13px 0;border-bottom:1px solid var(--gray-100);cursor:pointer}
+.pa-switch-row b{display:block;font-size:11px}.pa-switch-row small{display:block;margin-top:4px;color:var(--gray-500);font-size:9px}
+.pa-switch-row input{appearance:none;width:39px;height:22px;flex:0 0 39px;border-radius:20px;background:var(--gray-300);position:relative;cursor:pointer;transition:background .2s}
+.pa-switch-row input:after{content:"";position:absolute;width:16px;height:16px;top:3px;left:3px;border-radius:50%;background:#fff;box-shadow:0 1px 4px #0002;transition:transform .2s}
+.pa-switch-row input:checked{background:var(--pa-rose)}.pa-switch-row input:checked:after{transform:translateX(17px)}
+.pa-security-box{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:17px;padding:13px;border-radius:12px;background:var(--gray-50)}
+.pa-security-box b{display:block;font-size:10px}.pa-security-box small{display:block;margin-top:4px;font-size:9px;color:var(--gray-500)}
+.pa-security-box button,.pa-address-form button{border:0;border-radius:9px;padding:9px 11px;background:var(--pa-rose-deep);color:#fff;font-size:9px;font-weight:900;cursor:pointer}
+.pa-address-card{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid var(--gray-100)}
+.pa-address-card b{font-size:10px}.pa-address-card p{margin-top:4px;font-size:10px;color:var(--gray-600)}.pa-address-card small{font-size:9px;color:var(--gray-500)}
+.pa-address-card>div:last-child{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
+.pa-address-card button.remove,.pa-fav-card button.remove{background:transparent;color:#b43e4c;border-color:#f1cbd0}
+.pa-address-form{display:grid;grid-template-columns:1fr 1.5fr;gap:8px;margin-top:14px}
+.pa-address-form input:nth-child(3){grid-column:1/-1}
+.pa-address-form button{grid-column:1/-1}
+.pa-coupon-card{display:flex;align-items:center;gap:12px;padding:13px;margin:9px 0;border:1px dashed var(--gray-300);border-radius:13px;background:var(--gray-50)}
+.pa-coupon-symbol{width:38px;height:38px;flex:0 0 38px;display:grid;place-items:center;border-radius:12px;background:#fff;font-size:17px}
+.pa-coupon-info{min-width:0;flex:1}.pa-coupon-info b{display:block;font-size:12px;letter-spacing:1px}.pa-coupon-info small{display:block;margin-top:3px;color:var(--gray-600);font-size:10px}.pa-coupon-info em{display:block;margin-top:4px;font-size:9px;font-style:normal;color:var(--gray-500)}
+.pa-coupon-card.is-ready{border-color:#b5d8c2;background:#f4fbf6}.pa-coupon-card.is-used{opacity:.62}.pa-coupon-card button{border:0;border-radius:8px;padding:8px 11px;background:var(--pa-rose-deep);color:#fff;font-size:9px;font-weight:900;cursor:pointer}
+.pa-review-card{padding:14px 0;border-bottom:1px solid var(--gray-100)}
+.pa-review-top{display:flex;justify-content:space-between;gap:12px}.pa-review-top b{font-size:11px}.pa-review-top span{color:#d5a43e;letter-spacing:1px}
+.pa-review-card p{margin:8px 0;font-size:11px;line-height:1.6}.pa-review-card small{color:var(--gray-500);font-size:9px}
+.pa-fav-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.pa-fav-card{display:flex;gap:11px;padding:10px;border:1px solid var(--gray-200);border-radius:13px;min-width:0}
+.pa-fav-card img{width:78px;height:78px;flex:0 0 78px;object-fit:cover;border-radius:10px;background:var(--gray-100)}
+.pa-fav-card>div{min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+.pa-fav-card b{font-size:10px}.pa-fav-card strong{font-size:12px;color:var(--pa-rose-deep)}.pa-fav-card small{font-size:9px;color:var(--gray-500)}
+.pa-fav-card>div>div{display:flex;gap:5px;flex-wrap:wrap;margin-top:auto}
+.pa-fav-card button{padding:6px 8px;border:1px solid rgba(189,71,120,.2);border-radius:7px;background:rgba(189,71,120,.08);color:var(--pa-rose-deep);font-size:8px;font-weight:900;cursor:pointer}
+.pa-spend-chart{height:190px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;align-items:end;padding:12px 6px 0;border-bottom:1px solid var(--gray-200)}
+.pa-spend-col{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:7px;min-width:0}
+.pa-spend-col b{font-size:8px;color:var(--gray-500);white-space:nowrap}
+.pa-spend-col span{width:min(35px,75%);min-height:3px;border-radius:7px 7px 2px 2px;background:linear-gradient(180deg,#e8bc65,#bd4778)}
+.pa-spend-col small{font-size:9px;color:var(--gray-500)}
+.pa-account-empty{display:flex;flex-direction:column;align-items:center;text-align:center;padding:30px 16px;color:var(--gray-600)}
+.pa-account-empty>span{font-size:32px;margin-bottom:9px}.pa-account-empty b{font-size:12px}.pa-account-empty small{max-width:300px;margin:6px 0 13px;color:var(--gray-500);font-size:10px;line-height:1.5}
+.pa-account-empty button{padding:9px 14px;border:0;border-radius:99px;background:var(--pa-rose-deep);color:white;font-size:10px;font-weight:800;cursor:pointer}
+.pa-muted{color:var(--gray-500);font-size:10px}
+.pa-order-detail-overlay{position:fixed;inset:0;z-index:10050;display:grid;place-items:center;padding:15px;background:rgba(20,8,18,.65);backdrop-filter:blur(8px)}
+.pa-order-detail{position:relative;width:min(520px,100%);max-height:90vh;overflow:auto;padding:25px;border-radius:22px;background:var(--white);color:var(--gray-800);box-shadow:0 25px 80px #0004}
+.pa-detail-close{position:absolute;right:15px;top:14px;width:34px;height:34px;border:0;border-radius:50%;background:var(--gray-100);font-size:20px;cursor:pointer}
+.pa-order-detail>small{font-size:9px;letter-spacing:1.5px;color:var(--pa-rose);font-weight:900}
+.pa-order-detail h2{font:700 25px var(--font-serif);margin:7px 0 12px}
+.pa-order-detail h3{font:700 15px var(--font-serif);margin:20px 0 9px}
+.pa-order-detail>.pa-muted{margin-top:9px}
+.pa-order-timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin:23px 0}
+.pa-order-timeline>div{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;color:var(--gray-400);font-size:8px}
+.pa-order-timeline i{width:25px;height:25px;display:grid;place-items:center;border-radius:50%;background:var(--gray-200);font-style:normal;font-weight:900}
+.pa-order-timeline .done{color:var(--pa-rose-deep)}.pa-order-timeline .done i{background:#f4dce7;color:#8d2856}
+.pa-detail-line,.pa-detail-total{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--gray-100);font-size:10px}
+.pa-detail-total{margin-top:10px;border:0;font-size:13px}.pa-detail-total b{color:var(--pa-rose-deep);font-size:17px}
+.pa-account-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;height:100%;color:var(--gray-700)}
+.pa-account-loading small{font-size:10px;color:var(--gray-500)}
+.pa-account-spinner{width:34px;height:34px;border:3px solid var(--gray-200);border-top-color:var(--pa-rose);border-radius:50%;animation:paSpin .8s linear infinite}
+@keyframes paSpin{to{transform:rotate(360deg)}}
+.pa-account-mobile-logout{display:none}
+[data-theme="dark"] .pa-account-shell{background:#181018;color:#f8edf3}
+[data-theme="dark"] .pa-account-main,[data-theme="dark"] .pa-account-content{background:#181018}
+[data-theme="dark"] .pa-account-top,[data-theme="dark"] .pa-account-panel,[data-theme="dark"] .pa-account-stats>div,[data-theme="dark"] .pa-order-card,[data-theme="dark"] .pa-fav-card{background:#241923;border-color:#493344;color:#f8edf3}
+[data-theme="dark"] .pa-account-top{border-color:#493344}
+[data-theme="dark"] .pa-account-top h1,[data-theme="dark"] .pa-panel-title h3,[data-theme="dark"] .pa-account-stats b,[data-theme="dark"] .pa-order-head>div b,[data-theme="dark"] .pa-fav-card b{color:#f8edf3}
+[data-theme="dark"] .pa-level-card,[data-theme="dark"] .pa-security-box,[data-theme="dark"] .pa-coupon-card,[data-theme="dark"] .pa-order-filter input,[data-theme="dark"] .pa-order-filter select,[data-theme="dark"] .pa-form-grid input,[data-theme="dark"] .pa-address-form input{background:#211721;color:#f8edf3;border-color:#493344}
+[data-theme="dark"] .pa-account-close{background:#392838;color:#fff}
+[data-theme="dark"] .pa-shortcuts button{background:#241923;color:#f8edf3;border-color:#493344}
+[data-theme="dark"] .pa-shortcuts button b{color:#f8edf3}
+@media(max-width:850px){
+ .pa-account-shell{width:min(760px,98vw);height:min(920px,95vh);grid-template-columns:190px minmax(0,1fr)}
+ .pa-account-sidebar{padding:18px 11px}.pa-account-content{padding:18px}.pa-account-top{padding:18px}
+ .pa-profile-grid{grid-template-columns:1fr}.pa-account-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .pa-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:600px){
+ .pa-account-shell{display:flex;flex-direction:column;width:100%;height:100dvh;max-height:100dvh;min-height:0;border-radius:0}
+ .pa-account-sidebar{display:contents}
+ .pa-side-brand,.pa-side-user,.pa-sidebar-bottom{display:none}
+ .pa-account-main{flex:1;min-height:0}
+ .pa-account-top{padding:14px 15px 12px}
+ .pa-account-top h1{font-size:21px}
+ .pa-account-top small{font-size:8px}
+ .pa-account-content{padding:13px 12px 20px}
+ .pa-account-nav{order:0;display:flex;gap:5px;padding:8px 10px;overflow-x:auto;background:#432139;scrollbar-width:none}
+ .pa-account-nav::-webkit-scrollbar{display:none}
+ .pa-account-nav button{flex:0 0 auto;width:auto;padding:9px 11px;font-size:10px;gap:6px;border-radius:999px}
+ .pa-account-nav button span{width:auto;font-size:14px}
+ .pa-account-nav button.active{box-shadow:inset 0 -2px #e8c17a;background:rgba(255,255,255,.12)}
+ .pa-account-nav button i{min-width:16px;height:16px;font-size:8px}
+ .pa-welcome-banner{padding:18px;border-radius:16px}
+ .pa-welcome-banner h2{font-size:24px}
+ .pa-welcome-banner p{font-size:10px;line-height:1.5}
+ .pa-welcome-avatar{width:52px;height:52px;flex-basis:52px}
+ .pa-account-stats{gap:8px;margin:11px 0}
+ .pa-account-stats>div{padding:12px;border-radius:12px}
+ .pa-account-stats small{font-size:9px}.pa-account-stats b{font-size:17px}
+ .pa-level-card{padding:14px}.pa-level-head h3{font-size:15px}
+ .pa-shortcuts{gap:8px;margin:11px 0}.pa-shortcuts button{padding:11px;border-radius:12px}
+ .pa-account-panel{padding:13px;border-radius:14px;margin:10px 0}
+ .pa-panel-title h3{font-size:15px}.pa-panel-title small{font-size:9px}
+ .pa-form-grid{grid-template-columns:1fr;gap:10px}
+ .pa-form-grid label.wide{grid-column:auto}
+ .pa-form-actions{align-items:stretch;flex-direction:column}
+ .pa-form-actions button{width:100%}
+ .pa-security-box{align-items:flex-start;flex-direction:column}
+ .pa-security-box button{width:100%}
+ .pa-address-form{grid-template-columns:1fr}
+ .pa-address-form input:nth-child(3),.pa-address-form button{grid-column:auto}
+ .pa-address-card{align-items:flex-start;flex-direction:column}
+ .pa-address-card>div:last-child{justify-content:flex-start}
+ .pa-order-filter{flex-direction:column}
+ .pa-order-card{padding:12px}
+ .pa-order-head{align-items:flex-start}
+ .pa-order-status{font-size:8px;padding:5px 8px}
+ .pa-order-actions button{flex:1}
+ .pa-fav-grid{grid-template-columns:1fr}
+ .pa-fav-card img{width:70px;height:70px;flex-basis:70px}
+ .pa-spend-chart{height:160px;gap:5px;padding-left:0;padding-right:0}
+ .pa-spend-col b{font-size:7px}
+ .pa-account-mobile-logout{display:block;padding:10px 13px 16px;background:#432139}
+ .pa-account-mobile-logout button{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.25)}
+ .pa-order-detail{padding:20px 16px;border-radius:18px}
+ .pa-order-timeline{gap:2px}
+}
+
+</style>
+
+<style id="pa-max-suite-css">
+:root{--pa-ink:#382333;--pa-muted:#927b8b;--pa-line:rgba(177,91,132,.18);--pa-rose:#c44d83;--pa-rose-deep:#8e2859;--pa-gold:#d7ad56;--pa-glass:rgba(255,255,255,.82)}
+[data-theme="dark"]{--pa-ink:#f7eaf1;--pa-muted:#c5aabd;--pa-line:rgba(255,255,255,.12);--pa-glass:rgba(25,14,25,.92)}
+.pa-maxbar{position:relative;z-index:5;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:22px auto;max-width:1180px;padding:0 18px}
+.pa-max-action{min-height:76px;border:1px solid var(--pa-line);border-radius:18px;background:var(--pa-glass);color:var(--gray-800);display:flex;align-items:center;gap:12px;padding:14px;text-align:left;cursor:pointer;box-shadow:0 8px 28px rgba(125,55,93,.07);transition:.22s ease;backdrop-filter:blur(12px)}
+.pa-max-action:hover{transform:translateY(-3px);border-color:var(--pa-rose);box-shadow:0 14px 34px rgba(125,55,93,.13)}.pa-max-action .ico{width:42px;height:42px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(135deg,rgba(196,77,131,.15),rgba(215,173,86,.18));font-size:21px;flex:none}.pa-max-action b{display:block;font-size:12px}.pa-max-action small{display:block;color:var(--pa-muted);font-size:10px;margin-top:3px;line-height:1.4}
+.pa-max-overlay{position:fixed;inset:0;z-index:12000;background:rgba(25,10,22,.62);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:14px}.pa-max-overlay.open{display:flex;animation:paMaxFade .2s ease}.pa-max-panel{width:min(960px,100%);max-height:min(90vh,900px);overflow:auto;background:var(--white);color:var(--gray-800);border:1px solid var(--pa-line);border-radius:26px;box-shadow:0 30px 100px rgba(0,0,0,.28);padding:clamp(16px,3vw,28px)}
+.pa-max-head{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:20px}.pa-max-head h2{font:900 clamp(22px,3vw,32px) var(--font-serif);line-height:1.15}.pa-max-head p{font-size:11px;color:var(--pa-muted);margin-top:6px}.pa-max-close{width:40px;height:40px;border:0;border-radius:50%;background:var(--gray-100);color:var(--gray-800);font-size:22px;cursor:pointer;flex:none}
+.pa-max-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.pa-max-card{border:1px solid var(--pa-line);border-radius:17px;overflow:hidden;background:var(--gray-50);min-width:0}.pa-max-card img{width:100%;aspect-ratio:1.18;object-fit:cover;display:block;background:var(--gray-100)}.pa-max-card-body{padding:12px}.pa-max-card h3{font-size:12px;line-height:1.4;min-height:34px}.pa-max-card .price{font-size:15px;color:var(--pa-rose-deep);font-weight:900;margin:6px 0}.pa-max-card p{font-size:10px;color:var(--pa-muted);line-height:1.5}.pa-max-card button,.pa-max-primary{border:0;border-radius:11px;background:linear-gradient(120deg,var(--pa-rose-deep),var(--pa-rose));color:white;padding:10px 13px;font-weight:800;font-size:11px;cursor:pointer}.pa-max-card button{width:100%;margin-top:9px}.pa-max-primary:disabled{opacity:.5;cursor:not-allowed}
+.pa-max-toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:15px}.pa-max-toolbar input,.pa-max-toolbar select,.pa-max-field{min-width:0;flex:1;padding:12px 13px;border:1px solid var(--pa-line);border-radius:12px;background:var(--gray-50);color:var(--gray-800);font:inherit;font-size:12px;outline:none}.pa-max-toolbar input:focus,.pa-max-field:focus{border-color:var(--pa-rose);box-shadow:0 0 0 3px rgba(196,77,131,.1)}
+.pa-max-empty{grid-column:1/-1;text-align:center;padding:35px 15px;color:var(--pa-muted);border:1px dashed var(--pa-line);border-radius:16px}.pa-max-row{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--pa-line);border-radius:14px;margin:9px 0}.pa-max-row img{width:58px;height:58px;object-fit:cover;border-radius:11px}.pa-max-row .grow{flex:1;min-width:0}.pa-max-row b{display:block;font-size:12px}.pa-max-row small{font-size:10px;color:var(--pa-muted)}.pa-max-row button{border:1px solid var(--pa-line);background:var(--gray-50);color:var(--gray-800);border-radius:9px;padding:8px 10px;cursor:pointer;font-size:10px;font-weight:800}
+.pa-max-progress{height:9px;background:var(--gray-200);border-radius:99px;overflow:hidden}.pa-max-progress>span{display:block;height:100%;background:linear-gradient(90deg,var(--pa-rose),var(--pa-gold));border-radius:99px;transition:width .3s}.pa-max-step{display:inline-flex;padding:7px 11px;border-radius:99px;background:rgba(196,77,131,.1);color:var(--pa-rose-deep);font-size:10px;font-weight:900;margin-bottom:12px}.pa-max-choice{padding:13px;border:1px solid var(--pa-line);border-radius:13px;background:var(--gray-50);color:var(--gray-800);font-weight:750;font-size:12px;cursor:pointer;text-align:left}.pa-max-choice.active{border-color:var(--pa-rose);background:rgba(196,77,131,.1);box-shadow:0 0 0 2px rgba(196,77,131,.08)}
+.pa-max-toast{position:fixed;right:18px;bottom:90px;z-index:13000;background:#2e1b2b;color:#fff;border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:12px 16px;box-shadow:0 12px 35px rgba(0,0,0,.25);font-size:12px;max-width:min(380px,calc(100vw - 36px));opacity:0;transform:translateY(12px);pointer-events:none;transition:.25s}.pa-max-toast.show{opacity:1;transform:translateY(0)}
+.pa-max-catalog-count{font-size:11px;color:var(--pa-muted);align-self:center;padding:0 5px}.pa-max-sort{max-width:190px}.pa-max-alert-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(215,173,86,.16);color:var(--pa-rose-deep);border-radius:99px;padding:5px 9px;font-size:9px;font-weight:900}
+@media(max-width:760px){.pa-maxbar{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:0 12px;margin:14px auto}.pa-max-action{min-height:68px;padding:10px;gap:9px;border-radius:15px}.pa-max-action .ico{width:36px;height:36px;font-size:18px}.pa-max-action b{font-size:11px}.pa-max-action small{font-size:9px}.pa-max-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.pa-max-panel{border-radius:21px;padding:15px;max-height:92vh}.pa-max-head h2{font-size:23px}.pa-max-card-body{padding:9px}.pa-max-card h3{font-size:11px}.pa-max-card .price{font-size:13px}.pa-max-toolbar>*{flex-basis:100%;max-width:none}.pa-max-row{gap:8px;padding:9px}.pa-max-row img{width:48px;height:48px}}
+@media(max-width:380px){.pa-max-grid{grid-template-columns:1fr}.pa-max-action small{display:none}}
+@media(prefers-reduced-motion:reduce){.pa-max-action,.pa-max-overlay,.pa-max-toast{transition:none;animation:none!important}}
+</style>
+
 </head>
     <body class="loading">
 
@@ -1875,6 +2101,18 @@ footer:before{content:"✦";position:absolute;right:5%;top:-65px;font-size:220px
         <div class="pa-recent-grid" id="paRecentGrid"></div>
     </section>
 
+<section class="pa-maxbar" id="paMaxExperience" aria-label="Herramientas de compra">
+ <button class="pa-max-action" type="button" id="paOpenGiftFinder"><span class="ico">🎁</span><span><b>Encuentra el regalo ideal</b><small>Recomendaciones según ocasión y presupuesto</small></span></button>
+ <button class="pa-max-action" type="button" id="paOpenBundles"><span class="ico">💎</span><span><b>Arma tu conjunto</b><small>Combina accesorios y crea tu look</small></span></button>
+ <button class="pa-max-action" type="button" id="paOpenAlerts"><span class="ico">🔔</span><span><b>Mis alertas</b><small>Revisa cambios de precio y disponibilidad</small></span></button>
+ <button class="pa-max-action" type="button" id="paOpenCatalogPro"><span class="ico">🛍️</span><span><b>Explorar catálogo</b><small>Busca, ordena y filtra todos los productos</small></span></button>
+</section>
+<div class="pa-max-overlay" id="paGiftFinder"><div class="pa-max-panel"><div class="pa-max-head"><div><span class="pa-max-step" id="paGiftStep">PASO 1 DE 3</span><h2>Un regalo que sí emociona ✨</h2><p>Cuéntanos un poco y encontraremos opciones reales del catálogo.</p></div><button class="pa-max-close" data-pa-close="paGiftFinder">×</button></div><div class="pa-max-progress"><span id="paGiftProgress" style="width:33%"></span></div><div id="paGiftQuestion" style="margin:20px 0"></div><div style="display:flex;justify-content:space-between;gap:10px"><button class="pa-max-row" style="margin:0" id="paGiftBack">← Atrás</button><button class="pa-max-primary" id="paGiftNext">Continuar →</button></div></div></div>
+<div class="pa-max-overlay" id="paBundleBuilder"><div class="pa-max-panel"><div class="pa-max-head"><div><span class="pa-max-step">CREA TU COMBINACIÓN</span><h2>Tu look, a tu manera 💗</h2><p>Elige productos disponibles. El total se actualiza al instante.</p></div><button class="pa-max-close" data-pa-close="paBundleBuilder">×</button></div><div class="pa-max-toolbar"><input id="paBundleSearch" placeholder="Buscar accesorios..." aria-label="Buscar en productos para combinar"><select id="paBundleCategory" aria-label="Filtrar categoría"><option value="all">Todas las categorías</option></select></div><div id="paBundleProducts" class="pa-max-grid"></div><div style="position:sticky;bottom:-15px;background:var(--white);padding:14px 0 0;margin-top:16px;border-top:1px solid var(--pa-line);display:flex;align-items:center;justify-content:space-between;gap:12px"><div><small style="color:var(--pa-muted)">Tu combinación</small><div id="paBundleTotal" style="font-size:20px;font-weight:900;color:var(--pa-rose-deep)">S/ 0.00</div></div><button class="pa-max-primary" id="paBundleAdd">Agregar conjunto al carrito</button></div></div></div>
+<div class="pa-max-overlay" id="paAlertCenter"><div class="pa-max-panel"><div class="pa-max-head"><div><span class="pa-max-step">CENTRO PERSONAL</span><h2>Mis alertas y seguimiento 🔔</h2><p>Guarda productos y revisa aquí si su precio bajó o volvió a estar disponible al actualizar el catálogo.</p></div><button class="pa-max-close" data-pa-close="paAlertCenter">×</button></div><div id="paAlertContent"></div></div></div>
+<div class="pa-max-overlay" id="paCatalogPro"><div class="pa-max-panel"><div class="pa-max-head"><div><span class="pa-max-step">CATÁLOGO COMPLETO</span><h2>Encuentra tu próximo favorito</h2><p id="paCatalogMeta">Todos los productos de Paulina Accesorios.</p></div><button class="pa-max-close" data-pa-close="paCatalogPro">×</button></div><div class="pa-max-toolbar"><input id="paCatalogSearch" placeholder="Nombre, categoría o descripción..." aria-label="Buscar productos"><select id="paCatalogCategory" aria-label="Categoría"><option value="all">Todas las categorías</option></select><select id="paCatalogSort" class="pa-max-sort" aria-label="Ordenar productos"><option value="featured">Recomendados</option><option value="priceAsc">Menor precio</option><option value="priceDesc">Mayor precio</option><option value="name">Nombre A-Z</option><option value="stock">Disponibilidad</option></select><span class="pa-max-catalog-count" id="paCatalogCount"></span></div><div class="pa-max-grid" id="paCatalogGrid"></div></div></div>
+<div class="pa-max-toast" id="paMaxToast" role="status" aria-live="polite"></div>
+            
     <footer>
         <div class="footer-grid">
             <div>
@@ -1903,7 +2141,7 @@ footer:before{content:"✦";position:absolute;right:5%;top:-65px;font-size:220px
         </div>
         <div class="footer-bottom">&copy; 2026 Paulina Accesorios · Hecho con 💖 para mujeres que brillan · 🇵🇪 Perú</div>
     </footer>
-            <script type="module">
+<script type="module">
                         const DEBUG = false;
         const log = (...args) => DEBUG && console.log(...args);
 
@@ -2063,8 +2301,8 @@ function formatPrice(p) { return `S/ ${safeNumber(p, 0).toFixed(2)}`; }
                         <span class="producto-detalle-categoria">${catNombre}</span>
                         <h2 class="producto-detalle-nombre">${p.nombre}</h2>
                         <div class="producto-detalle-rating">
-                            <span class="estrellas">★★★★★</span>
-                            <span>4.9 · ${p.compradores || 0} compradores</span>
+                            <span class="estrellas">⭐</span>
+                            <span>Consulta las reseñas de compradores · ${p.compradores || 0} compras registradas</span>
                         </div>
                         <div class="producto-detalle-precio">
                             <span class="precio-final">S/ ${parseFloat(p.precio).toFixed(2)}</span>
@@ -2461,7 +2699,7 @@ function initChatAI() {
                 </div>
                 <h3 class="product-name">${p.nombre}</h3>
                 <p class="product-description">${p.descripcion}</p>
-                <div class="stars-display">★★★★★</div>
+                <div class="stars-display">⭐ Opiniones de clientes</div>
                 <div class="rating-info">👥 ${safeInt(p.compradores)} compradores</div>
                 <span class="product-stock ${low ? 'low-stock' : 'in-stock'}">
                     ${stockNum === 0 ? '❌ Agotado' : (low ? `⚠️ Últimas ${stockNum}` : `✅ ${stockNum} disponibles`)}
@@ -2496,29 +2734,8 @@ function initChatAI() {
 
 
         function abrirCatalogoCompleto() {
-            let modal = document.getElementById('catalogoCompletoModal');
-            if (!modal) {
-                modal = document.createElement('div');
-                modal.id = 'catalogoCompletoModal';
-                modal.className = 'modal-overlay';
-                modal.style.zIndex = '10002';
-                document.body.appendChild(modal);
-            }
-            const lista = [...productos].sort((a,b) => (a.nombre || '').localeCompare(b.nombre || '', 'es'));
-            modal.innerHTML = `
-                <div style="background:var(--white);color:var(--gray-800);width:min(760px,96vw);max-height:90vh;overflow:auto;border-radius:22px;padding:22px;box-shadow:var(--shadow-xl);">
-                    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px;">
-                        <div><span class="section-tag">Paulina Accesorios</span><h2 style="font-family:var(--font-serif);">Catálogo completo</h2><p style="font-size:12px;color:var(--gray-500);">${lista.length} productos disponibles</p></div>
-                        <button type="button" onclick="document.getElementById('catalogoCompletoModal').classList.remove('show')" aria-label="Cerrar catálogo" style="border:0;background:var(--gray-100);border-radius:50%;width:38px;height:38px;cursor:pointer;font-size:20px;">×</button>
-                    </div>
-                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;">
-                        ${lista.map(p => `<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px;border:1px solid var(--gray-200);border-radius:13px;">
-                            <span style="font-size:13px;font-weight:650;">${String(p.nombre || 'Producto').replace(/[<>&"]/g, '')}</span>
-                            <strong style="white-space:nowrap;color:var(--gold);">${formatPrice(p.precio)}</strong>
-                        </div>`).join('')}
-                    </div>
-                </div>`;
-            modal.classList.add('show');
+            if (typeof paOpenCatalogPro === 'function') paOpenCatalogPro();
+            else { const modal=document.getElementById('catalogoCompletoModal'); if(modal) modal.classList.add('show'); }
         }
 
         function cargarCarrito() {
@@ -2687,7 +2904,7 @@ if (!userSnapValidacion.exists()) {
 const datosUsuarioValidacion = userSnapValidacion.data();
 const usadosActuales = Array.isArray(datosUsuarioValidacion.cuponesUsados) ? datosUsuarioValidacion.cuponesUsados : [];
 window.currentUser = { ...window.currentUser, ...datosUsuarioValidacion, cuponesUsados: usadosActuales };
-if (usadosActuales.includes(codigo)) {
+if (usadosActuales.some(c => String(c).trim().toUpperCase() === codigo)) {
     msg.className = 'cupon-msg error';
     msg.textContent = '❌ Este cupón ya fue utilizado en una compra anterior.';
     return;
@@ -2703,7 +2920,7 @@ if (cuponNivel) {
     }
 
     const cuponesUsados = window.currentUser?.cuponesUsados || [];
-    if (cuponesUsados.includes(codigo)) {
+    if (cuponesUsados.some(c => String(c).trim().toUpperCase() === codigo)) {
         msg.className = 'cupon-msg error';
         msg.textContent = '❌ Ya usaste este cupón anteriormente';
         return;
@@ -2778,7 +2995,7 @@ try {
         const u = userSnap.data();
         const cuponesUsados = u.cuponesUsados || [];
         window.currentUser.cuponesUsados = cuponesUsados;
-        if (cuponesUsados.includes(codigo)) {
+        if (cuponesUsados.some(c => String(c).trim().toUpperCase() === codigo)) {
             msg.className = 'cupon-msg error';
             msg.textContent = '❌ Ya usaste este cupón anteriormente';
             btn.disabled = false;
@@ -2945,15 +3162,18 @@ try {
                 }
                 let html = '';
                 lista.forEach(r => {
-                    const stars = '★'.repeat(r.estrellas) + '☆'.repeat(5 - r.estrellas);
+                    const rating = Math.max(1, Math.min(5, parseInt(r.estrellas, 10) || 1));
+                    const stars = '★'.repeat(rating) + '☆'.repeat(5 - rating);
+                    const author = String(r.nombre || 'Anónimo').replace(/[&<>\"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));
+                    const reviewText = String(r.texto || '').replace(/[&<>\"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));
                     html += `
                         <div class="review-item">
                             <div style="display:flex;justify-content:space-between;align-items:center;">
-                                <div class="review-author">${r.nombre || 'Anónimo'}</div>
+                                <div class="review-author">${author}</div>
                                 <div style="color:var(--gold);font-size:14px;">${stars}</div>
                             </div>
                             <div class="review-date">${new Date(r.fecha).toLocaleDateString('es-PE')}</div>
-                            <div class="review-text">${r.texto}</div>
+                            <div class="review-text">${reviewText}</div>
                         </div>
                     `;
                 });
@@ -2967,18 +3187,20 @@ try {
             const texto = document.getElementById('reviewText').value.trim();
             if (estrellas === 0) return mostrarNotificacion('⚠️ Elige calificación', '⚠️');
             if (!texto) return mostrarNotificacion('⚠️ Escribe un comentario', '⚠️');
+            if (texto.length > 700) return mostrarNotificacion('⚠️ La reseña debe tener máximo 700 caracteres.', '⚠️');
 
             try {
-                await window.firebaseDB.addDoc(
-                    window.firebaseDB.collection(window.db, "reviews"),
-                    {
-                        productoId: productId,
-                        usuarioId: window.currentUser.id,
-                        nombre: window.currentUser.name || 'Anónimo',
-                        estrellas, texto,
-                        fecha: new Date().toISOString()
-                    }
-                );
+                const reviewId = `${window.currentUser.id}_${productId}`;
+                const reviewRef = window.firebaseDB.doc(window.db, 'reviews', reviewId);
+                const reviewExistente = await window.firebaseDB.getDoc(reviewRef);
+                if (reviewExistente.exists()) return mostrarNotificacion('Ya publicaste una reseña para este producto.', 'ℹ️');
+                await window.firebaseDB.setDoc(reviewRef, {
+                    productoId: productId,
+                    usuarioId: window.currentUser.id,
+                    nombre: window.currentUser.name || 'Anónimo',
+                    estrellas, texto,
+                    fecha: new Date().toISOString()
+                });
 
                 const userRef = window.firebaseDB.doc(window.db, "usuarios", window.currentUser.id);
                 const userSnap = await window.firebaseDB.getDoc(userRef);
@@ -3051,177 +3273,290 @@ try {
         }
 
 
-        let perfilTabActual = 'perfil';
-        let perfilPedidosCache = [];
 
-        async function abrirMiCuenta(tab = 'perfil') {
+        let perfilTabActual = 'resumen';
+        let perfilPedidosCache = [];
+        let perfilResenasCache = [];
+        let perfilCargando = false;
+
+        function paEscape(value) {
+            return String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        }
+        function paFecha(value) {
+            if (!value) return 'Sin fecha';
+            const d = value?.toDate ? value.toDate() : new Date(value);
+            return Number.isNaN(d.getTime()) ? 'Sin fecha' : d.toLocaleDateString('es-PE',{day:'2-digit',month:'short',year:'numeric'});
+        }
+        function paEstadoPedido(estado) {
+            const e = String(estado || 'pendiente').toLowerCase();
+            const map = {
+                pendiente:['Pendiente','⏳','pendiente'], confirmado:['Confirmado','✓','confirmado'],
+                aprobado:['Aprobado','✓','confirmado'], pagado:['Pagado','💳','confirmado'],
+                preparando:['En preparación','📦','preparando'], enviado:['En camino','🚚','enviado'],
+                entregado:['Entregado','🎉','entregado'], cancelado:['Cancelado','×','cancelado'],
+                rechazado:['Rechazado','!','cancelado']
+            };
+            return map[e] || [estado || 'Pendiente','⏳','pendiente'];
+        }
+        function paPedidosAceptados(p) {
+            return !['cancelado','rechazado'].includes(String(p.estado || '').toLowerCase());
+        }
+        async function cargarDatosCuenta(uid) {
+            const userRef = window.firebaseDB.doc(window.db, 'usuarios', uid);
+            const snap = await window.firebaseDB.getDoc(userRef);
+            if (snap.exists()) window.currentUser = {...window.currentUser, ...snap.data(), id:uid};
+            const pedidosQuery = window.firebaseDB.query(
+                window.firebaseDB.collection(window.db,'pedidos'),
+                window.firebaseDB.where('clienteId','==',uid)
+            );
+            perfilPedidosCache = [];
+            try {
+                const pedidosSnap = await window.firebaseDB.getDocs(pedidosQuery);
+                pedidosSnap.forEach(d => perfilPedidosCache.push({id:d.id,...d.data()}));
+                perfilPedidosCache.sort((a,b) => {
+                    const da = a.fecha?.toDate ? a.fecha.toDate() : new Date(a.fecha || 0);
+                    const dbb = b.fecha?.toDate ? b.fecha.toDate() : new Date(b.fecha || 0);
+                    return dbb-da;
+                });
+            } catch (e) {
+                console.warn('No se pudieron leer los pedidos:',e);
+                perfilPedidosCache = [];
+                mostrarNotificacion('No se pudo cargar el historial de pedidos. Revisa los permisos de Firestore.','⚠️');
+            }
+            // Las reseñas se consultan en la colección real usada por enviarResena().
+            perfilResenasCache = [];
+            try {
+                const reviewsQuery = window.firebaseDB.query(
+                    window.firebaseDB.collection(window.db,'reviews'),
+                    window.firebaseDB.where('usuarioId','==',uid)
+                );
+                const reviewsSnap = await window.firebaseDB.getDocs(reviewsQuery);
+                reviewsSnap.forEach(d => perfilResenasCache.push({id:d.id,...d.data()}));
+                perfilResenasCache.sort((a,b)=>new Date(b.fecha || 0)-new Date(a.fecha || 0));
+            } catch (e) {
+                console.warn('No se pudieron leer las reseñas:',e);
+                mostrarNotificacion('No se pudieron cargar tus reseñas. El resto de tu cuenta sigue disponible.','⚠️');
+            }
+        }
+
+        async function abrirMiCuenta(tab = 'resumen') {
             if (!window.currentUser || !window.currentUser.id) {
-                mostrarNotificacion('⚠️ Inicia sesión', '⚠️');
+                mostrarNotificacion('Inicia sesión para entrar a tu cuenta','🔒');
                 showLoginModal();
                 return;
             }
             perfilTabActual = tab;
             const uid = window.currentUser.id;
-            const userRef = window.firebaseDB.doc(window.db, "usuarios", uid);
+            const modal = document.getElementById('miCuentaModal') || (() => {
+                const el=document.createElement('div');el.id='miCuentaModal';el.className='modal-overlay';el.style.zIndex='10001';document.body.appendChild(el);return el;
+            })();
+            modal.innerHTML = `<div class="pa-account-shell"><div class="pa-account-loading"><div class="pa-account-spinner"></div><b>Preparando tu espacio personal…</b><small>Estamos actualizando tus pedidos y beneficios.</small></div></div>`;
+            modal.classList.add('show');
+            if (perfilCargando) return;
+            perfilCargando = true;
             try {
-                const snap = await window.firebaseDB.getDoc(userRef);
-                if (snap.exists()) window.currentUser = { ...window.currentUser, ...snap.data() };
-            } catch (e) { console.warn('No se pudo actualizar el perfil:', e); }
-            const u = window.currentUser;
-            const pts = safeInt(u.points);
-            const nivel = obtenerNivelCompleto(pts);
-            const nombre = u.name || u.email?.split('@')[0] || 'Cliente';
-            let pedidos = [];
-            try {
-                const qPedidos = window.firebaseDB.query(
-                    window.firebaseDB.collection(window.db, 'pedidos'),
-                    window.firebaseDB.where('clienteId', '==', uid)
-                );
-                const pedidosSnap = await window.firebaseDB.getDocs(qPedidos);
-                pedidosSnap.forEach(d => pedidos.push({ id: d.id, ...d.data() }));
-                pedidos.sort((a,b) => new Date(b.fecha || 0) - new Date(a.fecha || 0));
-                perfilPedidosCache = pedidos;
-            } catch (e) { console.warn('No se pudieron cargar pedidos:', e); }
-            renderMiCuenta(perfilTabActual, pedidos);
+                await cargarDatosCuenta(uid);
+                renderMiCuenta(perfilTabActual,perfilPedidosCache);
+            } catch(e) {
+                console.error('Error cargando Mi Cuenta:',e);
+                modal.innerHTML = `<div class="pa-account-shell"><button class="pa-account-close" onclick="document.getElementById('miCuentaModal').classList.remove('show')">×</button><h2>No pudimos cargar tu cuenta</h2><p>Comprueba tu conexión e inténtalo nuevamente.</p><button class="btn btn-gold" onclick="abrirMiCuenta('${paEscape(tab)}')">Reintentar</button></div>`;
+            } finally { perfilCargando=false; }
         }
 
-        function renderMiCuenta(tab = 'perfil', pedidos = perfilPedidosCache) {
+        function renderMiCuenta(tab = 'resumen', pedidos = perfilPedidosCache) {
             const u = window.currentUser || {};
             const pts = safeInt(u.points);
             const nivel = obtenerNivelCompleto(pts);
             const nombre = u.name || u.email?.split('@')[0] || 'Cliente';
-            const usados = Array.isArray(u.cuponesUsados) ? u.cuponesUsados : [];
+            const inicial = paEscape(nombre.trim().charAt(0).toUpperCase() || 'P');
             const pedidosValidos = pedidos || [];
-            const gastado = pedidosValidos.filter(p => !['cancelado','rechazado'].includes((p.estado || '').toLowerCase()))
-                .reduce((sum,p) => sum + safeNumber(p.total), 0);
-            const comprasAprobadas = pedidosValidos.filter(p => ['aprobado','pagado','enviado','entregado'].includes((p.estado || '').toLowerCase()));
-            const ticket = comprasAprobadas.length ? gastado / comprasAprobadas.length : 0;
-            const meses = [];
-            for (let offset = 5; offset >= 0; offset--) {
-                const d = new Date();
-                d.setDate(1);
-                d.setMonth(d.getMonth() - offset);
-                const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
-                const totalMes = pedidosValidos.filter(p => {
-                    const fecha = new Date(p.fecha || 0);
-                    return !['cancelado','rechazado'].includes((p.estado || '').toLowerCase()) &&
-                        `${fecha.getFullYear()}-${String(fecha.getMonth()+1).padStart(2,'0')}` === key;
-                }).reduce((sum,p) => sum + safeNumber(p.total), 0);
-                meses.push({ label: d.toLocaleDateString('es-PE',{month:'short'}), total: totalMes });
-            }
-            const maxMes = Math.max(1, ...meses.map(m => m.total));
-            const graficoMeses = `<div style="display:flex;align-items:flex-end;gap:10px;height:150px;padding:16px 8px 4px;border-bottom:1px solid var(--gray-200);">
-                ${meses.map(m => `<div title="${m.label}: ${formatPrice(m.total)}" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:6px;">
-                    <small style="font-size:9px;color:var(--gray-500);">${m.total ? formatPrice(m.total) : '—'}</small>
-                    <div style="width:100%;max-width:42px;height:${Math.max(4,(m.total/maxMes)*88)}%;background:var(--gold-gradient);border-radius:7px 7px 2px 2px;"></div>
-                    <small style="font-size:10px;color:var(--gray-500);">${m.label}</small>
-                </div>`).join('')}
+            const aprobados = pedidosValidos.filter(p=>['aprobado','confirmado','pagado','preparando','enviado','entregado'].includes(String(p.estado||'').toLowerCase()));
+            const gastado = aprobados.reduce((sum,p)=>sum+safeNumber(p.total),0);
+            const pendientes = pedidosValidos.filter(p=>['pendiente','confirmado','aprobado','pagado','preparando','enviado'].includes(String(p.estado||'').toLowerCase())).length;
+            const entregados = pedidosValidos.filter(p=>String(p.estado||'').toLowerCase()==='entregado').length;
+            const ticket = aprobados.length ? gastado/aprobados.length : 0;
+            const levelThresholds = [50,200,500,1000];
+            const nextPts = levelThresholds.find(x=>x>pts) || null;
+            const prevPts = [...levelThresholds].reverse().find(x=>x<=pts) || 0;
+            const progress = nextPts===null ? 100 : Math.max(0,Math.min(100,((pts-prevPts)/Math.max(1,nextPts-prevPts))*100));
+            const usados = Array.isArray(u.cuponesUsados)?u.cuponesUsados:[];
+            const favoritos = Array.isArray(wishlist)?wishlist:[];
+            const recientes = pedidosValidos.slice(0,3);
+            const recientesHtml = recientes.length ? recientes.map(p=>paPedidoCard(p,true)).join('') : `<div class="pa-account-empty"><span>🛍️</span><b>Aún no hay pedidos</b><small>Cuando hagas tu primera compra, aquí podrás seguirla.</small><button onclick="document.getElementById('miCuentaModal').classList.remove('show');document.getElementById('productos')?.scrollIntoView({behavior:'smooth'})">Explorar productos</button></div>`;
+            const pedidosHtml = pedidosValidos.length ? pedidosValidos.map(p=>paPedidoCard(p,false)).join('') : `<div class="pa-account-empty"><span>📦</span><b>Tu historial está esperando su primer pedido</b><small>Todos tus pedidos aparecerán en este espacio.</small></div>`;
+            const reviewHtml = perfilResenasCache.length ? perfilResenasCache.map(r=>{
+                const producto=productos.find(p=>String(p.id)===String(r.productoId));
+                return `<article class="pa-review-card"><div class="pa-review-top"><b>${paEscape(producto?.nombre || 'Producto')}</b><span>${'★'.repeat(Math.max(0,Math.min(5,safeInt(r.estrellas))))}${'☆'.repeat(5-Math.max(0,Math.min(5,safeInt(r.estrellas))))}</span></div><p>${paEscape(r.texto||'')}</p><small>${paFecha(r.fecha)}</small></article>`;
+            }).join('') : `<div class="pa-account-empty"><span>⭐</span><b>Tus opiniones cuentan</b><small>Cuando publiques una reseña de un producto, la verás aquí.</small><button onclick="document.getElementById('miCuentaModal').classList.remove('show');document.getElementById('productos')?.scrollIntoView({behavior:'smooth'})">Ver productos</button></div>`;
+            const couponsHtml = levelRules.map(c=>{
+                const unlocked=pts>=safeInt(c.min), used=usados.includes(c.code);
+                return `<article class="pa-coupon-card ${used?'is-used':unlocked?'is-ready':'is-locked'}"><div class="pa-coupon-symbol">${used?'✓':unlocked?'🎟️':'🔒'}</div><div class="pa-coupon-info"><b>${paEscape(c.code)}</b><small>${paEscape(c.desc||'Beneficio exclusivo')}</small><em>${used?'Ya utilizado':unlocked?'Disponible para tu nivel':`Desbloquea con ${c.min} puntos`}</em></div>${unlocked&&!used?`<button onclick="copiarCodigo('${paEscape(c.code)}')">Copiar</button>`:''}</article>`;
+            }).join('');
+            const gastosHtml = `<div class="pa-account-stats"><div><small>Compras válidas</small><b>${aprobados.length}</b></div><div><small>Total comprado</small><b>${formatPrice(gastado)}</b></div><div><small>Ticket promedio</small><b>${formatPrice(ticket)}</b></div></div>
+                <div class="pa-account-panel"><div class="pa-panel-title"><div><h3>Tu actividad de compra</h3><small>Últimos seis meses · pedidos aprobados en adelante</small></div><span>📈</span></div>${paRenderSpendingChart(aprobados)}</div>`;
+            const profileHtml = `<div class="pa-profile-grid">
+                <section class="pa-account-panel"><div class="pa-panel-title"><div><h3>Datos personales</h3><small>Mantén tus datos actualizados para tus entregas.</small></div><span>✍️</span></div>
+                    <div class="pa-form-grid">
+                        <label>Nombre completo<input id="perfilNombre" maxlength="70" value="${paEscape(nombre)}" autocomplete="name"></label>
+                        <label>Correo electrónico<input value="${paEscape(u.email||'')}" disabled></label>
+                        <label>Teléfono / WhatsApp<input id="perfilTelefono" maxlength="25" value="${paEscape(u.telefono||u.phone||'')}" placeholder="Ej. 9XXXXXXXX" autocomplete="tel"></label>
+                        <label>Fecha de nacimiento<input id="perfilCumple" type="date" value="${paEscape(u.fechaNacimiento||'')}" max="${new Date().toISOString().slice(0,10)}"></label>
+                        <label class="wide">Dirección principal<input id="perfilDireccion" maxlength="180" value="${paEscape(u.direccion||u.address||'')}" placeholder="Calle, número, distrito" autocomplete="street-address"></label>
+                        <label class="wide">Referencia de entrega<input id="perfilReferencia" maxlength="180" value="${paEscape(u.referencia||'')}" placeholder="Piso, color de puerta, punto de referencia…"></label>
+                    </div>
+                    <div class="pa-form-actions"><small>Tu correo se administra desde el acceso de tu cuenta.</small><button class="btn btn-gold" onclick="guardarDatosPerfil()">Guardar mis datos</button></div>
+                </section>
+                <section class="pa-account-panel"><div class="pa-panel-title"><div><h3>Preferencias</h3><small>Personaliza cómo quieres recibir novedades.</small></div><span>⚙️</span></div>
+                    <label class="pa-switch-row"><span><b>Novedades y promociones</b><small>Ofertas, lanzamientos y campañas.</small></span><input type="checkbox" id="paPrefPromos" ${u.preferencias?.promociones!==false?'checked':''}></label>
+                    <label class="pa-switch-row"><span><b>Recordatorios de carrito</b><small>Recordatorios sobre productos que dejaste pendientes.</small></span><input type="checkbox" id="paPrefCarrito" ${u.preferencias?.carrito!==false?'checked':''}></label>
+                    <label class="pa-switch-row"><span><b>Consejos y novedades</b><small>Ideas para combinar tus accesorios.</small></span><input type="checkbox" id="paPrefConsejos" ${u.preferencias?.consejos===true?'checked':''}></label>
+                    <button class="btn btn-outline-gold" style="width:100%;margin-top:14px" onclick="guardarPreferenciasCuenta()">Guardar preferencias</button>
+                    <div class="pa-security-box"><div><b>🔐 Seguridad de tu cuenta</b><small>Solicita un enlace seguro para cambiar tu contraseña.</small></div><button onclick="solicitarCambioPassword()">Cambiar contraseña</button></div>
+                </section>
+                <section class="pa-account-panel"><div class="pa-panel-title"><div><h3>Direcciones guardadas</h3><small>Guarda más de un destino para tus compras.</small></div><span>📍</span></div>
+                    <div id="paAddressList">${paRenderAddresses(u)}</div>
+                    <div class="pa-address-form"><input id="paAddressName" maxlength="35" placeholder="Etiqueta: Casa, trabajo…"><input id="paAddressValue" maxlength="180" placeholder="Dirección completa"><input id="paAddressRef" maxlength="120" placeholder="Referencia (opcional)"><button onclick="agregarDireccionCuenta()">＋ Añadir dirección</button></div>
+                </section>
             </div>`;
-            const cuponesHtml = CODIGOS_POR_NIVEL.map(c => {
-                const desbloqueado = pts >= c.min;
-                const usado = usados.includes(c.code);
-                return `<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px;border:1px solid var(--gray-200);border-radius:12px;margin:8px 0;">
-                    <div><b>${c.emoji} ${c.code}</b><div style="font-size:11px;color:var(--gray-500);">${c.desc}</div></div>
-                    <span style="font-size:11px;font-weight:800;color:${usado?'#e05252':desbloqueado?'#218653':'#999'};">${usado?'❌ Usado':desbloqueado?'✅ Disponible':'🔒 Bloqueado'}</span>
-                </div>`;
-            }).join('') + usados.filter(c => !CODIGOS_POR_NIVEL.some(x => x.code === c)).map(c => `<div style="padding:10px;border:1px solid var(--gray-200);border-radius:10px;margin:8px 0;">🎟️ ${c} · ❌ Usado</div>`).join('');
-            const pedidoHtml = pedidosValidos.length ? pedidosValidos.map(p => {
-                const estado = (p.estado || 'pendiente').toLowerCase();
-                const icon = estado === 'entregado' ? '✅' : estado === 'enviado' ? '🚚' : estado === 'cancelado' ? '❌' : '⏳';
-                const productosHtml = (p.productos || []).map(x => `${x.nombre || 'Producto'} × ${x.cantidad || 1}`).join(', ');
-                return `<article style="padding:14px;border:1px solid var(--gray-200);border-radius:14px;margin:10px 0;">
-                    <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;"><b>Pedido #${String(p.id).slice(-7)}</b><strong>${icon} ${estado}</strong></div>
-                    <p style="font-size:12px;color:var(--gray-500);margin:7px 0;">${productosHtml || 'Detalle no disponible'}</p>
-                    <div style="display:flex;justify-content:space-between;font-size:12px;"><span>${p.fecha ? fmtFecha(p.fecha) : 'Fecha no disponible'}</span><b>${formatPrice(p.total)}</b></div>
-                    <button class="btn btn-outline-gold btn-sm" style="margin-top:10px;" onclick="repetirPedido('${p.id}')">↻ Repetir pedido</button>
-                </article>`;
-            }).join('') : '<p style="padding:22px;text-align:center;color:var(--gray-500);">Todavía no tienes pedidos.</p>';
-            const reviews = Array.isArray(u.reviews) ? u.reviews : [];
-            const reviewsHtml = reviews.length ? reviews.map(r => `<div style="padding:12px;border-bottom:1px solid var(--gray-200);"><b>${r.productoNombre || r.nombreProducto || 'Producto'}</b><div style="color:var(--gold);">${'★'.repeat(Math.max(0,Math.min(5,safeInt(r.estrellas || r.rating))))}</div><p style="font-size:12px;">${String(r.texto || r.comentario || '').replace(/[<>&]/g,'')}</p><small>${r.fecha ? fmtFecha(r.fecha) : ''}</small></div>`).join('') : '<p style="padding:22px;text-align:center;color:var(--gray-500);">Aún no has publicado reseñas.</p>';
-            const wishlistHtml = wishlist.length ? wishlist.map(id => {
-                const p = productos.find(x => String(x.id) === String(id));
-                return p ? `<div style="display:flex;justify-content:space-between;align-items:center;padding:10px;border-bottom:1px solid var(--gray-200);"><span>${p.nombre}</span><b style="color:var(--gold);">${formatPrice(p.precio)}</b></div>` : '';
-            }).join('') : '<p style="padding:22px;text-align:center;color:var(--gray-500);">Tu lista está vacía.</p>';
-            const body = {
-                perfil: `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;">
-                    <label>Nombre<input id="perfilNombre" value="${String(nombre).replace(/["&<>]/g,'')}" style="display:block;width:100%;padding:11px;border:1px solid var(--gray-200);border-radius:9px;"></label>
-                    <label>Correo<input value="${String(u.email || '').replace(/["&<>]/g,'')}" disabled style="display:block;width:100%;padding:11px;border:1px solid var(--gray-200);border-radius:9px;"></label>
-                    <label>Teléfono<input id="perfilTelefono" value="${String(u.telefono || u.phone || '').replace(/["&<>]/g,'')}" placeholder="Tu teléfono" style="display:block;width:100%;padding:11px;border:1px solid var(--gray-200);border-radius:9px;"></label>
-                    <label>Dirección<input id="perfilDireccion" value="${String(u.direccion || u.address || '').replace(/["&<>]/g,'')}" placeholder="Tu dirección de entrega" style="display:block;width:100%;padding:11px;border:1px solid var(--gray-200);border-radius:9px;"></label>
-                </div>
-                <div style="margin:18px 0;padding:16px;background:var(--gray-100);border-radius:14px;"><b>${nivel.emoji} ${nivel.nombre}</b><div style="font-size:24px;font-weight:900;color:var(--gold);">${pts} puntos</div><small>Miembro desde ${u.createdAt ? fmtFecha(u.createdAt) : 'fecha no disponible'}</small></div>
-                <button class="btn btn-gold" onclick="guardarDatosPerfil()">Guardar cambios</button>`,
-                pedidos: `<h3>📦 Historial de pedidos</h3>${pedidoHtml}`,
-                gastos: `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;">
-                    <div style="padding:16px;background:var(--gray-100);border-radius:12px;"><small>Total registrado</small><h2>${formatPrice(gastado)}</h2></div>
-                    <div style="padding:16px;background:var(--gray-100);border-radius:12px;"><small>Ticket promedio</small><h2>${formatPrice(ticket)}</h2></div>
-                    <div style="padding:16px;background:var(--gray-100);border-radius:12px;"><small>Compras aprobadas</small><h2>${comprasAprobadas.length}</h2></div>
-                </div><h3 style="margin-top:22px;">📊 Gastos por mes</h3>${graficoMeses}<p style="font-size:11px;color:var(--gray-500);margin-top:12px;">El resumen se calcula con los estados aprobados, pagados, enviados y entregados que existan en tu historial.</p>`,
-                cupones: `<h3>🎟️ Mis cupones</h3>${cuponesHtml}`,
-                resenas: `<h3>⭐ Mis reseñas</h3>${reviewsHtml}`,
-                wishlist: `<h3>❤️ Mi lista de deseos</h3>${wishlistHtml}`
+            const summaryHtml = `<div class="pa-welcome-banner"><div><span>PAULINA ACCESORIOS · TU ESPACIO</span><h2>¡Hola, ${paEscape(nombre.split(' ')[0])}! 💗</h2><p>Qué bonito tenerte de vuelta. Aquí tienes todo lo importante de tu cuenta.</p></div><div class="pa-welcome-avatar">${u.photoURL?`<img src="${paEscape(u.photoURL)}" alt="Foto de perfil">`:inicial}</div></div>
+                <div class="pa-account-stats"><div><small>Mis puntos</small><b>${pts.toLocaleString('es-PE')} ✨</b></div><div><small>Pedidos activos</small><b>${pendientes}</b></div><div><small>Pedidos entregados</small><b>${entregados}</b></div><div><small>Favoritos</small><b>${favoritos.length} ♥</b></div></div>
+                <section class="pa-level-card"><div class="pa-level-head"><div><small>MI NIVEL ACTUAL</small><h3>${nivel.emoji} ${paEscape(nivel.nombre)}</h3></div><b>${pts} pts</b></div><div class="pa-level-track"><span style="width:${progress}%"></span></div><div class="pa-level-foot"><span>${pts.toLocaleString('es-PE')} puntos</span><span>${nextPts===null?'¡Nivel máximo alcanzado!':`${Math.max(0,nextPts-pts)} pts para el siguiente nivel`}</span></div></section>
+                <div class="pa-shortcuts"><button onclick="cambiarPestanaPerfil('pedidos')"><span>📦</span><b>Mis pedidos</b><small>Revisa el estado</small></button><button onclick="cambiarPestanaPerfil('cupones')"><span>🎟️</span><b>Mis cupones</b><small>Beneficios y códigos</small></button><button onclick="cambiarPestanaPerfil('favoritos')"><span>💗</span><b>Favoritos</b><small>${favoritos.length} guardados</small></button><button onclick="cambiarPestanaPerfil('gastos')"><span>📊</span><b>Mis compras</b><small>Resumen de gastos</small></button></div>
+                <div class="pa-account-panel"><div class="pa-panel-title"><div><h3>Pedidos recientes</h3><small>Lo último que has comprado</small></div><button class="pa-text-action" onclick="cambiarPestanaPerfil('pedidos')">Ver todos →</button></div>${recientesHtml}</div>`;
+            const favsHtml = favoritos.length ? `<div class="pa-fav-grid">${favoritos.map(id=>{
+                const p=productos.find(x=>String(x.id)===String(id)); if(!p)return '';
+                return `<article class="pa-fav-card"><img src="${paEscape(p.imagen||'')}" alt="${paEscape(p.nombre)}"><div><b>${paEscape(p.nombre)}</b><strong>${formatPrice(p.precio)}</strong><small>${safeInt(p.stock)>0?'Disponible':'Agotado'}</small><div><button onclick="addToCart(${Number(p.id)});">Añadir al carrito</button><button class="remove" onclick="toggleWishlist(${Number(p.id)});abrirMiCuenta('favoritos')">Quitar</button></div></div></article>`;
+            }).join('')}</div>` : `<div class="pa-account-empty"><span>💗</span><b>Guarda lo que te encanta</b><small>Toca el corazón de cualquier producto para tenerlo a mano.</small></div>`;
+            const content = {
+                resumen: summaryHtml,
+                perfil: profileHtml,
+                pedidos: `<div class="pa-panel-title"><div><h3>Historial de pedidos</h3><small>${pedidosValidos.length} pedido(s) registrados</small></div><span>📦</span></div><div class="pa-order-filter"><input id="paOrderSearch" placeholder="Buscar por número de pedido…" oninput="filtrarPedidosCuenta(this.value)"><select id="paOrderStatus" onchange="filtrarPedidosCuenta(document.getElementById('paOrderSearch').value)"><option value="">Todos los estados</option><option value="pendiente">Pendientes</option><option value="enviado">Enviados</option><option value="entregado">Entregados</option><option value="cancelado">Cancelados</option></select></div><div id="paOrdersList">${pedidosHtml}</div>`,
+                gastos: gastosHtml,
+                cupones: `<div class="pa-panel-title"><div><h3>Mis beneficios y cupones</h3><small>Los códigos usados ya no se pueden canjear de nuevo.</small></div><span>🎟️</span></div>${couponsHtml || '<p class="pa-muted">Todavía no hay cupones disponibles para mostrar.</p>'}`,
+                resenas: `<div class="pa-panel-title"><div><h3>Mis reseñas</h3><small>${perfilResenasCache.length} opinión(es) publicadas</small></div><span>⭐</span></div>${reviewHtml}`,
+                favoritos: `<div class="pa-panel-title"><div><h3>Mi lista de favoritos</h3><small>${favoritos.length} producto(s) guardados</small></div><span>💗</span></div>${favsHtml}`
             };
-            let modal = document.getElementById('miCuentaModal');
-            if (!modal) {
-                modal = document.createElement('div');
-                modal.id = 'miCuentaModal'; modal.className = 'modal-overlay';
-                modal.style.zIndex = '10001'; document.body.appendChild(modal);
-            }
-            const tabs = [['perfil','👤 Perfil'],['pedidos','📦 Pedidos'],['gastos','💸 Gastos'],['cupones','🎟️ Cupones'],['resenas','⭐ Reseñas'],['wishlist','❤️ Wishlist']];
-            modal.innerHTML = `<div style="background:var(--white);color:var(--gray-800);border-radius:22px;width:min(850px,96vw);max-height:92vh;overflow:hidden;box-shadow:var(--shadow-xl);">
-                <header style="padding:20px 22px;background:linear-gradient(120deg,rgba(212,175,55,.15),rgba(194,24,91,.08));display:flex;justify-content:space-between;align-items:center;">
-                    <div style="display:flex;align-items:center;gap:12px;"><div style="width:48px;height:48px;border-radius:50%;background:var(--gold-gradient);display:grid;place-items:center;font-size:21px;font-weight:900;color:#fff;overflow:hidden;">${u.photoURL ? `<img src="${u.photoURL}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;">` : nombre.charAt(0).toUpperCase()}</div><div><h2 style="font-family:var(--font-serif);">Mi cuenta</h2><small>${nombre} · ${nivel.emoji} ${nivel.nombre}</small></div></div>
-                    <button onclick="document.getElementById('miCuentaModal').classList.remove('show')" style="border:0;background:var(--gray-100);border-radius:50%;width:38px;height:38px;cursor:pointer;font-size:20px;">×</button>
-                </header>
-                <nav style="display:flex;gap:7px;padding:12px 16px;overflow-x:auto;border-bottom:1px solid var(--gray-200);">${tabs.map(([id,label])=>`<button onclick="cambiarPestanaPerfil('${id}')" style="white-space:nowrap;border:1px solid ${tab===id?'var(--gold)':'var(--gray-200)'};background:${tab===id?'rgba(212,175,55,.13)':'transparent'};color:var(--gray-800);border-radius:20px;padding:9px 13px;cursor:pointer;font-weight:700;font-size:11px;">${label}</button>`).join('')}</nav>
-                <main style="padding:20px;overflow:auto;max-height:65vh;">${body[tab] || body.perfil}</main>
-                <footer style="padding:14px 20px;border-top:1px solid var(--gray-200);display:flex;justify-content:space-between;align-items:center;"><small style="color:var(--gray-500);">Paulina Accesorios · Cuenta segura</small><button onclick="logoutUser()" style="border:1px solid #e05252;background:#fff5f5;color:#c0392b;border-radius:20px;padding:10px 16px;font-weight:800;cursor:pointer;">↪ Cerrar sesión</button></footer>
+            const tabs=[['resumen','⌂','Resumen'],['perfil','♙','Mi perfil'],['pedidos','▣','Pedidos'],['gastos','▤','Compras'],['cupones','◇','Cupones'],['resenas','☆','Reseñas'],['favoritos','♡','Favoritos']];
+            const modal=document.getElementById('miCuentaModal');
+            modal.innerHTML=`<div class="pa-account-shell">
+                <aside class="pa-account-sidebar"><div class="pa-side-brand"><span>✧</span><div><b>PAULINA</b><small>ACCESORIOS · MI CUENTA</small></div></div>
+                    <div class="pa-side-user"><div class="pa-side-avatar">${u.photoURL?`<img src="${paEscape(u.photoURL)}" alt="">`:inicial}</div><div><b>${paEscape(nombre)}</b><small>${paEscape(u.email||'')}</small></div></div>
+                    <nav class="pa-account-nav">${tabs.map(([id,ico,label])=>`<button class="${tab===id?'active':''}" onclick="cambiarPestanaPerfil('${id}')"><span>${ico}</span>${label}${id==='pedidos'&&pendientes?`<i>${pendientes}</i>`:''}</button>`).join('')}</nav>
+                    <div class="pa-sidebar-bottom"><small>✨ Gracias por ser parte de Paulina.</small><button onclick="logoutUser()">↪ Cerrar sesión</button></div>
+                </aside>
+                <main class="pa-account-main"><header class="pa-account-top"><div><small>MI CUENTA / ${paEscape(tab.toUpperCase())}</small><h1>${({resumen:'Tu espacio personal',perfil:'Mi perfil',pedidos:'Mis pedidos',gastos:'Resumen de compras',cupones:'Mis beneficios',resenas:'Mis reseñas',favoritos:'Mis favoritos'})[tab]||'Mi cuenta'}</h1></div><button class="pa-account-close" aria-label="Cerrar cuenta" onclick="document.getElementById('miCuentaModal').classList.remove('show')">×</button></header><div class="pa-account-content">${content[tab]||summaryHtml}</div><div class="pa-account-mobile-logout"><button onclick="logoutUser()">↪ Cerrar sesión</button></div></main>
             </div>`;
             modal.classList.add('show');
+            if(tab==='pedidos') window.setTimeout(()=>{const input=document.getElementById('paOrderSearch');if(input)input.value='';},0);
         }
 
-        function cambiarPestanaPerfil(tab) {
-            perfilTabActual = tab;
-            renderMiCuenta(tab, perfilPedidosCache);
+        function paPedidoCard(p, compact=false) {
+            const [label,icon,stateClass]=paEstadoPedido(p.estado);
+            const productsHtml=(p.productos||[]).map(x=>`${paEscape(x.nombre||x.name||'Producto')} × ${safeInt(x.cantidad||x.quantity,1)}`).join(' · ');
+            return `<article class="pa-order-card ${compact?'compact':''}" data-order-state="${paEscape(String(p.estado||'pendiente').toLowerCase())}" data-order-id="${paEscape(p.id)}"><div class="pa-order-head"><div><small>PEDIDO</small><b>#${paEscape(String(p.id).slice(-8).toUpperCase())}</b></div><span class="pa-order-status ${stateClass}">${icon} ${paEscape(label)}</span></div><p>${productsHtml||'Detalle de productos no disponible'}</p><div class="pa-order-foot"><small>${paFecha(p.fecha)}</small><b>${formatPrice(p.total)}</b></div><div class="pa-order-actions"><button onclick="verDetallePedidoCuenta('${paEscape(p.id)}')">Ver detalle</button>${paPedidosAceptados(p)?`<button onclick="repetirPedido('${paEscape(p.id)}')">↻ Repetir pedido</button>`:''}</div></article>`;
         }
-
+        function paRenderSpendingChart(orders) {
+            const months=[];
+            for(let i=5;i>=0;i--){const d=new Date();d.setDate(1);d.setMonth(d.getMonth()-i);months.push({key:`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`,label:d.toLocaleDateString('es-PE',{month:'short'})})}
+            const vals=months.map(m=>({...m,total:orders.filter(p=>{const d=p.fecha?.toDate?p.fecha.toDate():new Date(p.fecha||0);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`===m.key}).reduce((a,p)=>a+safeNumber(p.total),0)}));
+            const max=Math.max(1,...vals.map(x=>x.total));
+            return `<div class="pa-spend-chart">${vals.map(v=>`<div class="pa-spend-col" title="${v.label}: ${formatPrice(v.total)}"><b>${v.total?formatPrice(v.total):'—'}</b><span style="height:${Math.max(3,v.total/max*100)}%"></span><small>${v.label}</small></div>`).join('')}</div>`;
+        }
+        function paRenderAddresses(u) {
+            const arr=Array.isArray(u.direcciones)?u.direcciones:[];
+            return arr.length?arr.map((a,i)=>`<article class="pa-address-card"><div><b>📍 ${paEscape(a.nombre||`Dirección ${i+1}`)}</b><p>${paEscape(a.direccion||'')}</p>${a.referencia?`<small>${paEscape(a.referencia)}</small>`:''}</div><div><button onclick="usarDireccionCuenta(${i})">Usar principal</button><button class="remove" onclick="eliminarDireccionCuenta(${i})">Eliminar</button></div></article>`).join(''):'<p class="pa-muted">Aún no has guardado direcciones adicionales.</p>';
+        }
+        async function cambiarPestanaPerfil(tab) {
+            perfilTabActual=tab;
+            renderMiCuenta(tab,perfilPedidosCache);
+        }
         async function guardarDatosPerfil() {
-            const u = window.currentUser;
-            if (!u?.id) return;
-            const nombre = document.getElementById('perfilNombre')?.value.trim();
-            const telefono = document.getElementById('perfilTelefono')?.value.trim();
-            const direccion = document.getElementById('perfilDireccion')?.value.trim();
-            if (!nombre) return mostrarNotificacion('Escribe tu nombre', '⚠️');
-            try {
-                const ref = window.firebaseDB.doc(window.db, 'usuarios', u.id);
-                await window.firebaseDB.updateDoc(ref, { name: nombre, telefono, direccion });
-                window.currentUser = { ...u, name: nombre, telefono, direccion };
-                if (window.auth?.currentUser) await window.firebaseAuth.updateProfile(window.auth.currentUser, { displayName: nombre });
-                mostrarNotificacion('Perfil actualizado correctamente', '✅');
-                abrirMiCuenta('perfil');
-                updateUserUI();
-            } catch (e) { console.error(e); mostrarNotificacion('No se pudieron guardar los cambios', '❌'); }
+            const u=window.currentUser;if(!u?.id)return;
+            const nombre=document.getElementById('perfilNombre')?.value.trim();
+            const telefono=document.getElementById('perfilTelefono')?.value.trim();
+            const direccion=document.getElementById('perfilDireccion')?.value.trim();
+            const referencia=document.getElementById('perfilReferencia')?.value.trim();
+            const fechaNacimiento=document.getElementById('perfilCumple')?.value||'';
+            if(!nombre)return mostrarNotificacion('Escribe tu nombre completo.','⚠️');
+            if(telefono && !/^[+\d\s().-]{7,25}$/.test(telefono))return mostrarNotificacion('Revisa el número de teléfono.','⚠️');
+            try{
+                const data={name:nombre,telefono,direccion,referencia,fechaNacimiento,perfilActualizado:new Date().toISOString()};
+                await window.firebaseDB.updateDoc(window.firebaseDB.doc(window.db,'usuarios',u.id),data);
+                window.currentUser={...u,...data};
+                if(window.auth?.currentUser)await window.firebaseAuth.updateProfile(window.auth.currentUser,{displayName:nombre});
+                updateUserUI();mostrarNotificacion('Tus datos se guardaron correctamente.','✅');renderMiCuenta('perfil',perfilPedidosCache);
+            }catch(e){console.error(e);mostrarNotificacion('No se pudieron guardar los datos. Revisa tu conexión.','❌')}
         }
-
-        function repetirPedido(id) {
-            const pedido = perfilPedidosCache.find(p => p.id === id);
-            if (!pedido) return;
-            let agregados = 0;
-            (pedido.productos || []).forEach(item => {
-                const p = productos.find(x => String(x.id) === String(item.id));
-                if (p && safeInt(p.stock) > 0) {
-                    const cantidad = Math.min(safeInt(item.cantidad,1), safeInt(p.stock));
-                    const existente = cart.find(x => String(x.id) === String(p.id));
-                    if (existente) existente.quantity = Math.min(safeInt(p.stock), existente.quantity + cantidad);
-                    else cart.push({ id:p.id, name:p.nombre, price:safeNumber(p.precio), quantity:cantidad });
-                    agregados++;
-                }
+        async function guardarPreferenciasCuenta(){
+            const u=window.currentUser;if(!u?.id)return;
+            const preferencias={promociones:!!document.getElementById('paPrefPromos')?.checked,carrito:!!document.getElementById('paPrefCarrito')?.checked,consejos:!!document.getElementById('paPrefConsejos')?.checked};
+            try{await window.firebaseDB.updateDoc(window.firebaseDB.doc(window.db,'usuarios',u.id),{preferencias});window.currentUser={...u,preferencias};mostrarNotificacion('Preferencias guardadas.','✅')}
+            catch(e){console.error(e);mostrarNotificacion('No se pudieron guardar tus preferencias.','❌')}
+        }
+        async function agregarDireccionCuenta(){
+            const u=window.currentUser;if(!u?.id)return;
+            const nombre=document.getElementById('paAddressName')?.value.trim()||'Otra dirección';
+            const direccion=document.getElementById('paAddressValue')?.value.trim();
+            const referencia=document.getElementById('paAddressRef')?.value.trim()||'';
+            if(!direccion)return mostrarNotificacion('Escribe la dirección completa.','⚠️');
+            const direcciones=Array.isArray(u.direcciones)?[...u.direcciones]:[];
+            if(direcciones.length>=5)return mostrarNotificacion('Puedes guardar hasta 5 direcciones.','⚠️');
+            direcciones.push({nombre,direccion,referencia});
+            try{await window.firebaseDB.updateDoc(window.firebaseDB.doc(window.db,'usuarios',u.id),{direcciones});window.currentUser={...u,direcciones};mostrarNotificacion('Dirección añadida.','📍');renderMiCuenta('perfil',perfilPedidosCache)}
+            catch(e){console.error(e);mostrarNotificacion('No se pudo guardar la dirección.','❌')}
+        }
+        async function eliminarDireccionCuenta(index){
+            const u=window.currentUser;const direcciones=Array.isArray(u?.direcciones)?[...u.direcciones]:[];
+            if(!direcciones[index]||!confirm('¿Eliminar esta dirección guardada?'))return;
+            direcciones.splice(index,1);
+            try{await window.firebaseDB.updateDoc(window.firebaseDB.doc(window.db,'usuarios',u.id),{direcciones});window.currentUser={...u,direcciones};renderMiCuenta('perfil',perfilPedidosCache);mostrarNotificacion('Dirección eliminada.','🗑️')}
+            catch(e){mostrarNotificacion('No se pudo eliminar la dirección.','❌')}
+        }
+        async function usarDireccionCuenta(index){
+            const u=window.currentUser;const a=u?.direcciones?.[index];if(!a)return;
+            try{await window.firebaseDB.updateDoc(window.firebaseDB.doc(window.db,'usuarios',u.id),{direccion:a.direccion,referencia:a.referencia||''});window.currentUser={...u,direccion:a.direccion,referencia:a.referencia||''};mostrarNotificacion('Dirección principal actualizada.','📍');renderMiCuenta('perfil',perfilPedidosCache)}
+            catch(e){mostrarNotificacion('No se pudo actualizar la dirección principal.','❌')}
+        }
+        async function solicitarCambioPassword(){
+            const email=window.currentUser?.email;if(!email)return mostrarNotificacion('No encontramos el correo de tu cuenta.','⚠️');
+            try{await window.firebaseAuth.sendPasswordResetEmail(window.auth,email);mostrarNotificacion('Enviamos un enlace para cambiar tu contraseña. Revisa tu correo.','📧')}
+            catch(e){console.error(e);mostrarNotificacion('No se pudo enviar el correo. Inténtalo más tarde.','❌')}
+        }
+        function filtrarPedidosCuenta(texto=''){
+            const estado=document.getElementById('paOrderStatus')?.value||'';
+            const q=String(texto||'').trim().toLowerCase();
+            document.querySelectorAll('#paOrdersList .pa-order-card').forEach(card=>{
+                const matchId=card.dataset.orderId.toLowerCase().includes(q);
+                const matchState=!estado||card.dataset.orderState===estado;
+                card.style.display=matchId&&matchState?'':'none';
             });
-            if (!agregados) return mostrarNotificacion('Los productos ya no están disponibles', '⚠️');
-            guardarCarrito(); actualizarCarritoUI(); renderCart();
+        }
+        function verDetallePedidoCuenta(id){
+            const p=perfilPedidosCache.find(x=>x.id===id);if(!p)return;
+            const [label]=paEstadoPedido(p.estado);
+            const items=(p.productos||[]).map(x=>`<div class="pa-detail-line"><span>${paEscape(x.nombre||x.name||'Producto')} × ${safeInt(x.cantidad||x.quantity,1)}</span><b>${formatPrice(safeNumber(x.precio||x.price)*safeInt(x.cantidad||x.quantity,1))}</b></div>`).join('');
+            const old=document.getElementById('paOrderDetail');old?.remove();
+            const el=document.createElement('div');el.id='paOrderDetail';el.className='pa-order-detail-overlay';
+            el.innerHTML=`<div class="pa-order-detail"><button class="pa-detail-close" onclick="document.getElementById('paOrderDetail').remove()">×</button><small>PAULINA ACCESORIOS · PEDIDO</small><h2>#${paEscape(id.slice(-8).toUpperCase())}</h2><span class="pa-order-status ${paEstadoPedido(p.estado)[2]}">${paEscape(label)}</span><p class="pa-muted">Realizado el ${paFecha(p.fecha)}</p><div class="pa-order-timeline">${[['pendiente','Pedido recibido'],['confirmado','Pedido confirmado'],['enviado','En camino'],['entregado','Entregado']].map(([key,t],i)=>`<div class="${['pendiente','confirmado','aprobado','pagado','preparando','enviado','entregado'].indexOf(String(p.estado||'').toLowerCase())>=i?'done':''}"><i>${i+1}</i><span>${t}</span></div>`).join('')}</div><h3>Productos</h3>${items||'<p>Detalle no disponible.</p>'}<div class="pa-detail-total"><span>Total del pedido</span><b>${formatPrice(p.total)}</b></div>${paPedidosAceptados(p)?`<button class="btn btn-gold" style="width:100%;margin-top:16px" onclick="document.getElementById('paOrderDetail').remove();repetirPedido('${paEscape(id)}')">↻ Repetir este pedido</button>`:''}</div>`;
+            document.body.appendChild(el);el.addEventListener('click',e=>{if(e.target===el)el.remove()});
+        }
+        function repetirPedido(id) {
+            const pedido=perfilPedidosCache.find(p=>p.id===id);if(!pedido)return;
+            let agregados=0;
+            (pedido.productos||[]).forEach(item=>{
+                const p=productos.find(x=>String(x.id)===String(item.id));
+                if(!p||safeInt(p.stock)<=0)return;
+                const cantidad=Math.min(safeInt(item.cantidad||item.quantity,1),safeInt(p.stock));
+                const existente=cart.find(x=>String(x.id)===String(p.id));
+                if(existente)existente.quantity=Math.min(safeInt(p.stock),safeInt(existente.quantity)+cantidad);
+                else cart.push({id:p.id,name:p.nombre,price:safeNumber(p.precio),quantity:cantidad});
+                agregados++;
+            });
+            if(!agregados)return mostrarNotificacion('Los productos de ese pedido ya no están disponibles.','⚠️');
+            guardarCarrito();actualizarCarritoUI();renderCart();
             document.getElementById('miCuentaModal')?.classList.remove('show');
             document.getElementById('cartModal')?.classList.add('show');
-            mostrarNotificacion('Productos agregados nuevamente al carrito', '🛒');
+            mostrarNotificacion(`${agregados} producto(s) añadidos al carrito. Revisa stock y precios antes de comprar.`,'🛒');
         }
 
         function copiarCodigo(code) {
@@ -6253,6 +6588,16 @@ window.toggleAnuncioCupon = toggleAnuncioCupon;
 window.eliminarCupon = eliminarCupon;
 window.showLoginModal = showLoginModal;
 window.abrirMiCuenta = abrirMiCuenta;
+window.cambiarPestanaPerfil = cambiarPestanaPerfil;
+window.guardarDatosPerfil = guardarDatosPerfil;
+window.guardarPreferenciasCuenta = guardarPreferenciasCuenta;
+window.agregarDireccionCuenta = agregarDireccionCuenta;
+window.eliminarDireccionCuenta = eliminarDireccionCuenta;
+window.usarDireccionCuenta = usarDireccionCuenta;
+window.solicitarCambioPassword = solicitarCambioPassword;
+window.filtrarPedidosCuenta = filtrarPedidosCuenta;
+window.verDetallePedidoCuenta = verDetallePedidoCuenta;
+window.repetirPedido = repetirPedido;
 window.copiarCodigo = copiarCodigo;
 window.toggleWishlist = toggleWishlist;
 window.abrirWishlist = abrirWishlist;
@@ -6432,8 +6777,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 let couponSnap = null;
                 let couponData = null;
+                const inventarioTransaccion = [];
+                for (const item of cart) {
+                    const productRef = window.firebaseDB.doc(window.db, 'productos', String(item.id));
+                    const productSnap = await tx.get(productRef);
+                    if (!productSnap.exists()) throw new Error(`El producto ${item.name} ya no está disponible. Actualiza el catálogo.`);
+                    const productData = productSnap.data();
+                    const stockActual = safeInt(productData.stock);
+                    const cantidadSolicitada = safeInt(item.quantity, 1);
+                    if (stockActual < cantidadSolicitada) throw new Error(`Stock insuficiente de ${productData.nombre || item.name}. Disponibles: ${stockActual}.`);
+                    inventarioTransaccion.push({ ref: productRef, stock: stockActual - cantidadSolicitada });
+                }
                 if (cuponAplicado) {
-                    if (usados.includes(cuponAplicado.codigo)) {
+                    if (usados.some(c => String(c).trim().toUpperCase() === String(cuponAplicado.codigo).trim().toUpperCase())) {
                         throw new Error('Este cupón ya fue utilizado anteriormente.');
                     }
                     if (cuponAplicado.tipo === 'nivel') {
@@ -6455,8 +6811,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
 
                 tx.set(pedidoRef, pedido);
+                inventarioTransaccion.forEach(producto => tx.update(producto.ref, { stock: producto.stock }));
                 if (cuponAplicado) {
-                    tx.update(userRef, { cuponesUsados: [...usados, cuponAplicado.codigo] });
+                    tx.update(userRef, { cuponesUsados: [...new Set([...usados.map(c => String(c).trim().toUpperCase()), String(cuponAplicado.codigo).trim().toUpperCase()])] });
                     if (couponSnap && couponData) {
                         const nuevosUsos = safeInt(couponData.usosActuales) + 1;
                         const cambios = { usosActuales: nuevosUsos };
@@ -6591,6 +6948,9 @@ document.addEventListener('DOMContentLoaded', function() {
 /* =========================================================
    PAULINA SIGNATURE INTERACTIONS · UX, COMPARE, STYLE FINDER
    ========================================================= */
+
+
+
 const PA_RECENT_KEY = 'paulina_recent_products_v1';
 const PA_COMPARE_MAX = 3;
 let paCompareIds = [];
@@ -6861,9 +7221,56 @@ actualizarCarritoUI=function(){paOriginalUpdateCart();paUpdateDock()};
 const paOriginalUpdateWishlist=actualizarWishlistUI;
 actualizarWishlistUI=function(){paOriginalUpdateWishlist();paUpdateDock()};
 
+
+// ==================== PAULINA ACCESORIOS · MAX EXPERIENCE SUITE ====================
+(function(){
+ 'use strict';
+ const $=id=>document.getElementById(id);
+ const safe=(v)=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const money=v=>formatPrice(safeNumber(v));
+ const STORE_KEY='pa_max_alerts_v1';
+ let giftStep=0,giftAnswers=[],bundleIds=[];
+ const giftQuestions=[
+  {title:'¿Para quién es el regalo?',sub:'Así afinamos el estilo.',opts:[['ella','Para ella 💗'],['amiga','Para una amiga 🫶'],['mama','Para mamá 🌷'],['yo','Es un autoregalo ✨']]},
+  {title:'¿Qué estilo le gustaría?',sub:'Elige el que más se acerque.',opts:[['delicado','Delicado y minimalista'],['glam','Elegante y glamuroso'],['atrevido','Moderno y llamativo'],['practico','Bonito para todos los días']]},
+  {title:'¿Cuál es tu presupuesto?',sub:'Mostraremos productos reales dentro del rango.',opts:[['20','Hasta S/ 20'],['50','Hasta S/ 50'],['100','Hasta S/ 100'],['any','Cualquier precio']]}
+ ];
+ function toast(msg){const t=$('paMaxToast');if(!t)return;t.textContent=msg;t.classList.add('show');clearTimeout(t._timer);t._timer=setTimeout(()=>t.classList.remove('show'),3000)}
+ function open(id){$(id)?.classList.add('open');document.body.style.overflow='hidden'}
+ function close(id){$(id)?.classList.remove('open');if(!document.querySelector('.pa-max-overlay.open'))document.body.style.overflow=''}
+ document.querySelectorAll('[data-pa-close]').forEach(b=>b.addEventListener('click',()=>close(b.dataset.paClose)));
+ document.querySelectorAll('.pa-max-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)close(o.id)}));
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'){const o=document.querySelector('.pa-max-overlay.open');if(o)close(o.id)}});
+ function loadAlerts(){try{const a=JSON.parse(localStorage.getItem(STORE_KEY)||'{}');return {price:Array.isArray(a.price)?a.price:[],stock:Array.isArray(a.stock)?a.stock:[]}}catch(_){return {price:[],stock:[]}}}
+ function saveAlerts(a){localStorage.setItem(STORE_KEY,JSON.stringify(a))}
+ function addAlert(type,id){const p=productos.find(x=>String(x.id)===String(id));if(!p)return;const a=loadAlerts();const list=a[type];if(list.some(x=>String(x.id)===String(id))){toast('Este producto ya está en tus alertas.');return}list.push({id:String(p.id),name:p.nombre,price:safeNumber(p.precio),stock:safeInt(p.stock),createdAt:Date.now()});saveAlerts(a);toast(type==='price'?'🔔 Alerta de precio guardada.':'📦 Aviso de disponibilidad guardado.');renderAlerts()}
+ function renderAlerts(){const a=loadAlerts(),all=[...a.price.map(x=>({...x,type:'price'})),...a.stock.map(x=>({...x,type:'stock'}))],c=$('paAlertContent');if(!c)return;if(!all.length){c.innerHTML='<div class="pa-max-empty"><div style="font-size:35px">🔔</div><b>Aún no tienes alertas</b><p>Abre un producto y guarda una alerta de precio o disponibilidad.</p></div>';return}c.innerHTML=all.map(x=>{const p=productos.find(z=>String(z.id)===String(x.id));const changed=p&&(x.type==='price'?safeNumber(p.precio)<x.price:(x.stock<=0&&safeInt(p.stock)>0));return `<div class="pa-max-row"><img src="${safe(p?.imagen||'')}" alt=""><div class="grow"><b>${safe(p?.nombre||x.name)}</b><small>${x.type==='price'?`Precio guardado ${money(x.price)} · Ahora ${money(p?.precio??x.price)}`:`Aviso de reposición · ${safeInt(p?.stock??0)>0?'Disponible ahora':'Aún agotado'}`}</small>${changed?'<div class="pa-max-alert-badge">✨ ¡Hay una novedad!</div>':''}</div><button data-pa-alert-remove="${safe(x.id)}" data-pa-alert-type="${x.type}">Quitar</button></div>`}).join('');c.querySelectorAll('[data-pa-alert-remove]').forEach(b=>b.onclick=()=>{const a=loadAlerts(),k=b.dataset.paAlertType;a[k]=a[k].filter(x=>String(x.id)!==b.dataset.paAlertRemove);saveAlerts(a);renderAlerts()})}
+ window.paAddPriceAlert=id=>addAlert('price',id);window.paAddStockAlert=id=>addAlert('stock',id);
+ $('paOpenAlerts')?.addEventListener('click',()=>{renderAlerts();open('paAlertCenter')});
+ // Gift-finder: three steps and recommendation ranking against actual inventory.
+ function renderGift(){const q=giftQuestions[giftStep];$('paGiftStep').textContent=`PASO ${giftStep+1} DE 3`;$('paGiftProgress').style.width=`${(giftStep+1)/3*100}%`;$('paGiftQuestion').innerHTML=`<h3 style="font:800 20px var(--font-serif);margin-bottom:5px">${q.title}</h3><p style="font-size:11px;color:var(--pa-muted);margin-bottom:13px">${q.sub}</p><div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px">${q.opts.map(([v,l])=>`<button type="button" class="pa-max-choice ${giftAnswers[giftStep]===v?'active':''}" data-gift-choice="${v}">${l}</button>`).join('')}</div>`;$('paGiftBack').disabled=giftStep===0;$('paGiftBack').style.opacity=giftStep===0?'.35':'1';$('paGiftNext').textContent=giftStep===2?'Ver mis regalos ✨':'Continuar →';$('paGiftQuestion').querySelectorAll('[data-gift-choice]').forEach(b=>b.onclick=()=>{giftAnswers[giftStep]=b.dataset.giftChoice;renderGift()})}
+ function giftResults(){const [who,style,budget]=giftAnswers;let arr=productos.filter(p=>safeInt(p.stock)>0);if(budget!=='any')arr=arr.filter(p=>safeNumber(p.precio)<=Number(budget));const terms={delicado:['delicado','minimal','peque','simple','fino'],glam:['elegante','brillo','fiesta','glam','dorado'],atrevido:['grande','moderno','color','llamativo'],practico:['diario','básico','basico','uso diario']};arr=arr.map(p=>{const hay=(p.nombre+' '+p.descripcion+' '+p.categoria).toLowerCase();return {...p,_score:(terms[style]||[]).reduce((n,t)=>n+(hay.includes(t)?3:0),0)+Math.min(2,safeInt(p.compradores)/100)}}).sort((a,b)=>b._score-a._score||safeNumber(a.precio)-safeNumber(b.precio)).slice(0,6);close('paGiftFinder');const old=$('paGiftResults');old?.remove();const m=document.createElement('div');m.id='paGiftResults';m.className='pa-max-overlay open';m.innerHTML=`<div class="pa-max-panel"><div class="pa-max-head"><div><span class="pa-max-step">REGALOS SELECCIONADOS</span><h2>Ideas para sorprender 🎀</h2><p>Opciones disponibles que encajan con tus preferencias.</p></div><button class="pa-max-close" data-gift-result-close>×</button></div><div class="pa-max-grid">${arr.length?arr.map(p=>`<article class="pa-max-card"><img src="${safe(p.imagen)}" alt="${safe(p.nombre)}"><div class="pa-max-card-body"><h3>${safe(p.nombre)}</h3><div class="price">${money(p.precio)}</div><p>${safe(p.categoria||'Accesorios')} · ${safeInt(p.stock)} disponibles</p><button data-gift-open="${safe(p.id)}">Ver producto</button></div></article>`).join(''):'<div class="pa-max-empty">No encontramos productos disponibles en ese presupuesto. Prueba con otro rango.</div>'}</div></div>`;document.body.appendChild(m);m.querySelector('[data-gift-result-close]').onclick=()=>m.remove();m.addEventListener('click',e=>{if(e.target===m)m.remove()});m.querySelectorAll('[data-gift-open]').forEach(b=>b.onclick=()=>{m.remove();abrirProductoModal(Number(b.dataset.giftOpen))})}
+ $('paOpenGiftFinder')?.addEventListener('click',()=>{giftStep=0;giftAnswers=[];renderGift();open('paGiftFinder')});$('paGiftBack')?.addEventListener('click',()=>{if(giftStep>0){giftStep--;renderGift()}});$('paGiftNext')?.addEventListener('click',()=>{if(!giftAnswers[giftStep])return toast('Elige una opción para continuar.');if(giftStep<2){giftStep++;renderGift()}else giftResults()});
+ // Bundle builder with stock validation and no fake discount promises.
+ function renderBundle(){const term=($('paBundleSearch')?.value||'').trim().toLowerCase(),cat=$('paBundleCategory')?.value||'all';const list=productos.filter(p=>safeInt(p.stock)>0&&(cat==='all'||String(p.categoria||'').toLowerCase()===cat)&&(!term||(p.nombre+' '+p.descripcion+' '+p.categoria).toLowerCase().includes(term)));$('paBundleProducts').innerHTML=list.length?list.map(p=>`<article class="pa-max-card"><img src="${safe(p.imagen)}" alt="${safe(p.nombre)}"><div class="pa-max-card-body"><h3>${safe(p.nombre)}</h3><div class="price">${money(p.precio)}</div><p>${safeInt(p.stock)} disponibles</p><button data-bundle-id="${safe(p.id)}">${bundleIds.includes(String(p.id))?'✓ En tu conjunto':'＋ Añadir a conjunto'}</button></div></article>`).join(''):'<div class="pa-max-empty">No hay coincidencias disponibles.</div>';const total=bundleIds.reduce((n,id)=>{const p=productos.find(x=>String(x.id)===id);return n+(p?safeNumber(p.precio):0)},0);$('paBundleTotal').textContent=money(total);$('paBundleAdd').disabled=!bundleIds.length;$('paBundleProducts').querySelectorAll('[data-bundle-id]').forEach(b=>b.onclick=()=>{const id=String(b.dataset.bundleId);bundleIds=bundleIds.includes(id)?bundleIds.filter(x=>x!==id):[...bundleIds,id];renderBundle()})}
+ $('paOpenBundles')?.addEventListener('click',()=>{bundleIds=[];const cats=[...new Set(productos.map(p=>String(p.categoria||'').trim()).filter(Boolean))];$('paBundleCategory').innerHTML='<option value="all">Todas las categorías</option>'+cats.map(c=>`<option value="${safe(c.toLowerCase())}">${safe(c)}</option>`).join('');$('paBundleSearch').value='';renderBundle();open('paBundleBuilder')});$('paBundleSearch')?.addEventListener('input',renderBundle);$('paBundleCategory')?.addEventListener('change',renderBundle);$('paBundleAdd')?.addEventListener('click',()=>{let added=0;for(const id of bundleIds){const p=productos.find(x=>String(x.id)===id);if(!p||safeInt(p.stock)<=0)continue;const existing=cart.find(x=>String(x.id)===id);if(existing){if(existing.quantity<safeInt(p.stock)){existing.quantity++;added++}}else{cart.push({id:p.id,name:p.nombre,price:p.precio,image:p.imagen,quantity:1});added++}}if(!added)return toast('No se pudo agregar el conjunto: revisa el stock.');guardarCarrito();actualizarCarritoUI();renderCart();close('paBundleBuilder');toast(`💗 ${added} producto(s) añadidos al carrito.`)});
+ // Complete searchable/sortable catalogue with real cards and working product actions.
+ function renderCatalog(){const term=($('paCatalogSearch')?.value||'').trim().toLowerCase(),cat=$('paCatalogCategory')?.value||'all',sort=$('paCatalogSort')?.value||'featured';let list=productos.filter(p=>(cat==='all'||String(p.categoria||'').toLowerCase()===cat)&&(!term||(p.nombre+' '+p.descripcion+' '+p.categoria).toLowerCase().includes(term)));if(sort==='priceAsc')list.sort((a,b)=>safeNumber(a.precio)-safeNumber(b.precio));if(sort==='priceDesc')list.sort((a,b)=>safeNumber(b.precio)-safeNumber(a.precio));if(sort==='name')list.sort((a,b)=>String(a.nombre).localeCompare(String(b.nombre),'es'));if(sort==='stock')list.sort((a,b)=>safeInt(b.stock)-safeInt(a.stock));$('paCatalogCount').textContent=`${list.length} resultado(s)`;$('paCatalogMeta').textContent=`Explora ${productos.length} productos. Los cambios de inventario se reflejan desde el catálogo cargado.`;$('paCatalogGrid').innerHTML=list.length?list.map(p=>`<article class="pa-max-card"><img src="${safe(p.imagen)}" alt="${safe(p.nombre)}" loading="lazy"><div class="pa-max-card-body"><h3>${safe(p.nombre)}</h3><div class="price">${money(p.precio)}</div><p>${safe(p.categoria||'Accesorios')} · ${safeInt(p.stock)>0?`${safeInt(p.stock)} disponibles`:'Agotado'}</p><button data-cat-open="${safe(p.id)}">Ver detalles</button></div></article>`).join(''):'<div class="pa-max-empty">No encontramos productos con esos filtros.</div>';$('paCatalogGrid').querySelectorAll('[data-cat-open]').forEach(b=>b.onclick=()=>{close('paCatalogPro');abrirProductoModal(Number(b.dataset.catOpen))})}
+ window.paOpenCatalogPro=()=>{const cats=[...new Set(productos.map(p=>String(p.categoria||'').trim()).filter(Boolean))];$('paCatalogCategory').innerHTML='<option value="all">Todas las categorías</option>'+cats.map(c=>`<option value="${safe(c.toLowerCase())}">${safe(c)}</option>`).join('');$('paCatalogSearch').value='';$('paCatalogSort').value='featured';renderCatalog();open('paCatalogPro')};$('paOpenCatalogPro')?.addEventListener('click',window.paOpenCatalogPro);$('paCatalogSearch')?.addEventListener('input',renderCatalog);$('paCatalogCategory')?.addEventListener('change',renderCatalog);$('paCatalogSort')?.addEventListener('change',renderCatalog);
+ // Product detail actions: price/stock watch, native share, and keyboard-safe event delegation.
+ const originalOpen=window.abrirProductoModal;
+ if(typeof originalOpen==='function')window.abrirProductoModal=function(id){const r=originalOpen(id);setTimeout(()=>{const p=productos.find(x=>String(x.id)===String(id)),box=$('productoModalContent');if(!p||!box)return;box.querySelector('.pa-max-product-tools')?.remove();const tools=document.createElement('div');tools.className='pa-max-product-tools';tools.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0';tools.innerHTML=`<button type="button" class="pa-max-choice" data-watch-price>🔔 Avisarme si baja</button><button type="button" class="pa-max-choice" data-watch-stock>📦 Avisarme si vuelve</button>`;const anchor=box.querySelector('.btn-add,button');if(anchor)anchor.insertAdjacentElement('afterend',tools);else box.appendChild(tools);tools.querySelector('[data-watch-price]').onclick=()=>addAlert('price',p.id);tools.querySelector('[data-watch-stock]').onclick=()=>addAlert('stock',p.id)},0);return r};
+ // Re-check alerts when the product dataset refreshes or the customer opens the center.
+ window.paRefreshAlerts=renderAlerts;
+ // Add an optional notification prompt only after explicit interaction; never auto-request permission.
+})();
+
 paInstallInteractions();
 paRenderRecent();
 paUpdateDock();
+
+// Refresh product watch states after async inventory/catalog updates.
+window.addEventListener('focus',()=>{if(typeof window.paRefreshAlerts==='function')window.paRefreshAlerts()});
 
 </script>
 
