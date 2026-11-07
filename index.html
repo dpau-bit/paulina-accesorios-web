@@ -3401,6 +3401,48 @@ try {
                 const p=productos.find(x=>String(x.id)===String(id)); if(!p)return '';
                 return `<article class="pa-fav-card"><img src="${paEscape(p.imagen||'')}" alt="${paEscape(p.nombre)}"><div><b>${paEscape(p.nombre)}</b><strong>${formatPrice(p.precio)}</strong><small>${safeInt(p.stock)>0?'Disponible':'Agotado'}</small><div><button onclick="addToCart(${Number(p.id)});">Añadir al carrito</button><button class="remove" onclick="toggleWishlist(${Number(p.id)});abrirMiCuenta('favoritos')">Quitar</button></div></div></article>`;
             }).join('')}</div>` : `<div class="pa-account-empty"><span>💗</span><b>Guarda lo que te encanta</b><small>Toca el corazón de cualquier producto para tenerlo a mano.</small></div>`;
+            const gastosHtml = `<div class="pa-account-stats">
+    <div><small>Compras válidas</small><b>${aprobados.length}</b></div>
+    <div><small>Total comprado</small><b>${formatPrice(gastado)}</b></div>
+    <div><small>Ticket promedio</small><b>${formatPrice(ticket)}</b></div>
+</div>
+<div class="pa-account-panel">
+    <div class="pa-panel-title"><div><h3>Tu actividad de compra</h3><small>Últimos seis meses · pedidos aprobados en adelante</small></div><span>📈</span></div>
+    ${paRenderSpendingChart(aprobados)}
+</div>`;
+
+const profileHtml = `<div class="pa-profile-grid">
+    <section class="pa-account-panel">
+        <div class="pa-panel-title"><div><h3>Datos personales</h3><small>Mantén tus datos actualizados para tus entregas.</small></div><span>✍️</span></div>
+        <div class="pa-form-grid">
+            <label>Nombre completo<input id="perfilNombre" maxlength="70" value="${paEscape(nombre)}" autocomplete="name"></label>
+            <label>Correo electrónico<input value="${paEscape(u.email||'')}" disabled></label>
+            <label>Teléfono / WhatsApp<input id="perfilTelefono" maxlength="25" value="${paEscape(u.telefono||u.phone||'')}" placeholder="Ej. 9XXXXXXXX" autocomplete="tel"></label>
+            <label>Fecha de nacimiento<input id="perfilCumple" type="date" value="${paEscape(u.fechaNacimiento||'')}" max="${new Date().toISOString().slice(0,10)}"></label>
+            <label class="wide">Dirección principal<input id="perfilDireccion" maxlength="180" value="${paEscape(u.direccion||u.address||'')}" placeholder="Calle, número, distrito" autocomplete="street-address"></label>
+            <label class="wide">Referencia de entrega<input id="perfilReferencia" maxlength="180" value="${paEscape(u.referencia||'')}" placeholder="Piso, color de puerta, punto de referencia…"></label>
+        </div>
+        <div class="pa-form-actions"><small>Tu correo se administra desde el acceso de tu cuenta.</small><button class="btn btn-gold" onclick="guardarDatosPerfil()">Guardar mis datos</button></div>
+    </section>
+    <section class="pa-account-panel">
+        <div class="pa-panel-title"><div><h3>Preferencias</h3><small>Personaliza cómo quieres recibir novedades.</small></div><span>⚙️</span></div>
+        <label class="pa-switch-row"><span><b>Novedades y promociones</b><small>Ofertas, lanzamientos y campañas.</small></span><input type="checkbox" id="paPrefPromos" ${u.preferencias?.promociones!==false?'checked':''}></label>
+        <label class="pa-switch-row"><span><b>Recordatorios de carrito</b><small>Recordatorios sobre productos que dejaste pendientes.</small></span><input type="checkbox" id="paPrefCarrito" ${u.preferencias?.carrito!==false?'checked':''}></label>
+        <label class="pa-switch-row"><span><b>Consejos y novedades</b><small>Ideas para combinar tus accesorios.</small></span><input type="checkbox" id="paPrefConsejos" ${u.preferencias?.consejos===true?'checked':''}></label>
+        <button class="btn btn-outline-gold" style="width:100%;margin-top:14px" onclick="guardarPreferenciasCuenta()">Guardar preferencias</button>
+        <div class="pa-security-box"><div><b>🔐 Seguridad de tu cuenta</b><small>Solicita un enlace seguro para cambiar tu contraseña.</small></div><button onclick="solicitarCambioPassword()">Cambiar contraseña</button></div>
+    </section>
+    <section class="pa-account-panel">
+        <div class="pa-panel-title"><div><h3>Direcciones guardadas</h3><small>Guarda más de un destino para tus compras.</small></div><span>📍</span></div>
+        <div id="paAddressList">${paRenderAddresses(u)}</div>
+        <div class="pa-address-form">
+            <input id="paAddressName" maxlength="35" placeholder="Etiqueta: Casa, trabajo…">
+            <input id="paAddressValue" maxlength="180" placeholder="Dirección completa">
+            <input id="paAddressRef" maxlength="120" placeholder="Referencia (opcional)">
+            <button onclick="agregarDireccionCuenta()">＋ Añadir dirección</button>
+        </div>
+    </section>
+</div>`;
             const content = {
                 resumen: summaryHtml,
                 perfil: profileHtml,
