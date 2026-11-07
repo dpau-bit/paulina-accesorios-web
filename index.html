@@ -33,7 +33,7 @@
             confirmPasswordReset, verifyPasswordResetCode
         } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
         import { 
-            getFirestore, doc, setDoc, getDoc, updateDoc,
+            getFirestore, doc, setDoc, getDoc, updateDoc, runTransaction,
             collection, getDocs, deleteDoc, onSnapshot, addDoc, query, where, orderBy, limit
         } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
@@ -59,7 +59,7 @@
             signOut, onAuthStateChanged, updateProfile, sendPasswordResetEmail,
             confirmPasswordReset, verifyPasswordResetCode
         };
-        window.firebaseDB = { doc, setDoc, getDoc, updateDoc, collection, getDocs, deleteDoc, onSnapshot, addDoc, query, where, orderBy, limit };
+        window.firebaseDB = { doc, setDoc, getDoc, updateDoc, runTransaction, collection, getDocs, deleteDoc, onSnapshot, addDoc, query, where, orderBy, limit };
 
                 onAuthStateChanged(auth, (user) => {
             const aplicarUI = (intentos = 0) => {
@@ -1535,7 +1535,7 @@ footer::before {
     <div class="floating-cart" id="floatingCart"><span>🛍️</span><span id="fcCount">0</span><span id="fcTotal">S/ 0.00</span></div>
     <a href="https://wa.me/51923861016" class="whatsapp-float" target="_blank">💬</a>
     <button class="chat-float-ai" id="chatFloatAI">🤖<span class="chat-badge">IA</span></button>
-    <button class="user-float-btn" id="userFloatBtn" onclick="abrirMiCuenta()">
+    <button class="user-float-btn" id="userFloatBtn" onclick="abrirMiCuenta('perfil')" aria-label="Abrir mi cuenta y nivel" title="Mi cuenta, puntos y nivel">
     <span style="font-size:1.6rem;">⭐</span>
     <span id="userFloatBadge" style="position:absolute;top:-4px;right:-4px;background:var(--primary);color:#fff;border-radius:50%;width:22px;height:22px;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:700;border:2px solid #fff;box-shadow:0 2px 8px rgba(194,24,91,0.4);">✨</span>
 </button>
@@ -2123,8 +2123,10 @@ function initChatAI() {
         cont.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;"><span style="font-size:3rem;">🔍</span><h3>No encontramos productos</h3></div>`;
         return;
     }
+    const LIMITE_INICIO = 8;
+    const productosVisibles = products.slice(0, LIMITE_INICIO);
     let html = '';
-    products.forEach(p => {
+    productosVisibles.forEach(p => {
         const stockNum = safeInt(p.stock);
         const precioNum = safeNumber(p.precio);
         const precioOldNum = safeNumber(p.precio_old);
@@ -2163,12 +2165,49 @@ function initChatAI() {
         `;
     });
     cont.innerHTML = html;
+    let verTodos = document.getElementById('verTodosProductos');
+    if (!verTodos) {
+        verTodos = document.createElement('div');
+        verTodos.id = 'verTodosProductos';
+        verTodos.style.cssText = 'grid-column:1/-1;text-align:center;padding:22px 0 8px;';
+        cont.appendChild(verTodos);
+    }
+    verTodos.innerHTML = products.length > LIMITE_INICIO
+        ? `<button class="btn btn-gold" type="button" onclick="abrirCatalogoCompleto()">Ver todos los productos (${products.length}) →</button>`
+        : '';
     cont.querySelectorAll('.btn-add').forEach(btn => {
         btn.addEventListener('click', function() {
             if (!this.disabled) addToCart(parseInt(this.dataset.id));
         });
     });
 }
+
+
+        function abrirCatalogoCompleto() {
+            let modal = document.getElementById('catalogoCompletoModal');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'catalogoCompletoModal';
+                modal.className = 'modal-overlay';
+                modal.style.zIndex = '10002';
+                document.body.appendChild(modal);
+            }
+            const lista = [...productos].sort((a,b) => (a.nombre || '').localeCompare(b.nombre || '', 'es'));
+            modal.innerHTML = `
+                <div style="background:var(--white);color:var(--gray-800);width:min(760px,96vw);max-height:90vh;overflow:auto;border-radius:22px;padding:22px;box-shadow:var(--shadow-xl);">
+                    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px;">
+                        <div><span class="section-tag">Paulina Accesorios</span><h2 style="font-family:var(--font-serif);">Catálogo completo</h2><p style="font-size:12px;color:var(--gray-500);">${lista.length} productos disponibles</p></div>
+                        <button type="button" onclick="document.getElementById('catalogoCompletoModal').classList.remove('show')" aria-label="Cerrar catálogo" style="border:0;background:var(--gray-100);border-radius:50%;width:38px;height:38px;cursor:pointer;font-size:20px;">×</button>
+                    </div>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;">
+                        ${lista.map(p => `<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px;border:1px solid var(--gray-200);border-radius:13px;">
+                            <span style="font-size:13px;font-weight:650;">${String(p.nombre || 'Producto').replace(/[<>&"]/g, '')}</span>
+                            <strong style="white-space:nowrap;color:var(--gold);">${formatPrice(p.precio)}</strong>
+                        </div>`).join('')}
+                    </div>
+                </div>`;
+            modal.classList.add('show');
+        }
 
         function cargarCarrito() {
             const saved = localStorage.getItem('paulina_cart');
@@ -2322,6 +2361,23 @@ function initChatAI() {
     mostrarNotificacion('🔒 Inicia sesión para usar cupones', '🔒');
     document.getElementById('cartModal').classList.remove('show');
     setTimeout(() => { showLoginModal(); }, 300);
+    return;
+}
+
+// La fuente de verdad es Firestore, no el estado guardado en el navegador.
+const userRefValidacion = window.firebaseDB.doc(window.db, "usuarios", window.currentUser.id);
+const userSnapValidacion = await window.firebaseDB.getDoc(userRefValidacion);
+if (!userSnapValidacion.exists()) {
+    msg.className = 'cupon-msg error';
+    msg.textContent = '❌ No se pudo verificar tu cuenta. Vuelve a iniciar sesión.';
+    return;
+}
+const datosUsuarioValidacion = userSnapValidacion.data();
+const usadosActuales = Array.isArray(datosUsuarioValidacion.cuponesUsados) ? datosUsuarioValidacion.cuponesUsados : [];
+window.currentUser = { ...window.currentUser, ...datosUsuarioValidacion, cuponesUsados: usadosActuales };
+if (usadosActuales.includes(codigo)) {
+    msg.className = 'cupon-msg error';
+    msg.textContent = '❌ Este cupón ya fue utilizado en una compra anterior.';
     return;
 }
 
@@ -2682,93 +2738,178 @@ try {
             }
         }
 
-        function abrirMiCuenta() {
+
+        let perfilTabActual = 'perfil';
+        let perfilPedidosCache = [];
+
+        async function abrirMiCuenta(tab = 'perfil') {
             if (!window.currentUser || !window.currentUser.id) {
                 mostrarNotificacion('⚠️ Inicia sesión', '⚠️');
                 showLoginModal();
                 return;
             }
+            perfilTabActual = tab;
+            const uid = window.currentUser.id;
+            const userRef = window.firebaseDB.doc(window.db, "usuarios", uid);
+            try {
+                const snap = await window.firebaseDB.getDoc(userRef);
+                if (snap.exists()) window.currentUser = { ...window.currentUser, ...snap.data() };
+            } catch (e) { console.warn('No se pudo actualizar el perfil:', e); }
             const u = window.currentUser;
-            const pts = parseInt(u.points) || 0;
+            const pts = safeInt(u.points);
             const nivel = obtenerNivelCompleto(pts);
-            const displayName = u.name || u.email.split('@')[0];
-            const inicial = displayName.charAt(0).toUpperCase();
+            const nombre = u.name || u.email?.split('@')[0] || 'Cliente';
+            let pedidos = [];
+            try {
+                const qPedidos = window.firebaseDB.query(
+                    window.firebaseDB.collection(window.db, 'pedidos'),
+                    window.firebaseDB.where('clienteId', '==', uid)
+                );
+                const pedidosSnap = await window.firebaseDB.getDocs(qPedidos);
+                pedidosSnap.forEach(d => pedidos.push({ id: d.id, ...d.data() }));
+                pedidos.sort((a,b) => new Date(b.fecha || 0) - new Date(a.fecha || 0));
+                perfilPedidosCache = pedidos;
+            } catch (e) { console.warn('No se pudieron cargar pedidos:', e); }
+            renderMiCuenta(perfilTabActual, pedidos);
+        }
 
-            let prog = 0, faltan = 0;
-            if (nivel.next) {
-                const rango = nivel.next - nivel.min;
-                prog = Math.min(100, ((pts - nivel.min) / rango) * 100);
-                faltan = nivel.next - pts;
-            } else prog = 100;
-
-            let codsHtml = '';
-            CODIGOS_POR_NIVEL.forEach(c => {
-                if (pts >= c.min) {
-                    codsHtml += `
-                        <div style="background:rgba(212,175,55,0.05);border:1.5px solid rgba(212,175,55,0.3);border-radius:12px;padding:14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;">
-                            <div>
-                                <div style="font-family:monospace;font-size:14px;font-weight:900;color:var(--gold);letter-spacing:2px;">${c.emoji} ${c.code}</div>
-                                <div style="font-size:10px;color:#999;">${c.desc}</div>
-                            </div>
-                            <button onclick="copiarCodigo('${c.code}')" style="background:var(--gold-gradient);color:#1a0b1a;border:none;padding:8px 14px;border-radius:8px;font-size:11px;font-weight:800;cursor:pointer;">📋</button>
-                        </div>
-                    `;
-                }
-            });
-            if (!codsHtml) codsHtml = '<p style="text-align:center;color:#666;font-size:11px;padding:14px;">Necesitas 50 puntos para tu primer código 🎟️</p>';
-
-            const html = `
-                <div style="background:linear-gradient(180deg,#0a050a,#1a0b1a);border-radius:24px;max-width:520px;width:100%;max-height:90vh;overflow:hidden;">
-                    <div style="background:linear-gradient(135deg,rgba(212,175,55,0.15),rgba(194,24,91,0.1));padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
-                        <h2 style="font-family:var(--font-serif);font-size:1.3rem;background:var(--gold-gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">⭐ Mi cuenta</h2>
-                        <button onclick="document.getElementById('miCuentaModal').classList.remove('show')" style="background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.3);color:var(--gold);width:36px;height:36px;border-radius:50%;cursor:pointer;">✕</button>
-                    </div>
-                    <div style="padding:24px;overflow-y:auto;max-height:70vh;">
-                        <div style="text-align:center;padding:16px 0 20px;">
-                            <div style="width:72px;height:72px;margin:0 auto 12px;border-radius:50%;background:var(--gold-gradient);display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:900;color:#1a0b1a;">${inicial}</div>
-                            <div style="font-family:var(--font-serif);font-size:1.2rem;color:#fff;font-weight:700;">${displayName}</div>
-                            <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:14px;">${u.email}</div>
-                            <div style="display:inline-block;padding:6px 18px;border-radius:20px;font-size:12px;font-weight:800;background:${nivel.color}22;color:${nivel.color};border:1px solid ${nivel.color}66;">
-                                ${nivel.emoji} ${nivel.nombre}
-                            </div>
-                            <div style="font-family:var(--font-serif);font-size:2rem;font-weight:900;color:var(--gold);margin-top:8px;">⭐ ${pts}</div>
-                            <div style="font-size:10px;color:rgba(212,175,55,0.6);letter-spacing:2px;">PUNTOS</div>
-                        </div>
-
-                        ${nivel.next ? `
-                        <div style="background:rgba(212,175,55,0.05);border:1px solid rgba(212,175,55,0.2);border-radius:14px;padding:16px;margin-bottom:20px;">
-                            <div style="display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,0.6);margin-bottom:8px;font-weight:600;">
-                                <span>Siguiente nivel</span><span>${pts} / ${nivel.next}</span>
-                            </div>
-                            <div style="height:10px;background:rgba(0,0,0,0.5);border-radius:5px;overflow:hidden;">
-                                <div style="height:100%;width:${prog}%;background:linear-gradient(90deg,#d4af37,#f5d76e);border-radius:5px;"></div>
-                            </div>
-                            <div style="text-align:center;font-size:11px;color:rgba(212,175,55,0.9);margin-top:8px;font-weight:600;">🎯 Faltan ${faltan} pts</div>
-                        </div>
-                        ` : '<div style="background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.5);border-radius:14px;padding:16px;margin-bottom:20px;text-align:center;"><div style="color:#a78bfa;font-size:13px;font-weight:800;">💎 ¡Nivel MÁXIMO!</div></div>'}
-
-                        <div style="font-family:var(--font-serif);color:var(--gold);font-size:13px;margin-bottom:12px;font-weight:700;">🎟️ Códigos desbloqueados</div>
-                        ${codsHtml}
-
-                        <div style="background:rgba(52,152,219,0.08);border-left:3px solid #3498db;border-radius:8px;padding:12px 14px;font-size:11px;color:rgba(255,255,255,0.7);line-height:1.6;margin-top:16px;">
-                            <strong style="color:#5dade2;">🚀 ¿Cómo ganar más puntos?</strong><br>
-                            • Cada <strong>S/ 1</strong> en compras = <strong>1 punto</strong><br>
-                            • Deja reseñas = <strong>+5 puntos</strong>
-                        </div>
-                    </div>
+        function renderMiCuenta(tab = 'perfil', pedidos = perfilPedidosCache) {
+            const u = window.currentUser || {};
+            const pts = safeInt(u.points);
+            const nivel = obtenerNivelCompleto(pts);
+            const nombre = u.name || u.email?.split('@')[0] || 'Cliente';
+            const usados = Array.isArray(u.cuponesUsados) ? u.cuponesUsados : [];
+            const pedidosValidos = pedidos || [];
+            const gastado = pedidosValidos.filter(p => !['cancelado','rechazado'].includes((p.estado || '').toLowerCase()))
+                .reduce((sum,p) => sum + safeNumber(p.total), 0);
+            const comprasAprobadas = pedidosValidos.filter(p => ['aprobado','pagado','enviado','entregado'].includes((p.estado || '').toLowerCase()));
+            const ticket = comprasAprobadas.length ? gastado / comprasAprobadas.length : 0;
+            const meses = [];
+            for (let offset = 5; offset >= 0; offset--) {
+                const d = new Date();
+                d.setDate(1);
+                d.setMonth(d.getMonth() - offset);
+                const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+                const totalMes = pedidosValidos.filter(p => {
+                    const fecha = new Date(p.fecha || 0);
+                    return !['cancelado','rechazado'].includes((p.estado || '').toLowerCase()) &&
+                        `${fecha.getFullYear()}-${String(fecha.getMonth()+1).padStart(2,'0')}` === key;
+                }).reduce((sum,p) => sum + safeNumber(p.total), 0);
+                meses.push({ label: d.toLocaleDateString('es-PE',{month:'short'}), total: totalMes });
+            }
+            const maxMes = Math.max(1, ...meses.map(m => m.total));
+            const graficoMeses = `<div style="display:flex;align-items:flex-end;gap:10px;height:150px;padding:16px 8px 4px;border-bottom:1px solid var(--gray-200);">
+                ${meses.map(m => `<div title="${m.label}: ${formatPrice(m.total)}" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:6px;">
+                    <small style="font-size:9px;color:var(--gray-500);">${m.total ? formatPrice(m.total) : '—'}</small>
+                    <div style="width:100%;max-width:42px;height:${Math.max(4,(m.total/maxMes)*88)}%;background:var(--gold-gradient);border-radius:7px 7px 2px 2px;"></div>
+                    <small style="font-size:10px;color:var(--gray-500);">${m.label}</small>
+                </div>`).join('')}
+            </div>`;
+            const cuponesHtml = CODIGOS_POR_NIVEL.map(c => {
+                const desbloqueado = pts >= c.min;
+                const usado = usados.includes(c.code);
+                return `<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px;border:1px solid var(--gray-200);border-radius:12px;margin:8px 0;">
+                    <div><b>${c.emoji} ${c.code}</b><div style="font-size:11px;color:var(--gray-500);">${c.desc}</div></div>
+                    <span style="font-size:11px;font-weight:800;color:${usado?'#e05252':desbloqueado?'#218653':'#999'};">${usado?'❌ Usado':desbloqueado?'✅ Disponible':'🔒 Bloqueado'}</span>
+                </div>`;
+            }).join('') + usados.filter(c => !CODIGOS_POR_NIVEL.some(x => x.code === c)).map(c => `<div style="padding:10px;border:1px solid var(--gray-200);border-radius:10px;margin:8px 0;">🎟️ ${c} · ❌ Usado</div>`).join('');
+            const pedidoHtml = pedidosValidos.length ? pedidosValidos.map(p => {
+                const estado = (p.estado || 'pendiente').toLowerCase();
+                const icon = estado === 'entregado' ? '✅' : estado === 'enviado' ? '🚚' : estado === 'cancelado' ? '❌' : '⏳';
+                const productosHtml = (p.productos || []).map(x => `${x.nombre || 'Producto'} × ${x.cantidad || 1}`).join(', ');
+                return `<article style="padding:14px;border:1px solid var(--gray-200);border-radius:14px;margin:10px 0;">
+                    <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;"><b>Pedido #${String(p.id).slice(-7)}</b><strong>${icon} ${estado}</strong></div>
+                    <p style="font-size:12px;color:var(--gray-500);margin:7px 0;">${productosHtml || 'Detalle no disponible'}</p>
+                    <div style="display:flex;justify-content:space-between;font-size:12px;"><span>${p.fecha ? fmtFecha(p.fecha) : 'Fecha no disponible'}</span><b>${formatPrice(p.total)}</b></div>
+                    <button class="btn btn-outline-gold btn-sm" style="margin-top:10px;" onclick="repetirPedido('${p.id}')">↻ Repetir pedido</button>
+                </article>`;
+            }).join('') : '<p style="padding:22px;text-align:center;color:var(--gray-500);">Todavía no tienes pedidos.</p>';
+            const reviews = Array.isArray(u.reviews) ? u.reviews : [];
+            const reviewsHtml = reviews.length ? reviews.map(r => `<div style="padding:12px;border-bottom:1px solid var(--gray-200);"><b>${r.productoNombre || r.nombreProducto || 'Producto'}</b><div style="color:var(--gold);">${'★'.repeat(Math.max(0,Math.min(5,safeInt(r.estrellas || r.rating))))}</div><p style="font-size:12px;">${String(r.texto || r.comentario || '').replace(/[<>&]/g,'')}</p><small>${r.fecha ? fmtFecha(r.fecha) : ''}</small></div>`).join('') : '<p style="padding:22px;text-align:center;color:var(--gray-500);">Aún no has publicado reseñas.</p>';
+            const wishlistHtml = wishlist.length ? wishlist.map(id => {
+                const p = productos.find(x => String(x.id) === String(id));
+                return p ? `<div style="display:flex;justify-content:space-between;align-items:center;padding:10px;border-bottom:1px solid var(--gray-200);"><span>${p.nombre}</span><b style="color:var(--gold);">${formatPrice(p.precio)}</b></div>` : '';
+            }).join('') : '<p style="padding:22px;text-align:center;color:var(--gray-500);">Tu lista está vacía.</p>';
+            const body = {
+                perfil: `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;">
+                    <label>Nombre<input id="perfilNombre" value="${String(nombre).replace(/["&<>]/g,'')}" style="display:block;width:100%;padding:11px;border:1px solid var(--gray-200);border-radius:9px;"></label>
+                    <label>Correo<input value="${String(u.email || '').replace(/["&<>]/g,'')}" disabled style="display:block;width:100%;padding:11px;border:1px solid var(--gray-200);border-radius:9px;"></label>
+                    <label>Teléfono<input id="perfilTelefono" value="${String(u.telefono || u.phone || '').replace(/["&<>]/g,'')}" placeholder="Tu teléfono" style="display:block;width:100%;padding:11px;border:1px solid var(--gray-200);border-radius:9px;"></label>
+                    <label>Dirección<input id="perfilDireccion" value="${String(u.direccion || u.address || '').replace(/["&<>]/g,'')}" placeholder="Tu dirección de entrega" style="display:block;width:100%;padding:11px;border:1px solid var(--gray-200);border-radius:9px;"></label>
                 </div>
-            `;
-
+                <div style="margin:18px 0;padding:16px;background:var(--gray-100);border-radius:14px;"><b>${nivel.emoji} ${nivel.nombre}</b><div style="font-size:24px;font-weight:900;color:var(--gold);">${pts} puntos</div><small>Miembro desde ${u.createdAt ? fmtFecha(u.createdAt) : 'fecha no disponible'}</small></div>
+                <button class="btn btn-gold" onclick="guardarDatosPerfil()">Guardar cambios</button>`,
+                pedidos: `<h3>📦 Historial de pedidos</h3>${pedidoHtml}`,
+                gastos: `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;">
+                    <div style="padding:16px;background:var(--gray-100);border-radius:12px;"><small>Total registrado</small><h2>${formatPrice(gastado)}</h2></div>
+                    <div style="padding:16px;background:var(--gray-100);border-radius:12px;"><small>Ticket promedio</small><h2>${formatPrice(ticket)}</h2></div>
+                    <div style="padding:16px;background:var(--gray-100);border-radius:12px;"><small>Compras aprobadas</small><h2>${comprasAprobadas.length}</h2></div>
+                </div><h3 style="margin-top:22px;">📊 Gastos por mes</h3>${graficoMeses}<p style="font-size:11px;color:var(--gray-500);margin-top:12px;">El resumen se calcula con los estados aprobados, pagados, enviados y entregados que existan en tu historial.</p>`,
+                cupones: `<h3>🎟️ Mis cupones</h3>${cuponesHtml}`,
+                resenas: `<h3>⭐ Mis reseñas</h3>${reviewsHtml}`,
+                wishlist: `<h3>❤️ Mi lista de deseos</h3>${wishlistHtml}`
+            };
             let modal = document.getElementById('miCuentaModal');
             if (!modal) {
                 modal = document.createElement('div');
-                modal.id = 'miCuentaModal';
-                modal.className = 'modal-overlay';
-                modal.style.zIndex = '10001';
-                document.body.appendChild(modal);
+                modal.id = 'miCuentaModal'; modal.className = 'modal-overlay';
+                modal.style.zIndex = '10001'; document.body.appendChild(modal);
             }
-            modal.innerHTML = html;
+            const tabs = [['perfil','👤 Perfil'],['pedidos','📦 Pedidos'],['gastos','💸 Gastos'],['cupones','🎟️ Cupones'],['resenas','⭐ Reseñas'],['wishlist','❤️ Wishlist']];
+            modal.innerHTML = `<div style="background:var(--white);color:var(--gray-800);border-radius:22px;width:min(850px,96vw);max-height:92vh;overflow:hidden;box-shadow:var(--shadow-xl);">
+                <header style="padding:20px 22px;background:linear-gradient(120deg,rgba(212,175,55,.15),rgba(194,24,91,.08));display:flex;justify-content:space-between;align-items:center;">
+                    <div style="display:flex;align-items:center;gap:12px;"><div style="width:48px;height:48px;border-radius:50%;background:var(--gold-gradient);display:grid;place-items:center;font-size:21px;font-weight:900;color:#fff;overflow:hidden;">${u.photoURL ? `<img src="${u.photoURL}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;">` : nombre.charAt(0).toUpperCase()}</div><div><h2 style="font-family:var(--font-serif);">Mi cuenta</h2><small>${nombre} · ${nivel.emoji} ${nivel.nombre}</small></div></div>
+                    <button onclick="document.getElementById('miCuentaModal').classList.remove('show')" style="border:0;background:var(--gray-100);border-radius:50%;width:38px;height:38px;cursor:pointer;font-size:20px;">×</button>
+                </header>
+                <nav style="display:flex;gap:7px;padding:12px 16px;overflow-x:auto;border-bottom:1px solid var(--gray-200);">${tabs.map(([id,label])=>`<button onclick="cambiarPestanaPerfil('${id}')" style="white-space:nowrap;border:1px solid ${tab===id?'var(--gold)':'var(--gray-200)'};background:${tab===id?'rgba(212,175,55,.13)':'transparent'};color:var(--gray-800);border-radius:20px;padding:9px 13px;cursor:pointer;font-weight:700;font-size:11px;">${label}</button>`).join('')}</nav>
+                <main style="padding:20px;overflow:auto;max-height:65vh;">${body[tab] || body.perfil}</main>
+                <footer style="padding:14px 20px;border-top:1px solid var(--gray-200);display:flex;justify-content:space-between;align-items:center;"><small style="color:var(--gray-500);">Paulina Accesorios · Cuenta segura</small><button onclick="logoutUser()" style="border:1px solid #e05252;background:#fff5f5;color:#c0392b;border-radius:20px;padding:10px 16px;font-weight:800;cursor:pointer;">↪ Cerrar sesión</button></footer>
+            </div>`;
             modal.classList.add('show');
+        }
+
+        function cambiarPestanaPerfil(tab) {
+            perfilTabActual = tab;
+            renderMiCuenta(tab, perfilPedidosCache);
+        }
+
+        async function guardarDatosPerfil() {
+            const u = window.currentUser;
+            if (!u?.id) return;
+            const nombre = document.getElementById('perfilNombre')?.value.trim();
+            const telefono = document.getElementById('perfilTelefono')?.value.trim();
+            const direccion = document.getElementById('perfilDireccion')?.value.trim();
+            if (!nombre) return mostrarNotificacion('Escribe tu nombre', '⚠️');
+            try {
+                const ref = window.firebaseDB.doc(window.db, 'usuarios', u.id);
+                await window.firebaseDB.updateDoc(ref, { name: nombre, telefono, direccion });
+                window.currentUser = { ...u, name: nombre, telefono, direccion };
+                if (window.auth?.currentUser) await window.firebaseAuth.updateProfile(window.auth.currentUser, { displayName: nombre });
+                mostrarNotificacion('Perfil actualizado correctamente', '✅');
+                abrirMiCuenta('perfil');
+                updateUserUI();
+            } catch (e) { console.error(e); mostrarNotificacion('No se pudieron guardar los cambios', '❌'); }
+        }
+
+        function repetirPedido(id) {
+            const pedido = perfilPedidosCache.find(p => p.id === id);
+            if (!pedido) return;
+            let agregados = 0;
+            (pedido.productos || []).forEach(item => {
+                const p = productos.find(x => String(x.id) === String(item.id));
+                if (p && safeInt(p.stock) > 0) {
+                    const cantidad = Math.min(safeInt(item.cantidad,1), safeInt(p.stock));
+                    const existente = cart.find(x => String(x.id) === String(p.id));
+                    if (existente) existente.quantity = Math.min(safeInt(p.stock), existente.quantity + cantidad);
+                    else cart.push({ id:p.id, name:p.nombre, price:safeNumber(p.precio), quantity:cantidad });
+                    agregados++;
+                }
+            });
+            if (!agregados) return mostrarNotificacion('Los productos ya no están disponibles', '⚠️');
+            guardarCarrito(); actualizarCarritoUI(); renderCart();
+            document.getElementById('miCuentaModal')?.classList.remove('show');
+            document.getElementById('cartModal')?.classList.add('show');
+            mostrarNotificacion('Productos agregados nuevamente al carrito', '🛒');
         }
 
         function copiarCodigo(code) {
@@ -2794,10 +2935,10 @@ try {
                 if (userAvatar) userAvatar.textContent = dn.charAt(0).toUpperCase();
                 if (mobileUserName) mobileUserName.textContent = dn;
                 if (mobileUserLevel) mobileUserLevel.textContent = `${lv.emoji} ${lv.nombre} · ${u.points || 0} pts`;
-                if (userBtn) userBtn.onclick = () => { if (confirm('¿Cerrar sesión?')) logoutUser(); };
+                if (userBtn) userBtn.onclick = () => abrirMiCuenta('perfil');
                 if (mobileLoginBtn) {
                     mobileLoginBtn.textContent = `👤 ${dn}`;
-                    mobileLoginBtn.onclick = () => { if (confirm('¿Cerrar sesión?')) logoutUser(); };
+                    mobileLoginBtn.onclick = () => abrirMiCuenta('perfil');
                 }
             } else {
                 if (userName) userName.textContent = 'Ingresar';
@@ -2824,7 +2965,7 @@ try {
                         id: cred.user.uid, name, email,
                         points: 50, level: '🥉 Bronce',
                         createdAt: new Date().toISOString(),
-                        wishlist: [], reviews: [],
+                        telefono: '', direccion: '', wishlist: [], reviews: [],
                         cuponesUsados: []
                     }
                 );
@@ -5945,59 +6086,88 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const { subtotal, descuento, total } = calcularTotales();
+        let pedidoGuardado = false;
 
         try {
+            const uid = window.currentUser.id;
+            const userRef = window.firebaseDB.doc(window.db, "usuarios", uid);
+            const pedidoRef = window.firebaseDB.doc(window.firebaseDB.collection(window.db, "pedidos"));
+            const cuponRef = cuponAplicado?.id
+                ? window.firebaseDB.doc(window.db, "cupones", cuponAplicado.id)
+                : null;
+
             const pedido = {
-                clienteId: window.currentUser?.id || 'anonimo',
-                clienteNombre: window.currentUser?.name || 'Cliente',
-                clienteEmail: window.currentUser?.email || 'sin-email',
+                clienteId: uid,
+                clienteNombre: window.currentUser.name || 'Cliente',
+                clienteEmail: window.currentUser.email || '',
                 productos: cart.map(i => ({ id: i.id, nombre: i.name, precio: i.price, cantidad: i.quantity })),
                 subtotal,
                 cupon: cuponAplicado?.codigo || null,
-                cuponId: cuponAplicado?.id || null,    
+                cuponId: cuponAplicado?.id || null,
                 descuento: cuponAplicado?.descuento || 0,
                 descuentoMonto: descuento,
-                cuponAplicado: false,                       
+                cuponAplicado: Boolean(cuponAplicado),
                 total,
                 estado: 'pendiente',
                 fecha: new Date().toISOString()
             };
 
-            await window.firebaseDB.addDoc(window.firebaseDB.collection(window.db, "pedidos"), pedido);
-            log('✅ Pedido guardado');
+            await window.firebaseDB.runTransaction(window.db, async (tx) => {
+                const userSnap = await tx.get(userRef);
+                if (!userSnap.exists()) throw new Error('No se encontró tu cuenta.');
+                const userData = userSnap.data();
+                const usados = Array.isArray(userData.cuponesUsados) ? userData.cuponesUsados : [];
 
+                let couponSnap = null;
+                let couponData = null;
+                if (cuponAplicado) {
+                    if (usados.includes(cuponAplicado.codigo)) {
+                        throw new Error('Este cupón ya fue utilizado anteriormente.');
+                    }
+                    if (cuponAplicado.tipo === 'nivel') {
+                        const regla = CODIGOS_POR_NIVEL.find(c => c.code === cuponAplicado.codigo);
+                        if (!regla || safeInt(userData.points) < regla.min) {
+                            throw new Error('Ya no cumples los requisitos para utilizar este cupón.');
+                        }
+                    } else {
+                        if (!cuponRef) throw new Error('No se pudo identificar el cupón.');
+                        couponSnap = await tx.get(cuponRef);
+                        if (!couponSnap.exists()) throw new Error('El cupón ya no existe.');
+                        couponData = couponSnap.data();
+                        const ahora = new Date();
+                        if (!couponData.activo) throw new Error('Este cupón ya no está activo.');
+                        if (couponData.fechaInicio && new Date(couponData.fechaInicio) > ahora) throw new Error('Este cupón aún no está disponible.');
+                        if (couponData.fechaExpiracion && new Date(couponData.fechaExpiracion) < ahora) throw new Error('Este cupón ya expiró.');
+                        if (couponData.limiteTotal > 0 && safeInt(couponData.usosActuales) >= safeInt(couponData.limiteTotal)) throw new Error('Este cupón se agotó.');
+                    }
+                }
+
+                tx.set(pedidoRef, pedido);
+                if (cuponAplicado) {
+                    tx.update(userRef, { cuponesUsados: [...usados, cuponAplicado.codigo] });
+                    if (couponSnap && couponData) {
+                        const nuevosUsos = safeInt(couponData.usosActuales) + 1;
+                        const cambios = { usosActuales: nuevosUsos };
+                        if (couponData.limiteTotal > 0 && nuevosUsos >= safeInt(couponData.limiteTotal)) cambios.activo = false;
+                        tx.update(cuponRef, cambios);
+                    }
+                }
+            });
+
+            pedidoGuardado = true;
             if (cuponAplicado) {
-                try {
-                    if (cuponAplicado.id) {
-                        const cuponRef = window.firebaseDB.doc(window.db, "cupones", cuponAplicado.id);
-                        const cuponSnap = await window.firebaseDB.getDoc(cuponRef);
-                        if (cuponSnap.exists()) {
-                            const c = cuponSnap.data();
-                            const nuevosUsos = (c.usosActuales || 0) + 1;
-                            const updates = { usosActuales: nuevosUsos };
-                            if (c.limiteTotal > 0 && nuevosUsos >= c.limiteTotal) updates.activo = false;
-                            await window.firebaseDB.updateDoc(cuponRef, updates);
-                        }
-                    }
-                    
-                    if (window.currentUser?.id) {
-                        const userRef = window.firebaseDB.doc(window.db, "usuarios", window.currentUser.id);
-                        const userSnap = await window.firebaseDB.getDoc(userRef);
-                        if (userSnap.exists()) {
-                            const u = userSnap.data();
-                            const usados = u.cuponesUsados || [];
-                            if (!usados.includes(cuponAplicado.codigo)) {
-                                usados.push(cuponAplicado.codigo);
-                                await window.firebaseDB.updateDoc(userRef, { cuponesUsados: usados });
-                                window.currentUser.cuponesUsados = usados;
-                            }
-                        }
-                    }
-                    log('✅ Cupón consumido:', cuponAplicado.codigo);
-                } catch (err) { console.warn('⚠️ Error consumiendo cupón:', err); }
+                const usados = [...(window.currentUser.cuponesUsados || []), cuponAplicado.codigo];
+                window.currentUser.cuponesUsados = [...new Set(usados)];
             }
-        } catch (e) { console.warn('⚠️ No se pudo guardar:', e); }
-        
+            log('✅ Pedido guardado de forma atómica');
+        } catch (e) {
+            console.error('❌ No se pudo confirmar el pedido:', e);
+            mostrarNotificacion(e.message || 'No se pudo confirmar el pedido. Inténtalo nuevamente.', '❌');
+            return;
+        }
+
+        if (!pedidoGuardado) return;
+
         let msg = '✨ ¡Hola Paulina! ✨%0A%0A';
         if (window.currentUser) {
             msg += `👤 ${window.currentUser.name}%0A📧 ${window.currentUser.email}%0A⭐ ${window.currentUser.points || 0} pts%0A%0A`;
