@@ -3388,36 +3388,10 @@ try {
                 const producto=productos.find(p=>String(p.id)===String(r.productoId));
                 return `<article class="pa-review-card"><div class="pa-review-top"><b>${paEscape(producto?.nombre || 'Producto')}</b><span>${'★'.repeat(Math.max(0,Math.min(5,safeInt(r.estrellas))))}${'☆'.repeat(5-Math.max(0,Math.min(5,safeInt(r.estrellas))))}</span></div><p>${paEscape(r.texto||'')}</p><small>${paFecha(r.fecha)}</small></article>`;
             }).join('') : `<div class="pa-account-empty"><span>⭐</span><b>Tus opiniones cuentan</b><small>Cuando publiques una reseña de un producto, la verás aquí.</small><button onclick="document.getElementById('miCuentaModal').classList.remove('show');document.getElementById('productos')?.scrollIntoView({behavior:'smooth'})">Ver productos</button></div>`;
-            const couponsHtml = levelRules.map(c=>{
+  const couponsHtml = CODIGOS_POR_NIVEL.map(c=>{
                 const unlocked=pts>=safeInt(c.min), used=usados.includes(c.code);
                 return `<article class="pa-coupon-card ${used?'is-used':unlocked?'is-ready':'is-locked'}"><div class="pa-coupon-symbol">${used?'✓':unlocked?'🎟️':'🔒'}</div><div class="pa-coupon-info"><b>${paEscape(c.code)}</b><small>${paEscape(c.desc||'Beneficio exclusivo')}</small><em>${used?'Ya utilizado':unlocked?'Disponible para tu nivel':`Desbloquea con ${c.min} puntos`}</em></div>${unlocked&&!used?`<button onclick="copiarCodigo('${paEscape(c.code)}')">Copiar</button>`:''}</article>`;
             }).join('');
-            const gastosHtml = `<div class="pa-account-stats"><div><small>Compras válidas</small><b>${aprobados.length}</b></div><div><small>Total comprado</small><b>${formatPrice(gastado)}</b></div><div><small>Ticket promedio</small><b>${formatPrice(ticket)}</b></div></div>
-                <div class="pa-account-panel"><div class="pa-panel-title"><div><h3>Tu actividad de compra</h3><small>Últimos seis meses · pedidos aprobados en adelante</small></div><span>📈</span></div>${paRenderSpendingChart(aprobados)}</div>`;
-            const profileHtml = `<div class="pa-profile-grid">
-                <section class="pa-account-panel"><div class="pa-panel-title"><div><h3>Datos personales</h3><small>Mantén tus datos actualizados para tus entregas.</small></div><span>✍️</span></div>
-                    <div class="pa-form-grid">
-                        <label>Nombre completo<input id="perfilNombre" maxlength="70" value="${paEscape(nombre)}" autocomplete="name"></label>
-                        <label>Correo electrónico<input value="${paEscape(u.email||'')}" disabled></label>
-                        <label>Teléfono / WhatsApp<input id="perfilTelefono" maxlength="25" value="${paEscape(u.telefono||u.phone||'')}" placeholder="Ej. 9XXXXXXXX" autocomplete="tel"></label>
-                        <label>Fecha de nacimiento<input id="perfilCumple" type="date" value="${paEscape(u.fechaNacimiento||'')}" max="${new Date().toISOString().slice(0,10)}"></label>
-                        <label class="wide">Dirección principal<input id="perfilDireccion" maxlength="180" value="${paEscape(u.direccion||u.address||'')}" placeholder="Calle, número, distrito" autocomplete="street-address"></label>
-                        <label class="wide">Referencia de entrega<input id="perfilReferencia" maxlength="180" value="${paEscape(u.referencia||'')}" placeholder="Piso, color de puerta, punto de referencia…"></label>
-                    </div>
-                    <div class="pa-form-actions"><small>Tu correo se administra desde el acceso de tu cuenta.</small><button class="btn btn-gold" onclick="guardarDatosPerfil()">Guardar mis datos</button></div>
-                </section>
-                <section class="pa-account-panel"><div class="pa-panel-title"><div><h3>Preferencias</h3><small>Personaliza cómo quieres recibir novedades.</small></div><span>⚙️</span></div>
-                    <label class="pa-switch-row"><span><b>Novedades y promociones</b><small>Ofertas, lanzamientos y campañas.</small></span><input type="checkbox" id="paPrefPromos" ${u.preferencias?.promociones!==false?'checked':''}></label>
-                    <label class="pa-switch-row"><span><b>Recordatorios de carrito</b><small>Recordatorios sobre productos que dejaste pendientes.</small></span><input type="checkbox" id="paPrefCarrito" ${u.preferencias?.carrito!==false?'checked':''}></label>
-                    <label class="pa-switch-row"><span><b>Consejos y novedades</b><small>Ideas para combinar tus accesorios.</small></span><input type="checkbox" id="paPrefConsejos" ${u.preferencias?.consejos===true?'checked':''}></label>
-                    <button class="btn btn-outline-gold" style="width:100%;margin-top:14px" onclick="guardarPreferenciasCuenta()">Guardar preferencias</button>
-                    <div class="pa-security-box"><div><b>🔐 Seguridad de tu cuenta</b><small>Solicita un enlace seguro para cambiar tu contraseña.</small></div><button onclick="solicitarCambioPassword()">Cambiar contraseña</button></div>
-                </section>
-                <section class="pa-account-panel"><div class="pa-panel-title"><div><h3>Direcciones guardadas</h3><small>Guarda más de un destino para tus compras.</small></div><span>📍</span></div>
-                    <div id="paAddressList">${paRenderAddresses(u)}</div>
-                    <div class="pa-address-form"><input id="paAddressName" maxlength="35" placeholder="Etiqueta: Casa, trabajo…"><input id="paAddressValue" maxlength="180" placeholder="Dirección completa"><input id="paAddressRef" maxlength="120" placeholder="Referencia (opcional)"><button onclick="agregarDireccionCuenta()">＋ Añadir dirección</button></div>
-                </section>
-            </div>`;
             const summaryHtml = `<div class="pa-welcome-banner"><div><span>PAULINA ACCESORIOS · TU ESPACIO</span><h2>¡Hola, ${paEscape(nombre.split(' ')[0])}! 💗</h2><p>Qué bonito tenerte de vuelta. Aquí tienes todo lo importante de tu cuenta.</p></div><div class="pa-welcome-avatar">${u.photoURL?`<img src="${paEscape(u.photoURL)}" alt="Foto de perfil">`:inicial}</div></div>
                 <div class="pa-account-stats"><div><small>Mis puntos</small><b>${pts.toLocaleString('es-PE')} ✨</b></div><div><small>Pedidos activos</small><b>${pendientes}</b></div><div><small>Pedidos entregados</small><b>${entregados}</b></div><div><small>Favoritos</small><b>${favoritos.length} ♥</b></div></div>
                 <section class="pa-level-card"><div class="pa-level-head"><div><small>MI NIVEL ACTUAL</small><h3>${nivel.emoji} ${paEscape(nivel.nombre)}</h3></div><b>${pts} pts</b></div><div class="pa-level-track"><span style="width:${progress}%"></span></div><div class="pa-level-foot"><span>${pts.toLocaleString('es-PE')} puntos</span><span>${nextPts===null?'¡Nivel máximo alcanzado!':`${Math.max(0,nextPts-pts)} pts para el siguiente nivel`}</span></div></section>
