@@ -1855,6 +1855,76 @@ body.pa-no-scroll{overflow:hidden}
  #productGrid.pa-list-view .product-badges{left:86px;top:7px}
 }
 
+
+
+/* =========================================================
+   PAULINA ADMIN EXPERIENCE · EXTREME ORGANIZATION LAYER
+   ========================================================= */
+.admin-premium { max-width: 1280px !important; border: 1px solid rgba(212,175,55,.24); }
+.admin-premium-header { position: relative; padding: 22px 30px !important; gap: 18px; }
+.admin-premium-header::after { content:"CENTRO DE CONTROL"; position:absolute; right:88px; top:50%; transform:translateY(-50%); color:rgba(245,215,110,.42); font-size:9px; font-weight:900; letter-spacing:3px; }
+.admin-premium-title { min-width:0; }
+.admin-premium-title h2 { letter-spacing:.2px; }
+.admin-premium-title p { letter-spacing:2px; }
+.admin-premium-tabs { position:sticky; top:0; z-index:5; flex-wrap:wrap; padding:14px 22px !important; gap:8px !important; background:rgba(10,5,10,.96) !important; backdrop-filter:blur(18px); }
+.admin-premium-tab { min-height:40px; display:inline-flex; align-items:center; justify-content:center; gap:7px; padding:10px 15px !important; border-radius:12px !important; border-color:rgba(212,175,55,.18) !important; }
+.admin-premium-tab.active { box-shadow:0 7px 22px rgba(212,175,55,.2); }
+.admin-premium-body { padding:26px 30px 34px !important; }
+.admin-tab-content.active { animation:paAdminEnter .28s ease both; }
+@keyframes paAdminEnter { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+.admin-panel { border:1px solid rgba(212,175,55,.17) !important; border-radius:18px !important; padding:22px !important; margin-bottom:20px; background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.018)) !important; box-shadow:0 12px 32px rgba(0,0,0,.15); }
+.admin-panel-title { display:flex; align-items:center; gap:10px; font-size:15px !important; letter-spacing:.2px; margin-bottom:18px !important; padding-bottom:13px; border-bottom:1px solid rgba(212,175,55,.14); }
+.admin-form-group { margin-bottom:15px !important; }
+.admin-label { display:block; margin-bottom:7px; color:rgba(255,255,255,.72) !important; font-size:10px !important; font-weight:800; letter-spacing:.8px; text-transform:uppercase; }
+.admin-input, .admin-select { min-height:43px; border-radius:11px !important; border:1px solid rgba(212,175,55,.18) !important; background:rgba(0,0,0,.28) !important; padding:11px 13px !important; }
+.admin-input:focus, .admin-select:focus { border-color:#d4af37 !important; box-shadow:0 0 0 3px rgba(212,175,55,.12) !important; outline:none; }
+.admin-btn { min-height:36px; border-radius:10px !important; font-weight:800 !important; letter-spacing:.1px; }
+.admin-search-bar { display:flex; gap:10px; align-items:center; margin-bottom:18px !important; }
+.admin-search-bar .admin-input { flex:1; min-width:0; }
+.admin-stats-grid { gap:14px !important; }
+.admin-stat-card { border:1px solid rgba(212,175,55,.16) !important; border-radius:17px !important; padding:19px !important; background:linear-gradient(145deg,rgba(212,175,55,.075),rgba(194,24,91,.045)) !important; }
+.admin-cupon-item { border:1px solid rgba(212,175,55,.2) !important; border-radius:16px !important; padding:17px !important; margin:12px 0 !important; background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(0,0,0,.14)) !important; }
+.admin-cupon-header { gap:14px; }
+.admin-cupon-codigo { letter-spacing:2px; }
+.admin-cupon-actions { display:flex; flex-wrap:wrap; gap:8px !important; margin-top:13px; }
+.admin-cupon-actions .admin-btn { margin-left:0 !important; }
+.pa-coupon-hub { margin-top:22px; border:1px solid rgba(212,175,55,.2); border-radius:20px; padding:20px; background:linear-gradient(145deg,rgba(212,175,55,.075),rgba(194,24,91,.045)); }
+.pa-coupon-hub-head { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:16px; }
+.pa-coupon-hub-head h3 { color:#f5d76e; font:900 19px/1.2 var(--font-serif); margin:0 0 5px; }
+.pa-coupon-hub-head p { color:rgba(255,255,255,.52); font-size:11px; margin:0; }
+.pa-coupon-hub-tag { border:1px solid rgba(212,175,55,.3); border-radius:999px; padding:7px 11px; color:#f5d76e; font-size:9px; font-weight:900; letter-spacing:1px; white-space:nowrap; }
+.pa-coupon-kpis { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin:14px 0 17px; }
+.pa-coupon-kpi { padding:14px; border:1px solid rgba(255,255,255,.08); border-radius:14px; background:rgba(0,0,0,.2); min-width:0; }
+.pa-coupon-kpi span { display:block; color:rgba(255,255,255,.48); font-size:9px; font-weight:800; letter-spacing:.7px; text-transform:uppercase; }
+.pa-coupon-kpi strong { display:block; color:#f5d76e; font-size:22px; font-weight:900; margin-top:4px; overflow-wrap:anywhere; }
+.pa-coupon-tools { display:flex; align-items:center; gap:9px; flex-wrap:wrap; margin:12px 0 14px; }
+.pa-coupon-tools input { flex:1 1 220px; min-width:0; min-height:40px; border:1px solid rgba(212,175,55,.2); border-radius:11px; background:rgba(0,0,0,.25); color:#fff; padding:10px 12px; outline:none; }
+.pa-coupon-tools input:focus { border-color:#d4af37; box-shadow:0 0 0 3px rgba(212,175,55,.1); }
+.pa-coupon-table-wrap { overflow:auto; border:1px solid rgba(255,255,255,.08); border-radius:14px; }
+.pa-coupon-table { width:100%; border-collapse:collapse; min-width:680px; }
+.pa-coupon-table th { background:rgba(212,175,55,.1); color:#f5d76e; text-align:left; font-size:9px; letter-spacing:.8px; text-transform:uppercase; padding:12px 13px; white-space:nowrap; }
+.pa-coupon-table td { color:rgba(255,255,255,.76); font-size:11px; padding:13px; border-top:1px solid rgba(255,255,255,.065); vertical-align:middle; }
+.pa-coupon-table tr:hover td { background:rgba(212,175,55,.035); }
+.pa-coupon-code { display:inline-flex; padding:5px 8px; border-radius:7px; background:rgba(212,175,55,.12); color:#f5d76e; font-weight:900; letter-spacing:1px; }
+.pa-coupon-muted { color:rgba(255,255,255,.38) !important; }
+.pa-coupon-empty { text-align:center; padding:28px 15px; color:rgba(255,255,255,.45); font-size:12px; }
+.pa-coupon-status { display:inline-flex; align-items:center; gap:5px; padding:5px 8px; border-radius:999px; font-size:9px; font-weight:900; background:rgba(74,222,128,.1); color:#4ade80; white-space:nowrap; }
+.pa-coupon-footnote { color:rgba(255,255,255,.35); font-size:10px; line-height:1.5; margin-top:12px; }
+.pa-admin-section-kicker { display:flex; align-items:center; gap:10px; color:#f5d76e; font-size:10px; font-weight:900; letter-spacing:1.8px; text-transform:uppercase; margin:24px 0 12px; }
+.pa-admin-section-kicker::after { content:""; height:1px; flex:1; background:linear-gradient(90deg,rgba(212,175,55,.35),transparent); }
+@media(max-width:700px) {
+ .admin-premium-header::after { display:none; }
+ .admin-premium-body { padding:17px 14px 24px !important; }
+ .admin-premium-tabs { flex-wrap:nowrap; justify-content:flex-start; }
+ .admin-premium-tab { flex:0 0 auto; }
+ .admin-panel { padding:16px !important; }
+ .pa-coupon-hub { padding:14px; }
+ .pa-coupon-kpis { grid-template-columns:1fr 1fr; }
+ .pa-coupon-kpi:last-child { grid-column:1/-1; }
+ .pa-coupon-hub-head h3 { font-size:17px; }
+}
+@media(prefers-reduced-motion:reduce) { .admin-tab-content.active { animation:none; } }
+
 </style>
 
 <style id="pa-max-suite-css">
@@ -5087,7 +5157,83 @@ function renderizarListaProductosAdmin(lista) {
                 snap.forEach(d => adminCuponesCache.push({ id: d.id, ...d.data() }));
                 adminCuponesCache.sort((a, b) => new Date(b.fechaCreacion || 0) - new Date(a.fechaCreacion || 0));
                 renderizarListaCuponesAdmin(adminCuponesCache);
-            } catch (e) { c.innerHTML = '<p style="color:#ff6b6b;text-align:center;">❌ Error</p>'; }
+                await cargarHistorialCuponesAdmin();
+            } catch (e) { c.innerHTML = '<p style="color:#ff6b6b;text-align:center;">❌ Error al cargar los cupones.</p>'; console.error('Error cargando cupones:', e); }
+        }
+
+        let paCouponHistoryCache = [];
+        function paCouponHistoryEscape(value) {
+            return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+        }
+        function paCouponHistoryDate(value) {
+            if (!value) return 'Sin fecha';
+            const date = new Date(value);
+            return Number.isNaN(date.getTime()) ? 'Fecha no disponible' : date.toLocaleString('es-PE', {day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+        }
+        async function cargarHistorialCuponesAdmin() {
+            const list = document.getElementById('paCouponHistoryList');
+            const kpis = document.getElementById('paCouponHistoryKpis');
+            if (!list) return;
+            list.innerHTML = '<div class="pa-coupon-empty">⏳ Cargando canjes desde Firestore…</div>';
+            try {
+                const snap = await window.firebaseDB.getDocs(window.firebaseDB.collection(window.db, 'pedidos'));
+                paCouponHistoryCache = [];
+                snap.forEach(docSnap => {
+                    const order = docSnap.data() || {};
+                    if (order.cupon && order.cuponAplicado === true) {
+                        paCouponHistoryCache.push({ id: docSnap.id, ...order });
+                    }
+                });
+                paCouponHistoryCache.sort((a,b) => new Date(b.cuponAplicadoEn || b.fecha || 0) - new Date(a.cuponAplicadoEn || a.fecha || 0));
+                const totalSaved = paCouponHistoryCache.reduce((sum, order) => sum + safeNumber(order.descuentoMonto, 0), 0);
+                const codes = new Set(paCouponHistoryCache.map(order => String(order.cupon).trim().toUpperCase()));
+                if (kpis) kpis.innerHTML = `
+                    <div class="pa-coupon-kpi"><span>Canjes registrados</span><strong>${paCouponHistoryCache.length}</strong></div>
+                    <div class="pa-coupon-kpi"><span>Códigos diferentes</span><strong>${codes.size}</strong></div>
+                    <div class="pa-coupon-kpi"><span>Descuento acumulado</span><strong>${formatPrice(totalSaved)}</strong></div>`;
+                filtrarHistorialCuponesAdmin();
+            } catch (error) {
+                console.error('No se pudo cargar el historial de cupones:', error);
+                list.innerHTML = '<div class="pa-coupon-empty">⚠️ No se pudo leer el historial. Revisa los permisos de lectura de la colección <strong>pedidos</strong> en Firestore.</div>';
+            }
+        }
+        function filtrarHistorialCuponesAdmin() {
+            const list = document.getElementById('paCouponHistoryList');
+            if (!list) return;
+            const query = (document.getElementById('paCouponHistorySearch')?.value || '').trim().toLowerCase();
+            const filtered = paCouponHistoryCache.filter(order => [order.cupon,order.clienteNombre,order.clienteEmail,order.id].some(value => String(value || '').toLowerCase().includes(query)));
+            if (!filtered.length) {
+                list.innerHTML = `<div class="pa-coupon-empty">${paCouponHistoryCache.length ? 'No hay canjes que coincidan con tu búsqueda.' : 'Todavía no hay cupones usados registrados en pedidos.'}</div>`;
+                return;
+            }
+            const rows = filtered.map(order => {
+                const customer = paCouponHistoryEscape(order.clienteNombre || 'Cliente sin nombre');
+                const email = paCouponHistoryEscape(order.clienteEmail || 'Correo no guardado');
+                const code = paCouponHistoryEscape(String(order.cupon || '—').toUpperCase());
+                const orderId = paCouponHistoryEscape(order.id);
+                const date = paCouponHistoryEscape(paCouponHistoryDate(order.cuponAplicadoEn || order.fecha));
+                const saved = formatPrice(safeNumber(order.descuentoMonto, 0));
+                const pct = safeNumber(order.descuento, 0);
+                return `<tr>
+                    <td><span class="pa-coupon-code">${code}</span><div class="pa-coupon-muted" style="margin-top:5px;">${pct ? pct+'% de descuento' : 'Descuento registrado'}</div></td>
+                    <td><strong style="color:#fff;">${customer}</strong><div class="pa-coupon-muted" style="margin-top:3px;">${email}</div></td>
+                    <td>${date}</td>
+                    <td><span class="pa-coupon-status">✓ Aplicado</span><div class="pa-coupon-muted" style="margin-top:4px;">Pedido #${orderId.slice(-8)}</div></td>
+                    <td style="color:#4ade80;font-weight:900;white-space:nowrap;">${paCouponHistoryEscape(saved)}</td>
+                </tr>`;
+            }).join('');
+            list.innerHTML = `<table class="pa-coupon-table"><thead><tr><th>Cupón</th><th>Cliente</th><th>Fecha</th><th>Canje / pedido</th><th>Ahorro</th></tr></thead><tbody>${rows}</tbody></table>`;
+        }
+        function exportarHistorialCuponesAdmin() {
+            if (!paCouponHistoryCache.length) return mostrarNotificacion('No hay canjes para exportar.', 'ℹ️');
+            const columns = ['Pedido','Cupon','Cliente','Correo','Fecha','Descuento porcentaje','Ahorro soles','Total pedido'];
+            const rows = paCouponHistoryCache.map(order => [order.id,order.cupon,order.clienteNombre,order.clienteEmail,order.cuponAplicadoEn || order.fecha,order.descuento,safeNumber(order.descuentoMonto,0).toFixed(2),safeNumber(order.total,0).toFixed(2)]);
+            const csv = [columns,...rows].map(row => row.map(value => `"${String(value ?? '').replace(/"/g,'""')}"`).join(';')).join('\r\n');
+            const blob = new Blob(['\ufeff',csv], {type:'text/csv;charset=utf-8;'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = `paulina-historial-cupones-${new Date().toISOString().slice(0,10)}.csv`;
+            document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+            mostrarNotificacion('Historial de cupones exportado.', '📄');
         }
 
         function renderizarListaCuponesAdmin(lista) {
@@ -6103,6 +6249,7 @@ function abrirPanelAdminContenido() {
                 </div>
 
                 <div class="admin-premium-body">
+                    <div class="pa-admin-section-kicker">Gestión general · Inventario · Clientes · Promociones</div>
                     <div id="tab-dashboard" class="admin-tab-content active">
                         <div id="dashboardStats" class="admin-stats-grid">
                             <p style="text-align:center;color:rgba(255,255,255,0.3);font-size:12px;grid-column:1/-1;">Cargando...</p>
@@ -6224,7 +6371,32 @@ function abrirPanelAdminContenido() {
                             </div>
                             <button class="admin-btn admin-btn-primary admin-btn-full" onclick="crearCupon()">🎟️ Crear cupón</button>
                         </div>
+                        <div class="pa-admin-section-kicker">Administración de promociones</div>
                         <div id="adminCuponesLista"></div>
+
+                        <section class="pa-coupon-hub" aria-labelledby="paCouponHistoryTitle">
+                            <div class="pa-coupon-hub-head">
+                                <div>
+                                    <h3 id="paCouponHistoryTitle">🎟️ Historial de cupones usados</h3>
+                                    <p>Registro de pedidos que guardan un cupón como aplicado. Aquí puedes revisar quién lo utilizó y cuánto descuento recibió.</p>
+                                </div>
+                                <span class="pa-coupon-hub-tag">REGISTRO DE CANJES</span>
+                            </div>
+                            <div class="pa-coupon-kpis" id="paCouponHistoryKpis">
+                                <div class="pa-coupon-kpi"><span>Canjes registrados</span><strong>—</strong></div>
+                                <div class="pa-coupon-kpi"><span>Códigos diferentes</span><strong>—</strong></div>
+                                <div class="pa-coupon-kpi"><span>Descuento acumulado</span><strong>—</strong></div>
+                            </div>
+                            <div class="pa-coupon-tools">
+                                <input id="paCouponHistorySearch" type="search" placeholder="Buscar por cupón, cliente, correo o pedido…" oninput="filtrarHistorialCuponesAdmin()" aria-label="Buscar en historial de cupones usados">
+                                <button type="button" class="admin-btn admin-btn-secondary" onclick="cargarHistorialCuponesAdmin()">↻ Actualizar</button>
+                                <button type="button" class="admin-btn admin-btn-primary" onclick="exportarHistorialCuponesAdmin()">⇩ Exportar CSV</button>
+                            </div>
+                            <div id="paCouponHistoryList" class="pa-coupon-table-wrap">
+                                <div class="pa-coupon-empty">Abre esta sección para cargar el historial de cupones.</div>
+                            </div>
+                            <p class="pa-coupon-footnote">El historial se obtiene de los documentos de <strong>pedidos</strong> en Firestore. Los registros antiguos que no tengan el campo <code>cuponAplicado: true</code> no se cuentan como canjes confirmados. No se inventan fechas ni clientes si esos datos no están guardados.</p>
+                        </section>
                     </div>
 
                     <div id="tab-pedidos" class="admin-tab-content">
@@ -6769,6 +6941,9 @@ window.marcarCuponComoUsado = marcarCuponComoUsado;
 window.eliminarPedido = eliminarPedido;
 window.cambiarPeriodoVentas = cambiarPeriodoVentas;
 window.cargarCuponesAdmin = cargarCuponesAdmin;
+window.cargarHistorialCuponesAdmin = cargarHistorialCuponesAdmin;
+window.filtrarHistorialCuponesAdmin = filtrarHistorialCuponesAdmin;
+window.exportarHistorialCuponesAdmin = exportarHistorialCuponesAdmin;
 window.crearCupon = crearCupon;
 window.toggleCuponActivo = toggleCuponActivo;
 window.toggleAnuncioCupon = toggleAnuncioCupon;
