@@ -2,7 +2,7 @@
 <html lang="es" data-theme="light">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
     <title>✨ Paulina Accesorios 2026 - Belleza de Lujo</title>
 
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
@@ -10,9 +10,7 @@
     <meta name="theme-color" content="#c2185b" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script type="importmap">
@@ -48,7 +46,8 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
+        let analytics = null;
+        try { analytics = getAnalytics(app); } catch (error) { console.warn("Analytics no disponible en este entorno:", error); }
         const auth = getAuth(app);
         const db = getFirestore(app);
 
@@ -1728,6 +1727,134 @@ footer:before{content:"✦";position:absolute;right:5%;top:-65px;font-size:220px
  .pa-order-timeline{gap:2px}
 }
 
+
+/* ═══════════════════════════════════════════════════════════════
+   PAULINA ACCESORIOS · EXPERIENCE LAYER 2026
+   Responsive, accessible and interaction-focused enhancements.
+   ═══════════════════════════════════════════════════════════════ */
+:root{
+ --pa-ink:#321426;--pa-rose:#c2185b;--pa-rose2:#f06292;--pa-gold:#d4af37;
+ --pa-glass:rgba(255,255,255,.78);--pa-border:rgba(194,24,91,.12);
+ --pa-ease:cubic-bezier(.2,.8,.2,1);
+}
+[data-theme="dark"]{
+ --pa-ink:#f8eaf1;--pa-glass:rgba(24,14,23,.88);--pa-border:rgba(245,215,110,.16);
+}
+button,input,select,textarea{font:inherit}
+button{ -webkit-tap-highlight-color:transparent }
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+ outline:3px solid rgba(194,24,91,.45)!important;outline-offset:3px!important
+}
+body.pa-no-scroll{overflow:hidden}
+.pa-command-backdrop{position:fixed;inset:0;z-index:12000;background:rgba(18,5,15,.62);backdrop-filter:blur(12px);display:none;align-items:flex-start;justify-content:center;padding:12vh 16px 20px}
+.pa-command-backdrop.open{display:flex;animation:fadeInScale .18s ease}
+.pa-command{width:min(680px,100%);max-height:min(75vh,720px);overflow:hidden;border:1px solid var(--pa-border);border-radius:24px;background:var(--white);box-shadow:0 35px 100px rgba(0,0,0,.35);display:flex;flex-direction:column}
+.pa-command-top{display:flex;align-items:center;gap:12px;padding:18px 20px;border-bottom:1px solid var(--pa-border)}
+.pa-command-top .glass{font-size:22px}
+.pa-command-top input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--gray-800);font-size:16px}
+.pa-command-top kbd{border:1px solid var(--gray-300);border-radius:7px;padding:3px 7px;color:var(--gray-500);font-size:10px}
+.pa-command-results{padding:10px;overflow:auto}
+.pa-command-label{padding:10px 12px 6px;color:var(--gray-500);font-size:10px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase}
+.pa-command-item{width:100%;display:flex;align-items:center;gap:12px;padding:12px;border:0;border-radius:13px;background:transparent;text-align:left;color:var(--gray-800);cursor:pointer;transition:.18s}
+.pa-command-item:hover,.pa-command-item[aria-selected=true]{background:rgba(194,24,91,.09)}
+.pa-command-icon{width:38px;height:38px;display:grid;place-items:center;border-radius:12px;background:rgba(212,175,55,.13);font-size:18px}
+.pa-command-item b{display:block;font-size:12px}.pa-command-item small{display:block;color:var(--gray-500);font-size:10px;margin-top:2px}
+.pa-command-empty{text-align:center;padding:28px;color:var(--gray-500);font-size:12px}
+.pa-utility-rail{position:fixed;right:18px;bottom:90px;z-index:800;display:flex;flex-direction:column;gap:9px}
+.pa-utility-btn{width:46px;height:46px;border:1px solid var(--pa-border);border-radius:16px;background:var(--pa-glass);backdrop-filter:blur(14px);box-shadow:var(--shadow-md);color:var(--pa-ink);font-size:18px;cursor:pointer;transition:transform .2s,background .3s,border-color .3s}
+.pa-utility-btn:hover{transform:translateY(-4px) scale(1.04);border-color:var(--gold)}
+.pa-quick-search{position:relative}
+.pa-search-suggest{position:absolute;top:calc(100% + 10px);left:0;right:0;min-width:min(360px,90vw);max-height:360px;overflow:auto;background:var(--white);border:1px solid var(--pa-border);border-radius:18px;box-shadow:var(--shadow-xl);z-index:1100;padding:8px;display:none}
+.pa-search-suggest.open{display:block;animation:slideDown .18s ease}
+.pa-suggest-item{width:100%;display:flex;align-items:center;gap:10px;padding:9px;border:0;border-radius:12px;background:transparent;text-align:left;color:var(--gray-800);cursor:pointer}
+.pa-suggest-item:hover{background:rgba(194,24,91,.08)}
+.pa-suggest-item img{width:42px;height:42px;border-radius:11px;object-fit:cover;background:var(--gray-100)}
+.pa-suggest-item b{display:block;font-size:11px}.pa-suggest-item small{font-size:10px;color:var(--gold);font-weight:800}
+.pa-cart-progress{margin:12px 0 16px;padding:14px;border-radius:16px;background:linear-gradient(135deg,rgba(212,175,55,.12),rgba(194,24,91,.06));border:1px solid rgba(212,175,55,.2)}
+.pa-cart-progress-head{display:flex;justify-content:space-between;gap:10px;font-size:11px;font-weight:800;color:var(--gray-700)}
+.pa-cart-progress-track{height:8px;border-radius:20px;background:rgba(120,90,110,.13);overflow:hidden;margin-top:9px}
+.pa-cart-progress-track span{height:100%;display:block;border-radius:20px;background:var(--gold-gradient);transition:width .35s var(--pa-ease)}
+.pa-cart-line{display:grid;grid-template-columns:58px minmax(0,1fr) auto;gap:11px;align-items:center;padding:12px 0;border-bottom:1px solid var(--pa-border)}
+.pa-cart-line img{width:58px;height:58px;border-radius:13px;object-fit:cover;background:var(--gray-100)}
+.pa-cart-line-name{font-size:12px;font-weight:800;color:var(--gray-800);line-height:1.3}
+.pa-cart-line-price{font-size:11px;color:var(--gold);font-weight:900;margin-top:4px}
+.pa-qty{display:flex;align-items:center;gap:7px;margin-top:7px}
+.pa-qty button{width:26px;height:26px;border:1px solid var(--pa-border);border-radius:8px;background:var(--gray-50);color:var(--gray-800);font-weight:900;cursor:pointer}
+.pa-qty span{min-width:16px;text-align:center;font-size:11px;font-weight:900}
+.pa-cart-remove{border:0;background:transparent;color:#d34c6c;font-size:18px;padding:8px;cursor:pointer}
+.pa-cart-recommend{margin-top:14px;padding:13px;border-radius:15px;background:var(--gray-50);border:1px solid var(--pa-border)}
+.pa-cart-recommend h4{font-size:11px;margin-bottom:9px;color:var(--gray-700)}
+.pa-cart-recommend-row{display:flex;gap:8px;overflow:auto;padding-bottom:3px}
+.pa-cart-recommend-item{min-width:112px;max-width:112px;background:var(--white);border:1px solid var(--pa-border);border-radius:12px;padding:8px;text-align:center}
+.pa-cart-recommend-item img{width:58px;height:58px;object-fit:cover;border-radius:10px}
+.pa-cart-recommend-item b{display:block;font-size:10px;line-height:1.3;margin:4px 0}
+.pa-cart-recommend-item button{border:0;border-radius:20px;padding:6px 10px;background:var(--primary-gradient);color:white;font-size:9px;font-weight:800;cursor:pointer}
+.pa-empty-state{padding:32px 16px;text-align:center;border:1px dashed var(--pa-border);border-radius:18px;color:var(--gray-500)}
+.pa-empty-state .emoji{font-size:34px;margin-bottom:8px}
+.pa-toast-stack{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:15000;display:grid;gap:8px;width:min(420px,calc(100% - 28px));pointer-events:none}
+.pa-toast{padding:12px 16px;border-radius:14px;background:#281321;color:white;box-shadow:0 12px 35px rgba(0,0,0,.25);font-size:12px;font-weight:700;animation:slideDown .22s ease}
+.pa-toast.success{border-left:4px solid #4caf50}.pa-toast.error{border-left:4px solid #ef5350}
+.pa-reading-progress{position:fixed;top:0;left:0;height:3px;width:0;background:var(--gold-gradient);z-index:13000;transition:width .08s linear}
+.pa-newsletter{position:relative;overflow:hidden;margin:30px auto;padding:clamp(22px,4vw,42px);max-width:1200px;border-radius:28px;background:linear-gradient(120deg,#54152f,#a51e55 55%,#d4af37);color:#fff;box-shadow:0 24px 60px rgba(113,22,65,.2)}
+.pa-newsletter:after{content:"✦";position:absolute;right:5%;top:-50px;font-size:220px;opacity:.1;pointer-events:none}
+.pa-newsletter-inner{position:relative;z-index:1;display:grid;grid-template-columns:1fr minmax(260px,420px);gap:24px;align-items:center}
+.pa-newsletter h2{font:900 clamp(24px,3vw,38px)/1.1 var(--font-serif);margin-bottom:8px}
+.pa-newsletter p{font-size:12px;opacity:.85;max-width:560px}
+.pa-newsletter-form{display:flex;gap:8px;background:#fff;padding:6px;border-radius:999px}
+.pa-newsletter-form input{min-width:0;flex:1;border:0;outline:0;padding:10px 14px;border-radius:999px;color:#321426;font-size:12px}
+.pa-newsletter-form button{border:0;border-radius:999px;padding:10px 17px;background:#321426;color:white;font-weight:800;font-size:11px;cursor:pointer}
+.pa-feature-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0}
+.pa-feature-tile{border:1px solid var(--pa-border);border-radius:18px;padding:17px;background:var(--white);box-shadow:var(--shadow-xs);transition:.25s}
+.pa-feature-tile:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.pa-feature-tile span{font-size:22px}.pa-feature-tile b{display:block;font-size:12px;margin:8px 0 3px;color:var(--gray-800)}.pa-feature-tile small{font-size:10px;color:var(--gray-500)}
+.pa-live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#43a66c;box-shadow:0 0 0 4px rgba(67,166,108,.12);margin-right:6px}
+.pa-backdrop-blur{backdrop-filter:blur(14px)}
+@media(max-width:900px){.pa-feature-strip{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:680px){
+ .pa-utility-rail{right:10px;bottom:82px;gap:7px}.pa-utility-btn{width:40px;height:40px;border-radius:14px}
+ .pa-command-backdrop{padding:8vh 10px 12px}.pa-command{border-radius:18px;max-height:82vh}
+ .pa-command-top{padding:14px}.pa-command-top input{font-size:14px}
+ .pa-newsletter{margin:18px 12px;border-radius:22px}.pa-newsletter-inner{grid-template-columns:1fr;gap:16px}
+ .pa-newsletter-form{border-radius:16px}.pa-newsletter-form button{white-space:nowrap}
+ .pa-cart-line{grid-template-columns:50px minmax(0,1fr) auto;gap:8px}.pa-cart-line img{width:50px;height:50px}
+}
+@media(max-width:420px){.pa-feature-strip{gap:8px}.pa-feature-tile{padding:13px}.pa-feature-tile small{font-size:9px}.pa-newsletter-form{flex-direction:column;border-radius:15px}.pa-newsletter-form input{width:100%}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+
+/* Catalog controls and editorial product-list layout */
+.pa-catalog-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:14px 0 18px;padding:12px 14px;background:var(--white);border:1px solid var(--pa-border);border-radius:16px;box-shadow:var(--shadow-xs)}
+.pa-catalog-toolbar-left,.pa-catalog-toolbar-right{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.pa-catalog-toolbar label{display:flex;align-items:center;gap:7px;color:var(--gray-600);font-size:10px;font-weight:800}
+.pa-catalog-toolbar select{border:1px solid var(--pa-border);border-radius:10px;padding:8px 10px;background:var(--gray-50);color:var(--gray-800);font-size:10px}
+.pa-view-toggle{display:flex;padding:3px;border-radius:10px;background:var(--gray-100);gap:3px}
+.pa-view-toggle button{border:0;border-radius:8px;padding:7px 10px;background:transparent;color:var(--gray-600);font-size:11px;cursor:pointer}
+.pa-view-toggle button.active{background:var(--white);color:var(--primary);box-shadow:var(--shadow-xs)}
+#productGrid.pa-list-view{grid-template-columns:1fr;gap:10px}
+#productGrid.pa-list-view .product-card{display:grid;grid-template-columns:112px minmax(0,1fr) minmax(130px,auto);align-items:center;gap:8px;text-align:left;padding:12px 16px;min-height:132px}
+#productGrid.pa-list-view .product-image{grid-row:1/4;width:100px;height:100px;margin:0;border-radius:16px}
+#productGrid.pa-list-view .product-name{align-self:end}
+#productGrid.pa-list-view .product-description{margin:0}
+#productGrid.pa-list-view .product-price{grid-column:3;grid-row:1;font-size:18px;margin:0;text-align:right}
+#productGrid.pa-list-view .product-stock{grid-column:3;grid-row:2;justify-self:end}
+#productGrid.pa-list-view .btn-add{grid-column:3;grid-row:3;max-width:190px;justify-self:end}
+#productGrid.pa-list-view .btn-reviews,#productGrid.pa-list-view .pa-compare-btn{grid-column:3;max-width:190px;justify-self:end}
+#productGrid.pa-list-view .product-badges{left:124px;right:auto;top:8px;flex-direction:row}
+#productGrid.pa-list-view .btn-wishlist{left:8px;top:8px}
+.pa-reveal{opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s var(--pa-ease)}
+.pa-reveal.pa-visible{opacity:1;transform:none}
+@media(max-width:620px){
+ .pa-catalog-toolbar{align-items:stretch;padding:10px}.pa-catalog-toolbar-left,.pa-catalog-toolbar-right{width:100%;justify-content:space-between}
+ #productGrid.pa-list-view .product-card{grid-template-columns:76px minmax(0,1fr);padding:10px;gap:8px}
+ #productGrid.pa-list-view .product-image{grid-column:1;grid-row:1/5;width:68px;height:68px}
+ #productGrid.pa-list-view .product-name{grid-column:2;grid-row:1;font-size:13px}
+ #productGrid.pa-list-view .product-description{grid-column:2;grid-row:2;font-size:10px}
+ #productGrid.pa-list-view .product-price{grid-column:2;grid-row:3;text-align:left;font-size:16px}
+ #productGrid.pa-list-view .product-stock{grid-column:2;grid-row:4;justify-self:start}
+ #productGrid.pa-list-view .btn-add,#productGrid.pa-list-view .btn-reviews,#productGrid.pa-list-view .pa-compare-btn{grid-column:1/-1;max-width:none;justify-self:stretch}
+ #productGrid.pa-list-view .product-badges{left:86px;top:7px}
+}
+
 </style>
 
 <style id="pa-max-suite-css">
@@ -1880,7 +2007,16 @@ footer:before{content:"✦";position:absolute;right:5%;top:-65px;font-size:220px
         <button type="button" data-dock="account"><span>♙</span><span>Cuenta</span></button>
     </nav>
 
-    <section class="section" id="productos">
+    
+<section class="section" id="paBenefits" aria-label="Experiencia de compra">
+ <div class="pa-feature-strip">
+  <article class="pa-feature-tile"><span>💎</span><b>Detalles que enamoran</b><small>Encuentra accesorios para cada ocasión.</small></article>
+  <article class="pa-feature-tile"><span>🛍️</span><b>Compra a tu ritmo</b><small>Guarda favoritos y continúa cuando quieras.</small></article>
+  <article class="pa-feature-tile"><span>📦</span><b>Compra acompañada</b><small>Consulta disponibilidad y prepara tu pedido.</small></article>
+  <article class="pa-feature-tile"><span>💗</span><b>Tu espacio personal</b><small>Revisa tus pedidos y beneficios desde tu cuenta.</small></article>
+ </div>
+</section>
+<section class="section" id="productos">
         <div class="section-header">
             <span class="section-tag">🛍️ Colección 2026</span>
             <h2 class="section-title">Nuestros <span class="accent">productos</span></h2>
@@ -1930,7 +2066,16 @@ footer:before{content:"✦";position:absolute;right:5%;top:-65px;font-size:220px
             </div>
         </div>
         <div class="results-count" id="resultsCount"></div>
-        <div class="product-grid" id="productGrid"></div>
+        <div class="pa-catalog-toolbar" id="paCatalogToolbar">
+ <div class="pa-catalog-toolbar-left">
+  <label for="paCatalogSortMain">Ordenar por
+   <select id="paCatalogSortMain"><option value="featured">Recomendados</option><option value="priceAsc">Menor precio</option><option value="priceDesc">Mayor precio</option><option value="name">Nombre A-Z</option><option value="stock">Mayor disponibilidad</option></select>
+  </label>
+  <label><input type="checkbox" id="paOnlyAvailable" style="accent-color:#c2185b"> Solo disponibles</label>
+ </div>
+ <div class="pa-catalog-toolbar-right"><span style="font-size:10px;color:var(--gray-500);font-weight:700">Vista</span><div class="pa-view-toggle"><button type="button" class="active" data-pa-view="grid" aria-pressed="true">▦ Cuadrícula</button><button type="button" data-pa-view="list" aria-pressed="false">☷ Lista</button></div></div>
+</div>
+<div class="product-grid" id="productGrid"></div>
     </section>
 
     <section class="section" id="ranking" style="display:none;">
@@ -2062,7 +2207,7 @@ footer:before{content:"✦";position:absolute;right:5%;top:-65px;font-size:220px
     </div>
 
     <div class="floating-cart" id="floatingCart"><span>🛍️</span><span id="fcCount">0</span><span id="fcTotal">S/ 0.00</span></div>
-    <a href="https://wa.me/51923861016" class="whatsapp-float" target="_blank">💬</a>
+    <a href="https://wa.me/51923861016" class="whatsapp-float" target="_blank" rel="noopener noreferrer">💬</a>
     <button class="chat-float-ai" id="chatFloatAI">🤖<span class="chat-badge">IA</span></button>
     <button class="user-float-btn" id="userFloatBtn" onclick="abrirMiCuenta('perfil')" aria-label="Abrir mi cuenta y nivel" title="Mi cuenta, puntos y nivel">
     <span style="font-size:1.6rem;">⭐</span>
@@ -2113,7 +2258,20 @@ footer:before{content:"✦";position:absolute;right:5%;top:-65px;font-size:220px
 <div class="pa-max-overlay" id="paCatalogPro"><div class="pa-max-panel"><div class="pa-max-head"><div><span class="pa-max-step">CATÁLOGO COMPLETO</span><h2>Encuentra tu próximo favorito</h2><p id="paCatalogMeta">Todos los productos de Paulina Accesorios.</p></div><button class="pa-max-close" data-pa-close="paCatalogPro">×</button></div><div class="pa-max-toolbar"><input id="paCatalogSearch" placeholder="Nombre, categoría o descripción..." aria-label="Buscar productos"><select id="paCatalogCategory" aria-label="Categoría"><option value="all">Todas las categorías</option></select><select id="paCatalogSort" class="pa-max-sort" aria-label="Ordenar productos"><option value="featured">Recomendados</option><option value="priceAsc">Menor precio</option><option value="priceDesc">Mayor precio</option><option value="name">Nombre A-Z</option><option value="stock">Disponibilidad</option></select><span class="pa-max-catalog-count" id="paCatalogCount"></span></div><div class="pa-max-grid" id="paCatalogGrid"></div></div></div>
 <div class="pa-max-toast" id="paMaxToast" role="status" aria-live="polite"></div>
             
-    <footer>
+    
+<section class="pa-newsletter" id="paNewsletter" aria-label="Novedades Paulina Accesorios">
+ <div class="pa-newsletter-inner">
+  <div><span class="pa-live-dot"></span><span style="font-size:10px;font-weight:900;letter-spacing:2px">PAULINA INSIDER</span>
+   <h2>Un poquito de brillo en tu día ✨</h2>
+   <p>Guarda tu correo en este dispositivo para tenerlo listo cuando quieras consultar novedades. No se enviará a ningún servidor desde este formulario.</p>
+  </div>
+  <form class="pa-newsletter-form" id="paNewsletterForm">
+   <input type="email" id="paNewsletterEmail" autocomplete="email" placeholder="Tu correo electrónico" aria-label="Tu correo electrónico" required maxlength="120">
+   <button type="submit">Guardar correo 💌</button>
+  </form>
+ </div>
+</section>
+<footer>
         <div class="footer-grid">
             <div>
                 <h4>✦ Paulina Accesorios</h4>
@@ -2129,9 +2287,9 @@ footer:before{content:"✦";position:absolute;right:5%;top:-65px;font-size:220px
             </div>
             <div>
                 <h4>📱 Síguenos</h4>
-                <a href="https://www.instagram.com/paulinaccesorios26/" target="_blank">Instagram</a>
-                <a href="https://www.facebook.com/share/1EVN5XT8kz/" target="_blank">Facebook</a>
-                <a href="https://www.tiktok.com/@paulinaaccesorios" target="_blank">TikTok</a>
+                <a href="https://www.instagram.com/paulinaccesorios26/" target="_blank" rel="noopener noreferrer">Instagram</a>
+                <a href="https://www.facebook.com/share/1EVN5XT8kz/" target="_blank" rel="noopener noreferrer">Facebook</a>
+                <a href="https://www.tiktok.com/@paulinaaccesorios" target="_blank" rel="noopener noreferrer">TikTok</a>
             </div>
             <div>
                 <h4>💳 Formas de pago</h4>
@@ -2141,11 +2299,24 @@ footer:before{content:"✦";position:absolute;right:5%;top:-65px;font-size:220px
         </div>
         <div class="footer-bottom">&copy; 2026 Paulina Accesorios · Hecho con 💖 para mujeres que brillan · 🇵🇪 Perú</div>
     </footer>
+
+<div class="pa-reading-progress" id="paReadingProgress" aria-hidden="true"></div>
+<div class="pa-command-backdrop" id="paCommandBackdrop" role="dialog" aria-modal="true" aria-label="Búsqueda rápida">
+ <div class="pa-command">
+  <div class="pa-command-top"><span class="glass">⌘</span><input id="paCommandInput" type="search" placeholder="Busca productos o escribe una acción..." autocomplete="off"><kbd>ESC</kbd></div>
+  <div class="pa-command-results" id="paCommandResults"></div>
+ </div>
+</div>
+<div class="pa-utility-rail" aria-label="Accesos rápidos">
+ <button class="pa-utility-btn" id="paCommandOpen" type="button" aria-label="Abrir búsqueda rápida" title="Búsqueda rápida (Ctrl + K)">⌕</button>
+ <button class="pa-utility-btn" id="paTopQuick" type="button" aria-label="Volver arriba" title="Volver arriba">↑</button>
+</div>
+<div class="pa-toast-stack" id="paToastStack" aria-live="polite" aria-atomic="false"></div>
 <script type="module">
                         const DEBUG = false;
         const log = (...args) => DEBUG && console.log(...args);
 
-        particlesJS('particles-js', {
+        if (typeof window.particlesJS === 'function') window.particlesJS('particles-js', {
     particles: {
         number: { value: 40, density: { enable: true, value_area: 1200 } },
         color: { value: ['#d4af37', '#f5d76e', '#f06292'] },
@@ -6799,6 +6970,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     const productSnap = await tx.get(productRef);
                     if (!productSnap.exists()) throw new Error(`El producto ${item.name} ya no está disponible. Actualiza el catálogo.`);
                     const productData = productSnap.data();
+                    const precioFirestore = safeNumber(productData.precio);
+                    if (Math.abs(precioFirestore - safeNumber(item.price)) > 0.009) {
+                        throw new Error(`El precio de ${productData.nombre || item.name} cambió. Actualiza el catálogo y vuelve a intentarlo.`);
+                    }
                     const stockActual = safeInt(productData.stock);
                     const cantidadSolicitada = safeInt(item.quantity, 1);
                     if (stockActual < cantidadSolicitada) throw new Error(`Stock insuficiente de ${productData.nombre || item.name}. Disponibles: ${stockActual}.`);
@@ -7287,6 +7462,194 @@ paUpdateDock();
 
 // Refresh product watch states after async inventory/catalog updates.
 window.addEventListener('focus',()=>{if(typeof window.paRefreshAlerts==='function')window.paRefreshAlerts()});
+
+
+/* ═══════════════════════════════════════════════════════════════
+   PA EXPERIENCE ENGINE · command palette, smart search, cart UX
+   ═══════════════════════════════════════════════════════════════ */
+(() => {
+ 'use strict';
+ const byId = id => document.getElementById(id);
+ const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const moneyPA = value => `S/ ${Math.max(0, Number(value)||0).toFixed(2)}`;
+ const toastPA = (message, type='success') => {
+  const stack=byId('paToastStack'); if(!stack)return;
+  const el=document.createElement('div'); el.className=`pa-toast ${type}`; el.textContent=message;
+  stack.appendChild(el); setTimeout(()=>{el.style.opacity='0';el.style.transform='translateY(8px)';setTimeout(()=>el.remove(),220)},2800);
+ };
+ const safeProducts = () => Array.isArray(productos) ? productos : [];
+ const available = p => Number(p?.stock||0)>0;
+ const openCart = () => { if(typeof renderCart==='function')renderCart(); byId('cartModal')?.classList.add('show'); };
+ const closePalette = () => { byId('paCommandBackdrop')?.classList.remove('open'); document.body.classList.remove('pa-no-scroll'); };
+ const openPalette = () => { const b=byId('paCommandBackdrop'); if(!b)return; b.classList.add('open');document.body.classList.add('pa-no-scroll');renderCommands('');setTimeout(()=>byId('paCommandInput')?.focus(),30); };
+ const commands = [
+  ['🛍️','Ver productos','Ir al catálogo completo','catalog'],
+  ['🛒','Abrir carrito','Revisar productos y total','cart'],
+  ['❤️','Mis favoritos','Abrir tu lista de deseos','wishlist'],
+  ['👤','Mi cuenta','Pedidos, perfil y beneficios','account'],
+  ['🎁','Encontrar un regalo','Recomendaciones por ocasión y presupuesto','gift'],
+  ['💎','Armar mi conjunto','Combinar productos disponibles','bundle'],
+  ['⚖️','Comparar productos','Comparar tus productos seleccionados','compare'],
+  ['🔔','Mis alertas','Cambios de precio y disponibilidad','alerts'],
+  ['✨','Encontrar mi estilo','Abrir el cuestionario de estilo','style'],
+  ['🌙','Cambiar tema','Alternar modo claro y oscuro','theme'],
+  ['📍','Ir al inicio','Volver a la portada','home'],
+  ['🔥','Ver ofertas','Descubrir promociones','offers']
+ ];
+ function executeCommand(key){
+  closePalette();
+  const go=id=>byId(id)?.scrollIntoView({behavior:'smooth',block:'start'});
+  switch(key){
+   case 'catalog': if(typeof window.paOpenCatalogPro==='function')window.paOpenCatalogPro();else go('productos');break;
+   case 'cart':openCart();break;
+   case 'wishlist':if(typeof window.abrirWishlist==='function')window.abrirWishlist();else toastPA('No se pudo abrir favoritos.','error');break;
+   case 'account':if(typeof window.abrirMiCuenta==='function')window.abrirMiCuenta('resumen');else window.showLoginModal?.();break;
+   case 'gift':byId('paOpenGiftFinder')?.click();break;
+   case 'bundle':byId('paOpenBundles')?.click();break;
+   case 'compare':if(typeof window.paOpenCompare==='function')window.paOpenCompare();else byId('paCompareOpen')?.click();break;
+   case 'alerts':byId('paOpenAlerts')?.click();break;
+   case 'style':byId('paOpenStyleQuiz')?.click();break;
+   case 'theme':byId('darkModeToggle')?.click();break;
+   case 'home':go('inicio');break;
+   case 'offers':go('ofertas');break;
+  }
+ }
+ function renderCommands(term){
+  const host=byId('paCommandResults');if(!host)return;
+  const q=String(term||'').trim().toLocaleLowerCase('es');
+  const matches=safeProducts().filter(p=>`${p.nombre||''} ${p.descripcion||''} ${p.categoria||''}`.toLocaleLowerCase('es').includes(q)).slice(0,6);
+  const acts=commands.filter(c=>(c[1]+' '+c[2]).toLocaleLowerCase('es').includes(q));
+  let html='';
+  if(acts.length){html+='<div class="pa-command-label">Acciones rápidas</div>'+acts.map(c=>`<button type="button" class="pa-command-item" data-pa-command="${c[3]}"><span class="pa-command-icon">${c[0]}</span><span><b>${c[1]}</b><small>${c[2]}</small></span></button>`).join('')}
+  if(matches.length){html+='<div class="pa-command-label">Productos</div>'+matches.map(p=>`<button type="button" class="pa-command-item" data-pa-product="${escapeHTML(p.id)}"><span class="pa-command-icon">🛍️</span><span><b>${escapeHTML(p.nombre)}</b><small>${moneyPA(p.precio)} · ${available(p)?`${Number(p.stock)} disponibles`:'Agotado'}</small></span></button>`).join('')}
+  if(!html)html='<div class="pa-command-empty">No encontramos coincidencias. Prueba con otra palabra ✨</div>';
+  host.innerHTML=html;
+  host.querySelectorAll('[data-pa-command]').forEach(b=>b.addEventListener('click',()=>executeCommand(b.dataset.paCommand)));
+  host.querySelectorAll('[data-pa-product]').forEach(b=>b.addEventListener('click',()=>{const p=safeProducts().find(x=>String(x.id)===b.dataset.paProduct);closePalette();if(p&&typeof window.abrirProductoModal==='function')window.abrirProductoModal(p.id)}));
+ }
+ byId('paCommandOpen')?.addEventListener('click',openPalette);
+ byId('paCommandInput')?.addEventListener('input',e=>renderCommands(e.target.value));
+ byId('paCommandBackdrop')?.addEventListener('click',e=>{if(e.target===e.currentTarget)closePalette()});
+ document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openPalette()}
+  if(e.key==='Escape')closePalette();
+ });
+ byId('paTopQuick')?.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+ // Live suggestions for the existing header search.
+ const searchInput=byId('searchInput');
+ if(searchInput){
+  const wrapper=searchInput.closest('.search-box')||searchInput.parentElement;
+  if(wrapper){wrapper.classList.add('pa-quick-search');const box=document.createElement('div');box.className='pa-search-suggest';box.id='paSearchSuggest';wrapper.appendChild(box);
+   const draw=()=>{
+    const q=searchInput.value.trim().toLocaleLowerCase('es');
+    if(q.length<2){box.classList.remove('open');return}
+    const found=safeProducts().filter(p=>`${p.nombre||''} ${p.descripcion||''} ${p.categoria||''}`.toLocaleLowerCase('es').includes(q)).slice(0,5);
+    box.innerHTML=found.length?found.map(p=>`<button class="pa-suggest-item" type="button" data-suggest-id="${escapeHTML(p.id)}"><img src="${escapeHTML(p.imagen||'')}" alt="" loading="lazy"><span><b>${escapeHTML(p.nombre)}</b><small>${moneyPA(p.precio)}</small></span></button>`).join(''):'<div class="pa-command-empty">No hay productos con ese nombre.</div>';
+    box.classList.add('open');
+    box.querySelectorAll('[data-suggest-id]').forEach(b=>b.addEventListener('click',()=>{const p=safeProducts().find(x=>String(x.id)===b.dataset.suggestId);box.classList.remove('open');if(p)window.abrirProductoModal?.(p.id)}));
+   };
+   searchInput.addEventListener('input',draw);
+   searchInput.addEventListener('keydown',e=>{if(e.key==='Escape')box.classList.remove('open');if(e.key==='Enter')box.classList.remove('open')});
+   document.addEventListener('click',e=>{if(!wrapper.contains(e.target))box.classList.remove('open')});
+  }
+ }
+
+ // A fully interactive cart: quantity controls, stock guard, progress to the store's S/50 free-shipping threshold.
+ const originalRenderCart=renderCart;
+ renderCart=function(){
+  const host=byId('cartItems');if(!host){return originalRenderCart?.()}
+  const {subtotal,descuento,total}=calcularTotales();
+  if(!Array.isArray(cart)||!cart.length){
+   if(cuponAplicado){cuponAplicado=null;try{guardarCarrito()}catch(_){}}
+   host.innerHTML='<div class="pa-empty-state"><div class="emoji">🛍️</div><b>Tu carrito está esperando algo bonito</b><p style="font-size:11px;margin:6px 0 14px">Explora la colección y guarda aquí lo que te enamore.</p><button type="button" class="btn btn-gold btn-sm" id="paEmptyGoShop">Explorar productos</button></div>';
+   byId('cartSubtotal').textContent=moneyPA(0);byId('cartTotal').textContent=moneyPA(0);byId('cartDescuentoRow').style.display='none';
+   byId('paEmptyGoShop')?.addEventListener('click',()=>{byId('cartModal')?.classList.remove('show');byId('productos')?.scrollIntoView({behavior:'smooth'})});
+   return;
+  }
+  const lines=cart.map((item,i)=>{
+   const p=safeProducts().find(x=>String(x.id)===String(item.id));const stock=Number(p?.stock??item.quantity??0);const qty=Math.max(1,Number(item.quantity)||1);
+   return `<article class="pa-cart-line"><img src="${escapeHTML(item.image||p?.imagen||'')}" alt="${escapeHTML(item.name)}" loading="lazy"><div><div class="pa-cart-line-name">${escapeHTML(item.name)}</div><div class="pa-cart-line-price">${moneyPA(Number(item.price)*qty)}</div><div class="pa-qty"><button type="button" data-pa-qty="-1" data-index="${i}" aria-label="Quitar una unidad">−</button><span>${qty}</span><button type="button" data-pa-qty="1" data-index="${i}" aria-label="Añadir una unidad" ${qty>=stock?'disabled':''}>＋</button></div></div><button type="button" class="pa-cart-remove" data-pa-remove="${i}" aria-label="Eliminar ${escapeHTML(item.name)}">×</button></article>`;
+  }).join('');
+  const threshold=50,progress=Math.min(100,subtotal/threshold*100),remaining=Math.max(0,threshold-subtotal);
+  const progressHTML=`<div class="pa-cart-progress"><div class="pa-cart-progress-head"><span>${remaining>0?`Te faltan ${moneyPA(remaining)} para el envío gratis`:'🎉 ¡Tu compra alcanza el envío gratis!'}</span><b>${Math.round(progress)}%</b></div><div class="pa-cart-progress-track"><span style="width:${progress}%"></span></div></div>`;
+  const catCounts={};cart.forEach(i=>{const p=safeProducts().find(x=>String(x.id)===String(i.id));if(p?.categoria)catCounts[p.categoria]=(catCounts[p.categoria]||0)+1});
+  const preferred=Object.entries(catCounts).sort((a,b)=>b[1]-a[1])[0]?.[0];
+  const recs=safeProducts().filter(p=>available(p)&&!cart.some(i=>String(i.id)===String(p.id))&&(!preferred||p.categoria===preferred)).slice(0,4);
+  const recHTML=recs.length?`<div class="pa-cart-recommend"><h4>✨ También podría gustarte</h4><div class="pa-cart-recommend-row">${recs.map(p=>`<div class="pa-cart-recommend-item"><img src="${escapeHTML(p.imagen||'')}" alt="${escapeHTML(p.nombre)}" loading="lazy"><b>${escapeHTML(p.nombre)}</b><small>${moneyPA(p.precio)}</small><button type="button" data-pa-rec-add="${escapeHTML(p.id)}">Añadir</button></div>`).join('')}</div></div>`:'';
+  host.innerHTML=progressHTML+lines+recHTML;
+  host.querySelectorAll('[data-pa-qty]').forEach(b=>b.addEventListener('click',()=>{
+   const i=Number(b.dataset.index),delta=Number(b.dataset.paQty),item=cart[i];if(!item)return;
+   const p=safeProducts().find(x=>String(x.id)===String(item.id));const stock=Number(p?.stock??item.quantity);
+   if(delta>0&&item.quantity>=stock){toastPA(`Solo quedan ${stock} unidades.`,'error');return}
+   item.quantity+=delta;if(item.quantity<=0)cart.splice(i,1);
+   guardarCarrito();actualizarCarritoUI();renderCart();
+  }));
+  host.querySelectorAll('[data-pa-remove]').forEach(b=>b.addEventListener('click',()=>{const i=Number(b.dataset.paRemove);if(Number.isInteger(i)&&cart[i]){cart.splice(i,1);guardarCarrito();actualizarCarritoUI();renderCart();toastPA('Producto eliminado del carrito.')}}));
+  host.querySelectorAll('[data-pa-rec-add]').forEach(b=>b.addEventListener('click',()=>{const p=safeProducts().find(x=>String(x.id)===b.dataset.paRecAdd);if(p)window.addToCart?.(p.id);renderCart()}));
+  byId('cartSubtotal').textContent=moneyPA(subtotal);
+  if(descuento>0){byId('cartDescuentoRow').style.display='flex';byId('cartDescuento').textContent=`-${moneyPA(descuento)}`}else byId('cartDescuentoRow').style.display='none';
+  byId('cartTotal').textContent=moneyPA(total);
+ };
+ // Keep the old render function reachable for diagnostics.
+ window.paOriginalRenderCart=originalRenderCart;
+
+
+ // Catalogue controls: sort, stock-only filter and grid/list presentation.
+ let paViewMode='grid',paOnlyStock=false,paSortMode='featured';
+ const grid=byId('productGrid');
+ const baseRenderer=renderizarProductos;
+ renderizarProductos=function(inputList){
+  let list=Array.isArray(inputList)?[...inputList]:[];
+  if(paOnlyStock)list=list.filter(p=>Number(p.stock||0)>0);
+  if(paSortMode==='priceAsc')list.sort((a,b)=>(Number(a.precio)||0)-(Number(b.precio)||0));
+  else if(paSortMode==='priceDesc')list.sort((a,b)=>(Number(b.precio)||0)-(Number(a.precio)||0));
+  else if(paSortMode==='name')list.sort((a,b)=>String(a.nombre||'').localeCompare(String(b.nombre||''),'es'));
+  else if(paSortMode==='stock')list.sort((a,b)=>(Number(b.stock)||0)-(Number(a.stock)||0));
+  baseRenderer(list);
+  if(grid){grid.classList.toggle('pa-list-view',paViewMode==='list');grid.classList.toggle('pa-grid-view',paViewMode==='grid')}
+  const count=byId('resultsCount');if(count&&paOnlyStock)count.innerHTML=`Productos disponibles: <strong>${list.length}</strong>`;
+ };
+ byId('paCatalogSortMain')?.addEventListener('change',e=>{paSortMode=e.target.value;renderizarProductos(aplicarFiltrosProductos(productos))});
+ byId('paOnlyAvailable')?.addEventListener('change',e=>{paOnlyStock=e.target.checked;renderizarProductos(aplicarFiltrosProductos(productos))});
+ document.querySelectorAll('[data-pa-view]').forEach(b=>b.addEventListener('click',()=>{
+  paViewMode=b.dataset.paView;
+  document.querySelectorAll('[data-pa-view]').forEach(x=>{const active=x===b;x.classList.toggle('active',active);x.setAttribute('aria-pressed',String(active))});
+  grid?.classList.toggle('pa-list-view',paViewMode==='list');
+ }));
+ // Soft reveal for major sections; content remains visible if IntersectionObserver is unavailable.
+ if('IntersectionObserver' in window){
+  const revealObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('pa-visible');revealObserver.unobserve(entry.target)}}),{threshold:.08});
+  document.querySelectorAll('#paBenefits,.section-header,.pa-newsletter,.pa-feature-tile').forEach(el=>{el.classList.add('pa-reveal');revealObserver.observe(el)});
+ } 
+ // Graceful image fallback for broken product photos, including late-loaded Firestore items.
+ document.addEventListener('error',e=>{
+  const img=e.target;if(!(img instanceof HTMLImageElement)||img.dataset.paFallback)return;
+  if(!img.closest('.product-card,.pa-max-card,.pa-cart-line,.pa-recent-grid,.pa-suggest-item'))return;
+  img.dataset.paFallback='1';img.removeAttribute('src');
+  img.alt=img.alt||'Imagen no disponible';
+  img.src='data:image/svg+xml;charset=UTF-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240"><rect width="240" height="240" rx="24" fill="#f8eaf1"/><text x="120" y="112" text-anchor="middle" font-size="58">💎</text><text x="120" y="157" text-anchor="middle" font-family="Arial" font-size="14" fill="#8a4868">Paulina Accesorios</text></svg>');
+ },true);
+
+ // Newsletter form is intentionally local-only: no fake subscription/network call.
+ byId('paNewsletterForm')?.addEventListener('submit',e=>{
+  e.preventDefault();const input=byId('paNewsletterEmail');const email=(input?.value||'').trim().toLowerCase();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){toastPA('Escribe un correo válido.','error');return}
+  try{localStorage.setItem('paulina_newsletter_email',email);toastPA('💌 Correo guardado en este dispositivo.');input.value=''}
+  catch(_){toastPA('Tu navegador no permitió guardar el correo.','error')}
+ });
+
+ // Reading progress, connection state, dock shortcuts and fresh search results.
+ const progress=byId('paReadingProgress');
+ const updateProgress=()=>{if(!progress)return;const max=document.documentElement.scrollHeight-innerHeight;progress.style.width=`${max>0?Math.min(100,scrollY/max*100):0}%`};
+ window.addEventListener('scroll',updateProgress,{passive:true});window.addEventListener('resize',updateProgress);updateProgress();
+ window.addEventListener('online',()=>toastPA('Conexión recuperada.'));window.addEventListener('offline',()=>toastPA('Estás sin conexión. Algunas funciones pueden no actualizarse.','error'));
+ // Refresh command results after async catalogue loads.
+ const refreshCommands=()=>{if(byId('paCommandBackdrop')?.classList.contains('open'))renderCommands(byId('paCommandInput')?.value||'')};
+ const previousRender=window.paRenderRecent;
+ window.paRenderRecent=()=>{previousRender?.();refreshCommands()};
+ setTimeout(refreshCommands,900);
+})();
 
 </script>
 
