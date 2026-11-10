@@ -2094,6 +2094,133 @@ body:has(.chat-modal-ai.open) #userFloatBtn,body:has(.chat-modal-ai.open) #admin
 @media(prefers-reduced-motion:reduce){#chatFloatAI,#userFloatBtn,.whatsapp-float,#adminPanelBtn{animation:none!important;transition:none!important}}
 </style>
 
+
+<!-- PAULINA SIMPLE & ELEGANTE 2026: una sola distribución final para controles flotantes -->
+<style id="pa-simple-clean-layout-2026">
+  /* Base visual: menos adornos, más aire y jerarquía clara. */
+  html { scroll-padding-top: 82px; }
+  body { overflow-x: hidden; }
+  .navbar { z-index: 1500 !important; }
+  .hero-content, .products-section, .benefits-section, .pa-newsletter { min-width: 0; }
+
+  /* El botón de cuenta conserva su apariencia circular y su función original. */
+  #userFloatBtn.user-float-btn {
+    display: flex !important; visibility: visible !important; pointer-events: auto !important;
+    position: fixed !important; left: 22px !important; right: auto !important;
+    bottom: 94px !important; top: auto !important; z-index: 1605 !important;
+  }
+
+  /* IA siempre visible, con su propio espacio; no se elimina ni se sustituye. */
+  #chatFloatAI.chat-float-ai {
+    display: flex !important; visibility: visible !important; pointer-events: auto !important;
+    position: fixed !important; left: 22px !important; right: auto !important;
+    bottom: 22px !important; top: auto !important; z-index: 1604 !important;
+  }
+
+  /* Admin vuelve a la esquina inferior derecha, nunca a la cabecera. */
+  #adminPanelBtn {
+    display: inline-flex !important; position: fixed !important;
+    top: auto !important; right: 22px !important; bottom: 22px !important; left: auto !important;
+    z-index: 1603 !important; max-width: calc(100vw - 32px) !important;
+    white-space: nowrap; box-shadow: 0 8px 24px rgba(20, 8, 16, .22) !important;
+  }
+
+  /* Conservamos el cambio de tema y lo dejamos accesible sin llenar la pantalla. */
+  #darkModeToggle.dark-mode-toggle {
+    display: grid !important; visibility: visible !important; pointer-events: auto !important;
+    position: fixed !important; right: 22px !important; left: auto !important;
+    bottom: 92px !important; top: auto !important; z-index: 1602 !important;
+  }
+
+  /* La lupa inferior era un botón de compartir reutilizado: se retira. También se retira
+     el botón flotante de volver arriba; la búsqueda principal sigue en la navegación. */
+  #shareBtn.share-btn, #backTopBtn.btn-back-top { display: none !important; }
+
+  /* El carrito de navegación permanece; no duplicamos otro carrito flotante. */
+  #floatingCart { display: none !important; }
+
+  /* WhatsApp se mantiene en escritorio, pero no compite con IA/Admin en móvil. */
+  .whatsapp-float { z-index: 1601 !important; }
+
+  /* Panel admin: centrado y limitado al viewport, sin quedar detrás de la cabecera. */
+  #adminModal.admin-premium-overlay {
+    z-index: 30000 !important; align-items: center !important; justify-content: center !important;
+    padding: 16px !important; overflow-y: auto !important;
+  }
+  #adminModal .admin-premium {
+    width: min(1180px, 100%) !important; max-width: 100% !important;
+    max-height: calc(100dvh - 32px) !important; overflow: auto !important;
+    margin: auto !important; border-radius: 18px !important;
+  }
+
+  /* Cuenta: no alteramos el botón ni la estructura de la sección personal. */
+  .pa-mobile-dock { z-index: 1500 !important; }
+
+  @media (max-width: 760px) {
+    :root { --pa-dock-height: 66px; }
+    body { padding-bottom: calc(82px + env(safe-area-inset-bottom)) !important; }
+    .navbar { min-height: 58px !important; padding: 6px 10px !important; }
+    .navbar-left, .navbar-right { min-width: 0 !important; gap: 6px !important; }
+    .logo { font-size: 17px !important; white-space: nowrap; }
+    .nav-links, .search-box { display: none !important; }
+    .navbar-right { flex-wrap: nowrap !important; }
+    .user-btn { max-width: 92px !important; overflow: hidden !important; }
+    .user-name-mobile { max-width: 52px !important; overflow: hidden !important; text-overflow: ellipsis !important; }
+
+    /* Cuenta a la izquierda; IA y modo a la derecha; Admin abajo a la derecha.
+       Cada control tiene una altura distinta y respeta la barra inferior. */
+    #userFloatBtn.user-float-btn {
+      left: 14px !important; right: auto !important;
+      bottom: calc(82px + env(safe-area-inset-bottom)) !important;
+      width: 48px !important; height: 48px !important; z-index: 1605 !important;
+    }
+    #chatFloatAI.chat-float-ai {
+      left: auto !important; right: 14px !important;
+      bottom: calc(142px + env(safe-area-inset-bottom)) !important;
+      width: 48px !important; height: 48px !important; z-index: 1604 !important;
+    }
+    #darkModeToggle.dark-mode-toggle {
+      right: 18px !important; bottom: calc(202px + env(safe-area-inset-bottom)) !important;
+      width: 40px !important; height: 40px !important; z-index: 1602 !important;
+    }
+    #adminPanelBtn {
+      top: auto !important; right: 14px !important; left: auto !important;
+      bottom: calc(82px + env(safe-area-inset-bottom)) !important;
+      padding: 10px 14px !important; font-size: 11px !important; z-index: 1603 !important;
+    }
+    .whatsapp-float { display: none !important; }
+    #shareBtn.share-btn, #backTopBtn.btn-back-top, #floatingCart { display: none !important; }
+    .pa-mobile-dock {
+      left: 8px !important; right: 8px !important; bottom: calc(7px + env(safe-area-inset-bottom)) !important;
+      width: auto !important; height: 64px !important; z-index: 1500 !important;
+    }
+    .pa-mobile-dock button { min-width: 0 !important; overflow: hidden !important; }
+    .pa-mobile-dock button span:last-child { max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+
+    /* Contenido: una columna cuando el ancho no alcanza; sin tarjetas montadas. */
+    .hero { min-height: auto !important; padding-top: 36px !important; padding-bottom: 44px !important; }
+    .hero-content { width: 100% !important; max-width: 100% !important; }
+    .hero-stats { display: grid !important; grid-template-columns: repeat(2, minmax(0,1fr)) !important; gap: 10px !important; }
+    .hero-stats .stat { min-width: 0 !important; }
+    .filters-row { grid-template-columns: minmax(0,1fr) !important; }
+    .category-pills { max-width: 100% !important; overflow-x: auto !important; }
+    .pa-mobile-dock + * { min-width: 0; }
+    #adminModal.admin-premium-overlay { padding: 8px !important; }
+    #adminModal .admin-premium { max-height: calc(100dvh - 16px) !important; border-radius: 14px !important; }
+  }
+
+  @media (max-width: 380px) {
+    .logo { font-size: 15px !important; }
+    .navbar-right { gap: 4px !important; }
+    .navbar-right .wishlist-icon, .navbar-right .cart-icon { padding: 5px 7px !important; }
+    #adminPanelBtn { padding: 9px 11px !important; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #chatFloatAI, #userFloatBtn, #adminPanelBtn, #darkModeToggle { animation: none !important; transition: none !important; }
+  }
+</style>
+
 </head>
     <body class="loading">
 
