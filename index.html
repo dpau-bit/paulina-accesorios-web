@@ -84,7 +84,7 @@
                     if (docSnap.exists()) {
                         const data = docSnap.data();
                         if (!Array.isArray(data.cuponesUsados)) data.cuponesUsados = [];
-                        window.currentUser = data;
+                        window.currentUser = { ...data, id: user.uid, email: data.email || user.email };
                         aplicarUI();
                     }
                 }).catch(err => console.warn('⚠️', err));
@@ -1505,7 +1505,7 @@ footer:before{content:"✦";position:absolute;right:5%;top:-65px;font-size:220px
   .dark-mode-toggle{right:12px;bottom:88px;width:39px;height:39px}
   .share-btn{right:12px;bottom:137px;width:39px;height:39px}
   .btn-back-top{right:12px;bottom:186px;width:39px;height:39px}
-  .chat-float-ai,.user-float-btn{bottom:235px!important}
+  /* Posiciones independientes definidas en pa-ultra-layout-fix-2026. */
   footer{padding-bottom:22px}
   .footer-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
   .pa-quiz-panel{padding:19px;border-radius:20px}
@@ -1944,6 +1944,160 @@ body.pa-no-scroll{overflow:hidden}
 @media(max-width:760px){.pa-maxbar{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:0 12px;margin:14px auto}.pa-max-action{min-height:68px;padding:10px;gap:9px;border-radius:15px}.pa-max-action .ico{width:36px;height:36px;font-size:18px}.pa-max-action b{font-size:11px}.pa-max-action small{font-size:9px}.pa-max-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.pa-max-panel{border-radius:21px;padding:15px;max-height:92vh}.pa-max-head h2{font-size:23px}.pa-max-card-body{padding:9px}.pa-max-card h3{font-size:11px}.pa-max-card .price{font-size:13px}.pa-max-toolbar>*{flex-basis:100%;max-width:none}.pa-max-row{gap:8px;padding:9px}.pa-max-row img{width:48px;height:48px}}
 @media(max-width:380px){.pa-max-grid{grid-template-columns:1fr}.pa-max-action small{display:none}}
 @media(prefers-reduced-motion:reduce){.pa-max-action,.pa-max-overlay,.pa-max-toast{transition:none;animation:none!important}}
+</style>
+
+
+<style id="pa-ultra-layout-fix-2026">
+/* ULTRA layout pass: prevent fixed controls and panels from colliding. */
+*,*::before,*::after{box-sizing:border-box}
+img,svg,video,canvas{max-width:100%}
+button,input,select,textarea{font:inherit}
+.pa-account-shell{width:min(1180px,calc(100vw - 32px));max-width:1180px;max-height:min(92dvh,900px);overflow:hidden;display:grid;grid-template-columns:minmax(220px,270px) minmax(0,1fr)}
+.pa-account-sidebar,.pa-account-main,.pa-account-content{min-width:0;min-height:0}
+.pa-account-main{overflow:hidden;display:flex;flex-direction:column}
+.pa-account-content{overflow:auto;overscroll-behavior:contain;padding:clamp(16px,2.5vw,30px)}
+.pa-account-top{flex:none;min-width:0}
+.pa-account-top h1{overflow-wrap:anywhere}
+.pa-account-nav button{max-width:100%;white-space:normal}
+.pa-profile-grid,.pa-account-stats,.pa-shortcuts,.pa-fav-grid{min-width:0}
+.pa-used-coupon-intro{display:flex;align-items:center;gap:13px;padding:16px 18px;margin:5px 0 16px;border:1px solid rgba(212,175,55,.22);border-radius:17px;background:linear-gradient(120deg,rgba(212,175,55,.11),rgba(194,24,91,.07))}
+.pa-used-coupon-intro>span{width:38px;height:38px;flex:none;display:grid;place-items:center;border-radius:12px;background:linear-gradient(135deg,#d4af37,#f5d76e);color:#241322;font-weight:1000;font-size:20px}
+.pa-used-coupon-intro>div{flex:1;min-width:0}.pa-used-coupon-intro b,.pa-used-coupon-intro small{display:block}.pa-used-coupon-intro small{font-size:11px;color:var(--gray-500);margin-top:3px}.pa-used-coupon-intro strong{white-space:nowrap;color:var(--gold-dark);font-size:12px}
+.pa-used-coupon-list{display:grid;gap:11px}
+.pa-used-coupon-card{display:flex;align-items:center;gap:13px;min-width:0;padding:15px;border:1px solid rgba(212,175,55,.2);border-radius:17px;background:linear-gradient(135deg,rgba(255,255,255,.035),rgba(212,175,55,.035));box-shadow:0 8px 22px rgba(0,0,0,.06)}
+.pa-used-coupon-icon{width:42px;height:42px;flex:none;display:grid;place-items:center;border-radius:13px;background:rgba(46,204,113,.13);color:#35c982;font-size:20px;font-weight:900}
+.pa-used-coupon-data{flex:1;min-width:0}.pa-used-coupon-data b{display:block;font-family:monospace;font-size:14px;letter-spacing:1.5px;overflow-wrap:anywhere;color:var(--gold)}.pa-used-coupon-data small,.pa-used-coupon-data em{display:block;font-size:10px;color:var(--gray-500);font-style:normal;margin-top:3px}.pa-used-coupon-stamp{flex:none;padding:6px 9px;border-radius:99px;border:1px solid rgba(46,204,113,.28);background:rgba(46,204,113,.1);color:#35c982;font-size:9px;font-weight:900;letter-spacing:.6px}
+.pa-coupon-empty-state{margin-top:10px}
+/* Floating actions: each gets its own lane; no shared bottom value on mobile. */
+.chat-float-ai{left:22px;bottom:22px;z-index:1150}
+.user-float-btn{left:22px;bottom:92px;z-index:1149}
+.chat-modal-ai{left:22px;bottom:92px;z-index:1155;max-height:min(68dvh,560px)}
+.whatsapp-float{right:22px;bottom:22px;z-index:1148}
+#adminPanelBtn{z-index:1140;max-width:calc(100vw - 32px)}
+.pa-mobile-dock{z-index:1120}
+.pa-max-overlay,.pa-command-backdrop{isolation:isolate}
+@media(max-width:900px){.pa-account-shell{width:calc(100vw - 20px);grid-template-columns:205px minmax(0,1fr)}}
+@media(max-width:760px){
+ .pa-account-shell{width:calc(100vw - 12px);height:calc(100dvh - 12px);max-height:calc(100dvh - 12px);grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr);border-radius:20px}
+ .pa-account-sidebar{max-height:190px;overflow:auto;padding:10px 12px}
+ .pa-side-brand{padding-bottom:8px;margin-bottom:8px}.pa-side-user{padding:7px 0}.pa-account-nav{display:flex;gap:6px;overflow-x:auto;padding:7px 0;scrollbar-width:thin}.pa-account-nav button{flex:0 0 auto;width:auto;min-width:max-content;padding:9px 12px}
+ .pa-sidebar-bottom{display:none}
+ .pa-account-main{min-height:0}.pa-account-top{padding:14px 16px}.pa-account-top h1{font-size:23px}.pa-account-content{padding:13px 12px 28px}
+ .pa-used-coupon-card{padding:12px;gap:9px}.pa-used-coupon-stamp{font-size:8px;padding:5px 7px}
+ .chat-float-ai{left:14px!important;bottom:calc(92px + env(safe-area-inset-bottom))!important;width:49px;height:49px;font-size:21px;z-index:1135!important}
+ .user-float-btn{left:14px!important;bottom:calc(151px + env(safe-area-inset-bottom))!important;width:49px;height:49px;z-index:1134!important}
+ .chat-modal-ai{left:10px!important;right:10px!important;bottom:calc(151px + env(safe-area-inset-bottom))!important;width:auto!important;max-width:none!important;max-height:min(62dvh,520px);z-index:1145!important}
+ .whatsapp-float{right:14px!important;bottom:calc(92px + env(safe-area-inset-bottom))!important;width:49px;height:49px;z-index:1133!important}
+ .dark-mode-toggle{right:14px!important;bottom:calc(151px + env(safe-area-inset-bottom))!important;z-index:1132!important}
+ .share-btn{right:14px!important;bottom:calc(205px + env(safe-area-inset-bottom))!important;z-index:1131!important}
+ .btn-back-top{right:14px!important;bottom:calc(259px + env(safe-area-inset-bottom))!important;z-index:1130!important}
+ .pa-mobile-dock{z-index:1125!important}
+ #adminPanelBtn{right:12px!important;bottom:calc(151px + env(safe-area-inset-bottom))!important;padding:10px 14px!important;font-size:11px!important;z-index:1128!important}
+ .pa-compare-tray{bottom:calc(82px + env(safe-area-inset-bottom))!important;z-index:1127}
+ body{padding-bottom:calc(78px + env(safe-area-inset-bottom))}
+}
+@media(max-width:420px){.pa-account-sidebar{max-height:168px}.pa-side-brand small{font-size:8px}.pa-side-user b{font-size:11px}.pa-side-user small{font-size:9px}.pa-account-top h1{font-size:20px}.pa-used-coupon-intro{padding:12px;gap:9px}.pa-used-coupon-intro strong{font-size:10px}.pa-used-coupon-data b{font-size:12px}}
+@media(prefers-reduced-motion:reduce){.pa-used-coupon-card,.chat-float-ai,.user-float-btn,.whatsapp-float{animation:none!important;transition:none!important}}
+</style>
+
+
+<style id="pa-remaster-layout-2026">
+/* ==========================================================
+   PAULINA REMASTER 2026 — CAPA FINAL DE ORDEN Y RESPONSIVE
+   Prioridad: nada se pisa, paneles legibles y controles separados.
+   ========================================================== */
+:root{--pa-safe-bottom:env(safe-area-inset-bottom,0px);--pa-safe-top:env(safe-area-inset-top,0px)}
+html{scroll-padding-top:88px;scrollbar-gutter:stable}
+body{min-width:320px;overflow-x:clip}
+body,body *{min-width:0}
+button,a,input,select,textarea{touch-action:manipulation}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid rgba(245,215,110,.78);outline-offset:3px}
+img{height:auto}
+/* Ventanas grandes: centradas, con cabecera y contenido separados. */
+.admin-premium-overlay{z-index:15000!important;padding:clamp(10px,2vw,24px)!important;overflow:auto!important;overscroll-behavior:contain}
+.admin-premium{width:min(1280px,100%)!important;max-height:min(92dvh,960px)!important;min-height:0!important;border-radius:24px!important;display:flex!important;flex-direction:column!important}
+.admin-premium-header{flex:0 0 auto!important;min-width:0!important}
+.admin-premium-tabs{flex:0 0 auto!important;max-width:100%;overflow-x:auto!important;overflow-y:hidden!important;flex-wrap:nowrap!important;scrollbar-width:thin;scrollbar-color:rgba(212,175,55,.45) transparent}
+.admin-premium-tab{flex:0 0 auto!important;white-space:nowrap!important}
+.admin-premium-body{flex:1 1 auto!important;min-height:0!important;overflow:auto!important;overscroll-behavior:contain!important;overflow-wrap:anywhere}
+.admin-premium-body>*{max-width:100%}
+.admin-premium-body table{display:block;max-width:100%;overflow-x:auto;border-collapse:collapse}
+.admin-premium-body input,.admin-premium-body select,.admin-premium-body textarea{max-width:100%;min-width:0}
+/* Panel de cuenta: no permitir que el sidebar aplaste el contenido. */
+.pa-account-shell{width:min(1240px,calc(100vw - 32px))!important;max-height:min(92dvh,940px)!important;grid-template-columns:minmax(220px,270px) minmax(0,1fr)!important}
+.pa-account-main,.pa-account-content{min-width:0!important;min-height:0!important}
+.pa-account-content{overflow:auto!important;overscroll-behavior:contain}
+/* Cupones usados: lista limpia, sin tarjetas de cupones desbloqueables en esta vista. */
+.pa-used-coupon-list{grid-template-columns:minmax(0,1fr)!important;align-content:start}
+.pa-used-coupon-card{width:100%;max-width:100%;overflow:hidden}
+.pa-used-coupon-data{overflow-wrap:anywhere}
+/* Acciones flotantes: dos carriles independientes. */
+#chatFloatAI,.chat-float-ai{position:fixed!important;left:20px!important;right:auto!important;bottom:calc(18px + var(--pa-safe-bottom))!important;width:54px!important;height:54px!important;z-index:1201!important}
+#userFloatBtn.user-float-btn{position:fixed!important;left:20px!important;right:auto!important;bottom:calc(84px + var(--pa-safe-bottom))!important;width:54px!important;height:54px!important;z-index:1202!important}
+.whatsapp-float{position:fixed!important;right:20px!important;left:auto!important;bottom:calc(18px + var(--pa-safe-bottom))!important;width:54px!important;height:54px!important;z-index:1201!important}
+#adminPanelBtn{position:fixed!important;right:20px!important;left:auto!important;bottom:calc(84px + var(--pa-safe-bottom))!important;z-index:1202!important;min-height:42px;max-width:min(180px,calc(100vw - 40px));white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 10px 28px rgba(0,0,0,.35)!important}
+.chat-modal-ai{position:fixed!important;left:20px!important;right:auto!important;bottom:calc(150px + var(--pa-safe-bottom))!important;width:min(400px,calc(100vw - 40px))!important;max-width:calc(100vw - 40px)!important;max-height:min(68dvh,580px)!important;z-index:1210!important}
+body:has(.chat-modal-ai.open) #userFloatBtn,body:has(.chat-modal-ai.open) #adminPanelBtn{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+/* Los controles auxiliares mantienen su propia columna y no invaden Admin/WhatsApp. */
+.dark-mode-toggle{right:20px!important;bottom:calc(148px + var(--pa-safe-bottom))!important;z-index:1190!important}
+.share-btn{right:20px!important;bottom:calc(200px + var(--pa-safe-bottom))!important;z-index:1189!important}
+.btn-back-top{right:20px!important;bottom:calc(252px + var(--pa-safe-bottom))!important;z-index:1188!important}
+.floating-cart{right:20px!important;bottom:calc(306px + var(--pa-safe-bottom))!important;z-index:1187!important}
+/* El contenido termina antes de la zona ocupada por los controles. */
+@media(min-width:761px){body{padding-bottom:24px}.admin-premium-overlay .admin-premium{margin:auto}}
+@media(max-width:760px){
+ html{scroll-padding-top:68px}
+ body{padding-bottom:calc(110px + var(--pa-safe-bottom))!important}
+ .navbar{position:sticky;top:0;z-index:1300;min-height:58px}
+ .hero{min-width:0;overflow:hidden}
+ .hero-content,.hero-visual,.hero-stats,.hero-actions{min-width:0;max-width:100%}
+ .hero-stats{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
+ .hero-stats .stat{min-width:0!important;width:100%!important}
+ .hero-actions{display:flex;flex-wrap:wrap;gap:9px!important}
+ .hero-actions>*{max-width:100%}
+ .admin-premium-overlay{padding:0!important;align-items:stretch!important}
+ .admin-premium{width:100%!important;max-width:none!important;height:100dvh!important;max-height:100dvh!important;border-radius:0!important}
+ .admin-premium-header{padding:14px 16px!important;gap:10px!important}
+ .admin-premium-header::after{display:none!important}
+ .admin-premium-title{min-width:0!important;flex:1 1 auto}
+ .admin-premium-title h2{font-size:clamp(17px,5vw,22px)!important;overflow-wrap:anywhere}
+ .admin-premium-title p{font-size:8px!important;letter-spacing:1.2px!important}
+ .admin-premium-tabs{padding:10px 12px!important;gap:7px!important;flex-wrap:nowrap!important}
+ .admin-premium-tab{min-height:38px;padding:9px 12px!important;font-size:10px!important}
+ .admin-premium-body{padding:16px 13px calc(24px + var(--pa-safe-bottom))!important}
+ .pa-account-shell{width:100vw!important;height:100dvh!important;max-height:100dvh!important;border-radius:0!important;grid-template-columns:1fr!important;grid-template-rows:auto minmax(0,1fr)!important}
+ .pa-account-sidebar{max-height:174px!important;overflow:auto!important}
+ .pa-account-main{min-height:0!important;overflow:hidden!important}
+ .pa-account-content{padding:13px 12px calc(28px + var(--pa-safe-bottom))!important}
+ .pa-used-coupon-card{align-items:flex-start!important;gap:10px!important;padding:12px!important}
+ .pa-used-coupon-stamp{white-space:normal;text-align:center;max-width:92px}
+ #chatFloatAI,.chat-float-ai{left:14px!important;bottom:calc(14px + var(--pa-safe-bottom))!important;width:49px!important;height:49px!important;font-size:21px!important}
+ #userFloatBtn.user-float-btn{left:14px!important;bottom:calc(75px + var(--pa-safe-bottom))!important;width:49px!important;height:49px!important;font-size:22px!important}
+ #userFloatBadge{width:17px!important;height:17px!important;font-size:8px!important;top:-3px!important;right:-3px!important}
+ .whatsapp-float{right:14px!important;bottom:calc(14px + var(--pa-safe-bottom))!important;width:49px!important;height:49px!important;font-size:22px!important}
+ #adminPanelBtn{right:14px!important;bottom:calc(75px + var(--pa-safe-bottom))!important;min-height:40px!important;padding:9px 13px!important;font-size:10px!important;max-width:calc(100vw - 90px)!important}
+ .chat-modal-ai{left:10px!important;right:10px!important;bottom:calc(136px + var(--pa-safe-bottom))!important;width:auto!important;max-width:none!important;max-height:min(62dvh,520px)!important}
+ .dark-mode-toggle{right:14px!important;bottom:calc(130px + var(--pa-safe-bottom))!important;width:38px!important;height:38px!important}
+ .share-btn{right:14px!important;bottom:calc(176px + var(--pa-safe-bottom))!important;width:38px!important;height:38px!important}
+ .btn-back-top{right:14px!important;bottom:calc(222px + var(--pa-safe-bottom))!important;width:38px!important;height:38px!important}
+ .floating-cart{right:14px!important;bottom:calc(268px + var(--pa-safe-bottom))!important;max-width:calc(100vw - 28px)}
+ .pa-mobile-dock{z-index:1170!important}
+}
+@media(max-width:390px){
+ .hero{padding-left:16px!important;padding-right:16px!important}
+ .hero-title{font-size:clamp(2rem,10vw,2.65rem)!important;overflow-wrap:anywhere}
+ .hero-stats .stat{padding:10px 7px!important}
+ .admin-premium-title p{letter-spacing:.7px!important}
+ .admin-premium-body{padding-left:10px!important;padding-right:10px!important}
+ .pa-account-top{padding:12px!important}
+}
+@media(orientation:landscape) and (max-height:520px){
+ .admin-premium{max-height:100dvh!important}
+ .admin-premium-header{padding:8px 14px!important}
+ .admin-premium-body{padding-top:10px!important}
+ .chat-modal-ai{max-height:70dvh!important}
+}
+@media(prefers-reduced-motion:reduce){#chatFloatAI,#userFloatBtn,.whatsapp-float,#adminPanelBtn{animation:none!important;transition:none!important}}
 </style>
 
 </head>
@@ -3134,17 +3288,36 @@ function initChatAI() {
     return;
 }
 
-// La fuente de verdad es Firestore, no el estado guardado en el navegador.
-const userRefValidacion = window.firebaseDB.doc(window.db, "usuarios", window.currentUser.id);
-const userSnapValidacion = await window.firebaseDB.getDoc(userRefValidacion);
-if (!userSnapValidacion.exists()) {
+// Un usuario autenticado puede no tener todavía documento de perfil (cuentas antiguas).
+// No confundimos la ausencia del documento con una sesión cerrada.
+const uidCupon = window.auth?.currentUser?.uid || window.currentUser.id;
+const userRefValidacion = window.firebaseDB.doc(window.db, "usuarios", uidCupon);
+let datosUsuarioValidacion = {};
+try {
+    const userSnapValidacion = await window.firebaseDB.getDoc(userRefValidacion);
+    if (userSnapValidacion.exists()) {
+        datosUsuarioValidacion = userSnapValidacion.data() || {};
+    } else {
+        // Inicializa el perfil mínimo sin borrar otros campos existentes.
+        datosUsuarioValidacion = {
+            id: uidCupon,
+            name: window.auth?.currentUser?.displayName || window.currentUser.name || window.currentUser.email?.split('@')[0] || 'Cliente',
+            email: window.auth?.currentUser?.email || window.currentUser.email || '',
+            points: safeInt(window.currentUser.points),
+            cuponesUsados: []
+        };
+        await window.firebaseDB.setDoc(userRefValidacion, datosUsuarioValidacion, { merge: true });
+    }
+} catch (verifyError) {
+    console.error('No se pudo consultar el perfil en Firestore:', verifyError);
     msg.className = 'cupon-msg error';
-    msg.textContent = '❌ No se pudo verificar tu cuenta. Vuelve a iniciar sesión.';
+    msg.textContent = verifyError?.code === 'permission-denied'
+        ? '❌ Firestore no permite consultar tu perfil. Revisa las reglas de usuarios.'
+        : '❌ No se pudo consultar tu perfil. Comprueba tu conexión e inténtalo otra vez.';
     return;
 }
-const datosUsuarioValidacion = userSnapValidacion.data();
 const usadosActuales = Array.isArray(datosUsuarioValidacion.cuponesUsados) ? datosUsuarioValidacion.cuponesUsados : [];
-window.currentUser = { ...window.currentUser, ...datosUsuarioValidacion, cuponesUsados: usadosActuales };
+window.currentUser = { ...window.currentUser, ...datosUsuarioValidacion, id: uidCupon, cuponesUsados: usadosActuales };
 if (usadosActuales.some(c => String(c).trim().toUpperCase() === codigo)) {
     msg.className = 'cupon-msg error';
     msg.textContent = '❌ Este cupón ya fue utilizado en una compra anterior.';
@@ -3629,10 +3802,15 @@ try {
                 const producto=productos.find(p=>String(p.id)===String(r.productoId));
                 return `<article class="pa-review-card"><div class="pa-review-top"><b>${paEscape(producto?.nombre || 'Producto')}</b><span>${'★'.repeat(Math.max(0,Math.min(5,safeInt(r.estrellas))))}${'☆'.repeat(5-Math.max(0,Math.min(5,safeInt(r.estrellas))))}</span></div><p>${paEscape(r.texto||'')}</p><small>${paFecha(r.fecha)}</small></article>`;
             }).join('') : `<div class="pa-account-empty"><span>⭐</span><b>Tus opiniones cuentan</b><small>Cuando publiques una reseña de un producto, la verás aquí.</small><button onclick="document.getElementById('miCuentaModal').classList.remove('show');document.getElementById('productos')?.scrollIntoView({behavior:'smooth'})">Ver productos</button></div>`;
-  const couponsHtml = CODIGOS_POR_NIVEL.map(c=>{
-                const unlocked=pts>=safeInt(c.min), used=usados.includes(c.code);
-                return `<article class="pa-coupon-card ${used?'is-used':unlocked?'is-ready':'is-locked'}"><div class="pa-coupon-symbol">${used?'✓':unlocked?'🎟️':'🔒'}</div><div class="pa-coupon-info"><b>${paEscape(c.code)}</b><small>${paEscape(c.desc||'Beneficio exclusivo')}</small><em>${used?'Ya utilizado':unlocked?'Disponible para tu nivel':`Desbloquea con ${c.min} puntos`}</em></div>${unlocked&&!used?`<button onclick="copiarCodigo('${paEscape(c.code)}')">Copiar</button>`:''}</article>`;
-            }).join('');
+  const cuponesUsadosUnicos = [...new Set(usados.map(c => String(c || '').trim().toUpperCase()).filter(Boolean))];
+            const couponsHtml = cuponesUsadosUnicos.length
+                ? `<div class="pa-used-coupon-intro"><span>✓</span><div><b>Tu historial de cupones</b><small>Solo aparecen los códigos que ya utilizaste en compras.</small></div><strong>${cuponesUsadosUnicos.length} usado(s)</strong></div><div class="pa-used-coupon-list">${cuponesUsadosUnicos.map((code, index) => {
+                    const regla = CODIGOS_POR_NIVEL.find(c => String(c.code).toUpperCase() === code);
+                    const pedido = pedidosValidos.find(p => String(p.cupon || '').trim().toUpperCase() === code && p.cuponAplicado === true);
+                    const pct = safeNumber(pedido?.descuento, regla?.descuento || 0);
+                    return `<article class="pa-used-coupon-card"><div class="pa-used-coupon-icon">✓</div><div class="pa-used-coupon-data"><b>${paEscape(code)}</b><small>${pct ? `${pct}% de descuento aplicado` : 'Cupón canjeado'}</small><em>${pedido ? `Pedido #${paEscape(String(pedido.id || '').slice(-8))} · ${paFecha(pedido.fecha || pedido.cuponAplicadoEn)}` : 'Registrado en tu cuenta'}</em></div><span class="pa-used-coupon-stamp">UTILIZADO</span></article>`;
+                }).join('')}</div>`
+                : `<div class="pa-account-empty pa-coupon-empty-state"><span>🎟️</span><b>Aún no has utilizado cupones</b><small>Cuando canjees un código en una compra, aparecerá aquí tu historial.</small></div>`;
             const summaryHtml = `<div class="pa-welcome-banner"><div><span>PAULINA ACCESORIOS · TU ESPACIO</span><h2>¡Hola, ${paEscape(nombre.split(' ')[0])}! 💗</h2><p>Qué bonito tenerte de vuelta. Aquí tienes todo lo importante de tu cuenta.</p></div><div class="pa-welcome-avatar">${u.photoURL?`<img src="${paEscape(u.photoURL)}" alt="Foto de perfil">`:inicial}</div></div>
                 <div class="pa-account-stats"><div><small>Mis puntos</small><b>${pts.toLocaleString('es-PE')} ✨</b></div><div><small>Pedidos activos</small><b>${pendientes}</b></div><div><small>Pedidos entregados</small><b>${entregados}</b></div><div><small>Favoritos</small><b>${favoritos.length} ♥</b></div></div>
                 <section class="pa-level-card"><div class="pa-level-head"><div><small>MI NIVEL ACTUAL</small><h3>${nivel.emoji} ${paEscape(nivel.nombre)}</h3></div><b>${pts} pts</b></div><div class="pa-level-track"><span style="width:${progress}%"></span></div><div class="pa-level-foot"><span>${pts.toLocaleString('es-PE')} puntos</span><span>${nextPts===null?'¡Nivel máximo alcanzado!':`${Math.max(0,nextPts-pts)} pts para el siguiente nivel`}</span></div></section>
@@ -3689,7 +3867,7 @@ const profileHtml = `<div class="pa-profile-grid">
                 perfil: profileHtml,
                 pedidos: `<div class="pa-panel-title"><div><h3>Historial de pedidos</h3><small>${pedidosValidos.length} pedido(s) registrados</small></div><span>📦</span></div><div class="pa-order-filter"><input id="paOrderSearch" placeholder="Buscar por número de pedido…" oninput="filtrarPedidosCuenta(this.value)"><select id="paOrderStatus" onchange="filtrarPedidosCuenta(document.getElementById('paOrderSearch').value)"><option value="">Todos los estados</option><option value="pendiente">Pendientes</option><option value="enviado">Enviados</option><option value="entregado">Entregados</option><option value="cancelado">Cancelados</option></select></div><div id="paOrdersList">${pedidosHtml}</div>`,
                 gastos: gastosHtml,
-                cupones: `<div class="pa-panel-title"><div><h3>Mis beneficios y cupones</h3><small>Los códigos usados ya no se pueden canjear de nuevo.</small></div><span>🎟️</span></div>${couponsHtml || '<p class="pa-muted">Todavía no hay cupones disponibles para mostrar.</p>'}`,
+                cupones: `<div class="pa-panel-title"><div><h3>Cupones utilizados</h3><small>Este espacio muestra exclusivamente los cupones que ya canjeaste.</small></div><span>🎟️</span></div>${couponsHtml}`,
                 resenas: `<div class="pa-panel-title"><div><h3>Mis reseñas</h3><small>${perfilResenasCache.length} opinión(es) publicadas</small></div><span>⭐</span></div>${reviewHtml}`,
                 favoritos: `<div class="pa-panel-title"><div><h3>Mi lista de favoritos</h3><small>${favoritos.length} producto(s) guardados</small></div><span>💗</span></div>${favsHtml}`
             };
@@ -3701,7 +3879,7 @@ const profileHtml = `<div class="pa-profile-grid">
                     <nav class="pa-account-nav">${tabs.map(([id,ico,label])=>`<button class="${tab===id?'active':''}" onclick="cambiarPestanaPerfil('${id}')"><span>${ico}</span>${label}${id==='pedidos'&&pendientes?`<i>${pendientes}</i>`:''}</button>`).join('')}</nav>
                     <div class="pa-sidebar-bottom"><small>✨ Gracias por ser parte de Paulina.</small><button onclick="logoutUser()">↪ Cerrar sesión</button></div>
                 </aside>
-                <main class="pa-account-main"><header class="pa-account-top"><div><small>MI CUENTA / ${paEscape(tab.toUpperCase())}</small><h1>${({resumen:'Tu espacio personal',perfil:'Mi perfil',pedidos:'Mis pedidos',gastos:'Resumen de compras',cupones:'Mis beneficios',resenas:'Mis reseñas',favoritos:'Mis favoritos'})[tab]||'Mi cuenta'}</h1></div><button class="pa-account-close" aria-label="Cerrar cuenta" onclick="document.getElementById('miCuentaModal').classList.remove('show')">×</button></header><div class="pa-account-content">${content[tab]||summaryHtml}</div><div class="pa-account-mobile-logout"><button onclick="logoutUser()">↪ Cerrar sesión</button></div></main>
+                <main class="pa-account-main"><header class="pa-account-top"><div><small>MI CUENTA / ${paEscape(tab.toUpperCase())}</small><h1>${({resumen:'Tu espacio personal',perfil:'Mi perfil',pedidos:'Mis pedidos',gastos:'Resumen de compras',cupones:'Cupones utilizados',resenas:'Mis reseñas',favoritos:'Mis favoritos'})[tab]||'Mi cuenta'}</h1></div><button class="pa-account-close" aria-label="Cerrar cuenta" onclick="document.getElementById('miCuentaModal').classList.remove('show')">×</button></header><div class="pa-account-content">${content[tab]||summaryHtml}</div><div class="pa-account-mobile-logout"><button onclick="logoutUser()">↪ Cerrar sesión</button></div></main>
             </div>`;
             modal.classList.add('show');
             if(tab==='pedidos') window.setTimeout(()=>{const input=document.getElementById('paOrderSearch');if(input)input.value='';},0);
@@ -3896,9 +4074,34 @@ async function loginUser(email, password) {
             if (snap.exists()) {
                 const data = snap.data();
                 if (!Array.isArray(data.cuponesUsados)) data.cuponesUsados = [];
-                window.currentUser = data;
+                window.currentUser = { ...data, id: cred.user.uid, email: data.email || cred.user.email };
+            } else {
+                const perfilMinimo = {
+                    id: cred.user.uid,
+                    name: cred.user.displayName || cred.user.email.split('@')[0],
+                    email: cred.user.email || '',
+                    points: 0,
+                    level: '✨ Visitante',
+                    cuponesUsados: [],
+                    createdAt: new Date().toISOString()
+                };
+                await window.firebaseDB.setDoc(
+                    window.firebaseDB.doc(window.db, "usuarios", cred.user.uid),
+                    perfilMinimo,
+                    { merge: true }
+                );
+                window.currentUser = perfilMinimo;
             }
-        } catch (e) { console.warn('⚠️ No se pudo cargar usuario:', e); }
+        } catch (e) {
+            console.error('⚠️ No se pudo sincronizar el perfil de Firestore:', e);
+            window.currentUser = {
+                id: cred.user.uid,
+                name: cred.user.displayName || cred.user.email.split('@')[0],
+                email: cred.user.email || '',
+                points: 0,
+                cuponesUsados: []
+            };
+        }
 
         updateUserUI();
         mostrarNotificacion('✅ ¡Bienvenida! 👋', '👋');
@@ -6465,7 +6668,7 @@ function cambiarTabAdmin(tab) {
     if (tab === 'stats') cargarEstadisticas();
     if (tab === 'pedidos') cargarPedidosAdmin();
     if (tab === 'ventas') cargarVentas();
-    if (tab === 'cupones') cargarCuponesAdmin();
+    if (tab === 'cupones') { cargarCuponesAdmin(); cargarHistorialCuponesAdmin(); }
 }
 
 async function cargarDashboardStats() {
@@ -7110,6 +7313,16 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const uid = window.currentUser.id;
             const userRef = window.firebaseDB.doc(window.db, "usuarios", uid);
+            const userBeforeCheckout = await window.firebaseDB.getDoc(userRef);
+            if (!userBeforeCheckout.exists()) {
+                await window.firebaseDB.setDoc(userRef, {
+                    id: uid,
+                    name: window.auth?.currentUser?.displayName || window.currentUser.name || 'Cliente',
+                    email: window.auth?.currentUser?.email || window.currentUser.email || '',
+                    points: safeInt(window.currentUser.points),
+                    cuponesUsados: []
+                }, { merge: true });
+            }
             const pedidoRef = window.firebaseDB.doc(window.firebaseDB.collection(window.db, "pedidos"));
             const cuponRef = cuponAplicado?.id
                 ? window.firebaseDB.doc(window.db, "cupones", cuponAplicado.id)
